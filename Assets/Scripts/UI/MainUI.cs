@@ -6,7 +6,9 @@ using UniRx;
 
 public class MainUI : MonoBehaviour
 {
-    public Button Xbutton;
+    public GameObject X_btn_off;
+    public GameObject X_btn_on;
+    public Button X_btn;
 
     public Button Hero_Btn;
     public Button Inventory_Btn;
@@ -24,6 +26,8 @@ public class MainUI : MonoBehaviour
 
     private void Awake()
     {
+        X_btn_on.SetActive(false);
+
         Hero_Page.SetActive(false);
         Inventory_Page.SetActive(false);
         Strengthen_Page.SetActive(false);
@@ -34,41 +38,55 @@ public class MainUI : MonoBehaviour
 
         private void Start()
     {
-        Xbutton.OnClickAsObservable().Subscribe(_ =>
+        X_btn.OnClickAsObservable().Subscribe(_ =>
         {
-            // 모든 창 닫기게 
+            // 모든 창 닫기게
+
         }).AddTo(this);
 
 
         // 버튼 누르면, 해당 페이지 UI 켜지게
         Hero_Btn.OnClickAsObservable().Subscribe(_ =>
         {
-            Hero_Page.SetActive(true); 
+            Hero_Page.SetActive(true);
+            XbtnOpen();
+
         }).AddTo(this);
 
         Inventory_Btn.OnClickAsObservable().Subscribe(_ =>
         {
             Inventory_Page.SetActive(true);
+            XbtnOpen();
         }).AddTo(this);
 
         Strengthen_Btn.OnClickAsObservable().Subscribe(_ =>
         {
             Strengthen_Page.SetActive(true);
+            XbtnOpen();
         }).AddTo(this);
 
         Contents_Btn.OnClickAsObservable().Subscribe(_ =>
         {
             Contents_Page.SetActive(true);
+            XbtnOpen();
         }).AddTo(this);
 
         Mission_Btn.OnClickAsObservable().Subscribe(_ =>
         {
             Mission_Page.SetActive(true);
+            XbtnOpen();
         }).AddTo(this);
 
         Shop_Btn.OnClickAsObservable().Subscribe(_ =>
         {
-            Shop_Page.SetActive(true); 
+            Shop_Page.SetActive(true);
+            XbtnOpen();
         }).AddTo(this);
+    }
+
+    private void XbtnOpen()
+    {
+        X_btn_off.SetActive(false);
+        X_btn_on.SetActive(true);
     }
 }
