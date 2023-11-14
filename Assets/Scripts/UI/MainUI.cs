@@ -24,6 +24,9 @@ public class MainUI : MonoBehaviour
     public GameObject Mission_Page;
     public GameObject Shop_Page;
 
+    // X버튼 누를 때! 
+    public List<GameObject> pages;
+
     private void Awake()
     {
         X_btn_on.SetActive(false);
@@ -38,13 +41,22 @@ public class MainUI : MonoBehaviour
 
         private void Start()
     {
+        pages = new List<GameObject>
+        {
+            Hero_Page,
+            Inventory_Page,
+            Strengthen_Page,
+            Contents_Page,
+            Mission_Page,
+            Shop_Page
+        };
+        
         X_btn.OnClickAsObservable().Subscribe(_ =>
         {
-            // 모든 창 닫기게
-
+            // 무슨 창이든 닫기게
+            CloseAllPages();
         }).AddTo(this);
-
-
+        
         // 버튼 누르면, 해당 페이지 UI 켜지게
         Hero_Btn.OnClickAsObservable().Subscribe(_ =>
         {
@@ -88,5 +100,20 @@ public class MainUI : MonoBehaviour
     {
         X_btn_off.SetActive(false);
         X_btn_on.SetActive(true);
+    }
+    
+    private void XbtnClose()
+    {
+        X_btn_off.SetActive(true);
+        X_btn_on.SetActive(false);
+    }
+    
+    private void CloseAllPages()
+    {
+        foreach (var page in pages)
+        {
+            page.SetActive(false);
+        }
+        XbtnClose();
     }
 }

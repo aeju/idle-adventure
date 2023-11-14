@@ -4150,41 +4150,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 613780094}
   m_CullTransparentMesh: 1
---- !u!1 &634455690
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 634455691}
-  m_Layer: 5
-  m_Name: Profile
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &634455691
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 634455690}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1329245414}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -295, y: 862.80005}
-  m_SizeDelta: {x: 300, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &667201234
 GameObject:
   m_ObjectHideFlags: 0
@@ -4811,7 +4776,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &768071207
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8306,7 +8271,6 @@ RectTransform:
   m_Children:
   - {fileID: 1187475498}
   - {fileID: 991711337}
-  - {fileID: 634455691}
   - {fileID: 83851310}
   - {fileID: 1446847821}
   - {fileID: 1549419017}
@@ -10381,7 +10345,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: AUTOs
+  m_text: 'AUTO
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 93d32ec3d018f4838a01033df5763610, type: 2}
   m_sharedMaterial: {fileID: 56619800736502887, guid: 93d32ec3d018f4838a01033df5763610, type: 2}
@@ -10834,7 +10800,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1662682943}
   m_Layer: 5
-  m_Name: 5. UI Page
+  m_Name: UI Page
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12345,11 +12311,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 768071207}
+  - {fileID: 1662682943}
   - {fileID: 1329245414}
   - {fileID: 11758905}
   - {fileID: 1206681199}
   - {fileID: 1761023125}
-  - {fileID: 1662682943}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -12384,6 +12350,7 @@ MonoBehaviour:
   Contents_Page: {fileID: 1523419800}
   Mission_Page: {fileID: 1307649664}
   Shop_Page: {fileID: 1242026181}
+  pages: []
 --- !u!1 &2095817753
 GameObject:
   m_ObjectHideFlags: 0
