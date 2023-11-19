@@ -15,6 +15,10 @@ public class Ponpo : MonoBehaviour
     Vector3 movement;
     private int direction = 1;
     
+    // terrain 
+    public LayerMask terrainLayer;
+    public float groundDist;
+    
     public int Current_HP; // 현재 체력
     public float Cooldown_Time; // 쿨타임
     
@@ -38,16 +42,15 @@ public class Ponpo : MonoBehaviour
     public TextMeshPro _HP;
     public TextMeshPro _cur_HP;
 
+    // 상태 (생존)
     public bool alive = true;
     
-    // terrain 
-    public LayerMask terrainLayer;
-    public float groundDist;
+    // 애니메이션
+    private Animator anim;
     
     void Start()
     {
-        //_HP. = HP;
-        //_cur_HP.text = HP;
+        anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -59,24 +62,38 @@ public class Ponpo : MonoBehaviour
 // terrain raycast 필요!
     void Move()
     {
+        // terrain raycast
+        RaycastHit hit;
+        Vector3 castPos = transform.position;
+        castPos.y += 1;
+        if (Physics.Raycast(castPos, -transform.up, out hit, Mathf.Infinity, terrainLayer))
+        {
+            if (hit.collider != null)
+            {
+                Vector3 movePos = transform.position;
+                movePos.y = hit.point.y + groundDist;
+                transform.position = movePos;
+            }
+        }
+        
         Vector3 moveVelocity = Vector3.zero;
+        anim.SetBool("isMove", false);
         
         if (Input.GetAxisRaw("Horizontal") < 0)
         {
-            //direction = -1;
+            direction = -1;
             moveVelocity = Vector3.left;
-
-            //transform.localScale = new Vector3(direction, 1, 1);
-            //if (!anim.GetBool("isJump"))
+            
+            anim.SetBool("isMove", true);
+            //sif (!anim.GetBool("isJump"))
               //  anim.SetBool("isRun", true);
         }
         
         if (Input.GetAxisRaw("Horizontal") > 0)
         {
-            //direction = 1;
             moveVelocity = Vector3.right;
-
-            //transform.localScale = new Vector3(direction, 1, 1);
+            
+            anim.SetBool("isMove", true);
             //if (!anim.GetBool("isJump"))
               //  anim.SetBool("isRun", true);
         }
@@ -84,6 +101,8 @@ public class Ponpo : MonoBehaviour
         if (Input.GetAxisRaw("Vertical") > 0)
         {
             moveVelocity += Vector3.forward;
+            
+            anim.SetBool("isMove", true);
             //if (!anim.GetBool("isJump"))
               //  anim.SetBool("isRun", true);
         }
@@ -91,6 +110,8 @@ public class Ponpo : MonoBehaviour
         if (Input.GetAxisRaw("Vertical") < 0)
         {
             moveVelocity += Vector3.back;
+            
+            anim.SetBool("isMove", true);
             //if (!anim.GetBool("isJump"))
               //  anim.SetBool("isRun", true);
         }
