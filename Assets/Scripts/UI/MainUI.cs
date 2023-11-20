@@ -27,6 +27,9 @@ public class MainUI : MonoBehaviour
     // X버튼 누를 때! 
     public List<GameObject> pages;
 
+    // 버튼-페이지 딕셔너리
+    public Dictionary<Button, GameObject> buttonPage;
+
     private void Awake()
     {
         X_btn_on.SetActive(false);
@@ -39,7 +42,7 @@ public class MainUI : MonoBehaviour
         Shop_Page.SetActive(false);
     }
 
-        private void Start()
+    private void Start()
     {
         pages = new List<GameObject>
         {
@@ -51,13 +54,31 @@ public class MainUI : MonoBehaviour
             Shop_Page
         };
         
+        buttonPage = new Dictionary<Button, GameObject>
+        {
+            { Hero_Btn, Hero_Page },
+            { Inventory_Btn, Inventory_Page },
+            { Strengthen_Btn, Strengthen_Page },
+            { Contents_Btn, Contents_Page },
+            { Mission_Btn, Mission_Page },
+            { Shop_Btn, Shop_Page }
+        };
+        
         X_btn.OnClickAsObservable().Subscribe(_ =>
         {
             // 무슨 창이든 닫기게
             CloseAllPages();
         }).AddTo(this);
         
-        // 버튼 누르면, 해당 페이지 UI 켜지게
+        foreach (var btn in buttonPage)
+        {
+            btn.Key.OnClickAsObservable().Subscribe(_ =>
+            {
+                OpenPage(btn.Value);
+            }).AddTo(this);
+        }
+
+        /* // 버튼 누르면, 해당 페이지 UI 켜지게
         Hero_Btn.OnClickAsObservable().Subscribe(_ =>
         {
             Hero_Page.SetActive(true);
@@ -94,8 +115,16 @@ public class MainUI : MonoBehaviour
             Shop_Page.SetActive(true);
             XbtnOpen();
         }).AddTo(this);
+        */
     }
-
+    
+    private void OpenPage(GameObject page)
+    {
+        CloseAllPages();
+        page.SetActive(true);
+        XbtnOpen();
+    }
+    
     private void XbtnOpen()
     {
         X_btn_off.SetActive(false);
