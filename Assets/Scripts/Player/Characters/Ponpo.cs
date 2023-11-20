@@ -13,8 +13,7 @@ public class Ponpo : MonoBehaviour
 {
     // 이동 (Movement_Speed)
     Vector3 movement;
-    private int direction = 1;
-    
+
     // terrain 
     public LayerMask terrainLayer;
     public float groundDist;
@@ -58,8 +57,7 @@ public class Ponpo : MonoBehaviour
         if (alive)
             Move();
     }
-
-// terrain raycast 필요!
+    
     void Move()
     {
         // terrain raycast
@@ -79,45 +77,59 @@ public class Ponpo : MonoBehaviour
         Vector3 moveVelocity = Vector3.zero;
         anim.SetBool("isMove", false);
         
-        if (Input.GetAxisRaw("Horizontal") < 0)
+        // 입력값
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float verticalInput = Input.GetAxisRaw("Vertical");
+
+        Vector3 moveDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
+        moveVelocity = moveDirection * Movement_Speed;
+        transform.position += moveVelocity * Time.deltaTime;
+
+        bool isMoving = moveDirection != Vector3.zero;
+        anim.SetBool("isMove", isMoving);
+        
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (isMoving)
         {
-            direction = -1;
+            if (horizontalInput > 0)
+            {
+                transform.localScale = new Vector3(-2f, 2f, -1f); 
+            }
+            else
+            {
+                transform.localScale = new Vector3(2f, 2f, -1f);
+            }
+        }
+        
+        /* if (horizontalInput < 0)
+        {
             moveVelocity = Vector3.left;
             
             anim.SetBool("isMove", true);
-            //sif (!anim.GetBool("isJump"))
-              //  anim.SetBool("isRun", true);
         }
         
-        if (Input.GetAxisRaw("Horizontal") > 0)
+        if (horizontalInput > 0)
         {
             moveVelocity = Vector3.right;
             
             anim.SetBool("isMove", true);
-            //if (!anim.GetBool("isJump"))
-              //  anim.SetBool("isRun", true);
         }
         
-        if (Input.GetAxisRaw("Vertical") > 0)
+        if (verticalInput > 0)
         {
             moveVelocity += Vector3.forward;
             
             anim.SetBool("isMove", true);
-            //if (!anim.GetBool("isJump"))
-              //  anim.SetBool("isRun", true);
         }
 
-        if (Input.GetAxisRaw("Vertical") < 0)
+        if (verticalInput < 0)
         {
             moveVelocity += Vector3.back;
             
             anim.SetBool("isMove", true);
-            //if (!anim.GetBool("isJump"))
-              //  anim.SetBool("isRun", true);
         }
         
         transform.position += moveVelocity * Movement_Speed * Time.deltaTime;
+        */ 
     }
-    
-    
 }
