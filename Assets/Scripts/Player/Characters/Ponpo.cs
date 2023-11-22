@@ -13,15 +13,14 @@ public class Ponpo : MonoBehaviour
 {
     // 이동 (Movement_Speed)
     Vector3 movement;
-    private int direction = 1;
-    
+
     // terrain 
     public LayerMask terrainLayer;
     public float groundDist;
-    
+
     public int Current_HP; // 현재 체력
     public float Cooldown_Time; // 쿨타임
-    
+
     // 스탯
     public int HP; // 생명력 
     public int Attack; // 공격력 
@@ -34,20 +33,21 @@ public class Ponpo : MonoBehaviour
     public int HP_Recovery; // 생명력 회복
     public int Movement_Speed; // 이동속도
     public int Critical_Hit_Rate_Resist; // 치명타 확률 저항
-    
+
     // 전투력
     public int Combat; // 전투력
-    
+
     // 화면 출력
     public TextMeshPro _HP;
+
     public TextMeshPro _cur_HP;
 
     // 상태 (생존)
     public bool alive = true;
-    
+
     // 애니메이션
     private Animator anim;
-    
+
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -59,7 +59,6 @@ public class Ponpo : MonoBehaviour
             Move();
     }
 
-// terrain raycast 필요!
     void Move()
     {
         // terrain raycast
@@ -75,49 +74,35 @@ public class Ponpo : MonoBehaviour
                 transform.position = movePos;
             }
         }
-        
+
         Vector3 moveVelocity = Vector3.zero;
         anim.SetBool("isMove", false);
-        
-        if (Input.GetAxisRaw("Horizontal") < 0)
-        {
-            direction = -1;
-            moveVelocity = Vector3.left;
-            
-            anim.SetBool("isMove", true);
-            //sif (!anim.GetBool("isJump"))
-              //  anim.SetBool("isRun", true);
-        }
-        
-        if (Input.GetAxisRaw("Horizontal") > 0)
-        {
-            moveVelocity = Vector3.right;
-            
-            anim.SetBool("isMove", true);
-            //if (!anim.GetBool("isJump"))
-              //  anim.SetBool("isRun", true);
-        }
-        
-        if (Input.GetAxisRaw("Vertical") > 0)
-        {
-            moveVelocity += Vector3.forward;
-            
-            anim.SetBool("isMove", true);
-            //if (!anim.GetBool("isJump"))
-              //  anim.SetBool("isRun", true);
-        }
 
-        if (Input.GetAxisRaw("Vertical") < 0)
-        {
-            moveVelocity += Vector3.back;
-            
-            anim.SetBool("isMove", true);
-            //if (!anim.GetBool("isJump"))
-              //  anim.SetBool("isRun", true);
-        }
+        // 입력값
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float verticalInput = Input.GetAxisRaw("Vertical");
+
+        float scaleFactor = 0.1f;
         
+        Vector3 moveDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
+        moveVelocity = moveDirection * Movement_Speed * scaleFactor;
         transform.position += moveVelocity * Movement_Speed * Time.deltaTime;
+        
+        // 애니메이션
+        bool isMoving = moveDirection != Vector3.zero;
+        
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (isMoving)
+        {
+            if (horizontalInput > 0)
+            {
+                transform.localScale = new Vector3(-2f, 2f, -1f);
+            }
+            else
+            {
+                transform.localScale = new Vector3(2f, 2f, -1f);
+            }
+            anim.SetBool("isMove", true);
+        }
     }
-    
-    
 }
