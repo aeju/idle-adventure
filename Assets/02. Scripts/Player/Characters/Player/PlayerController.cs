@@ -22,16 +22,33 @@ public class PlayerController : MonoBehaviour, IPlayerController
     public LayerMask terrainLayer;
     public float groundDist;
     
+    // 공격
+    //public GameObject[] Monster;
+    public GameObject Monster;
+    public int CombatPower = 10; // 전투력
+    
     void Start()
     {
         playerStats = GetComponent<PlayerStats>();
         anim = GetComponent<Animator>();
+
+        Monster = GameObject.FindGameObjectWithTag("monster");
     }
     
     void Update()
     {
         if (alive)
+        {
             PlayerMove();
+            // 수정 필요! 이동 중에는 attack x 공격부터 끝내고 수정하기
+            if (Monster.GetComponent<MonsterController>().Current_HP > 0) // 몬스터가 죽지 않았을 때
+            {
+                anim.SetBool("isAttack", true);
+            }
+        }
+            
+            //if (monster.GetComponent<)
+            //PlayerAttack();
     }
 
     public void PlayerMove()
@@ -85,5 +102,10 @@ public class PlayerController : MonoBehaviour, IPlayerController
     void PlayerAutoMove()
     {
         
+    }
+
+    void PlayerAttack()
+    {
+        Monster.GetComponent<MonsterController>().Current_HP -= CombatPower;
     }
 }

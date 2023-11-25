@@ -11,7 +11,7 @@ public class Ponpo : MonoBehaviour, IPlayerController
     private IPlayerController playerController;
 
     // 전투력
-    public int Combat; // 전투력
+    //public int Combat; // 전투력
 
     // 화면 출력
     public TextMeshPro _HP;
