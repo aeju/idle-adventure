@@ -7,7 +7,7 @@ public class MonsterStats : MonoBehaviour
     public string MonsterName;
     
     // 스탯
-    public int HP; // 생명력 
+    public int HP = 20; // 생명력 
     public int Attack; // 공격력 
     public int Defense; // 방어력
     public int Critical_Hit_Rate; // 치명타 확률
