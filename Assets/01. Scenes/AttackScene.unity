@@ -2223,15 +2223,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 502683686627384673, guid: 41690d52a0ec541a98fb7b88c4f22634, type: 3}
       propertyPath: m_Color.b
-      value: 0.03760237
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 502683686627384673, guid: 41690d52a0ec541a98fb7b88c4f22634, type: 3}
       propertyPath: m_Color.g
-      value: 0.6132076
+      value: 0.79607844
       objectReference: {fileID: 0}
     - target: {fileID: 502683686627384673, guid: 41690d52a0ec541a98fb7b88c4f22634, type: 3}
       propertyPath: m_Color.r
-      value: 0.118753254
+      value: 0.627451
       objectReference: {fileID: 0}
     - target: {fileID: 1333272559151530561, guid: 41690d52a0ec541a98fb7b88c4f22634, type: 3}
       propertyPath: m_Layer
@@ -5156,15 +5156,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 502683686627384673, guid: 45a4febeab4d84c89923ee2ac4d5f66d, type: 3}
       propertyPath: m_Color.b
-      value: 1
+      value: 0.7254902
       objectReference: {fileID: 0}
     - target: {fileID: 502683686627384673, guid: 45a4febeab4d84c89923ee2ac4d5f66d, type: 3}
       propertyPath: m_Color.g
-      value: 0.16586089
+      value: 0.67058825
       objectReference: {fileID: 0}
     - target: {fileID: 502683686627384673, guid: 45a4febeab4d84c89923ee2ac4d5f66d, type: 3}
       propertyPath: m_Color.r
-      value: 0
+      value: 0.44313726
       objectReference: {fileID: 0}
     - target: {fileID: 1333272559151530561, guid: 45a4febeab4d84c89923ee2ac4d5f66d, type: 3}
       propertyPath: m_Layer
@@ -9358,8 +9358,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: []
   hpbar: {fileID: 157432407}
-  Max_HP: 10
-  Current_HP: 10
+  Max_HP: 100
+  Current_HP: 20
   Combat: 0
 --- !u!114 &1377484763
 MonoBehaviour:
