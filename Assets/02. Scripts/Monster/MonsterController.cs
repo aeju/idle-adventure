@@ -6,32 +6,24 @@ using UnityEngine.UI;
 using TMPro;
 using Spine;
 using Spine.Unity;
-using AnimationState = Spine.AnimationState;
 
 public class MonsterController : MonoBehaviour
 {
-    private MonsterStats monsterStats;
+    public static MonsterStats monsterStats;
 
     public GameObject[] Player;
-    
-    // 애니메이션
-    public Animator anim;
-    //public SkeletonAnimation skeletonAnimation;
-    //public AnimationState animationState;
 
-    public string idleAnim = "Idle";
-    public string walkAnim = "Walk";
-    public string attackAnim = "Attack";
-    public string deathAnim = "Dead";
+    // 애니메이션
+    private Animator anim;
     
     // 현재 체력
+    public Slider hpbar;
+    public int Max_HP = 20;
     public int Current_HP = 20;
-    
+
     // 공격력
     public int Combat;
-    
-    private Animator animator;
-    
+     
     void Start()
     {
         monsterStats = GetComponent<MonsterStats>();
@@ -40,12 +32,12 @@ public class MonsterController : MonoBehaviour
 
         anim = GetComponent<Animator>();
 
-        //animationState = skeletonAnimation.AnimationState;
+        hpbar.value = Current_HP / Max_HP;
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
+        MonsterHPSlider();
         if (Current_HP <= 0)
             MonsterDeath();
     }
@@ -53,18 +45,10 @@ public class MonsterController : MonoBehaviour
     void MonsterDeath()
     {
         anim.SetTrigger("Dead");
-        //animationState.SetAnimation(0, deathAnim, false);
-        //Debug.Log("Death");
-        // Check if the animation exists in the skeleton data
-        //if (skeletonAnimation.Skeleton.Data.FindAnimation(deathAnim) != null)
-        {
-            // Set the animation to the death animation
-            //animationState.SetAnimation(0, deathAnim, false);
-            //Debug.Log("Death");
-        }
-        //else
-        {
-            //Debug.LogWarning("Death animation not found in skeleton data.");
-        }
+    }
+
+    void MonsterHPSlider()
+    {
+        hpbar.value = Mathf.Lerp((float) hpbar.value, (float)Current_HP / (float)Max_HP, Time.deltaTime * 10);
     }
 }

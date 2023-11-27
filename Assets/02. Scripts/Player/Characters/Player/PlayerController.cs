@@ -46,9 +46,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
                 anim.SetBool("isAttack", true);
             }
         }
-            
-            //if (monster.GetComponent<)
-            //PlayerAttack();
     }
 
     public void PlayerMove()
@@ -57,12 +54,15 @@ public class PlayerController : MonoBehaviour, IPlayerController
         RaycastHit hit;
         Vector3 castPos = transform.position;
         castPos.y += 1;
+
+        float UIDist = 0.8f;
+        
         if (Physics.Raycast(castPos, -transform.up, out hit, Mathf.Infinity, terrainLayer))
         {
             if (hit.collider != null)
             {
                 Vector3 movePos = transform.position;
-                movePos.y = hit.point.y + groundDist;
+                movePos.y = hit.point.y + groundDist + UIDist;
                 transform.position = movePos;
             }
         }
@@ -106,6 +106,11 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
     void PlayerAttack()
     {
-        Monster.GetComponent<MonsterController>().Current_HP -= CombatPower;
+        MonsterController monsterController = Monster.GetComponent<MonsterController>();
+        
+        if (monsterController.Current_HP > 0)
+        {
+            monsterController.Current_HP -= CombatPower;
+        }
     }
 }
