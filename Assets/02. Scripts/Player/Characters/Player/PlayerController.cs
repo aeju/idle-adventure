@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         Vector3 castPos = transform.position;
         castPos.y += 1;
 
-        float UIDist = 0.8f;
+        float UIDist = 0.9f;
         
         if (Physics.Raycast(castPos, -transform.up, out hit, Mathf.Infinity, terrainLayer))
         {
