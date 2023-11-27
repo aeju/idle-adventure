@@ -1,41 +1,64 @@
 using System.Collections;
 using System.Collections.Generic;
+<<<<<<< HEAD
+using UnityEngine;
+
+public interface IPlayerController
+{
+    void PlayerMove();
+    //bool alive { get; set; }
+}
+
+public class PlayerController : MonoBehaviour, IPlayerController
+{
+    private PlayerStats playerStats;
+    
+    // 애니메이션
+    private Animator anim;
+    
+    // 상태 (생존)
+    public bool alive = true;
+    
+    // terrain 
+    public LayerMask terrainLayer;
+    public float groundDist;
+    
+    // 공격
+    //public GameObject[] Monster;
+    public GameObject Monster;
+    public int CombatPower = 10; // 전투력
+    
+    void Start()
+    {
+        playerStats = GetComponent<PlayerStats>();
+        anim = GetComponent<Animator>();
+
+        Monster = GameObject.FindGameObjectWithTag("monster");
+    }
+    
+    void Update()
+    {
+        if (alive)
+        {
+            PlayerMove();
+            // 수정 필요! 이동 중에는 attack x 공격부터 끝내고 수정하기
+            if (Monster.GetComponent<MonsterController>().Current_HP > 0) // 몬스터가 죽지 않았을 때
+            {
+                anim.SetBool("isAttack", true);
+            }
+=======
 using Cinemachine;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// 스탯 : 생명력, 공격력, 방어력, 치명타 확률, 명중, 치명타 피해, 회피, 공격속도, 생명력 회복, 이동속도, 치명타 확률 저항
-/// </summary>
-public class Ponpo : MonoBehaviour
+public class Ponpo : MonoBehaviour, IPlayerController
 {
-    // 이동 (Movement_Speed)
-    Vector3 movement;
-
-    // terrain 
-    public LayerMask terrainLayer;
-    public float groundDist;
-
-    public int Current_HP; // 현재 체력
-    public float Cooldown_Time; // 쿨타임
-
-    // 스탯
-    public int HP; // 생명력 
-    public int Attack; // 공격력 
-    public int Defense; // 방어력
-    public int Critical_Hit_Rate; // 치명타 확률
-    public int Accuracy; // 명중 
-    public int Critical_Hit_Damage; // 치명타 피해
-    public int Evasion; // 회피
-    public int Attack_Speed; // 공격속도
-    public int HP_Recovery; // 생명력 회복
-    public int Movement_Speed; // 이동속도
-    public int Critical_Hit_Rate_Resist; // 치명타 확률 저항
+    private IPlayerController playerController;
 
     // 전투력
-    public int Combat; // 전투력
+    //public int Combat; // 전투력
 
     // 화면 출력
     public TextMeshPro _HP;
@@ -45,32 +68,31 @@ public class Ponpo : MonoBehaviour
     // 상태 (생존)
     public bool alive = true;
 
-    // 애니메이션
-    private Animator anim;
-
-    void Start()
-    {
-        anim = GetComponent<Animator>();
-    }
-
     void Update()
     {
-        if (alive)
-            Move();
+        if (playerController != null)
+        {
+            playerController.PlayerMove();
+>>>>>>> develop
+        }
     }
 
-    void Move()
+    public void PlayerMove()
     {
+<<<<<<< HEAD
         // terrain raycast
         RaycastHit hit;
         Vector3 castPos = transform.position;
         castPos.y += 1;
+
+        float UIDist = 0.9f;
+        
         if (Physics.Raycast(castPos, -transform.up, out hit, Mathf.Infinity, terrainLayer))
         {
             if (hit.collider != null)
             {
                 Vector3 movePos = transform.position;
-                movePos.y = hit.point.y + groundDist;
+                movePos.y = hit.point.y + groundDist + UIDist;
                 transform.position = movePos;
             }
         }
@@ -85,8 +107,9 @@ public class Ponpo : MonoBehaviour
         float scaleFactor = 0.1f;
         
         Vector3 moveDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
-        moveVelocity = moveDirection * Movement_Speed * scaleFactor;
-        transform.position += moveVelocity * Movement_Speed * Time.deltaTime;
+        //moveVelocity = moveDirection * Movement_Speed * scaleFactor;
+        moveVelocity = moveDirection * playerStats.Movement_Speed * scaleFactor;
+        transform.position += moveVelocity * playerStats.Movement_Speed * Time.deltaTime;
         
         // 애니메이션
         bool isMoving = moveDirection != Vector3.zero;
@@ -105,4 +128,24 @@ public class Ponpo : MonoBehaviour
             anim.SetBool("isMove", true);
         }
     }
+    
+    void PlayerAutoMove()
+    {
+        
+    }
+
+    void PlayerAttack()
+    {
+        MonsterController monsterController = Monster.GetComponent<MonsterController>();
+        
+        if (monsterController.Current_HP > 0)
+        {
+            monsterController.Current_HP -= CombatPower;
+        }
+    }
 }
+=======
+        
+    }
+}
+>>>>>>> develop
