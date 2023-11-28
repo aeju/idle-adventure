@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using UnityEngine;
 
 public interface IPlayerController
@@ -47,6 +48,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
                 anim.SetBool("isAttack", true);
             }
 =======
+=======
+>>>>>>> develop
 using Cinemachine;
 using TMPro;
 using Unity.VisualScripting;
@@ -73,12 +76,16 @@ public class Ponpo : MonoBehaviour, IPlayerController
         if (playerController != null)
         {
             playerController.PlayerMove();
+<<<<<<< HEAD
+>>>>>>> develop
+=======
 >>>>>>> develop
         }
     }
 
     public void PlayerMove()
     {
+<<<<<<< HEAD
 <<<<<<< HEAD
         // terrain raycast
         RaycastHit hit;
@@ -144,6 +151,11 @@ public class Ponpo : MonoBehaviour, IPlayerController
         }
     }
 }
+=======
+        
+    }
+}
+>>>>>>> develop
 =======
         
     }
