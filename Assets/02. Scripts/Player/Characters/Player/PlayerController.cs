@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -145,7 +146,24 @@ public class PlayerController : MonoBehaviour, IPlayerController
         if (monsterController.Current_HP > 0)
         {
             monsterController.Current_HP -= CombatPower;
+            ShowDamageText(monsterController, CombatPower);
         }
+    }
+
+    void ShowDamageText(MonsterController monsterController, int damage)
+    {
+        if (monsterController.monsterDamageText != null)
+        {
+            monsterController.monsterDamageText.text = damage.ToString(); 
+            StartCoroutine(DisplayDamage(monsterController.monsterDamageText));
+        }
+    }
+
+    IEnumerator DisplayDamage(TextMeshProUGUI damageText)
+    {
+        damageText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        damageText.gameObject.SetActive(false);
     }
 
     // 일반 공격 

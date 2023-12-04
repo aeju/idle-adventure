@@ -23,6 +23,9 @@ public class MonsterController : MonoBehaviour
 
     // 공격력
     public int Combat;
+    
+    // 데미지
+    public TextMeshProUGUI monsterDamageText;
      
     void Start()
     {
