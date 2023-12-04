@@ -26,6 +26,11 @@ public class MonsterController : MonoBehaviour
     
     // 데미지
     public TextMeshProUGUI monsterDamageText;
+    
+    // 드랍
+    public GameObject expPrefab;
+    public GameObject potionPrefab;
+    public GameObject goldPrefab;
      
     void Start()
     {
