@@ -172,8 +172,28 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
         isSkillOnCooldown = true;
         lastSkillTime = Time.time;
-        
-        yield return new WaitForSeconds(skillCooldown);
+
+        // 슬라이더 초기화 
+        if (cooldownSlider != null)
+        {
+            cooldownSlider.value = 0;
+            cooldownSlider.maxValue = skillCooldown;
+        }
+
+        // 쿨타임 동안 슬라이더 업데이트
+        while (Time.time < lastSkillTime + skillCooldown)
+        {
+            if (cooldownSlider != null)
+            {
+                cooldownSlider.value = Time.time - lastSkillTime;
+            }
+            yield return null; // 다음 프레임까지 기다리도록 보장
+        }
         isSkillOnCooldown = false;
+
+        if (cooldownSlider != null)
+        {
+            cooldownSlider.value = cooldownSlider.maxValue;
+        }
     }
 }
