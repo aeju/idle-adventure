@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public interface IPlayerController
 {
@@ -10,6 +12,9 @@ public interface IPlayerController
 
 public class PlayerController : MonoBehaviour, IPlayerController
 {
+    public Slider hPSlider;
+    public Slider cooldownSlider;
+    
     private PlayerStats playerStats;
     
     // 애니메이션
@@ -27,6 +32,11 @@ public class PlayerController : MonoBehaviour, IPlayerController
     public GameObject Monster;
     public int CombatPower = 10; // 전투력
     
+    // 쿨타임
+    public float skillCooldown = 5f;
+    public float lastSkillTime = -5f;
+    public bool isSkillOnCooldown = false;
+    
     void Start()
     {
         playerStats = GetComponent<PlayerStats>();
@@ -40,10 +50,33 @@ public class PlayerController : MonoBehaviour, IPlayerController
         if (alive)
         {
             PlayerMove();
-            // 수정 필요! 이동 중에는 attack x 공격부터 끝내고 수정하기
-            if (Monster.GetComponent<MonsterController>().Current_HP > 0) // 몬스터가 죽지 않았을 때
+            
+            //if (Monster.GetComponent<MonsterController>().Current_HP > 0) // 몬스터가 죽지 않았을 때
+            //{
+                //anim.SetBool("isAttack", true);
+            //}
+
+            if (Input.GetKeyDown(KeyCode.Z))
             {
-                anim.SetBool("isAttack", true);
+                BasicAttack();
+            }
+            
+            else if (Input.GetKeyDown(KeyCode.X))
+            {
+                CriticalAttack();
+            }
+            
+            else if (Input.GetKeyDown(KeyCode.C))
+            {
+                if (!isSkillOnCooldown)
+                {
+                    StartCoroutine(SkillCoroutine());
+                }
+                else
+                {
+                    float remainCooldown = (lastSkillTime + skillCooldown) - Time.time;
+                    Debug.Log($"남은 시간: {remainCooldown}");
+                }
             }
         }
     }
@@ -55,7 +88,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         Vector3 castPos = transform.position;
         castPos.y += 1;
 
-        float UIDist = 0.9f;
+        float UIDist = 0.75f;
         
         if (Physics.Raycast(castPos, -transform.up, out hit, Mathf.Infinity, terrainLayer))
         {
@@ -83,6 +116,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         
         // 애니메이션
         bool isMoving = moveDirection != Vector3.zero;
+        
         
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if (isMoving)
@@ -112,5 +146,34 @@ public class PlayerController : MonoBehaviour, IPlayerController
         {
             monsterController.Current_HP -= CombatPower;
         }
+    }
+
+    // 일반 공격 
+    void BasicAttack()
+    {
+        anim.SetTrigger("AttackTrigger");
+    }
+    
+    // 치명타 공격
+    void CriticalAttack()
+    {
+        anim.SetTrigger("AttackTrigger");
+    }
+    
+    // 스킬 (쿨타임 10초) -> 코루틴으로 변경
+    void Skill()
+    {
+        anim.SetTrigger("AttackTrigger");
+    }
+
+    IEnumerator SkillCoroutine()
+    {
+        anim.SetTrigger("AttackTrigger");
+
+        isSkillOnCooldown = true;
+        lastSkillTime = Time.time;
+        
+        yield return new WaitForSeconds(skillCooldown);
+        isSkillOnCooldown = false;
     }
 }
