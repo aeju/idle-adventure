@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.PackageManager.UI;
 
 
 // 플레이어 프리팹, 스크립트, 저장할 위치 -> 부모 게임 오브젝트
