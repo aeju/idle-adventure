@@ -57,7 +57,15 @@ public class MonsterController : MonoBehaviour
     void MonsterDeath()
     {
         anim.SetTrigger("Dead");
-        Instantiate(dropItem, transform.position, Quaternion.identity);
+        ItemDrop();
+        //Instantiate(dropItem, transform.position, Quaternion.identity);
+    }
+
+    // 지면으로 띄우기 
+    void ItemDrop()
+    {
+        Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, 0);
+        Instantiate(dropItem, dropPosition, Quaternion.identity);
     }
 
     void MonsterHPSlider()
