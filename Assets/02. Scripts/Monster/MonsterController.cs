@@ -28,10 +28,10 @@ public class MonsterController : MonoBehaviour
     public TextMeshProUGUI monsterDamageText;
     
     // 드랍
-    public GameObject expPrefab;
-    public GameObject potionPrefab;
-    public GameObject goldPrefab;
-     
+    public GameObject dropItem;
+
+    private bool isDead = false;
+
     void Start()
     {
         monsterStats = GetComponent<MonsterStats>();
@@ -46,13 +46,18 @@ public class MonsterController : MonoBehaviour
     void Update()
     {
         MonsterHPSlider();
-        if (Current_HP <= 0)
+        if (Current_HP <= 0 && !isDead)
+        {
             MonsterDeath();
+            isDead = true;
+        }
+            
     }
 
     void MonsterDeath()
     {
         anim.SetTrigger("Dead");
+        Instantiate(dropItem, transform.position, Quaternion.identity);
     }
 
     void MonsterHPSlider()
