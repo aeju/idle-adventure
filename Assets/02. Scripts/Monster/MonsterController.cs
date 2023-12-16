@@ -23,7 +23,15 @@ public class MonsterController : MonoBehaviour
 
     // 공격력
     public int Combat;
-     
+    
+    // 데미지
+    public TextMeshProUGUI monsterDamageText;
+    
+    // 드랍
+    public GameObject dropItem;
+
+    private bool isDead = false;
+
     void Start()
     {
         monsterStats = GetComponent<MonsterStats>();
@@ -38,13 +46,26 @@ public class MonsterController : MonoBehaviour
     void Update()
     {
         MonsterHPSlider();
-        if (Current_HP <= 0)
+        if (Current_HP <= 0 && !isDead)
+        {
             MonsterDeath();
+            isDead = true;
+        }
+            
     }
 
     void MonsterDeath()
     {
         anim.SetTrigger("Dead");
+        ItemDrop();
+        //Instantiate(dropItem, transform.position, Quaternion.identity);
+    }
+
+    // 지면으로 띄우기 
+    void ItemDrop()
+    {
+        Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, 0);
+        Instantiate(dropItem, dropPosition, Quaternion.identity);
     }
 
     void MonsterHPSlider()
