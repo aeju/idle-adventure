@@ -38,6 +38,9 @@ public class PlayerController : MonoBehaviour, IPlayerController
     public float lastSkillTime = -5f;
     public bool isSkillOnCooldown = false;
     
+    // 조이스틱
+    public FullScreenJoystick joystick;
+    
     void Start()
     {
         playerStats = GetComponent<PlayerStats>();
@@ -100,29 +103,43 @@ public class PlayerController : MonoBehaviour, IPlayerController
                 transform.position = movePos;
             }
         }
-
-        Vector3 moveVelocity = Vector3.zero;
-        anim.SetBool("isMove", false);
-
-        // 입력값
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-        float verticalInput = Input.GetAxisRaw("Vertical");
-
-        float scaleFactor = 0.1f;
         
-        Vector3 moveDirection = new Vector3(horizontalInput, 0, verticalInput).normalized;
-        //moveVelocity = moveDirection * Movement_Speed * scaleFactor;
-        moveVelocity = moveDirection * playerStats.Movement_Speed * scaleFactor;
-        transform.position += moveVelocity * playerStats.Movement_Speed * Time.deltaTime;
+        anim.SetBool("isMove", false);
+        
+        float horizontalInput = 0f;
+        float verticalInput = 0f;
+        
+        // 키보드 + 조이스틱 입력을 위한 새로운 변수
+        Vector3 combinedInput = Vector3.zero;;
+
+        if (joystick.isDragging) // 조이스틱값 들어올 때만
+        {
+            // 조이스틱 입력값
+            Vector2 joystickInput = joystick.GetInputDirection();
+            combinedInput = new Vector3(joystickInput.x, 0, joystickInput.y);
+            Debug.Log(combinedInput);
+        }
+        else // 키보드
+        {
+            horizontalInput = Input.GetAxisRaw("Horizontal");
+            verticalInput = Input.GetAxisRaw("Vertical");
+            combinedInput = new Vector3(horizontalInput, 0, verticalInput);
+        }
+        
+        Vector3 moveVelocity = combinedInput.normalized * playerStats.Movement_Speed * Time.deltaTime;
+        transform.position += moveVelocity;
         
         // 애니메이션
-        bool isMoving = moveDirection != Vector3.zero;
-        
+        // bool isMoving = moveDirection != Vector3.zero;
+        bool isMoving = joystick.isDragging ? joystick.GetInputDirection() != Vector2.zero : (horizontalInput != 0 || verticalInput != 0);
         
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         if (isMoving)
         {
-            if (horizontalInput > 0)
+            // isDragging : true -> joystick 입력값 / false -> 키보드 입력값
+            float xDirectionInput = joystick.isDragging ? joystick.GetInputDirection().x : horizontalInput; 
+            
+            if (xDirectionInput > 0)
             {
                 transform.localScale = new Vector3(-2f, 2f, -1f);
             }
