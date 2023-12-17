@@ -64,8 +64,23 @@ public class MonsterController : MonoBehaviour
     // 지면으로 띄우기 
     void ItemDrop()
     {
+        //Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, 0);
+        //Instantiate(dropItem, dropPosition, Quaternion.identity);
         Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, 0);
-        Instantiate(dropItem, dropPosition, Quaternion.identity);
+        GameObject droppedItem = Instantiate(dropItem, dropPosition, Quaternion.identity);
+
+        StartCoroutine(MoveItemToPlayer(droppedItem));
+    }
+    
+    IEnumerator MoveItemToPlayer(GameObject item)
+    {
+        float duration = 1.0f; // 이동 
+        Vector3 playerPosition = Player[1].transform.position; // Player-prefab
+
+
+        Tween moveTween = item.transform.DOMove(playerPosition, duration).SetEase(Ease.InOutQuad);
+        yield return moveTween.WaitForCompletion();
+        Destroy(item); // or item.SetActive(false) 
     }
 
     void MonsterHPSlider()
@@ -96,9 +111,9 @@ public class MonsterController : MonoBehaviour
         monsterDamageText.gameObject.SetActive(false);
     }
     
+    // startPosition - peackPoint(대각선 위쪽) - endPoint(대각선 아래)
     public void AnimateDamageText()
     {
-        // startPosition - peackPoint(대각선 위쪽) - endPoint(대각선 아래)
         Vector3 startPosition = monsterDamageText.transform.localPosition;
         Vector3 peakPoint = startPosition + new Vector3(-1, 0.5f, 0);
         Vector3 endPoint = startPosition + new Vector3(-2, -0.5f, 0);
