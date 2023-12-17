@@ -162,11 +162,13 @@ public class PlayerController : MonoBehaviour, IPlayerController
         
         if (monsterController.Current_HP > 0)
         {
-            monsterController.Current_HP -= CombatPower;
-            ShowDamageText(monsterController, CombatPower);
+            monsterController.TakeDamage(CombatPower);
+            //monsterController.Current_HP -= CombatPower;
+            //ShowDamageText(monsterController, CombatPower);
         }
     }
 
+    /*
     void ShowDamageText(MonsterController monsterController, int damage)
     {
         if (monsterController.monsterDamageText != null)
@@ -182,6 +184,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         yield return new WaitForSeconds(1f);
         damageText.gameObject.SetActive(false);
     }
+    */
 
     // 일반 공격 
     void BasicAttack()
