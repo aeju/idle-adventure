@@ -13,6 +13,10 @@ public class UserInfo : MonoBehaviour
     public int currentLevel = 1; // 현재 레벨 
     public int levelUpExp = 10; // 레벨업에 필요한 경험치 
     
+    // 프로필 UI 반영
+    public delegate void LevelUpAction();
+    public static event LevelUpAction OnLevelUp;
+    
     void Awake()
     {
         if (Instance == null)
@@ -45,6 +49,8 @@ public class UserInfo : MonoBehaviour
     // 필요 -> 레벨업 축하 팝업
     private void LevelUp()
     {
-        Debug.Log($"Congratulations! You've reached level {currentLevel}.");
+        Debug.Log($"level : {currentLevel}.");
+        
+        OnLevelUp?.Invoke();
     }
 }

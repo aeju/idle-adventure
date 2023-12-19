@@ -18,12 +18,27 @@ public class ProfileUI : MonoBehaviour
     void Start()
     {
         userInfo = UserInfo.Instance;
+        UserInfo.OnLevelUp += UpdateUI;
         
-        currentExp = userInfo.currentExp;
-        levelUpExp = userInfo.levelUpExp;
-        currentLevel = userInfo.currentLevel;
-        
-        expbar.value = (float)currentExp / levelUpExp;
-        currentLevelText.text = currentLevel.ToString();
+        UpdateUI();
     }
+    
+    void OnDestroy()
+    {
+        UserInfo.OnLevelUp -= UpdateUI;
+    }
+
+    public void UpdateUI()
+    {
+        if (userInfo != null)
+        {
+            currentExp = userInfo.currentExp;
+            levelUpExp = userInfo.levelUpExp;
+            currentLevel = userInfo.currentLevel;
+        
+            expbar.value = (float)currentExp / levelUpExp;
+            currentLevelText.text = currentLevel.ToString();
+        }
+    }
+    
 }
