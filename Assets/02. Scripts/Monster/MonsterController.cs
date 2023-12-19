@@ -34,6 +34,9 @@ public class MonsterController : MonoBehaviour
     // 경험치
     public int expReward = 50;
     protected UserInfoManager userInfo;
+    // 금화
+    public int coinReward = 1000;
+    protected ResourceManager resourceInfo;
     
 
     private bool isDead = false;
@@ -49,6 +52,7 @@ public class MonsterController : MonoBehaviour
         hpbar.value = Current_HP / Max_HP;
         
         userInfo = UserInfoManager.Instance;
+        resourceInfo = ResourceManager.Instance;
     }
     
     void Update()
@@ -61,9 +65,7 @@ public class MonsterController : MonoBehaviour
         }
             
     }
-
-
-
+    
     // 지면으로 띄우기 
     void ItemDrop()
     {
@@ -108,6 +110,12 @@ public class MonsterController : MonoBehaviour
         {
             userInfo.AddExperience(expReward);
             Debug.Log("Add Exp");
+        }
+
+        if (resourceInfo != null)
+        {
+            resourceInfo.AddCoin(coinReward);
+            Debug.Log("Add Coin");
         }
     }
     
