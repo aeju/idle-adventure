@@ -63,7 +63,6 @@ public class MonsterController : MonoBehaviour
             MonsterDeath();
             isDead = true;
         }
-            
     }
     
     // 지면으로 띄우기 

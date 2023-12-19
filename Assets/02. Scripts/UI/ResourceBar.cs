@@ -25,9 +25,18 @@ public class ResourceBar : MonoBehaviour
             return;
         }
         
+        resoureInfo.OnResourcesUpdated += UpdateUI; // 이벤트 구독 
         UpdateUI();
     }
 
+    void OnDestroy()
+    {
+        if (resoureInfo != null)
+        {
+            resoureInfo.OnResourcesUpdated -= UpdateUI; // Unsubscribe to prevent memory leaks
+        }
+    }
+    
     void UpdateUI()
     {
         if (resoureInfo != null)
