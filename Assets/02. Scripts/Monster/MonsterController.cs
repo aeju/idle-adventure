@@ -30,6 +30,11 @@ public class MonsterController : MonoBehaviour
     
     // 드랍
     public GameObject dropItem;
+    
+    // 경험치
+    public int expReward = 50;
+    protected UserInfo userInfo;
+    
 
     private bool isDead = false;
 
@@ -42,6 +47,8 @@ public class MonsterController : MonoBehaviour
         anim = GetComponent<Animator>();
 
         hpbar.value = Current_HP / Max_HP;
+        
+        userInfo = UserInfo.Instance;
     }
     
     void Update()
@@ -55,11 +62,7 @@ public class MonsterController : MonoBehaviour
             
     }
 
-    void MonsterDeath()
-    {
-        anim.SetTrigger("Dead");
-        ItemDrop();
-    }
+
 
     // 지면으로 띄우기 
     void ItemDrop()
@@ -93,6 +96,19 @@ public class MonsterController : MonoBehaviour
         Current_HP -= damage;
         ShowDamageText(damage);
         AnimateDamageText(); // 텍스트 애니메이션
+    }
+    
+    void MonsterDeath()
+    {
+        anim.SetTrigger("Dead");
+        ItemDrop();
+
+        Debug.Log("Monster Death");
+        if (userInfo != null)
+        {
+            userInfo.AddExperience(expReward);
+            Debug.Log("Add Exp");
+        }
     }
     
     private void ShowDamageText(int damage)
