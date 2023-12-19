@@ -33,7 +33,7 @@ public class MonsterController : MonoBehaviour
     
     // 경험치
     public int expReward = 50;
-    protected UserInfo userInfo;
+    protected UserInfoManager userInfo;
     
 
     private bool isDead = false;
@@ -48,7 +48,7 @@ public class MonsterController : MonoBehaviour
 
         hpbar.value = Current_HP / Max_HP;
         
-        userInfo = UserInfo.Instance;
+        userInfo = UserInfoManager.Instance;
     }
     
     void Update()

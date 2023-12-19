@@ -4,10 +4,9 @@ using UnityEngine;
 
 // 현재 경험치, 현재 레벨 
 // 100 이상 획득 -> 레벨업 
-
-public class UserInfo : MonoBehaviour
+public class UserInfoManager : MonoBehaviour
 {
-    public static UserInfo Instance { get; private set; }
+    public static UserInfoManager Instance { get; private set; }
 
     public int currentExp = 0; // 현재 경험치 
     public int currentLevel = 1; // 현재 레벨 

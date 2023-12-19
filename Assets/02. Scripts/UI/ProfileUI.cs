@@ -6,7 +6,7 @@ using TMPro;
 
 public class ProfileUI : MonoBehaviour
 {
-    protected UserInfo userInfo;
+    protected UserInfoManager userInfo;
 
     public int currentExp;
     public int levelUpExp;
@@ -17,15 +17,15 @@ public class ProfileUI : MonoBehaviour
     
     void Start()
     {
-        userInfo = UserInfo.Instance;
-        UserInfo.OnLevelUp += UpdateUI;
+        userInfo = UserInfoManager.Instance;
+        UserInfoManager.OnLevelUp += UpdateUI;
         
         UpdateUI();
     }
     
     void OnDestroy()
     {
-        UserInfo.OnLevelUp -= UpdateUI;
+        UserInfoManager.OnLevelUp -= UpdateUI;
     }
 
     public void UpdateUI()
