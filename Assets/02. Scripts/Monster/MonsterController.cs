@@ -24,9 +24,6 @@ public class MonsterController : MonoBehaviour
     // 공격력
     public int Combat;
     
-    // 데미지
-    //public TextMeshProUGUI monsterDamageText;
-    
     // 드랍
     public GameObject dropItem;
     
@@ -70,8 +67,6 @@ public class MonsterController : MonoBehaviour
     // 지면으로 띄우기 
     void ItemDrop()
     {
-        //Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, 0);
-        //Instantiate(dropItem, dropPosition, Quaternion.identity);
         Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, 0);
         GameObject droppedItem = Instantiate(dropItem, dropPosition, Quaternion.identity);
 
@@ -94,28 +89,15 @@ public class MonsterController : MonoBehaviour
     }
     
     public void TakeDamage(int damage)
-    {
-        Debug.Log($"Monster taking damage: {damage}, Current HP before: {Current_HP}");
-
+    { 
         Current_HP -= damage;
-        Debug.Log($"Current HP after damage: {Current_HP}");
 
         if (hudDamageText != null)
         {
             Vector3 damagePosition = transform.position + new Vector3(-1.0f, 2.0f, 0);
-            
-            //GameObject damageText = Instantiate(hudDamageText);
-            GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity);
+            GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
             damageText.GetComponent<DamageText>().damage = damage;
-            
-            //damageTextAnimator.ShowDamageText(damage, transform.position);
         }
-        else
-        {
-            Debug.LogError("DamageTextAnimator is null.");
-        }
-        //ShowDamageText(damage); // 텍스트 띄우기 
-        //AnimateDamageText(); // 텍스트 애니메이션
     }
     
     void MonsterDeath()
@@ -136,34 +118,4 @@ public class MonsterController : MonoBehaviour
             Debug.Log("Add Coin");
         }
     }
-    
-    /*
-    private void ShowDamageText(int damage)
-    {
-        if (monsterDamageText != null)
-        {
-            monsterDamageText.text = damage.ToString(); 
-            StartCoroutine(DisplayDamage()); // 1초동안 
-        }
-    }
-    
-    private IEnumerator DisplayDamage()
-    {
-        monsterDamageText.gameObject.SetActive(true);
-        yield return new WaitForSeconds(1f);
-        monsterDamageText.gameObject.SetActive(false);
-    }
-    
-    // startPosition - peackPoint(대각선 위쪽) - endPoint(대각선 아래)
-    public void AnimateDamageText()
-    {
-        Vector3 startPosition = monsterDamageText.transform.localPosition;
-        Vector3 peakPoint = startPosition + new Vector3(-1, 0.5f, 0);
-        Vector3 endPoint = startPosition + new Vector3(-2, -0.5f, 0);
-
-        Sequence sequence = DOTween.Sequence();
-        sequence.Append(monsterDamageText.transform.DOLocalMove(peakPoint, 0.3f).SetEase(Ease.OutQuad))
-            .Append(monsterDamageText.transform.DOLocalMove(endPoint, 0.3f).SetEase(Ease.InQuad));
-    }
-    */
 }
