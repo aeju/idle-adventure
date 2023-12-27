@@ -7,16 +7,21 @@ using UnityEngine.UI;
 
 public class CurrentTime : MonoBehaviour
 {
-    public TextMeshProUGUI timeText;
+    public TextMeshProUGUI timeTextHourMin; // HH:mm (상단바) 
+    public TextMeshProUGUI timeTextHourMinSec; // HH:mm:ss 
     
-    void Start()
-    {
-        
-    }
-
     void Update()
     {
         DateTime currentTime = DateTime.Now; //using System; 필요
-        timeText.text = currentTime.ToString("HH:mm:ss");
+        
+        if (timeTextHourMinSec != null) // HH:mm:ss
+        {
+            timeTextHourMinSec.text = currentTime.ToString("HH:mm:ss");
+        }
+
+        if (timeTextHourMin != null) // HH:mm
+        {
+            timeTextHourMin.text = currentTime.ToString("HH:mm");
+        }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using Spine;
 using Spine.Unity;
 using DG.Tweening;
@@ -25,9 +24,6 @@ public class MonsterController : MonoBehaviour
     // 공격력
     public int Combat;
     
-    // 데미지
-    public TextMeshProUGUI monsterDamageText;
-    
     // 드랍
     public GameObject dropItem;
     
@@ -37,10 +33,12 @@ public class MonsterController : MonoBehaviour
     // 금화
     public int coinReward = 1000;
     protected ResourceManager resourceInfo;
-    
 
     private bool isDead = false;
 
+    private DamageTextAnimator damageTextAnimator;
+    public GameObject hudDamageText;
+    
     void Start()
     {
         monsterStats = GetComponent<MonsterStats>();
@@ -53,6 +51,7 @@ public class MonsterController : MonoBehaviour
         
         userInfo = UserInfoManager.Instance;
         resourceInfo = ResourceManager.Instance;
+        damageTextAnimator = FindObjectOfType<DamageTextAnimator>();
     }
     
     void Update()
@@ -68,8 +67,6 @@ public class MonsterController : MonoBehaviour
     // 지면으로 띄우기 
     void ItemDrop()
     {
-        //Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, 0);
-        //Instantiate(dropItem, dropPosition, Quaternion.identity);
         Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, 0);
         GameObject droppedItem = Instantiate(dropItem, dropPosition, Quaternion.identity);
 
@@ -80,11 +77,10 @@ public class MonsterController : MonoBehaviour
     {
         float duration = 1.0f; // 이동 
         Vector3 playerPosition = Player[1].transform.position; // Player-prefab
-
-
+        
         Tween moveTween = item.transform.DOMove(playerPosition, duration).SetEase(Ease.InOutQuad);
         yield return moveTween.WaitForCompletion();
-        Destroy(item); // or item.SetActive(false) 
+        Destroy(item); 
     }
 
     void MonsterHPSlider()
@@ -93,10 +89,15 @@ public class MonsterController : MonoBehaviour
     }
     
     public void TakeDamage(int damage)
-    {
+    { 
         Current_HP -= damage;
-        ShowDamageText(damage);
-        AnimateDamageText(); // 텍스트 애니메이션
+
+        if (hudDamageText != null)
+        {
+            Vector3 damagePosition = transform.position + new Vector3(-1.0f, 2.0f, 0);
+            GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
+            damageText.GetComponent<DamageText>().damage = damage;
+        }
     }
     
     void MonsterDeath()
@@ -116,33 +117,5 @@ public class MonsterController : MonoBehaviour
             resourceInfo.AddCoin(coinReward);
             Debug.Log("Add Coin");
         }
-    }
-    
-    private void ShowDamageText(int damage)
-    {
-        if (monsterDamageText != null)
-        {
-            monsterDamageText.text = damage.ToString(); 
-            StartCoroutine(DisplayDamage()); // 1초동안 
-        }
-    }
-    
-    private IEnumerator DisplayDamage()
-    {
-        monsterDamageText.gameObject.SetActive(true);
-        yield return new WaitForSeconds(1f);
-        monsterDamageText.gameObject.SetActive(false);
-    }
-    
-    // startPosition - peackPoint(대각선 위쪽) - endPoint(대각선 아래)
-    public void AnimateDamageText()
-    {
-        Vector3 startPosition = monsterDamageText.transform.localPosition;
-        Vector3 peakPoint = startPosition + new Vector3(-1, 0.5f, 0);
-        Vector3 endPoint = startPosition + new Vector3(-2, -0.5f, 0);
-
-        Sequence sequence = DOTween.Sequence();
-        sequence.Append(monsterDamageText.transform.DOLocalMove(peakPoint, 0.3f).SetEase(Ease.OutQuad))
-            .Append(monsterDamageText.transform.DOLocalMove(endPoint, 0.3f).SetEase(Ease.InQuad));
     }
 }

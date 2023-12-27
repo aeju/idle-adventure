@@ -7,8 +7,8 @@ using UnityEngine.UI;
 // 터치 : AutoOff -> AutoOn:회전 -> AutoOff
 public class AutoBtn : MonoBehaviour
 {
-    public GameObject AutoOn; // Assign in inspector
-    public GameObject AutoOff; // Assign in inspector
+    public GameObject AutoOn; 
+    public GameObject AutoOff; 
 
     // 현재 회전 상태
     private BoolReactiveProperty isRotating = new BoolReactiveProperty(false); // 상태 변경 -> 모든 구독자에게 알림 
@@ -28,7 +28,7 @@ public class AutoBtn : MonoBehaviour
         
         // rotation tween 초기화
         RectTransform rectTransform = GetComponent<RectTransform>();
-        rotationTween = rectTransform.DORotate(new Vector3(0, 0, 360), 2, RotateMode.FastBeyond360) // z축 360도 회전, 지속 시간 2초, 360도 이상회전 = 계속 회전
+        rotationTween = rectTransform.DORotate(new Vector3(0, 0, 360), 2, RotateMode.FastBeyond360) // z축 360도 회전, 지속 시간 2초, 360도 이상 회전 = 계속 회전
             .SetEase(Ease.Linear) // 속도 : 일정
             .SetLoops(-1, LoopType.Incremental) // 무한 반복
             .Pause(); // 시작 : 실행 x
