@@ -24,7 +24,7 @@ public class ResourceBar : MonoBehaviour
         
         if (resoureInfo == null)
         {
-            Debug.LogError("ResourceManager instance is null!");
+            Debug.LogError("ResourceManager null");
             return;
         }
         
@@ -36,7 +36,7 @@ public class ResourceBar : MonoBehaviour
     {
         if (resoureInfo != null)
         {
-            resoureInfo.OnResourcesUpdated -= UpdateUI; // Unsubscribe to prevent memory leaks
+            resoureInfo.OnResourcesUpdated -= UpdateUI; // 구독 해제
         }
     }
     

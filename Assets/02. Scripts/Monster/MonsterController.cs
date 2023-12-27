@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using Spine;
 using Spine.Unity;
 using DG.Tweening;
@@ -26,7 +25,7 @@ public class MonsterController : MonoBehaviour
     public int Combat;
     
     // 데미지
-    public TextMeshProUGUI monsterDamageText;
+    //public TextMeshProUGUI monsterDamageText;
     
     // 드랍
     public GameObject dropItem;
@@ -37,10 +36,12 @@ public class MonsterController : MonoBehaviour
     // 금화
     public int coinReward = 1000;
     protected ResourceManager resourceInfo;
-    
 
     private bool isDead = false;
 
+    private DamageTextAnimator damageTextAnimator;
+    public GameObject hudDamageText;
+    
     void Start()
     {
         monsterStats = GetComponent<MonsterStats>();
@@ -53,6 +54,7 @@ public class MonsterController : MonoBehaviour
         
         userInfo = UserInfoManager.Instance;
         resourceInfo = ResourceManager.Instance;
+        damageTextAnimator = FindObjectOfType<DamageTextAnimator>();
     }
     
     void Update()
@@ -94,9 +96,24 @@ public class MonsterController : MonoBehaviour
     
     public void TakeDamage(int damage)
     {
+        Debug.Log($"Monster taking damage: {damage}, Current HP before: {Current_HP}");
+
         Current_HP -= damage;
-        ShowDamageText(damage);
-        AnimateDamageText(); // 텍스트 애니메이션
+        Debug.Log($"Current HP after damage: {Current_HP}");
+
+        if (hudDamageText != null)
+        {
+            GameObject damageText = Instantiate(hudDamageText);
+            damageText.GetComponent<DamageText>().damage = damage;
+            
+            //damageTextAnimator.ShowDamageText(damage, transform.position);
+        }
+        else
+        {
+            Debug.LogError("DamageTextAnimator is null.");
+        }
+        //ShowDamageText(damage); // 텍스트 띄우기 
+        //AnimateDamageText(); // 텍스트 애니메이션
     }
     
     void MonsterDeath()
@@ -118,6 +135,7 @@ public class MonsterController : MonoBehaviour
         }
     }
     
+    /*
     private void ShowDamageText(int damage)
     {
         if (monsterDamageText != null)
@@ -145,4 +163,5 @@ public class MonsterController : MonoBehaviour
         sequence.Append(monsterDamageText.transform.DOLocalMove(peakPoint, 0.3f).SetEase(Ease.OutQuad))
             .Append(monsterDamageText.transform.DOLocalMove(endPoint, 0.3f).SetEase(Ease.InQuad));
     }
+    */
 }

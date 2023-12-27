@@ -14,9 +14,9 @@ public class Ponpo : MonoBehaviour, IPlayerController
     //public int Combat; // 전투력
 
     // 화면 출력
-    public TextMeshPro _HP;
+    //public TextMeshPro _HP;
 
-    public TextMeshPro _cur_HP;
+    //public TextMeshPro _cur_HP;
 
     // 상태 (생존)
     public bool alive = true;

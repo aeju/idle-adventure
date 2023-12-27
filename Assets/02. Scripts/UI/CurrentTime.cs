@@ -14,12 +14,12 @@ public class CurrentTime : MonoBehaviour
     {
         DateTime currentTime = DateTime.Now; //using System; 필요
         
-        if (timeTextHourMinSec != null)
+        if (timeTextHourMinSec != null) // HH:mm:ss
         {
             timeTextHourMinSec.text = currentTime.ToString("HH:mm:ss");
         }
 
-        if (timeTextHourMin != null)
+        if (timeTextHourMin != null) // HH:mm
         {
             timeTextHourMin.text = currentTime.ToString("HH:mm");
         }

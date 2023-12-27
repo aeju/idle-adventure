@@ -159,13 +159,36 @@ public class PlayerController : MonoBehaviour, IPlayerController
     void PlayerAttack()
     {
         MonsterController monsterController = Monster.GetComponent<MonsterController>();
-        
+        if (monsterController == null)
+        {
+            Debug.LogError("MonsterController is null.");
+            return;
+        }
+
+        Debug.Log("Monster HP before if: " + monsterController.Current_HP);
+
         if (monsterController.Current_HP > 0)
         {
             monsterController.TakeDamage(CombatPower);
+        }
+        else
+        {
+            Debug.Log("Monster is already dead or HP is zero.");
+        }
+        /*
+    
+        MonsterController monsterController = Monster.GetComponent<MonsterController>();
+        Debug.Log("PlayerAttack called");
+        Debug.Log("Monster HP before if:" + monsterController.Current_HP);
+        
+        if (monsterController != null && monsterController.Current_HP > 0)
+        {
+            monsterController.TakeDamage(CombatPower);
+            Debug.Log("Monster HP inside if: " + monsterController.Current_HP);
             //monsterController.Current_HP -= CombatPower;
             //ShowDamageText(monsterController, CombatPower);
         }
+        */
     }
 
     /*
