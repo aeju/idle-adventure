@@ -13,7 +13,7 @@ public class CloudScroller : MonoBehaviour
     private float originalLastPositionX; // 마지막 레이어의 원래 x좌표
     public float layerSpacing = 38.0f; // 레이어 간 간격 (레이어 너비)
     
-    public float verticalAmplitude = 0.01f; // 수직 이동의 진폭
+    public float verticalAmplitude = 0.05f; // 수직 이동의 진폭
     public float verticalFrequency = 1.0f; // 수직 이동의 주파수
 
     void Start()
