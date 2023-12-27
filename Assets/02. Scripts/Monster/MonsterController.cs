@@ -82,11 +82,10 @@ public class MonsterController : MonoBehaviour
     {
         float duration = 1.0f; // 이동 
         Vector3 playerPosition = Player[1].transform.position; // Player-prefab
-
-
+        
         Tween moveTween = item.transform.DOMove(playerPosition, duration).SetEase(Ease.InOutQuad);
         yield return moveTween.WaitForCompletion();
-        Destroy(item); // or item.SetActive(false) 
+        Destroy(item); 
     }
 
     void MonsterHPSlider()
@@ -103,7 +102,10 @@ public class MonsterController : MonoBehaviour
 
         if (hudDamageText != null)
         {
-            GameObject damageText = Instantiate(hudDamageText);
+            Vector3 damagePosition = transform.position + new Vector3(-1.0f, 2.0f, 0);
+            
+            //GameObject damageText = Instantiate(hudDamageText);
+            GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity);
             damageText.GetComponent<DamageText>().damage = damage;
             
             //damageTextAnimator.ShowDamageText(damage, transform.position);
