@@ -31,7 +31,12 @@ public class PlayerController : MonoBehaviour, IPlayerController
     // 공격
     //public GameObject[] Monster;
     public GameObject Monster;
+    private GameObject currentTarget;
     public int CombatPower = 10; // 전투력
+    
+    // 몬스터 탐지
+    public float detectionRadius = 10f;
+    public LayerMask monsterLayer;
     
     // 쿨타임
     public float skillCooldown = 5f;
@@ -55,11 +60,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
         {
             PlayerMove();
             
-            //if (Monster.GetComponent<MonsterController>().Current_HP > 0) // 몬스터가 죽지 않았을 때
-            //{
-                //anim.SetBool("isAttack", true);
-            //}
-
             if (Input.GetKeyDown(KeyCode.Z))
             {
                 BasicAttack();
@@ -151,6 +151,37 @@ public class PlayerController : MonoBehaviour, IPlayerController
         }
     }
     
+    void DetectAndAttackMonsters()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, monsterLayer);
+        GameObject nearestMonster = FindNearestMonster(hitColliders);
+        if (nearestMonster != null && nearestMonster != currentTarget)
+        {
+            currentTarget = nearestMonster;
+            PlayerAttack(); // Call your attack method
+        }
+    }
+    
+    GameObject FindNearestMonster(Collider[] monsters)
+    {
+        GameObject nearestMonster = null;
+        float minDistance = Mathf.Infinity;
+        Vector3 currentPosition = transform.position;
+
+        foreach (var collider in monsters)
+        {
+            GameObject monster = collider.gameObject;
+            float distance = Vector3.Distance(monster.transform.position, currentPosition);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearestMonster = monster;
+            }
+        }
+
+        return nearestMonster;
+    }
+    
     void PlayerAutoMove()
     {
         
@@ -158,18 +189,30 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
     void PlayerAttack()
     {
-        MonsterController monsterController = Monster.GetComponent<MonsterController>();
+        if (currentTarget != null)
+        {
+            // Implement your attack logic here
+            MonsterController monsterController = currentTarget.GetComponent<MonsterController>();
+            if (monsterController != null && monsterController.Current_HP > 0)
+            {
+                anim.SetTrigger("AttackTrigger");
+                monsterController.TakeDamage(CombatPower);
+            }
+        }
+        
+        /*
+        //MonsterController monsterController = Monster.GetComponent<MonsterController>();
         if (monsterController == null)
         {
             Debug.LogError("MonsterController is null.");
             return;
         }
 
-        Debug.Log("Monster HP before if: " + monsterController.Current_HP);
+        //Debug.Log("Monster HP before if: " + monsterController.Current_HP);
 
         if (monsterController.Current_HP > 0)
         {
-            monsterController.TakeDamage(CombatPower);
+            
         }
         else
         {
@@ -256,5 +299,11 @@ public class PlayerController : MonoBehaviour, IPlayerController
         {
             cooldownSlider.value = cooldownSlider.maxValue;
         }
+    }
+    
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
 }

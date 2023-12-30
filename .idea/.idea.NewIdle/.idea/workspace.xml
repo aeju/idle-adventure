@@ -2,13 +2,32 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="41e241c6-fa1c-492e-85ce-519788a8e96d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NewIdle/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NewIdle/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/02. Scripts/UI/ResourceBar.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02. Scripts/UI/ResourceBar.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/01. Scenes/AttackScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/01. Scenes/AttackScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/02. Scripts/Monster/MonsterController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02. Scripts/Monster/MonsterController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/02. Scripts/Player/Characters/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02. Scripts/Player/Characters/Player/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/02. Scripts/Player/PlayerControllers.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/03. Prefabs/Item/Coin.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/03. Prefabs/Item/Coin.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/03. Prefabs/Item/DropItem.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/03. Prefabs/Item/DropItem.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/03. Prefabs/Monsters/[Monster]Slime.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/03. Prefabs/Monsters/[Monster]Slime.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/03. Prefabs/Monsters/[Monster]Slime.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/03. Prefabs/Monsters/[Monster]Slime.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/04. Images/5) Object/Buildings/Castle.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/04. Images/5) Object/Buildings/Castle/Castle001.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/04. Images/5) Object/Buildings/Castle/Castle001.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/04. Images/5) Object/Buildings/Castle/Castle002.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/04. Images/5) Object/Buildings/Castle/Castle002.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/02. Scripts/Manager/GameManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Editor/MapEditorInspector.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Editor/MapEditorWindow.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -45,6 +64,9 @@
       <workItem from="1703173147771" duration="5336000" />
       <workItem from="1703332903851" duration="2219000" />
       <workItem from="1703872617051" duration="1038000" />
+      <workItem from="1703910946358" duration="6730000" />
+      <workItem from="1703942100125" duration="1197000" />
+      <workItem from="1703943610036" duration="723000" />
     </task>
     <servers />
   </component>
@@ -53,5 +75,24 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/02. Scripts/Monster/MonsterPool.cs</url>
+          <line>73</line>
+          <properties documentPath="$PROJECT_DIR$/Assets/02. Scripts/Monster/MonsterPool.cs" initialLine="51" containingFunctionPresentation="method 'RebornMonster'">
+            <startOffsets>
+              <option value="1965" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1989" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

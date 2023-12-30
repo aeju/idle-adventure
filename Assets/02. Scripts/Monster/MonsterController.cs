@@ -10,6 +10,8 @@ using DG.Tweening;
 public class MonsterController : MonoBehaviour
 {
     public static MonsterStats monsterStats;
+    
+    public MonsterPool monsterPool;
 
     public GameObject[] Player;
 
@@ -36,7 +38,7 @@ public class MonsterController : MonoBehaviour
 
     private bool isDead = false;
 
-    private DamageTextAnimator damageTextAnimator;
+    //private DamageTextAnimator damageTextAnimator;
     public GameObject hudDamageText;
     
     void Start()
@@ -51,7 +53,7 @@ public class MonsterController : MonoBehaviour
         
         userInfo = UserInfoManager.Instance;
         resourceInfo = ResourceManager.Instance;
-        damageTextAnimator = FindObjectOfType<DamageTextAnimator>();
+        //damageTextAnimator = FindObjectOfType<DamageTextAnimator>();
     }
     
     void Update()
@@ -89,7 +91,7 @@ public class MonsterController : MonoBehaviour
     }
     
     public void TakeDamage(int damage)
-    { 
+    {
         Current_HP -= damage;
 
         if (hudDamageText != null)
@@ -105,6 +107,10 @@ public class MonsterController : MonoBehaviour
         anim.SetTrigger("Dead");
         ItemDrop();
 
+        StartCoroutine(DeactivateAfterAnimation());
+
+        if (isDead) return;
+        
         Debug.Log("Monster Death");
         if (userInfo != null)
         {
@@ -117,5 +123,14 @@ public class MonsterController : MonoBehaviour
             resourceInfo.AddCoin(coinReward);
             Debug.Log("Add Coin");
         }
+    }
+    
+    IEnumerator DeactivateAfterAnimation()
+    {
+        yield return new WaitForSeconds(1); // Wait for death animation to complete
+        gameObject.SetActive(false); // Deactivate the monster
+        //monsterPool.AddToRespawnQueue(gameObject);
+        //monsterPool.ReturnMonster(gameObject); // Return to the pool, Notify the MonsterPool to handle the monster
+        MonsterPool.Instance.ReturnMonster(gameObject); // Notify the MonsterPool to handle the monster
     }
 }
