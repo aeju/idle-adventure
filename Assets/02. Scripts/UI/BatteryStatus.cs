@@ -10,61 +10,45 @@ using TMPro;
 public class BatteryStatus : MonoBehaviour
 {
     public Image batteryImage;
-    public Sprite[] batterySprites;
-    public Sprite chargingSprite;
+    public Sprite[] batterySprites; // 충전 중x, 스프라이트 배열 (~10, ~25, ~50, ~75, ~100)
+    public Sprite chargingSprite; // 충전 중 (charging)
     
-    // 상태가 변경될 때만 업데이트 
-    private int lastBatteryPercentage = -1;
-    private UnityEngine.BatteryStatus lastBatteryStatus = UnityEngine.BatteryStatus.Unknown;
-
-    void Update()
+    // BatteryManager 이벤트에 메서드 등록
+    private void OnEnable()
     {
-        CheckBatteryStatus();
+        BatteryManager.Instance.OnBatteryStatusChanged += UpdateBatteryImage;
     }
 
-    void CheckBatteryStatus()
+    private void OnDisable()
     {
-        float batteryValue = SystemInfo.batteryLevel; // Return 0 ~ 1
-        int batteryPercentage = (int)(batteryValue * 100);
-        UnityEngine.BatteryStatus batteryStatus = SystemInfo.batteryStatus;
-        
-        // 상태가 변경되었는지 확인하고 Unknown 상태를 처리
-        if (batteryStatus == UnityEngine.BatteryStatus.Unknown)
+        BatteryManager.Instance.OnBatteryStatusChanged -= UpdateBatteryImage;
+    }
+
+    private void UpdateBatteryImage(int batteryPercentage, UnityEngine.BatteryStatus batteryStatus)
+    {
+        // 배터리 상태 Unknown : 이미지 비활성화 
+        if (batteryStatus == UnityEngine.BatteryStatus.Unknown) 
         {
-            batteryImage.enabled = false; // 배터리 이미지 비활성화
+            batteryImage.enabled = false;
+            return;
         }
-        else
+        else // 그 외 : 이미지 활성화 (Discharging, Notcharging / Charging, Full)
         {
-            batteryImage.enabled = true; // 배터리 이미지 활성화
+            batteryImage.enabled = true;
 
-            // 상태가 변경되었는지 확인
-            if (batteryPercentage != lastBatteryPercentage || batteryStatus != lastBatteryStatus)
+            if (batteryStatus == UnityEngine.BatteryStatus.Charging || batteryStatus == UnityEngine.BatteryStatus.Full)
             {
-                lastBatteryPercentage = batteryPercentage;
-                lastBatteryStatus = batteryStatus;
-
-                // Charging(연결 o, 충전 o)이거나 Full(연결 o, 가득차서 충전 x)
-                if (batteryStatus == UnityEngine.BatteryStatus.Charging || batteryStatus == UnityEngine.BatteryStatus.Full)
-                {
-                    SetBatterySprite(chargingSprite);
-                }
-                else
-                {
-                    SetBatterySprite(batterySprites[GetBatterySpriteIndex(batteryPercentage)]);
-                }
+                batteryImage.sprite = chargingSprite;
+            }
+            else
+            {
+                batteryImage.sprite = batterySprites[GetBatterySpriteIndex(batteryPercentage)];
             }
         }
     }
-    
-    void SetBatterySprite(Sprite sprite)
-    {
-        if (batteryImage != null  && batteryImage.sprite != sprite)
-        {
-            batteryImage.sprite = sprite;
-        }
-    }
 
-    int GetBatterySpriteIndex(int batteryPercentage)
+    // 배터리 퍼센트에 따라 스프라이트 인덱스 반환 
+    private int GetBatterySpriteIndex(int batteryPercentage)
     {
         if (batteryPercentage <= 10)
             return 0;
