@@ -9,25 +9,26 @@ public class BatteryText : MonoBehaviour
 {
     public TextMeshProUGUI batteryText;
 
-    private int lastBatteryPercentage = -1;
-
-    void Update()
+    // BatteryManager 이벤트에 메서드 등록
+    private void OnEnable()
     {
-        UpdateBatteryPercentage();
+        BatteryManager.Instance.OnBatteryStatusChanged += UpdateBatteryText;
     }
 
-    void UpdateBatteryPercentage()
+    private void OnDisable()
     {
-        float batteryValue = SystemInfo.batteryLevel; // Return 0 ~ 1
-        int batteryPercentage = (int)(batteryValue * 100);
+        BatteryManager.Instance.OnBatteryStatusChanged -= UpdateBatteryText;
+    }
 
-        if (batteryPercentage != lastBatteryPercentage) // %값 변화가 있을 때만 텍스트 업데이트 
+    private void UpdateBatteryText(int batteryPercentage, UnityEngine.BatteryStatus batteryStatus)
+    {
+        if (batteryStatus == UnityEngine.BatteryStatus.Unknown)
         {
-            if (batteryText != null)
-            {
-                batteryText.text = batteryPercentage + "%"; // 업데이트 
-            }
-            lastBatteryPercentage = batteryPercentage; // 현재 퍼센트 저장 
+            batteryText.text = "배터리 상태 알 수 없음";
+        }
+        else
+        {
+            batteryText.text = batteryPercentage + "%";
         }
     }
 }
