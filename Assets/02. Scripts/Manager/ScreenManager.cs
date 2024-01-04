@@ -25,7 +25,6 @@ public class ScreenManager : MonoBehaviour
     {
         //currentTime = 0;
         // 사용자의 입력이 감지되면 타이머를 초기화
-        //if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1))
         if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
             currentTime = 0;

@@ -23,7 +23,7 @@ public class CountTime : MonoBehaviour
     
     public void IdleModeOn()
     {
-        Debug.Log("[count Time]Idle Mode On");
+        Debug.Log("Idle Mode On");
         isBlackScreenActive = true;
         blackScreenTime = 0; // 타이머 초기화 
     }
