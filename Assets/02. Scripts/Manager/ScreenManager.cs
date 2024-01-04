@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// On: 정해진 시간 동안 입력 x, Idle Mode Btn
+// Off: 조이스틱 입력 최댓값
 public class ScreenManager : MonoBehaviour
 {
     public float idleTime = 60.0f; // 방치 시간 : 1분 
     private float currentTime;
     
-    //public Canvas blackScreenCanvas; // idle Mode(검은 화면) 표시 Canvas
     public Canvas idleModeCanvas; // idle Mode(검은 화면) 표시 Canvas
     private CountTime countTime;
     
@@ -45,6 +46,17 @@ public class ScreenManager : MonoBehaviour
                 idleModeCanvas.enabled = true; // idle Mode 잠금화면 활성화
                 countTime.IdleModeOn();
             }
+        }
+    }
+    
+    // IdleModeBtn에서 호출
+    public void ActivateIdleModeScreen()
+    {
+        if (!idleModeCanvas.enabled)
+        {
+            Debug.Log("Idle Mode Screen On (Button)");
+            idleModeCanvas.enabled = true;
+            countTime.IdleModeOn();
         }
     }
 }
