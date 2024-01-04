@@ -16,6 +16,7 @@ public class IdleModeBtn : MonoBehaviour
         {
             idleModeButton.OnClickAsObservable().Subscribe(_ => 
                 {
+                    Debug.Log("Click Btn");
                     screenManager.ActivateIdleModeScreen();
                 })
                 .AddTo(this);
