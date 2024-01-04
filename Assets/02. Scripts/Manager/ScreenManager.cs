@@ -8,12 +8,13 @@ public class ScreenManager : MonoBehaviour
     public float idleTime = 60.0f; // 방치 시간 : 1분 
     private float currentTime;
     
-    public Canvas blackScreenCanvas; // idle Mode(검은 화면) 표시 Canvas
+    //public Canvas blackScreenCanvas; // idle Mode(검은 화면) 표시 Canvas
+    public Canvas idleModeCanvas; // idle Mode(검은 화면) 표시 Canvas
     private CountTime countTime;
     
     private void Start()
     {
-        blackScreenCanvas.enabled = false; 
+        idleModeCanvas.enabled = false; 
         currentTime = 0; // 타이머 초기화
 
         countTime = gameObject.AddComponent<CountTime>();
@@ -26,9 +27,9 @@ public class ScreenManager : MonoBehaviour
         if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
             currentTime = 0;
-            if (blackScreenCanvas.enabled)
+            if (idleModeCanvas.enabled)
             {
-                blackScreenCanvas.enabled = false; 
+                idleModeCanvas.enabled = false; 
                 countTime.IdleModeOff();
             }
             
@@ -38,10 +39,10 @@ public class ScreenManager : MonoBehaviour
             currentTime += Time.deltaTime; // 입력이 없을 경우 타이머 증가
 
             // 지정된 방치 시간이 초과되면 검은 화면을 활성화
-            if (currentTime >= idleTime && !blackScreenCanvas.enabled)
+            if (currentTime >= idleTime && !idleModeCanvas.enabled)
             {
-                Debug.Log("Activating Black Screen");
-                blackScreenCanvas.enabled = true; // idle Mode 잠금화면 활성화
+                Debug.Log("Idle Mode Screen On");
+                idleModeCanvas.enabled = true; // idle Mode 잠금화면 활성화
                 countTime.IdleModeOn();
             }
         }
