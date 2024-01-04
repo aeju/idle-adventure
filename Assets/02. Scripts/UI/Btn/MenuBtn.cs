@@ -23,12 +23,12 @@ public class MenuBtn : MonoBehaviour
         
         menuBtn.OnClickAsObservable().Subscribe(_ =>
         {
-            menuPanel.SetActive(true);
+            ToggleMenuPanel();
         }).AddTo(this);
         
         closeBtn.OnClickAsObservable().Subscribe(_ =>
         {
-            menuPanel.SetActive(false);
+            ToggleMenuPanel();
         }).AddTo(this);
         
         // 터치 감지 
@@ -45,8 +45,13 @@ public class MenuBtn : MonoBehaviour
                         Input.mousePosition, // 터치 현재 위치
                         Camera.main)) // 스크린 좌표 -> 월드 좌표로 전환 
                 {
-                    menuPanel.SetActive(false); // 비활성화 
+                    ToggleMenuPanel();
                 }
             }).AddTo(this);
+    }
+    
+    public void ToggleMenuPanel() // SettingBtn에서 호출
+    {
+        menuPanel.SetActive(!menuPanel.activeSelf); //상태 전환 
     }
 }
