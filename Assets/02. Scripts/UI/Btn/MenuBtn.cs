@@ -16,10 +16,12 @@ public class MenuBtn : MonoBehaviour
     public Button closeBtn; // 클로즈 버튼 
     
     public GameObject menuPanel; // 메뉴 패널 
+    public GameObject settingPanel; // 세팅 패널
     
     void Start()
     {
         menuPanel.SetActive(false);
+        settingPanel.SetActive(false);
         
         menuBtn.OnClickAsObservable().Subscribe(_ =>
         {
