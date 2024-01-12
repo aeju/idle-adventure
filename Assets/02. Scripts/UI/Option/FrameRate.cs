@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine.UI;
 
 // 하나의 토글 on -> 나머지 : off
 // 프레임 : 30, 45, 60
+// 변경 -> 상단바에도 반영
 public class FrameRate : MonoBehaviour
 {
     public ToggleGroup toggleGroup;
@@ -12,6 +14,9 @@ public class FrameRate : MonoBehaviour
     public Toggle toggle30;
     public Toggle toggle45;
     public Toggle toggle60;
+    
+    // 변경 이벤트 
+    public static event Action<int> OnFrameRateChanged;
 
     private void Start()
     {
@@ -49,7 +54,9 @@ public class FrameRate : MonoBehaviour
         Application.targetFrameRate = frameRate; // 프레임 레이트 설정
         PlayerPrefs.SetInt("FrameRate", frameRate); // 프레임 레이트 저장
         PlayerPrefs.Save(); // 변경사항 저장
-        Debug.Log("Current FPS : " + Application.targetFrameRate);
+        
+        // 프레임 레이트 변경 이벤트 호출
+        OnFrameRateChanged?.Invoke(frameRate);
     }
 
     // 시작 시 저장된 프레임 레이트에 따라 토글 상태 초기화 
