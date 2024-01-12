@@ -16,12 +16,18 @@ public class BatteryStatus : MonoBehaviour
     // BatteryManager 이벤트에 메서드 등록
     private void OnEnable()
     {
-        BatteryManager.Instance.OnBatteryStatusChanged += UpdateBatteryImage;
+        if (BatteryManager.Instance != null)
+        {
+            BatteryManager.Instance.OnBatteryStatusChanged += UpdateBatteryImage;
+        }
     }
 
     private void OnDisable()
     {
-        BatteryManager.Instance.OnBatteryStatusChanged -= UpdateBatteryImage;
+        if (BatteryManager.Instance != null)
+        {
+            BatteryManager.Instance.OnBatteryStatusChanged -= UpdateBatteryImage;
+        }
     }
 
     private void UpdateBatteryImage(int batteryPercentage, UnityEngine.BatteryStatus batteryStatus)
