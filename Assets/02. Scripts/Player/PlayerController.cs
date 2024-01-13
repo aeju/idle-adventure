@@ -41,6 +41,9 @@ public class PlayerController : MonoBehaviour, IPlayerController
     // 조이스틱
     public FullScreenJoystick joystick;
     
+    // 체력
+    public int currentHP = 100;
+    
     void Start()
     {
         playerStats = GetComponent<PlayerStats>();
@@ -55,11 +58,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
         {
             PlayerMove();
             
-            //if (Monster.GetComponent<MonsterController>().Current_HP > 0) // 몬스터가 죽지 않았을 때
-            //{
-                //anim.SetBool("isAttack", true);
-            //}
-
             if (Input.GetKeyDown(KeyCode.Z))
             {
                 BasicAttack();
@@ -190,25 +188,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         }
         */
     }
-
-    /*
-    void ShowDamageText(MonsterController monsterController, int damage)
-    {
-        if (monsterController.monsterDamageText != null)
-        {
-            monsterController.monsterDamageText.text = damage.ToString(); 
-            StartCoroutine(DisplayDamage(monsterController.monsterDamageText));
-        }
-    }
-
-    IEnumerator DisplayDamage(TextMeshProUGUI damageText)
-    {
-        damageText.gameObject.SetActive(true);
-        yield return new WaitForSeconds(1f);
-        damageText.gameObject.SetActive(false);
-    }
-    */
-
+    
     // 일반 공격 
     void BasicAttack()
     {
@@ -256,5 +236,12 @@ public class PlayerController : MonoBehaviour, IPlayerController
         {
             cooldownSlider.value = cooldownSlider.maxValue;
         }
+    }
+    
+    // 피격 함수
+    public void PlayerDamaged(int damage)
+    {
+        // 에너미의 공격력만큼 플레이어의 체력 깎기
+        currentHP -= damage;
     }
 }

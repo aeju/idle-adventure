@@ -36,6 +36,9 @@ public class EnemyFSM : MonoBehaviour
     // 일정한 시간 간격으로 공격 -> 누적 시간, 공격 딜레이 시간
     private float currentTime = 0; // 누적 시간
     private float attackDelay = 2f; // 공격 딜레이 시간
+    
+    // 공격력
+    public int attackPower = 3;
 
     void Start()
     {
@@ -118,7 +121,8 @@ public class EnemyFSM : MonoBehaviour
             currentTime += Time.deltaTime; // 경과 시간 누적
             if (currentTime > attackDelay) // 경과 시간 > 공격 딜레이 시간
             {
-                print("공격");
+                player.GetComponent<PlayerController>().PlayerDamaged(attackPower);
+                print("공격, PlayerHP: " + player.GetComponent<PlayerController>().currentHP);
                 currentTime = 0; // 경과 시간 초기화
             }
         }
