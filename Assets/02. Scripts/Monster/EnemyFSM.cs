@@ -32,17 +32,18 @@ public class EnemyFSM : MonoBehaviour
     
     // 플레이어 위치
     public Transform player;
-    //public GameObject player;
+    
+    // 일정한 시간 간격으로 공격 -> 누적 시간, 공격 딜레이 시간
+    private float currentTime = 0; // 누적 시간
+    private float attackDelay = 2f; // 공격 딜레이 시간
 
     void Start()
     {
         m_State = EnemyState.Idle; // 최초의 에너미 상태 : Idle
         
         // 플레이어의 트랜스폼 컴포넌트 받아오기
-        player = GameObject.FindGameObjectWithTag("player").transform; 
-        //player = GameObject.FindGameObjectWithTag("player"); 
-        //player = GameObject.Find("Player").transform;
-        
+        player = GameObject.FindGameObjectWithTag("player").transform;
+
         // 캐릭터 컨트롤러 컴포넌트 받아오기
         cc = GetComponent<CharacterController>();
     }
@@ -81,27 +82,18 @@ public class EnemyFSM : MonoBehaviour
         }
     }
 
-    // 공격 범위 안에 들어왔을 때: 상태 전환
-    // 공격 범위 안에 들어오지 않았을 때: 이동
+    // 1) 공격 범위 안에 들어오지 않았을 때: 이동
+    // 2) 공격 범위 안에 들어왔을 때: 상태 전환(공격)
     void Move()
     {
         // 만일, 플레이어와의 거리가 공격 범위 밖이라면, 플레이어를 향해 이동
         if (Vector3.Distance(transform.position, player.position) > attackDistance)
-        //if (Vector3.Distance(transform.position, player.transform.position) > attackDistance)
         {
             // 이동 방향 설정
             Vector3 dir = (player.position - transform.position).normalized;
 
-            cc.Move(dir * moveSpeed * Time.deltaTime);
-            
-            //Vector3 dir = (player.transform.position - transform.position).normalized;
-
-            //rigid.MovePosition(rigid.position + moveDirection * speed * Time.fixedDeltaTime);
             // 이동
-            //rigid.MovePosition(rigid.position + dir * moveSpeed * Time.fixedDeltaTime);
-            //rigid.MovePosition(rigid.position + dir * moveSpeed * Time.deltaTime);
-            //rigid.MovePosition(rigid.position + dir * moveSpeed * Time.deltaTime);
-
+            cc.Move(dir * moveSpeed * Time.deltaTime);
         }
         
         // 그렇지 않다면, 현재 상태를 공격으로 전환
@@ -109,12 +101,36 @@ public class EnemyFSM : MonoBehaviour
         {
             m_State = EnemyState.Attack;
             print("상태 전환: Move -> Attack");
+            
+            // 누적 시간을 공격 딜레이 시간만큼 미리 진행시켜 놓기 (공격 상태로 전환됐을 때 기다렸다가 공격 시작하는 문제)
+            currentTime = attackDelay;
         }
     }
 
+    // 1) 플레이어가 공격 범위 안에 있을 때: 공격
+    // 2) 플레이어가 공격 범위 밖에 있을 때: 상태 전환(이동)
     void Attack()
     {
+        // 만일, 플레이어가 공격 범위 이내에 있다면 플레이어를 공격
+        if (Vector3.Distance(transform.position, player.position) < attackDistance)
+        {
+            // 일정한 시간마다 플레이어를 공격
+            currentTime += Time.deltaTime; // 경과 시간 누적
+            if (currentTime > attackDelay) // 경과 시간 > 공격 딜레이 시간
+            {
+                print("공격");
+                currentTime = 0; // 경과 시간 초기화
+            }
+        }
         
+        // 그렇지 않다면, 현재 상태를 이동(Move)으로 전환(재추격 실시)
+        // 공격 중이라도, 플레이어가 공격 범위를 넘어가면 이동 상태로 변환 (경과 시간 초기화!)
+        else
+        {
+            m_State = EnemyState.Move;
+            print("상태 전환: Attack -> Move");
+            currentTime = 0;
+        }
     }
 
     void Damaged()
