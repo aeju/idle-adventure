@@ -17109,6 +17109,8 @@ MonoBehaviour:
   moveSpeed: 5
   player: {fileID: 0}
   attackPower: 3
+  moveDistance: 20
+  currentHP: 15
 --- !u!143 &1335395466
 CharacterController:
   m_ObjectHideFlags: 0
@@ -25035,7 +25037,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7412863796431518017, guid: b8a168f13fd3f4d50b14c52e5268fffb, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8508066075775696689, guid: b8a168f13fd3f4d50b14c52e5268fffb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -25047,11 +25049,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8850776039913072917, guid: b8a168f13fd3f4d50b14c52e5268fffb, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8850776039913072917, guid: b8a168f13fd3f4d50b14c52e5268fffb, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -25139,6 +25141,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1235367505404774355, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2791102241197548174, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3344377487213302261, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3375026472241455900, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -25159,6 +25173,14 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6267288003998589936, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6544287473708353506, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6652928554354244908, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
       propertyPath: target
       value: 
@@ -25166,6 +25188,14 @@ PrefabInstance:
     - target: {fileID: 6652928554354244908, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
       propertyPath: stopDistance
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6721773549604196842, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6977298296820489506, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7083674514328726357, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -25210,6 +25240,18 @@ PrefabInstance:
     - target: {fileID: 7106887405609920340, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
       propertyPath: m_Name
       value: '[Monster]Flower (14)'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7106887405609920340, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7106887405609920340, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+      propertyPath: m_TagString
+      value: monster
+      objectReference: {fileID: 0}
+    - target: {fileID: 8634474341792794458, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8946769483236343463, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
       propertyPath: m_Mesh

@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
     {
         playerStats = GetComponent<PlayerStats>();
         anim = GetComponent<Animator>();
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
         Monster = GameObject.FindGameObjectWithTag("monster");
     }
@@ -131,7 +132,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         // bool isMoving = moveDirection != Vector3.zero;
         bool isMoving = joystick.isDragging ? joystick.GetInputDirection() != Vector2.zero : (horizontalInput != 0 || verticalInput != 0);
         
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        
         if (isMoving)
         {
             // isDragging : true -> joystick 입력값 / false -> 키보드 입력값
@@ -153,9 +154,61 @@ public class PlayerController : MonoBehaviour, IPlayerController
     {
         
     }
+    
+    void OnDrawGizmos()
+    {
+        // Draw a blue line from the object's position in the direction it's facing
+        Gizmos.color = Color.blue;
+        //Gizmos.DrawLine(transform.position, transform.position + transform.forward * 5f); // Adjust the length as needed
+        if (Monster != null)
+        {
+            Gizmos.DrawLine(transform.position, transform.position + Monster.transform.position * 5f); // Adjust the length as needed
+        }
+        
+
+        // Draw a red sphere at the object's position
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position, 0.2f); // Adjust the size of the sphere as needed
+    }
 
     void PlayerAttack()
     {
+        // 레이 생성한 후, 발사될 위치 + 진행 방향
+        //Ray ray = new Ray(transform.position, Monster.transform.position);
+        //Ray ray = new Ray(transform.position, transform.forward);
+        Ray ray = new Ray(transform.position, Monster.transform.position);
+        
+        Monster = GameObject.FindGameObjectWithTag("monster");
+        // 레이가 부딪힌 대상의 정보를 저장할 변수를 생성
+        RaycastHit hitInfo = new RaycastHit();
+
+        Debug.Log("1. Lay");
+        
+        float radius = 1f; // Radius of the sphere cast
+        float distance = 1f;
+        if (Physics.SphereCast(ray, radius, out hitInfo, distance))
+        // 레이를 발사하고, 만일 부딪힌 물체가 있으면
+        //if (Physics.Raycast(ray, out hitInfo))
+            
+        {
+            Debug.Log("2. Lay Hit");
+            // 만일 레이에 부딪힌 대상의 레이어가 Enemy라면, 데미지 함수를 실행
+            //if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+            
+            // 만일 레이에 부딪힌 대상의 태그가 monster라면, 데미지 함수를 실행
+            if (hitInfo.transform.gameObject.tag == "monster")
+            {
+                Debug.Log("3. Lay Enemy Hit");
+                EnemyFSM eFSM = Monster.GetComponent<EnemyFSM>();
+                eFSM.HitEnemy(CombatPower);
+            }
+        }
+        
+        Debug.DrawRay(ray.origin, ray.direction * distance, Color.red);
+
+        
+
+        /*
         MonsterController monsterController = Monster.GetComponent<MonsterController>();
         if (monsterController == null)
         {
@@ -173,6 +226,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
         {
             Debug.Log("Monster is already dead or HP is zero.");
         }
+        */
+
         /*
     
         MonsterController monsterController = Monster.GetComponent<MonsterController>();
