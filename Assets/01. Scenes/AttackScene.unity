@@ -4874,6 +4874,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 364310541}
   m_CullTransparentMesh: 1
+--- !u!114 &366683387 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7811641195964423991, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+  m_PrefabInstance: {fileID: 5556650350545959393}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &367430269
 GameObject:
   m_ObjectHideFlags: 0
@@ -9258,6 +9269,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 736656184}
   m_CullTransparentMesh: 1
+--- !u!114 &737576933 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5269612219895991244, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+  m_PrefabInstance: {fileID: 5556650350545959393}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &743173264
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17110,7 +17132,9 @@ MonoBehaviour:
   player: {fileID: 0}
   attackPower: 3
   moveDistance: 20
+  maxHP: 30
   currentHP: 15
+  hpSlider: {fileID: 1825117924}
 --- !u!143 &1335395466
 CharacterController:
   m_ObjectHideFlags: 0
@@ -22109,6 +22133,17 @@ MonoBehaviour:
   secondOff: {fileID: 1602851277}
   thirdOn: {fileID: 1486652411}
   thirdOff: {fileID: 12239385}
+--- !u!114 &1825117924 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6017040050078356040, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+  m_PrefabInstance: {fileID: 2731497204483584437}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1828165957
 GameObject:
   m_ObjectHideFlags: 0
@@ -25338,6 +25373,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7088074864478614758, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: hPSlider
+      value: 
+      objectReference: {fileID: 366683387}
+    - target: {fileID: 7088074864478614758, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
       propertyPath: joystick
       value: 
       objectReference: {fileID: 255732651}
@@ -25345,6 +25384,10 @@ PrefabInstance:
       propertyPath: currentHP
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 7088074864478614758, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: cooldownSlider
+      value: 
+      objectReference: {fileID: 737576933}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

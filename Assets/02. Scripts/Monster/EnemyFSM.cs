@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 // 필요 1: Idle상태 -> 주변 배회
 // 필요 2: Return상태 -> Player 근처 -> 다시 추적 상태
@@ -50,7 +51,9 @@ public class EnemyFSM : MonoBehaviour
     public float moveDistance = 20f;
     
     // 체력
-    public int currentHP = 15;
+    public int maxHP = 30;
+    public int currentHP;
+    public Slider hpSlider;
 
     void Start()
     {
@@ -64,6 +67,9 @@ public class EnemyFSM : MonoBehaviour
         
         // 자신의 초기 위치 저장하기
         originPos = transform.position;
+
+        // 현재 체력 = 최대 체력으로 초기화
+        currentHP = maxHP;
     }
 
     void Update()
@@ -90,6 +96,8 @@ public class EnemyFSM : MonoBehaviour
                 // Die();
                 break;
         }
+        
+        
     }
 
     void Idle()
@@ -213,6 +221,8 @@ public class EnemyFSM : MonoBehaviour
     
     void Damaged()
     {
+        // 현재 몬스터 hp(%)를 hp 슬라이더의 value에 반영
+        hpSlider.value = (float) currentHP / (float) maxHP; 
         // 피격 상태를 처리하기 위한 코루틴 실행
         StartCoroutine(DamageProcess());
     }
@@ -243,8 +253,8 @@ public class EnemyFSM : MonoBehaviour
         // 캐릭터 컨트롤러 컴포넌트를 비활성화
         cc.enabled = false;
         
-        // 2초 동안 기다린 후, 자기 자신을 제거 (나중에 손 봐야함!)
-        yield return new WaitForSeconds(2f);
+        // 1초 동안 기다린 후, 자기 자신을 제거 (나중에 손 봐야함!)
+        yield return new WaitForSeconds(1f);
         print("Die");
         Destroy(gameObject);
     }
