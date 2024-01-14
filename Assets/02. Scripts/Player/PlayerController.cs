@@ -13,7 +13,11 @@ public interface IPlayerController
 
 public class PlayerController : MonoBehaviour, IPlayerController
 {
-    public Slider hPSlider;
+    // 체력
+    public int maxHP = 100;
+    public int currentHP;
+    
+    public Slider hpSlider;
     public Slider cooldownSlider;
     
     private PlayerStats playerStats;
@@ -29,7 +33,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
     public float groundDist;
     
     // 공격
-    //public GameObject[] Monster;
     public GameObject Monster;
     public int CombatPower = 10; // 전투력
     
@@ -41,8 +44,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
     // 조이스틱
     public FullScreenJoystick joystick;
     
-    // 체력
-    public int currentHP = 100;
     
     void Start()
     {
@@ -51,6 +52,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
         Monster = GameObject.FindGameObjectWithTag("monster");
+
+        currentHP = maxHP;
     }
     
     void Update()
@@ -298,5 +301,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
     {
         // 에너미의 공격력만큼 플레이어의 체력 깎기
         currentHP -= damage;
+        // 현재 플레이어 hp(%)를 hp 슬라이더의 value에 반영
+        hpSlider.value = (float) currentHP / (float) maxHP; 
     }
 }
