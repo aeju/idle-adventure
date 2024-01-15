@@ -12,8 +12,7 @@ public class FollowCamera : MonoBehaviour
     {
         // initial offset : 카메라 - 플레이어 위치
         offset = transform.position - target.position;
-
-        // initial rotation 
+        
         initialRotation = transform.rotation;
     }
 

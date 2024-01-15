@@ -11,6 +11,8 @@ public interface IPlayerController
     //bool alive { get; set; }
 }
 
+
+// 필요 : 가장 가까운 몬스터 탐지
 public class PlayerController : MonoBehaviour, IPlayerController
 {
     // 체력
@@ -43,18 +45,21 @@ public class PlayerController : MonoBehaviour, IPlayerController
     
     // 조이스틱
     public FullScreenJoystick joystick;
-    
+
+    public LayerMask monsterLayerMask;
     
     void Start()
     {
         playerStats = GetComponent<PlayerStats>();
         anim = GetComponent<Animator>();
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
         Monster = GameObject.FindGameObjectWithTag("monster");
 
         currentHP = maxHP;
-        hpSlider.value = (float) currentHP / (float) maxHP; 
+        hpSlider.value = (float) currentHP / (float) maxHP;
+
+        monsterLayerMask = LayerMask.GetMask("Enemy");
+        StartCoroutine(DetectNearestMonsterCoroutine());
     }
     
     void Update()
@@ -86,6 +91,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
                 }
             }
         }
+
+        //DetectAndAttackNearestMonster();
     }
 
     public void PlayerMove()
@@ -161,20 +168,50 @@ public class PlayerController : MonoBehaviour, IPlayerController
     
     void OnDrawGizmos()
     {
-        // Draw a blue line from the object's position in the direction it's facing
         Gizmos.color = Color.blue;
-        //Gizmos.DrawLine(transform.position, transform.position + transform.forward * 5f); // Adjust the length as needed
         if (Monster != null)
         {
-            Gizmos.DrawLine(transform.position, transform.position + Monster.transform.position * 5f); // Adjust the length as needed
+            Gizmos.DrawLine(transform.position, transform.position + Monster.transform.position * 5f); 
         }
         
-
-        // Draw a red sphere at the object's position
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, 0.2f); // Adjust the size of the sphere as needed
+        Gizmos.DrawSphere(transform.position, 0.2f);
     }
 
+    // 체크 시간 : 3초
+    IEnumerator DetectNearestMonsterCoroutine()
+    {
+        while (true)
+        {
+            DetectAndAttackNearestMonster();
+            yield return new WaitForSeconds(3f);
+        }
+    }
+    
+    void DetectAndAttackNearestMonster()
+    {
+        float detectionRadius = 5f; 
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, monsterLayerMask);
+
+        GameObject nearestMonster = null;
+        float minDistance = Mathf.Infinity;
+
+        foreach (Collider collider in hitColliders)
+        {
+            float distance = Vector3.Distance(transform.position, collider.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearestMonster = collider.gameObject;
+            }
+        }
+
+        if (nearestMonster != null)
+        {
+            Debug.Log(nearestMonster);
+        }
+    }
+    
     void PlayerAttack()
     {
         // 레이 생성한 후, 발사될 위치 + 진행 방향
@@ -194,9 +231,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
             
         {
             Debug.Log("2. Lay Hit");
-            // 만일 레이에 부딪힌 대상의 레이어가 Enemy라면, 데미지 함수를 실행
-            //if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-            
             // 만일 레이에 부딪힌 대상의 태그가 monster라면, 데미지 함수를 실행
             if (hitInfo.transform.gameObject.tag == "monster")
             {
