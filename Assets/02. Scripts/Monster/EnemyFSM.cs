@@ -119,17 +119,27 @@ public class EnemyFSM : MonoBehaviour
         FlipTowardsPlayer();
     }
     
+    // 방향 전환: 플레이어에게 이동, originPos로 복귀
     // 플레이어가 왼쪽에 있다면, scalex = -1 (좌우반전)
     private void FlipTowardsPlayer()
     {
-        if (player != null)
+        bool flipX = false;
+        
+        
+        if (m_State == EnemyState.Return) // originPos
         {
-            // Determine if the player is to the left or right of the enemy
-            bool isPlayerToTheRight = player.position.x > transform.position.x;
-
-            // Flip the character by setting ScaleX
-            skeletonMecanim.Skeleton.ScaleX = isPlayerToTheRight ? 1 : -1;
+            flipX = originPos.x > transform.position.x;
         }
+        else if (player != null)
+        {
+            flipX = player.position.x > transform.position.x;
+        }
+        else 
+        {
+            flipX = skeletonMecanim.Skeleton.ScaleX > 0;
+        }
+        
+        skeletonMecanim.Skeleton.ScaleX = flipX ? 1 : -1;
     }
 
     void Idle()
@@ -225,6 +235,8 @@ public class EnemyFSM : MonoBehaviour
             transform.position = originPos;
             m_State = EnemyState.Idle;
             print("상태 전환: Return -> Idle");
+            
+            anim.SetTrigger("MoveToIdle");
         }
     }
 
