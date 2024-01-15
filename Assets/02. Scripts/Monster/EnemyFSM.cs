@@ -6,9 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // 필요 1: Idle상태 -> 주변 배회
-// 필요 2: Return상태 -> Player 근처 -> 다시 추적 상태
-// 필요 3: 방향에 따라 이미지 뒤집기
-// 필요 4: 두 번째 공격 때, 애니메이션 작동 X
+// 필요 2: damaged 애니메이션
 public class EnemyFSM : MonoBehaviour
 {
     // 에너미 상태 상수
@@ -81,7 +79,7 @@ public class EnemyFSM : MonoBehaviour
 
         // 현재 체력 = 최대 체력으로 초기화
         currentHP = maxHP;
-        hpSlider.value = currentHP / maxHP;
+        HPSliderUpdate();
     }
 
     void Update()
@@ -188,6 +186,9 @@ public class EnemyFSM : MonoBehaviour
             
             // 누적 시간을 공격 딜레이 시간만큼 미리 진행시켜 놓기 (공격 상태로 전환됐을 때 기다렸다가 공격 시작하는 문제)
             currentTime = attackDelay;
+            
+            // 공격 대기 애니메이션 플레이
+            anim.SetTrigger("MoveToAttackDelay");
         }
     }
 
@@ -202,10 +203,11 @@ public class EnemyFSM : MonoBehaviour
             currentTime += Time.deltaTime; // 경과 시간 누적
             if (currentTime > attackDelay) // 경과 시간 > 공격 딜레이 시간
             {
-                //anim.SetTrigger("Attack");
-                player.GetComponent<PlayerController>().PlayerDamaged(attackPower);
+                //player.GetComponent<PlayerController>().PlayerDamaged(attackPower);
                 print("공격, PlayerHP: " + player.GetComponent<PlayerController>().currentHP);
                 currentTime = 0; // 경과 시간 초기화
+                // 공격 애니메이션 플레이
+                anim.SetTrigger("StartAttack");
             }
         }
         
@@ -213,11 +215,18 @@ public class EnemyFSM : MonoBehaviour
         // 공격 중이라도, 플레이어가 공격 범위를 넘어가면 이동 상태로 변환 (경과 시간 초기화!)
         else
         {
-            //anim.SetTrigger("Move");
             m_State = EnemyState.Move;
             print("상태 전환: Attack -> Move");
             currentTime = 0;
+            
+            anim.SetTrigger("AttackToMove");
         }
+    }
+    
+    // 플레이어의 스크립트의 데미지 처리 함수 실행
+    public void AttackAction()
+    {
+        player.GetComponent<PlayerController>().PlayerDamaged(attackPower);
     }
 
     void Return()
@@ -259,6 +268,10 @@ public class EnemyFSM : MonoBehaviour
         {
             m_State = EnemyState.Damaged;
             print("상태 전환: Any state -> Damaged");
+            
+            // 피격 애니메이션 플레이 (애니메이션 만들어야함!)
+            anim.SetTrigger("Damaged");
+            
             Damaged();;
         }
         
@@ -267,22 +280,21 @@ public class EnemyFSM : MonoBehaviour
         {
             m_State = EnemyState.Die;
             print("상태 전환: Any state -> Die");
+            
+            // 죽음 애니메이션을 플레이
+            anim.SetTrigger("Die");
             Die();
         }
     }
     
     void Damaged()
     {
-        // 현재 몬스터 hp(%)를 hp 슬라이더의 value에 반영
-        //hpSlider.value = Mathf.Lerp((float) hpSlider.value, (float)currentHP / (float)maxHP, Time.deltaTime * 100);
-        hpSlider.value = (float) currentHP / (float) maxHP; 
-
+        HPSliderUpdate();
         // 피격 상태를 처리하기 위한 코루틴 실행
         StartCoroutine(DamageProcess());
     }
 
-    // 데미지 처리용 코루틴 함수
-    // 피격 모션이 이뤄질 시간이 경과 -> 현재 상태를 다시 이동 상태로 전환
+    // 데미지 처리용 코루틴 함수 (피격 모션이 이뤄질 시간이 경과 -> 현재 상태를 다시 이동 상태로 전환)
     IEnumerator DamageProcess()
     {
         // 피격 모션 시간 만큼 기다린다.
@@ -304,7 +316,6 @@ public class EnemyFSM : MonoBehaviour
 
     IEnumerator DieProcess()
     {
-        //anim.SetTrigger("Dead");
         hpSlider.value = (float) currentHP / (float) maxHP; 
         // 캐릭터 컨트롤러 컴포넌트를 비활성화
         cc.enabled = false;
@@ -313,5 +324,12 @@ public class EnemyFSM : MonoBehaviour
         yield return new WaitForSeconds(2f);
         print("Die");
         Destroy(gameObject);
+    }
+
+    void HPSliderUpdate()
+    {
+        // 현재 몬스터 hp(%)를 hp 슬라이더의 value에 반영
+        //hpSlider.value = Mathf.Lerp((float) hpSlider.value, (float)currentHP / (float)maxHP, Time.deltaTime * 100);
+        hpSlider.value = (float) currentHP / (float) maxHP; 
     }
 }

@@ -54,6 +54,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         Monster = GameObject.FindGameObjectWithTag("monster");
 
         currentHP = maxHP;
+        hpSlider.value = (float) currentHP / (float) maxHP; 
     }
     
     void Update()
@@ -177,8 +178,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
     void PlayerAttack()
     {
         // 레이 생성한 후, 발사될 위치 + 진행 방향
-        //Ray ray = new Ray(transform.position, Monster.transform.position);
-        //Ray ray = new Ray(transform.position, transform.forward);
         Ray ray = new Ray(transform.position, Monster.transform.position);
         
         Monster = GameObject.FindGameObjectWithTag("monster");
@@ -208,43 +207,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
         }
         
         Debug.DrawRay(ray.origin, ray.direction * distance, Color.red);
-
-        
-
-        /*
-        MonsterController monsterController = Monster.GetComponent<MonsterController>();
-        if (monsterController == null)
-        {
-            Debug.LogError("MonsterController is null.");
-            return;
-        }
-
-        Debug.Log("Monster HP before if: " + monsterController.Current_HP);
-
-        if (monsterController.Current_HP > 0)
-        {
-            monsterController.TakeDamage(CombatPower);
-        }
-        else
-        {
-            Debug.Log("Monster is already dead or HP is zero.");
-        }
-        */
-
-        /*
-    
-        MonsterController monsterController = Monster.GetComponent<MonsterController>();
-        Debug.Log("PlayerAttack called");
-        Debug.Log("Monster HP before if:" + monsterController.Current_HP);
-        
-        if (monsterController != null && monsterController.Current_HP > 0)
-        {
-            monsterController.TakeDamage(CombatPower);
-            Debug.Log("Monster HP inside if: " + monsterController.Current_HP);
-            //monsterController.Current_HP -= CombatPower;
-            //ShowDamageText(monsterController, CombatPower);
-        }
-        */
     }
     
     // 일반 공격 
