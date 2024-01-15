@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Spine.Unity;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ using UnityEngine.UI;
 // 필요 1: Idle상태 -> 주변 배회
 // 필요 2: Return상태 -> Player 근처 -> 다시 추적 상태
 // 필요 3: 방향에 따라 이미지 뒤집기
+// 필요 4: 두 번째 공격 때, 애니메이션 작동 X
 public class EnemyFSM : MonoBehaviour
 {
     // 에너미 상태 상수
@@ -54,26 +56,43 @@ public class EnemyFSM : MonoBehaviour
     public int maxHP = 30;
     public int currentHP;
     public Slider hpSlider;
+    
+    // 애니메이션 
+    private Animator anim;
+    private SkeletonMecanim skeletonMecanim;
 
     void Start()
     {
         m_State = EnemyState.Idle; // 최초의 에너미 상태 : Idle
         
         // 플레이어의 트랜스폼 컴포넌트 받아오기
-        player = GameObject.FindGameObjectWithTag("player").transform;
-
+        if (gameObject.tag != "player")
+        {
+            player = GameObject.FindGameObjectWithTag("player").transform;
+        }
+        
         // 캐릭터 컨트롤러 컴포넌트 받아오기
         cc = GetComponent<CharacterController>();
+        anim = GetComponent<Animator>();
+        skeletonMecanim = GetComponent<SkeletonMecanim>();
         
         // 자신의 초기 위치 저장하기
         originPos = transform.position;
 
         // 현재 체력 = 최대 체력으로 초기화
         currentHP = maxHP;
+        hpSlider.value = currentHP / maxHP;
     }
 
     void Update()
     {
+        if (player == null)
+        {
+            m_State = EnemyState.Idle;
+            return;
+            Debug.Log("Player X");
+        }
+        
         // 현재 상태를 체크해 해당 상태별로 정해진 기능을 수행하게 함
         switch (m_State)
         {
@@ -97,7 +116,20 @@ public class EnemyFSM : MonoBehaviour
                 break;
         }
         
-        
+        FlipTowardsPlayer();
+    }
+    
+    // 플레이어가 왼쪽에 있다면, scalex = -1 (좌우반전)
+    private void FlipTowardsPlayer()
+    {
+        if (player != null)
+        {
+            // Determine if the player is to the left or right of the enemy
+            bool isPlayerToTheRight = player.position.x > transform.position.x;
+
+            // Flip the character by setting ScaleX
+            skeletonMecanim.Skeleton.ScaleX = isPlayerToTheRight ? 1 : -1;
+        }
     }
 
     void Idle()
@@ -108,6 +140,9 @@ public class EnemyFSM : MonoBehaviour
         {
             m_State = EnemyState.Move;
             print("상태 전환: Idle -> Move");
+            
+            // 이동 애니메이션으로 전환
+            anim.SetTrigger("IdleToMove");
         }
     }
 
@@ -130,7 +165,9 @@ public class EnemyFSM : MonoBehaviour
             Vector3 dir = (player.position - transform.position).normalized;
 
             // 이동
+            //anim.SetTrigger("Move");
             cc.Move(dir * moveSpeed * Time.deltaTime);
+            //transform.forward = dir;
         }
         
         // 그렇지 않다면, 현재 상태를 공격으로 전환
@@ -155,6 +192,7 @@ public class EnemyFSM : MonoBehaviour
             currentTime += Time.deltaTime; // 경과 시간 누적
             if (currentTime > attackDelay) // 경과 시간 > 공격 딜레이 시간
             {
+                //anim.SetTrigger("Attack");
                 player.GetComponent<PlayerController>().PlayerDamaged(attackPower);
                 print("공격, PlayerHP: " + player.GetComponent<PlayerController>().currentHP);
                 currentTime = 0; // 경과 시간 초기화
@@ -165,6 +203,7 @@ public class EnemyFSM : MonoBehaviour
         // 공격 중이라도, 플레이어가 공격 범위를 넘어가면 이동 상태로 변환 (경과 시간 초기화!)
         else
         {
+            //anim.SetTrigger("Move");
             m_State = EnemyState.Move;
             print("상태 전환: Attack -> Move");
             currentTime = 0;
@@ -176,6 +215,7 @@ public class EnemyFSM : MonoBehaviour
         // 만일 초기 위치에서 거리가 0.1f이상이라면, 초기 위치 쪽으로 이동
         if (Vector3.Distance(transform.position, originPos) > 0.1f)
         {
+            //anim.SetTrigger("Move");
             Vector3 dir = (originPos - transform.position).normalized;
             cc.Move(dir * moveSpeed * Time.deltaTime);
         }
@@ -222,7 +262,9 @@ public class EnemyFSM : MonoBehaviour
     void Damaged()
     {
         // 현재 몬스터 hp(%)를 hp 슬라이더의 value에 반영
+        //hpSlider.value = Mathf.Lerp((float) hpSlider.value, (float)currentHP / (float)maxHP, Time.deltaTime * 100);
         hpSlider.value = (float) currentHP / (float) maxHP; 
+
         // 피격 상태를 처리하기 위한 코루틴 실행
         StartCoroutine(DamageProcess());
     }
@@ -250,11 +292,13 @@ public class EnemyFSM : MonoBehaviour
 
     IEnumerator DieProcess()
     {
+        //anim.SetTrigger("Dead");
+        hpSlider.value = (float) currentHP / (float) maxHP; 
         // 캐릭터 컨트롤러 컴포넌트를 비활성화
         cc.enabled = false;
         
-        // 1초 동안 기다린 후, 자기 자신을 제거 (나중에 손 봐야함!)
-        yield return new WaitForSeconds(1f);
+        // 2초 동안 기다린 후, 자기 자신을 제거 (나중에 손 봐야함!)
+        yield return new WaitForSeconds(2f);
         print("Die");
         Destroy(gameObject);
     }

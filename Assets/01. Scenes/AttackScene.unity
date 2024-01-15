@@ -25208,6 +25208,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6017040050078356040, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+      propertyPath: m_Value
+      value: 0.505
+      objectReference: {fileID: 0}
     - target: {fileID: 6267288003998589936, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -25312,6 +25316,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 253328719099572349, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 653570921521895052, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.398
+      objectReference: {fileID: 0}
+    - target: {fileID: 653570921521895052, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 653570921521895052, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.398
+      objectReference: {fileID: 0}
+    - target: {fileID: 955558679950114436, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1242664732557684323, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -25364,6 +25388,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ponpo_Prefab
       objectReference: {fileID: 0}
+    - target: {fileID: 3081924055598439670, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3081924055598439670, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: m_TagString
+      value: player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3195331874455503479, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3195331874455503479, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3195331874455503479, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3780559539023166104, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -25396,7 +25440,32 @@ PrefabInstance:
       propertyPath: cooldownSlider
       value: 
       objectReference: {fileID: 737576933}
-    m_RemovedComponents: []
+    - target: {fileID: 7362579228519663473, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7362579228519663473, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 7811641195964423991, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: m_Value
+      value: 0.398
+      objectReference: {fileID: 0}
+    - target: {fileID: 8571209212460123549, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8571209212460123549, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: m_TagString
+      value: canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8653323442800458158, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 253328719099572349, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
