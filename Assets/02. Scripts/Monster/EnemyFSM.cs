@@ -37,6 +37,8 @@ public class EnemyFSM : MonoBehaviour
     
     // 플레이어 위치
     public Transform player;
+    // 플레이어 
+    public PlayerController target;
     
     // 일정한 시간 간격으로 공격 -> 누적 시간, 공격 딜레이 시간
     private float currentTime = 0; // 누적 시간
@@ -63,11 +65,21 @@ public class EnemyFSM : MonoBehaviour
     {
         m_State = EnemyState.Idle; // 최초의 에너미 상태 : Idle
         
-        // 플레이어의 트랜스폼 컴포넌트 받아오기
+        GameObject playerObject = GameObject.FindGameObjectWithTag("player");
+        if (playerObject != null)
+        {
+            player = playerObject.transform;
+            target = playerObject.GetComponent<PlayerController>();
+        }
+        
+        // 플레이어의 트랜스폼 컴포넌트 받아오기 (코드 합칠 필요 o)
+        /*
         if (gameObject.tag != "player")
         {
             player = GameObject.FindGameObjectWithTag("player").transform;
+            
         }
+        */
         
         // 캐릭터 컨트롤러 컴포넌트 받아오기
         cc = GetComponent<CharacterController>();
@@ -199,15 +211,19 @@ public class EnemyFSM : MonoBehaviour
         // 만일, 플레이어가 공격 범위 이내에 있다면 플레이어를 공격
         if (Vector3.Distance(transform.position, player.position) < attackDistance)
         {
-            // 일정한 시간마다 플레이어를 공격
-            currentTime += Time.deltaTime; // 경과 시간 누적
-            if (currentTime > attackDelay) // 경과 시간 > 공격 딜레이 시간
+            // 플레이어 hp > 0일 때만, (생존 상태)
+            if (target.currentHP > 0)
             {
-                //player.GetComponent<PlayerController>().PlayerDamaged(attackPower);
-                print("공격, PlayerHP: " + player.GetComponent<PlayerController>().currentHP);
-                currentTime = 0; // 경과 시간 초기화
-                // 공격 애니메이션 플레이
-                anim.SetTrigger("StartAttack");
+                // 일정한 시간마다 플레이어를 공격
+                currentTime += Time.deltaTime; // 경과 시간 누적
+                if (currentTime > attackDelay) // 경과 시간 > 공격 딜레이 시간
+                {
+                    //player.GetComponent<PlayerController>().PlayerDamaged(attackPower);
+                    print("공격, PlayerHP: " + player.GetComponent<PlayerController>().currentHP);
+                    currentTime = 0; // 경과 시간 초기화
+                    // 공격 애니메이션 플레이
+                    anim.SetTrigger("StartAttack");
+                }
             }
         }
         
