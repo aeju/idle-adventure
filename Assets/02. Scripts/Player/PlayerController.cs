@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private Animator anim;
     
     // 상태 (생존)
-    public bool alive = true;
+    public bool isAlive = true;
     
     // terrain 
     public LayerMask terrainLayer;
@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
     
     void Update()
     {
-        if (alive)
+        if (isAlive)
         {
             PlayerMove();
             
@@ -90,6 +90,14 @@ public class PlayerController : MonoBehaviour, IPlayerController
                     Debug.Log($"남은 시간: {remainCooldown}");
                 }
             }
+        }
+        
+        // 죽음 -> 나중: GameManager에서 관리 
+        if (isAlive == true && currentHP <= 0)
+        {
+            // 애니메이션 -> 죽음
+            anim.SetTrigger("isDead");
+            isAlive = false;
         }
 
         //DetectAndAttackNearestMonster();
