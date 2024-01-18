@@ -11,8 +11,7 @@ public interface IPlayerController
     //bool alive { get; set; }
 }
 
-
-// 필요 : 가장 가까운 몬스터 탐지
+// 필요 : 공격 -> Move x
 public class PlayerController : MonoBehaviour, IPlayerController
 {
     // 체력
@@ -46,8 +45,12 @@ public class PlayerController : MonoBehaviour, IPlayerController
     // 조이스틱
     public FullScreenJoystick joystick;
 
+    // 레이어 마스크 : 가장 가까운 몬스터 탐지에 필요
     public LayerMask monsterLayerMask;
     
+    [SerializeField]
+    private GameObject nearestMonster;
+
     void Start()
     {
         playerStats = GetComponent<PlayerStats>();
@@ -58,6 +61,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         currentHP = maxHP;
         hpSlider.value = (float) currentHP / (float) maxHP;
 
+        
         monsterLayerMask = LayerMask.GetMask("Enemy");
         StartCoroutine(DetectNearestMonsterCoroutine());
     }
@@ -68,39 +72,30 @@ public class PlayerController : MonoBehaviour, IPlayerController
         {
             PlayerMove();
             
+            // z : 기본 공격
             if (Input.GetKeyDown(KeyCode.Z))
             {
-                BasicAttack();
+                PlayerAttack();
             }
-            
+            // x : 크리티컬 공격
             else if (Input.GetKeyDown(KeyCode.X))
             {
-                CriticalAttack();
+                PlayerSkill();
             }
             
-            else if (Input.GetKeyDown(KeyCode.C))
+            else if (Input.GetKeyDown(KeyCode.C)) // 필요시, 치트키 용으로 사용
             {
-                if (!isSkillOnCooldown)
-                {
-                    StartCoroutine(SkillCoroutine());
-                }
-                else
-                {
-                    float remainCooldown = (lastSkillTime + skillCooldown) - Time.time;
-                    Debug.Log($"남은 시간: {remainCooldown}");
-                }
+                PlayerSkill();
             }
         }
         
         // 죽음 -> 나중: GameManager에서 관리 
-        if (isAlive == true && currentHP <= 0)
+        if (isAlive == true && currentHP <= 0) // 죽음 1회만 처리하기 위한 플래그
         {
             // 애니메이션 -> 죽음
             anim.SetTrigger("isDead");
             isAlive = false;
         }
-
-        //DetectAndAttackNearestMonster();
     }
 
     public void PlayerMove()
@@ -176,6 +171,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
     
     void OnDrawGizmos()
     {
+        /*
         Gizmos.color = Color.blue;
         if (Monster != null)
         {
@@ -184,6 +180,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(transform.position, 0.2f);
+        */
     }
 
     // 체크 시간 : 3초
@@ -201,7 +198,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         float detectionRadius = 5f; 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, monsterLayerMask);
 
-        GameObject nearestMonster = null;
+        nearestMonster = null;
         float minDistance = Mathf.Infinity;
 
         foreach (Collider collider in hitColliders)
@@ -216,11 +213,26 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
         if (nearestMonster != null)
         {
-            Debug.Log(nearestMonster);
+            Debug.Log("nearestMonster:" + nearestMonster);
         }
     }
     
-    void PlayerAttack()
+    // 기본 공격 : attack02
+    void PlayerAttackAnim()
+    {
+        Debug.Log("1. PlayerAttackAnim()");
+        EnemyFSM enemyFsm = nearestMonster.GetComponent<EnemyFSM>();
+        if (enemyFsm != null)
+        {
+            Debug.Log(enemyFsm != null);
+            enemyFsm.HitEnemy(CombatPower);
+            Debug.Log("3. HitEnemy");
+        }
+        
+    }
+
+    // 치명타 공격 : attack01
+    void PlayerSkillAnim()
     {
         // 레이 생성한 후, 발사될 위치 + 진행 방향
         Ray ray = new Ray(transform.position, Monster.transform.position);
@@ -234,9 +246,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
         float radius = 1f; // Radius of the sphere cast
         float distance = 1f;
         if (Physics.SphereCast(ray, radius, out hitInfo, distance))
-        // 레이를 발사하고, 만일 부딪힌 물체가 있으면
-        //if (Physics.Raycast(ray, out hitInfo))
-            
         {
             Debug.Log("2. Lay Hit");
             // 만일 레이에 부딪힌 대상의 태그가 monster라면, 데미지 함수를 실행
@@ -252,54 +261,62 @@ public class PlayerController : MonoBehaviour, IPlayerController
     }
     
     // 일반 공격 
-    void BasicAttack()
+    void PlayerAttack()
     {
-        anim.SetTrigger("AttackTrigger");
+        anim.SetTrigger("BasicAttackTrigger");
+        //anim.SetTrigger("CriticalAttackTrigger");
     }
     
-    // 치명타 공격
-    void CriticalAttack()
+    // 치명타 공격 (쿨타임 10초) -> 코루틴으로 변경
+    void PlayerSkill()
     {
-        anim.SetTrigger("AttackTrigger");
-    }
-    
-    // 스킬 (쿨타임 10초) -> 코루틴으로 변경
-    void Skill()
-    {
-        anim.SetTrigger("AttackTrigger");
+        anim.SetTrigger("CriticalAttackTrigger");
+        
+        if (!isSkillOnCooldown)
+        {
+            StartCoroutine(SkillCoroutine());
+        }
+        else
+        {
+            float remainCooldown = (lastSkillTime + skillCooldown) - Time.time;
+            Debug.Log($"남은 시간: {remainCooldown}");
+        }
     }
 
     IEnumerator SkillCoroutine()
     {
-        anim.SetTrigger("AttackTrigger");
+        anim.SetTrigger("CriticalAttackTrigger");
 
         isSkillOnCooldown = true;
         lastSkillTime = Time.time;
 
-        // 슬라이더 초기화 
-        if (cooldownSlider != null)
+        // 스킬 쿨타임 슬라이더
         {
-            cooldownSlider.value = 0;
-            cooldownSlider.maxValue = skillCooldown;
-        }
+            if (cooldownSlider != null) // 슬라이더 초기화 
+            {
+                cooldownSlider.value = 0;
+                cooldownSlider.maxValue = skillCooldown;
+            }
 
-        // 쿨타임 동안 슬라이더 업데이트
-        while (Time.time < lastSkillTime + skillCooldown)
-        {
+            // 쿨타임 동안 슬라이더 업데이트
+            while (Time.time < lastSkillTime + skillCooldown)
+            {
+                if (cooldownSlider != null)
+                {
+                    cooldownSlider.value = Time.time - lastSkillTime;
+                }
+                yield return null; // 다음 프레임까지 기다리도록 보장
+            }
+            isSkillOnCooldown = false;
+
             if (cooldownSlider != null)
             {
-                cooldownSlider.value = Time.time - lastSkillTime;
+                cooldownSlider.value = cooldownSlider.maxValue;
             }
-            yield return null; // 다음 프레임까지 기다리도록 보장
         }
-        isSkillOnCooldown = false;
-
-        if (cooldownSlider != null)
-        {
-            cooldownSlider.value = cooldownSlider.maxValue;
-        }
+        
     }
-    
+
     // 피격 함수
     public void PlayerDamaged(int damage)
     {
