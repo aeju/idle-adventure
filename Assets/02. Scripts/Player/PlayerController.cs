@@ -215,7 +215,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         Debug.Log("1. PlayerAttackAnim()");
         EnemyFSM enemyFsm = nearestMonster.GetComponent<EnemyFSM>();
 
-        CreateAttackEffect();
+        // CreateAttackEffect();
         
         if (enemyFsm != null)
         {
@@ -224,18 +224,14 @@ public class PlayerController : MonoBehaviour, IPlayerController
             Debug.Log("3. HitEnemy");
         }
     }
-
+    
     void CreateAttackEffect()
     {
-        float effectOffset = 1.0f;
-        
-        
         if (attackEffect != null && attackPosition != null)
         {
             GameObject effectInstance = Instantiate(attackEffect, attackPosition.position, attackPosition.rotation);
             effectInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); // 크기를 0.1로 설정
         }
-        
     }
 
     // 치명타 공격 (attack01)
