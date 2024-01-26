@@ -12,11 +12,13 @@ public class FrameRate : MonoBehaviour
     public Toggle toggle30;
     public Toggle toggle45;
     public Toggle toggle60;
+    
+    private const string FrameRatePrefKey = "FrameRate";
 
     private void Start()
     {
         // 기본 FPS 설정
-        SetFrameRate(PlayerPrefs.GetInt("FrameRate", 60));
+        SetFrameRate(PlayerPrefs.GetInt(FrameRatePrefKey, 60));
 
         // 각 토글에 토글 이벤트 리스너 할당
         toggle30.onValueChanged.AddListener(delegate { OnToggleChanged(); });
@@ -47,15 +49,14 @@ public class FrameRate : MonoBehaviour
     private void SetFrameRate(int frameRate)
     {
         Application.targetFrameRate = frameRate; // 프레임 레이트 설정
-        PlayerPrefs.SetInt("FrameRate", frameRate); // 프레임 레이트 저장
+        PlayerPrefs.SetInt(FrameRatePrefKey, frameRate); // 프레임 레이트 저장
         PlayerPrefs.Save(); // 변경사항 저장
-        Debug.Log("Current FPS : " + Application.targetFrameRate);
     }
 
     // 시작 시 저장된 프레임 레이트에 따라 토글 상태 초기화 
     private void SetInitialToggleState()
     {
-        int savedFrameRate = PlayerPrefs.GetInt("FrameRate", 60);
+        int savedFrameRate = PlayerPrefs.GetInt(FrameRatePrefKey, 60);
 
         toggle30.isOn = savedFrameRate == 30;
         toggle45.isOn = savedFrameRate == 45;
