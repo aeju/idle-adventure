@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +5,6 @@ using UnityEngine.UI;
 
 // 하나의 토글 on -> 나머지 : off
 // 프레임 : 30, 45, 60
-// 변경 -> 상단바에도 반영
 public class FrameRate : MonoBehaviour
 {
     public ToggleGroup toggleGroup;
@@ -15,13 +13,13 @@ public class FrameRate : MonoBehaviour
     public Toggle toggle45;
     public Toggle toggle60;
     
-    // 변경 이벤트 
-    public static event Action<int> OnFrameRateChanged;
+    //private const string FrameRatePrefKey = "FrameRate";
 
     private void Start()
     {
         // 기본 FPS 설정
-        SetFrameRate(PlayerPrefs.GetInt("FrameRate", 60));
+        //SetFrameRate(PlayerPrefs.GetInt(FrameRatePrefKey, 60));
+        SetFrameRate(OptionManager.Instance.GetInt(OptionManager.FrameRateKey, 60));
 
         // 각 토글에 토글 이벤트 리스너 할당
         toggle30.onValueChanged.AddListener(delegate { OnToggleChanged(); });
@@ -52,17 +50,16 @@ public class FrameRate : MonoBehaviour
     private void SetFrameRate(int frameRate)
     {
         Application.targetFrameRate = frameRate; // 프레임 레이트 설정
-        PlayerPrefs.SetInt("FrameRate", frameRate); // 프레임 레이트 저장
-        PlayerPrefs.Save(); // 변경사항 저장
-        
-        // 프레임 레이트 변경 이벤트 호출
-        OnFrameRateChanged?.Invoke(frameRate);
+        //PlayerPrefs.SetInt(FrameRatePrefKey, frameRate); // 프레임 레이트 저장
+        //PlayerPrefs.Save(); // 변경사항 저장
+        OptionManager.Instance.SetInt(OptionManager.FrameRateKey, frameRate);
     }
 
     // 시작 시 저장된 프레임 레이트에 따라 토글 상태 초기화 
     private void SetInitialToggleState()
     {
-        int savedFrameRate = PlayerPrefs.GetInt("FrameRate", 60);
+        //int savedFrameRate = PlayerPrefs.GetInt(FrameRatePrefKey, 60);
+        int savedFrameRate = OptionManager.Instance.GetInt(OptionManager.FrameRateKey, 60);
 
         toggle30.isOn = savedFrameRate == 30;
         toggle45.isOn = savedFrameRate == 45;
