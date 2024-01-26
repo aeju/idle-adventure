@@ -68,4 +68,11 @@ public class SwitchToggle : MonoBehaviour
     {
         toggle.onValueChanged.RemoveListener(OnSwitch);
     }
+    
+    // 토글 상태를 설정하는 메서드
+    public void SetToggleState(bool state)
+    {
+        toggle.isOn = state;
+        OnSwitch(state);
+    }
 }
