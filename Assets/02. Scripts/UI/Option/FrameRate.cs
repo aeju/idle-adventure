@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,9 @@ public class FrameRate : MonoBehaviour
     public Toggle toggle30;
     public Toggle toggle45;
     public Toggle toggle60;
+    
+    // 상단바 - fps 디스플레이 변경 이벤트
+     public static event Action<int> OnFrameRateChanged;
     
     //private const string FrameRatePrefKey = "FrameRate";
 
@@ -53,6 +57,9 @@ public class FrameRate : MonoBehaviour
         //PlayerPrefs.SetInt(FrameRatePrefKey, frameRate); // 프레임 레이트 저장
         //PlayerPrefs.Save(); // 변경사항 저장
         OptionManager.Instance.SetInt(OptionManager.FrameRateKey, frameRate);
+        
+        // 변경 -> 상단바에도 반영
+        OnFrameRateChanged?.Invoke(frameRate);
     }
 
     // 시작 시 저장된 프레임 레이트에 따라 토글 상태 초기화 
