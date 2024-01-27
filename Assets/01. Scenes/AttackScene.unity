@@ -13020,7 +13020,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1035456721
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17647,13 +17647,13 @@ MonoBehaviour:
   findDistance: 8
   attackDistance: 2
   moveSpeed: 5
-  player: {fileID: 0}
   target: {fileID: 0}
   attackPower: 3
   moveDistance: 20
   maxHP: 30
   currentHP: 15
   hpSlider: {fileID: 1825117924}
+  dropItem: {fileID: 0}
 --- !u!143 &1335395466
 CharacterController:
   m_ObjectHideFlags: 0
@@ -23400,13 +23400,13 @@ MonoBehaviour:
   findDistance: 8
   attackDistance: 2
   moveSpeed: 5
-  player: {fileID: 0}
   target: {fileID: 0}
   attackPower: 3
   moveDistance: 20
   maxHP: 30
   currentHP: 15
   hpSlider: {fileID: 1705634046}
+  dropItem: {fileID: 0}
 --- !u!1 &1881570619
 GameObject:
   m_ObjectHideFlags: 0
@@ -25971,13 +25971,13 @@ MonoBehaviour:
   findDistance: 8
   attackDistance: 2
   moveSpeed: 5
-  player: {fileID: 0}
   target: {fileID: 0}
   attackPower: 3
   moveDistance: 20
   maxHP: 30
   currentHP: 15
   hpSlider: {fileID: 2137074055}
+  dropItem: {fileID: 0}
 --- !u!1001 &749595718045661465
 PrefabInstance:
   m_ObjectHideFlags: 0

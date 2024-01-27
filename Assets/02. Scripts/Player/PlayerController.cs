@@ -8,21 +8,21 @@ using UnityEngine.UI;
 public interface IPlayerController
 {
     void PlayerMove();
-    //bool alive { get; set; }
+    //bool alive { get; set; 
 }
 
 // 필요 : 공격 -> Move x
 public class PlayerController : MonoBehaviour, IPlayerController
 {
-    // 체력
-    public int maxHP = 100;
-    public int currentHP;
-    
-    public Slider hpSlider;
-    public Slider cooldownSlider;
-    
     private PlayerStats playerStats;
     
+    // 체력
+    private int maxHP;
+    public int currentHP;
+
+    public Slider hpSlider;
+    public Slider cooldownSlider;
+
     // 애니메이션
     private Animator anim;
     
@@ -34,8 +34,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
     public float groundDist;
     
     // 공격
-    public GameObject Monster;
-    public int CombatPower = 10; // 전투력
+    //public GameObject Monster;
+    public int CombatPower; // 전투력
     
     // 쿨타임
     public float skillCooldown = 5f;
@@ -54,15 +54,19 @@ public class PlayerController : MonoBehaviour, IPlayerController
     void Start()
     {
         playerStats = GetComponent<PlayerStats>();
+        if (playerStats != null)
+        {
+            currentHP = playerStats.MaxHP;
+            CombatPower = playerStats.Attack;
+        }
         anim = GetComponent<Animator>();
 
-        Monster = GameObject.FindGameObjectWithTag("monster");
-
-        currentHP = maxHP;
-        hpSlider.value = (float) currentHP / (float) maxHP;
-
+        //Monster = GameObject.FindGameObjectWithTag("monster");
+        
+        //hpSlider.value = (float) currentHP / (float) playerStats.MaxHP;
         
         monsterLayerMask = LayerMask.GetMask("Enemy");
+        PlayerHPSlider();
         StartCoroutine(DetectNearestMonsterCoroutine());
     }
     
@@ -168,20 +172,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
     {
         
     }
-    
-    void OnDrawGizmos()
-    {
-        /*
-        Gizmos.color = Color.blue;
-        if (Monster != null)
-        {
-            Gizmos.DrawLine(transform.position, transform.position + Monster.transform.position * 5f); 
-        }
-        
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, 0.2f);
-        */
-    }
 
     // 체크 시간 : 3초
     IEnumerator DetectNearestMonsterCoroutine()
@@ -234,6 +224,16 @@ public class PlayerController : MonoBehaviour, IPlayerController
     // 치명타 공격 : attack01
     void PlayerSkillAnim()
     {
+        Debug.Log("1. PlayerAttackAnim()");
+
+        EnemyFSM enemyFsm = nearestMonster.GetComponent<EnemyFSM>();
+        if (enemyFsm != null)
+        {
+            Debug.Log(enemyFsm != null);
+            enemyFsm.HitEnemy(CombatPower);
+            Debug.Log("3. HitEnemy");
+        }
+        /*
         // 레이 생성한 후, 발사될 위치 + 진행 방향
         Ray ray = new Ray(transform.position, Monster.transform.position);
         
@@ -256,8 +256,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
                 eFSM.HitEnemy(CombatPower);
             }
         }
-        
-        Debug.DrawRay(ray.origin, ray.direction * distance, Color.red);
+        */
     }
     
     // 일반 공격 
@@ -323,6 +322,13 @@ public class PlayerController : MonoBehaviour, IPlayerController
         // 에너미의 공격력만큼 플레이어의 체력 깎기
         currentHP -= damage;
         // 현재 플레이어 hp(%)를 hp 슬라이더의 value에 반영
-        hpSlider.value = (float) currentHP / (float) maxHP; 
+        Debug.Log("currentHP" +currentHP);
+        Debug.Log("maxHP" + maxHP);
+        PlayerHPSlider();
+    }
+
+    public void PlayerHPSlider()
+    {
+        hpSlider.value = (float) currentHP / (float) playerStats.MaxHP; 
     }
 }
