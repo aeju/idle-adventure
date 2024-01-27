@@ -335,12 +335,25 @@ public class EnemyFSM : MonoBehaviour
         hpSlider.value = (float) currentHP / (float) maxHP; 
         // 캐릭터 컨트롤러 컴포넌트를 비활성화
         cc.enabled = false;
+        ItemDrop();
         
         // 2초 동안 기다린 후, 자기 자신을 제거 (나중에 손 봐야함!)
         yield return new WaitForSeconds(2f);
         print("Die");
         Destroy(gameObject);
     }
+    
+    // 드랍
+    public GameObject dropItem;
+    // 지면으로 띄우기 
+    void ItemDrop()
+    {
+        Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, 0);
+        GameObject droppedItem = Instantiate(dropItem, dropPosition, Quaternion.identity);
+
+        //StartCoroutine(MoveItemToPlayer(droppedItem));
+    }
+    
 
     void HPSliderUpdate()
     {
