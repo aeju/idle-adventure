@@ -36,8 +36,6 @@ public class EnemyFSM : MonoBehaviour
     // 캐릭터 컨트롤러 컴포넌트
     private CharacterController cc;
     
-    // 플레이어 위치
-    //public Transform player;
     // 플레이어 
     public PlayerController target;
     
@@ -72,16 +70,7 @@ public class EnemyFSM : MonoBehaviour
             //player = playerObject.transform;
             target = playerObject.GetComponent<PlayerController>();
         }
-        
-        // 플레이어의 트랜스폼 컴포넌트 받아오기 (코드 합칠 필요 o)
-        /*
-        if (gameObject.tag != "player")
-        {
-            player = GameObject.FindGameObjectWithTag("player").transform;
-            
-        }
-        */
-        
+
         // 캐릭터 컨트롤러 컴포넌트 받아오기
         cc = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
@@ -157,7 +146,6 @@ public class EnemyFSM : MonoBehaviour
     {
         // 만일, 플레이어와의 거리가 액션 시작 범위 이내라면 Move 상태로 전환
         if (Vector3.Distance(transform.position, target.transform.position) < findDistance)
-        //if (Vector3.Distance(transform.position, player.transform.position) < findDistance)
         {
             m_State = EnemyState.Move;
             print("상태 전환: Idle -> Move");
@@ -186,9 +174,7 @@ public class EnemyFSM : MonoBehaviour
             Vector3 dir = (target.transform.position - transform.position).normalized;
 
             // 이동
-            //anim.SetTrigger("Move");
             cc.Move(dir * moveSpeed * Time.deltaTime);
-            //transform.forward = dir;
         }
         
         // 그렇지 않다면, 현재 상태를 공격으로 전환
@@ -251,7 +237,6 @@ public class EnemyFSM : MonoBehaviour
         // 만일 초기 위치에서 거리가 0.1f이상이라면, 초기 위치 쪽으로 이동
         if (Vector3.Distance(transform.position, originPos) > 0.1f)
         {
-            //anim.SetTrigger("Move");
             Vector3 dir = (originPos - transform.position).normalized;
             cc.Move(dir * moveSpeed * Time.deltaTime);
         }
@@ -326,19 +311,17 @@ public class EnemyFSM : MonoBehaviour
     {
         // 진행 중인 피격 코루틴 중지
         StopAllCoroutines();
-        
         // 죽음 상태를 처리하기 위한 코루틴 
         StartCoroutine(DieProcess());
     }
 
     IEnumerator DieProcess()
     {
-        hpSlider.value = (float) currentHP / (float) maxHP; 
-        // 캐릭터 컨트롤러 컴포넌트를 비활성화
+        HPSliderUpdate();
         cc.enabled = false;
+        
         ItemDrop();
         
-        // 2초 동안 기다린 후, 자기 자신을 제거 (나중에 손 봐야함!)
         yield return new WaitForSeconds(2f);
         print("Die");
         Destroy(gameObject);
@@ -349,7 +332,7 @@ public class EnemyFSM : MonoBehaviour
     // 지면으로 띄우기 
     void ItemDrop()
     {
-        Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, 0);
+        Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, -1f);
         GameObject droppedItem = Instantiate(dropItem, dropPosition, Quaternion.identity);
 
         StartCoroutine(MoveItemToPlayer(droppedItem));
@@ -357,7 +340,6 @@ public class EnemyFSM : MonoBehaviour
     
     IEnumerator MoveItemToPlayer(GameObject item)
     {
-        Debug.Log("item");
         float duration = 1.0f; // 이동 
         Vector3 playerPosition = target.transform.position; // Player-prefab
         
@@ -366,8 +348,6 @@ public class EnemyFSM : MonoBehaviour
         Destroy(item); 
     }
     
-    
-
     void HPSliderUpdate()
     {
         // 현재 몬스터 hp(%)를 hp 슬라이더의 value에 반영
