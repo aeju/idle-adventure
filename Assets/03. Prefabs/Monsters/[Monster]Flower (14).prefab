@@ -205,11 +205,13 @@ MonoBehaviour:
   attackDistance: 2
   moveSpeed: 5
   player: {fileID: 0}
+  target: {fileID: 0}
   attackPower: 3
   moveDistance: 20
   maxHP: 30
   currentHP: 0
   hpSlider: {fileID: 6017040050078356040}
+  dropItem: {fileID: 245751987182268518, guid: 160949c2be9b546238025fd7070c02c6, type: 3}
 --- !u!1001 &2200414630965212441
 PrefabInstance:
   m_ObjectHideFlags: 0

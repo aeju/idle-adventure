@@ -81,16 +81,19 @@ public class PlayerController : MonoBehaviour, IPlayerController
             // z : 기본 공격
             if (Input.GetKeyDown(KeyCode.Z))
             {
+                Debug.Log("z");
                 PlayerAttack();
             }
             // x : 크리티컬 공격
             else if (Input.GetKeyDown(KeyCode.X))
             {
+                Debug.Log("x");
                 PlayerSkill();
             }
             
             else if (Input.GetKeyDown(KeyCode.C)) // 필요시, 치트키 용으로 사용
             {
+                Debug.Log("c");
                 PlayerSkill();
             }
         }

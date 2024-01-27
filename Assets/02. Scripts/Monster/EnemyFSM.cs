@@ -60,6 +60,9 @@ public class EnemyFSM : MonoBehaviour
     // 애니메이션 
     private Animator anim;
     private SkeletonMecanim skeletonMecanim;
+    
+    // 드랍
+    public GameObject dropItem;
 
     void Start()
     {
@@ -71,16 +74,7 @@ public class EnemyFSM : MonoBehaviour
             player = playerObject.transform;
             target = playerObject.GetComponent<PlayerController>();
         }
-        
-        // 플레이어의 트랜스폼 컴포넌트 받아오기 (코드 합칠 필요 o)
-        /*
-        if (gameObject.tag != "player")
-        {
-            player = GameObject.FindGameObjectWithTag("player").transform;
-            
-        }
-        */
-        
+
         // 캐릭터 컨트롤러 컴포넌트 받아오기
         cc = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
@@ -323,6 +317,9 @@ public class EnemyFSM : MonoBehaviour
 
     void Die()
     {
+        // 아이템 드랍
+        ItemDrop();
+        
         // 진행 중인 피격 코루틴 중지
         StopAllCoroutines();
         
@@ -348,4 +345,25 @@ public class EnemyFSM : MonoBehaviour
         //hpSlider.value = Mathf.Lerp((float) hpSlider.value, (float)currentHP / (float)maxHP, Time.deltaTime * 100);
         hpSlider.value = (float) currentHP / (float) maxHP; 
     }
+    
+    // 지면으로 띄우기 
+    void ItemDrop()
+    {
+        Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, 0);
+        GameObject droppedItem = Instantiate(dropItem, dropPosition, Quaternion.identity);
+
+        //StartCoroutine(MoveItemToPlayer(droppedItem));
+    }
+    
+    /*
+    IEnumerator MoveItemToPlayer(GameObject item)
+    {
+        float duration = 1.0f; // 이동 
+        //Vector3 playerPosition = Player[1].transform.position; // Player-prefab
+        
+        //Tween moveTween = item.transform.DOMove(playerPosition, duration).SetEase(Ease.InOutQuad);
+        //yield return moveTween.WaitForCompletion();
+        Destroy(item); 
+    }
+    */
 }
