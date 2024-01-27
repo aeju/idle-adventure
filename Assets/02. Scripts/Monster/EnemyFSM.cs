@@ -37,7 +37,7 @@ public class EnemyFSM : MonoBehaviour
     private CharacterController cc;
     
     // 플레이어 위치
-    public Transform player;
+    //public Transform player;
     // 플레이어 
     public PlayerController target;
     
@@ -69,7 +69,7 @@ public class EnemyFSM : MonoBehaviour
         GameObject playerObject = GameObject.FindGameObjectWithTag("player");
         if (playerObject != null)
         {
-            player = playerObject.transform;
+            //player = playerObject.transform;
             target = playerObject.GetComponent<PlayerController>();
         }
         
@@ -97,7 +97,7 @@ public class EnemyFSM : MonoBehaviour
 
     void Update()
     {
-        if (player == null)
+        if (target == null)
         {
             m_State = EnemyState.Idle;
             return;
@@ -141,9 +141,9 @@ public class EnemyFSM : MonoBehaviour
         {
             flipX = originPos.x > transform.position.x;
         }
-        else if (player != null)
+        else if (target != null)
         {
-            flipX = player.position.x > transform.position.x;
+            flipX = target.transform.position.x > transform.position.x;
         }
         else 
         {
@@ -156,7 +156,7 @@ public class EnemyFSM : MonoBehaviour
     void Idle()
     {
         // 만일, 플레이어와의 거리가 액션 시작 범위 이내라면 Move 상태로 전환
-        if (Vector3.Distance(transform.position, player.position) < findDistance)
+        if (Vector3.Distance(transform.position, target.transform.position) < findDistance)
         //if (Vector3.Distance(transform.position, player.transform.position) < findDistance)
         {
             m_State = EnemyState.Move;
@@ -180,10 +180,10 @@ public class EnemyFSM : MonoBehaviour
         }
         
         // 만일, 플레이어와의 거리가 공격 범위 밖이라면, 플레이어를 향해 이동
-        else if (Vector3.Distance(transform.position, player.position) > attackDistance)
+        else if (Vector3.Distance(transform.position, target.transform.position) > attackDistance)
         {
             // 이동 방향 설정
-            Vector3 dir = (player.position - transform.position).normalized;
+            Vector3 dir = (target.transform.position - transform.position).normalized;
 
             // 이동
             //anim.SetTrigger("Move");
@@ -210,7 +210,7 @@ public class EnemyFSM : MonoBehaviour
     void Attack()
     {
         // 만일, 플레이어가 공격 범위 이내에 있다면 플레이어를 공격
-        if (Vector3.Distance(transform.position, player.position) < attackDistance)
+        if (Vector3.Distance(transform.position, target.transform.position) < attackDistance)
         {
             // 플레이어 hp > 0일 때만, (생존 상태)
             if (target.currentHP > 0)
@@ -220,7 +220,7 @@ public class EnemyFSM : MonoBehaviour
                 if (currentTime > attackDelay) // 경과 시간 > 공격 딜레이 시간
                 {
                     //player.GetComponent<PlayerController>().PlayerDamaged(attackPower);
-                    print("공격, PlayerHP: " + player.GetComponent<PlayerController>().currentHP);
+                    print("공격, PlayerHP: " + target.GetComponent<PlayerController>().currentHP);
                     currentTime = 0; // 경과 시간 초기화
                     // 공격 애니메이션 플레이
                     anim.SetTrigger("StartAttack");
@@ -243,7 +243,7 @@ public class EnemyFSM : MonoBehaviour
     // 플레이어의 스크립트의 데미지 처리 함수 실행
     public void AttackAction()
     {
-        player.GetComponent<PlayerController>().PlayerDamaged(attackPower);
+        target.GetComponent<PlayerController>().PlayerDamaged(attackPower);
     }
 
     void Return()
