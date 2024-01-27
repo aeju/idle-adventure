@@ -4,6 +4,7 @@ using Spine.Unity;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 // 필요 1: Idle상태 -> 주변 배회
 // 필요 2: damaged 애니메이션
@@ -351,8 +352,20 @@ public class EnemyFSM : MonoBehaviour
         Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, 0);
         GameObject droppedItem = Instantiate(dropItem, dropPosition, Quaternion.identity);
 
-        //StartCoroutine(MoveItemToPlayer(droppedItem));
+        StartCoroutine(MoveItemToPlayer(droppedItem));
     }
+    
+    IEnumerator MoveItemToPlayer(GameObject item)
+    {
+        Debug.Log("item");
+        float duration = 1.0f; // 이동 
+        Vector3 playerPosition = target.transform.position; // Player-prefab
+        
+        Tween moveTween = item.transform.DOMove(playerPosition, duration).SetEase(Ease.InOutQuad);
+        yield return moveTween.WaitForCompletion();
+        Destroy(item); 
+    }
+    
     
 
     void HPSliderUpdate()
