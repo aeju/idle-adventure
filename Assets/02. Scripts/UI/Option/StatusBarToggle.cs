@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// 1 : On 
 public class StatusBarToggle : MonoBehaviour
 {
     [SerializeField] private GameObject statusBar;
-    [SerializeField] private Toggle switchToggle; 
-
-    //private const string StatusBarPrefKey = "StatusBarActive";
-
+    [SerializeField] private Toggle switchToggle;
+    
     void Start()
     {
-        // PlayerPrefs에서 StatusBar 활성화 상태 불러오기 (기본값: 1)
-        //bool isActive = PlayerPrefs.GetInt(StatusBarPrefKey, 1) == 1;
-        
         // OptionManager에서 StatusBar 활성화 상태 불러오기 (기본값: 1)
         bool isActive = OptionManager.Instance.GetInt(OptionManager.StatusBarActiveKey, 1) == 1;
         statusBar.SetActive(isActive);
@@ -34,10 +30,6 @@ public class StatusBarToggle : MonoBehaviour
         // StatusBar의 활성/비활성 상태 설정
         statusBar.SetActive(isActive);
         
-        // 변경된 상태를 PlayerPrefs에 저장
-        //PlayerPrefs.SetInt(StatusBarPrefKey, isActive ? 1 : 0);
-        //PlayerPrefs.Save();
-        
         // 변경된 상태를 OptionManager에 저장
         OptionManager.Instance.SetInt(OptionManager.StatusBarActiveKey, isActive ? 1 : 0);
     }
@@ -45,7 +37,6 @@ public class StatusBarToggle : MonoBehaviour
     // 시작 시 저장된 상태에 따라 토글 상태 초기화
     private void SetInitialToggleState()
     {
-        //bool savedState = PlayerPrefs.GetInt(StatusBarPrefKey, 1) == 1;
         bool savedState = OptionManager.Instance.GetInt(OptionManager.StatusBarActiveKey, 1) == 1;
         switchToggle.isOn = savedState;
     }

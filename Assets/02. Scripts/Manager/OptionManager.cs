@@ -8,6 +8,7 @@ public class OptionManager : MonoBehaviour
 
     public const string FrameRateKey = "FrameRate";
     public const string StatusBarActiveKey = "StatusBarActive";
+    public const string MenuOpenedKey = "MenuOpend";
 
     private void Awake()
     {

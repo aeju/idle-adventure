@@ -14,8 +14,10 @@ public class MenuBtn : MonoBehaviour
 {
     public Button menuBtn; // 메뉴 버튼
     public Button closeBtn; // 클로즈 버튼 
-    
     public GameObject menuPanel; // 메뉴 패널 
+    public GameObject settingBtnRedDot;
+
+    public MenuBtnRedDot menuBtnRedDot;
     
     void Start()
     {
@@ -24,6 +26,7 @@ public class MenuBtn : MonoBehaviour
         menuBtn.OnClickAsObservable().Subscribe(_ =>
         {
             ToggleMenuPanel();
+            //MenuBtnRedDotOff();
         }).AddTo(this);
         
         closeBtn.OnClickAsObservable().Subscribe(_ =>
@@ -53,5 +56,19 @@ public class MenuBtn : MonoBehaviour
     public void ToggleMenuPanel() // SettingBtn에서 호출
     {
         menuPanel.SetActive(!menuPanel.activeSelf); //상태 전환 
+
+        if (menuBtnRedDot != null)
+        {
+            menuBtnRedDot.RedDotOff();
+        }
+    }
+    
+    private void MenuBtnRedDotOff()
+    {
+        // MenuBtnRedDot의 DisableRedDot 메소드 호출
+        if (menuBtnRedDot != null)
+        {
+            menuBtnRedDot.RedDotOff();
+        }
     }
 }
