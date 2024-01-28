@@ -7,8 +7,8 @@ using UnityEngine.UI;
 
 public interface IPlayerController
 {
+    int currentHP  { get; set; }
     void PlayerMove();
-    //bool alive { get; set; 
 }
 
 // 필요 : 공격 -> Move x
@@ -17,8 +17,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private PlayerStats playerStats;
     
     // 체력
-    private int maxHP;
-    public int currentHP;
+    //private int maxHP;
+    public int currentHP { get; set; }
 
     public Slider hpSlider;
     public Slider cooldownSlider;
@@ -321,12 +321,11 @@ public class PlayerController : MonoBehaviour, IPlayerController
     {
         // 에너미의 공격력만큼 플레이어의 체력 깎기
         currentHP -= damage;
-        // 현재 플레이어 hp(%)를 hp 슬라이더의 value에 반영
-        Debug.Log("currentHP" +currentHP);
-        Debug.Log("maxHP" + maxHP);
+        // Hp슬라이더 업데이트
         PlayerHPSlider();
     }
 
+    // 현재 플레이어 hp(%)를 hp 슬라이더의 value에 반영
     public void PlayerHPSlider()
     {
         hpSlider.value = (float) currentHP / (float) playerStats.MaxHP; 
