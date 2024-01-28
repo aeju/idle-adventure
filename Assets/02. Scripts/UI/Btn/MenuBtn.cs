@@ -57,7 +57,7 @@ public class MenuBtn : MonoBehaviour
     // 세팅 패널이 활성화되어 있지 않을 때만 메뉴 버튼 눌리게 
     public void ToggleMenuPanel() // SettingBtn에서 호출
     {
-        if (settingBtn != null || !settingBtn.IsSettingPanelActive())
+        if (settingBtn != null && !settingBtn.IsSettingPanelActive())
         {
             // 메뉴 패널 상태 전환 (토글)
             menuPanel.SetActive(!menuPanel.activeSelf); 
