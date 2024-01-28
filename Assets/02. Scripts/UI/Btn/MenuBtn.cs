@@ -15,9 +15,11 @@ public class MenuBtn : MonoBehaviour
     public Button menuBtn; // 메뉴 버튼
     public Button closeBtn; // 클로즈 버튼 
     public GameObject menuPanel; // 메뉴 패널 
-    public GameObject settingBtnRedDot;
+    
+    public GameObject settingBtnRedDot; // 2. 세팅 버튼 레드닷
 
-    public MenuBtnRedDot menuBtnRedDot;
+    public MenuBtnRedDot menuBtnRedDot; // 1. 메뉴 버튼 레드닷
+    public SettingBtn settingBtn;
     
     void Start()
     {
@@ -52,13 +54,17 @@ public class MenuBtn : MonoBehaviour
             }).AddTo(this);
     }
     
+    // 세팅 패널이 활성화되어 있지 않을 때만 메뉴 버튼 눌리게 
     public void ToggleMenuPanel() // SettingBtn에서 호출
     {
-        // 메뉴 패널 상태 전환 (토글)
-        menuPanel.SetActive(!menuPanel.activeSelf); 
+        if (settingBtn != null || !settingBtn.IsSettingPanelActive())
+        {
+            // 메뉴 패널 상태 전환 (토글)
+            menuPanel.SetActive(!menuPanel.activeSelf); 
         
-        // 레드닷 상태 업데이트
-        UpdateRedDots();
+            // 레드닷 상태 업데이트
+            UpdateRedDots();
+        }
     }
 
     // 메뉴 패널 활성화 -> 메뉴 버튼 레드닷 비활성화 / 세팅 버튼 레드닷 활성화
