@@ -16,8 +16,8 @@ public class MenuBtnRedDot : MonoBehaviour
         }
     }
 
-    public void RedDotOff()
+    public void SetActive(bool active)
     {
-        menuBtnRedDot.SetActive(false);
+        menuBtnRedDot.SetActive(active);
     }
 }

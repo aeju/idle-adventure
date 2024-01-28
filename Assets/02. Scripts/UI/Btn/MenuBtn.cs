@@ -26,7 +26,6 @@ public class MenuBtn : MonoBehaviour
         menuBtn.OnClickAsObservable().Subscribe(_ =>
         {
             ToggleMenuPanel();
-            //MenuBtnRedDotOff();
         }).AddTo(this);
         
         closeBtn.OnClickAsObservable().Subscribe(_ =>
@@ -55,20 +54,29 @@ public class MenuBtn : MonoBehaviour
     
     public void ToggleMenuPanel() // SettingBtn에서 호출
     {
-        menuPanel.SetActive(!menuPanel.activeSelf); //상태 전환 
-
-        if (menuBtnRedDot != null)
-        {
-            menuBtnRedDot.RedDotOff();
-        }
+        // 메뉴 패널 상태 전환 (토글)
+        menuPanel.SetActive(!menuPanel.activeSelf); 
+        
+        // 레드닷 상태 업데이트
+        UpdateRedDots();
     }
-    
-    private void MenuBtnRedDotOff()
+
+    // 메뉴 패널 활성화 -> 메뉴 버튼 레드닷 비활성화 / 세팅 버튼 레드닷 활성화
+    // 메뉴 패널 비활성화 -> 메뉴 버튼 레드닷 활성화 / 세팅 버튼 레드닷 비활성화
+    private void UpdateRedDots()
     {
-        // MenuBtnRedDot의 DisableRedDot 메소드 호출
+        bool isMenuPanelActive = menuPanel.activeSelf;
+        
+        // 메뉴 버튼 레드닷
         if (menuBtnRedDot != null)
         {
-            menuBtnRedDot.RedDotOff();
+            menuBtnRedDot.SetActive(!isMenuPanelActive);
+        }
+        
+        // 설정 버튼 레드닷
+        if (settingBtnRedDot != null)
+        {
+            settingBtnRedDot.SetActive(isMenuPanelActive);
         }
     }
 }
