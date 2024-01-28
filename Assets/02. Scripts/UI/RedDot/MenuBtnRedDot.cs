@@ -7,15 +7,15 @@ using UnityEngine;
 public class MenuBtnRedDot : MonoBehaviour
 {
     public GameObject menuBtnRedDot;
+    public bool menuBtnRedDotActive;
     
+    // 키값이 없으면, 레드닷을 활성화
     void Start()
     {
-        if (!PlayerPrefs.HasKey(OptionManager.MenuOpenedKey))
-        {
-            menuBtnRedDot.SetActive(true);
-        }
+        menuBtnRedDotActive = !PlayerPrefs.HasKey(OptionManager.MenuOpenedKey);
+        menuBtnRedDot.SetActive(menuBtnRedDotActive);
     }
-
+    
     public void SetActive(bool active)
     {
         menuBtnRedDot.SetActive(active);

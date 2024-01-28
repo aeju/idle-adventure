@@ -28,9 +28,20 @@ public class SettingBtn : MonoBehaviour
         {
             menuBtnScript.ToggleMenuPanel(); // 메뉴 패널 비활성화
             settingPanel.SetActive(true);
+            
+            // 세팅 패널이 열릴 때 키값 설정 -> 더 이상 레드닷 뜨지 않음
+            PlayerPrefs.SetInt(OptionManager.MenuOpenedKey, 1);
+            PlayerPrefs.Save();
+            Debug.Log("키값저장");
+            Debug.Log(OptionManager.MenuOpenedKey);
         }).AddTo(this);
 
-        closeBtn.OnClickAsObservable().Subscribe(_ => { settingPanel.SetActive(false); }).AddTo(this);
+        // X 버튼
+        closeBtn.OnClickAsObservable().Subscribe(_ =>
+        {
+            settingPanel.SetActive(false); 
+            
+        }).AddTo(this);
 
         // 뒤로가기 키 입력 감지 (= Update)
         Observable.EveryUpdate()

@@ -10,6 +10,9 @@ using UnityEngine.EventSystems;
 // 메뉴 아이콘 클릭 : menuPanel 활성화
 // menuPanel이 활성화된 상태에서, Xbtn 터치하거나 그 외 영역 터치 -> menuPanel 비활성화 
 // 문제점 : menu Panel 내 버튼(idleModeBtn) 클릭 -> menu Panel 비활성화
+
+// 조건 1. !A -> B
+// 조건 2. (B AND D) -> (B XOR C) 
 public class MenuBtn : MonoBehaviour
 {
     public Button menuBtn; // 메뉴 버튼
@@ -63,26 +66,31 @@ public class MenuBtn : MonoBehaviour
             menuPanel.SetActive(!menuPanel.activeSelf); 
         
             // 레드닷 상태 업데이트
-            UpdateRedDots();
+            UpdateRedDot();
         }
     }
 
+    // 메뉴 버튼의 레드닷이 활성화된 상태에서만! (메뉴버튼 레드닷 비활성화 = 세팅버튼 레드닷 비활성화)
     // 메뉴 패널 활성화 -> 메뉴 버튼 레드닷 비활성화 / 세팅 버튼 레드닷 활성화
     // 메뉴 패널 비활성화 -> 메뉴 버튼 레드닷 활성화 / 세팅 버튼 레드닷 비활성화
-    private void UpdateRedDots()
+    private void UpdateRedDot()
     {
-        bool isMenuPanelActive = menuPanel.activeSelf;
-        
-        // 메뉴 버튼 레드닷
-        if (menuBtnRedDot != null)
+        if (menuBtnRedDot != null && settingBtnRedDot != null)
         {
-            menuBtnRedDot.SetActive(!isMenuPanelActive);
-        }
-        
-        // 설정 버튼 레드닷
-        if (settingBtnRedDot != null)
-        {
-            settingBtnRedDot.SetActive(isMenuPanelActive);
+            // 1. 메뉴 버튼 레드닷 활성화
+            if (!PlayerPrefs.HasKey(OptionManager.MenuOpenedKey))
+            {
+                // 2. 메뉴 패널 활성화 -> 두 레드닷 상태 변환 
+                if (menuPanel.activeSelf)
+                {
+                    menuBtnRedDot.SetActive(false);
+                    settingBtnRedDot.SetActive(true);
+                }
+            }
+            else
+            {
+                settingBtnRedDot.SetActive(false);
+            }
         }
     }
 }
