@@ -11,29 +11,29 @@ using UnityEngine.EventSystems;
 // 닫힘: X버튼, 패널 밖 영역 터치
 public class SettingBtn : MonoBehaviour
 {
-    public GameObject markerPrefab; // 클릭 마커 프리팹
-    public Canvas canvas; // UI 캔버스
-
     public Button settingBtn; // 메뉴 버튼
     public Button closeBtn; // 클로즈 버튼 
 
     public GameObject settingPanel; // 세팅 패널
-    public MenuBtn menuBtnScript;
+    public MenuBtn menuBtn;
 
     void Start()
     {
         settingPanel.SetActive(false);
 
+        // 세팅 버튼을 누르면
+        // 1. 세팅 패널 활성화
+        // 2. 메뉴 패널 닫히고, 메뉴 버튼 활성화 (= menu 패널 닫기)
         settingBtn.OnClickAsObservable().Subscribe(_ =>
         {
-            menuBtnScript.ToggleMenuPanel(); // 메뉴 패널 비활성화
             settingPanel.SetActive(true);
             
             // 세팅 패널이 열릴 때 키값 설정 -> 더 이상 레드닷 뜨지 않음
             PlayerPrefs.SetInt(OptionManager.MenuOpenedKey, 1);
             PlayerPrefs.Save();
-            Debug.Log("키값저장");
-            Debug.Log(OptionManager.MenuOpenedKey);
+
+            menuBtn.Close();
+            
         }).AddTo(this);
 
         // X 버튼
@@ -53,11 +53,5 @@ public class SettingBtn : MonoBehaviour
                     settingPanel.SetActive(false);
                 }
             }).AddTo(this);
-    }
-
-    // 세팅 패널이 활성화되어 있는지 여부
-    public bool IsSettingPanelActive()
-    {
-        return settingPanel.activeSelf;
     }
 }

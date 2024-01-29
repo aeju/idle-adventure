@@ -13,7 +13,8 @@ public class MenuBtnRedDot : MonoBehaviour
     void Start()
     {
         menuBtnRedDotActive = !PlayerPrefs.HasKey(OptionManager.MenuOpenedKey);
-        menuBtnRedDot.SetActive(menuBtnRedDotActive);
+
+        SetActive(menuBtnRedDotActive);
     }
     
     public void SetActive(bool active)
