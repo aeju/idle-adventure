@@ -60,5 +60,9 @@ public class FrameRate : MonoBehaviour
     {
         Application.targetFrameRate = frameRate; // 프레임 레이트 설정
         OptionManager.Instance.SetInt(OptionManager.FrameRateKey, frameRate);
+        PlayerPrefs.Save(); // 변경사항 저장
+        
+        // 프레임 레이트 변경 이벤트 호출
+        OnFrameRateChanged?.Invoke(frameRate);
     }
 }
