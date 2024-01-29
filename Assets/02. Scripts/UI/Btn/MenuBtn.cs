@@ -18,17 +18,17 @@ public class MenuBtn : MonoBehaviour
     public Button menuBtn; // 메뉴 버튼
     public Button closeBtn; // 클로즈 버튼 
     public GameObject menuPanel; // 메뉴 패널 
+    public GameObject settingPanel; // 세팅 패널
 
     public GameObject settingBtnRedDot; // 2. 세팅 버튼 레드닷
 
     public MenuBtnRedDot menuBtnRedDot; // 1. 메뉴 버튼 레드닷
     public SettingBtn settingBtn;
 
-    public bool redDotActive;
-    
     void Start()
     {
         menuPanel.SetActive(false);
+        settingPanel.SetActive(false);
         
         menuBtn.OnClickAsObservable().Subscribe(_ =>
         {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,9 @@ public class FrameRate : MonoBehaviour
     public Toggle toggle45;
     public Toggle toggle60;
 
+    // 상단바 - fps 디스플레이 변경 이벤트
+    public static event Action<int> OnFrameRateChanged;
+    
     private void Start()
     {
         // 기본 FPS 설정
