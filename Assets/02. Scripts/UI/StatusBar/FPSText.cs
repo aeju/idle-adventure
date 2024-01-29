@@ -7,6 +7,13 @@ using TMPro;
 public class FPSText : MonoBehaviour
 {
     public TextMeshProUGUI frameRateText;
+
+    void Start()
+    {
+        // 현재 설정된 프레임 레이트 값을 가져와서 텍스트 업데이트
+        int currentFrameRate = OptionManager.Instance.GetInt(OptionManager.FrameRateKey, 60);
+        UpdateFrameRateText(currentFrameRate);
+    }
     
     void OnEnable()
     {

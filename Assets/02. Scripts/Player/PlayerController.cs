@@ -11,7 +11,7 @@ public interface IPlayerController
     void PlayerMove();
 }
 
-// 필요 : 공격 -> Move x
+// 필요 : 공격 -> Move x (state 분리)
 public class PlayerController : MonoBehaviour, IPlayerController
 {
     private PlayerStats playerStats;
@@ -50,6 +50,12 @@ public class PlayerController : MonoBehaviour, IPlayerController
     
     [SerializeField]
     private GameObject nearestMonster;
+    
+    // 공격 이펙트
+    public Transform attackPosition;
+    public Transform skillPosition;
+    public GameObject attackEffect;
+    public GameObject skillEffect;
 
     void Start()
     {
@@ -207,21 +213,32 @@ public class PlayerController : MonoBehaviour, IPlayerController
         }
     }
     
-    // 기본 공격 : attack02
+    // 기본 공격 (attack02)
     void PlayerAttackAnim()
     {
         Debug.Log("1. PlayerAttackAnim()");
         EnemyFSM enemyFsm = nearestMonster.GetComponent<EnemyFSM>();
+
+        // CreateAttackEffect();
+        
         if (enemyFsm != null)
         {
             Debug.Log(enemyFsm != null);
             enemyFsm.HitEnemy(CombatPower);
             Debug.Log("3. HitEnemy");
         }
-        
+    }
+    
+    void CreateAttackEffect()
+    {
+        if (attackEffect != null && attackPosition != null)
+        {
+            GameObject effectInstance = Instantiate(attackEffect, attackPosition.position, attackPosition.rotation);
+            effectInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); // 크기를 0.1로 설정
+        }
     }
 
-    // 치명타 공격 : attack01
+    // 치명타 공격 (attack01)
     void PlayerSkillAnim()
     {
         Debug.Log("1. PlayerAttackAnim()");
