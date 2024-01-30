@@ -7,11 +7,27 @@ using UnityEngine.UI;
 // Off: 조이스틱 입력 최댓값
 public class ScreenManager : MonoBehaviour
 {
-    public float idleTime = 60.0f; // 방치 시간 : 1분 
+    public static ScreenManager Instance { get; private set; }
+    
+    public float idleTime = 30.0f; // 방치 시간 : 30초 
     private float currentTime;
     
     public Canvas idleModeCanvas; // idle Mode(검은 화면) 표시 Canvas
     private CountTime countTime;
+    
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Optional: Keep the instance alive across scenes
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
     
     private void Start()
     {
@@ -25,7 +41,6 @@ public class ScreenManager : MonoBehaviour
     {
         //currentTime = 0;
         // 사용자의 입력이 감지되면 타이머를 초기화
-        //if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1))
         if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
             currentTime = 0;
@@ -34,7 +49,6 @@ public class ScreenManager : MonoBehaviour
                 idleModeCanvas.enabled = false; 
                 countTime.IdleModeOff();
             }
-            
         }
         else
         {
@@ -55,9 +69,19 @@ public class ScreenManager : MonoBehaviour
     {
         if (!idleModeCanvas.enabled)
         {
-            Debug.Log("Idle Mode Screen On (Button)");
+            Debug.Log("Idle Mode On (Button)");
             idleModeCanvas.enabled = true;
             countTime.IdleModeOn();
+        }
+    }
+    
+    public void DeactivateIdleModeCanvas()
+    {
+        if (idleModeCanvas.enabled)
+        {
+            Debug.Log("Idle Mode Off");
+            idleModeCanvas.enabled = false;
+            countTime.IdleModeOff();
         }
     }
 }
