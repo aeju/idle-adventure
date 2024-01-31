@@ -68,9 +68,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         anim = GetComponent<Animator>();
 
         //Monster = GameObject.FindGameObjectWithTag("monster");
-        
-        //hpSlider.value = (float) currentHP / (float) playerStats.MaxHP;
-        
+
         monsterLayerMask = LayerMask.GetMask("Enemy");
         PlayerHPSlider();
         StartCoroutine(DetectNearestMonsterCoroutine());
@@ -233,16 +231,20 @@ public class PlayerController : MonoBehaviour, IPlayerController
         }
     }
     
+    // true -> false 로 변환해둬야 다시 스킬 이펙트 o
     void CreateAttackEffect()
     {
         if (attackEffect != null && attackPosition != null)
         {
             attackEffect.SetActive(true);
-            // 추가 : 1초 후, 다시 SetActive(false)로 변환 
-            
-            //GameObject effectInstance = Instantiate(attackEffect, attackPosition.position, attackPosition.rotation);
-            //effectInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); // 크기를 0.1로 설정
+            StartCoroutine(DeactivateAfterDelay(1.5f)); // 1.5초 후에 비활성화
         }
+    }
+
+    IEnumerator DeactivateAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); // 지정된 시간만큼 대기
+        attackEffect.SetActive(false);
     }
 
     // 치명타 공격 (attack01)
