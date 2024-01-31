@@ -2,13 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Queue 사용
+// 스폰된 위치에서 몬스터 생성
+// 죽고나서, 30초 후 같은 지점에서 생성
 public class PoolManager : MonoBehaviour
 {
-    // 프리팹 보관할 변수
-    public GameObject[] prefabs;
     // 풀 담당 리스트 (변수 개수와 1:1 관계)
     private List<GameObject>[] pools;
-
+    
+    public GameObject[] prefabs;
+    
+    /*
+    // 프리팹 보관할 변수
+    public EnemyFSM monsterPrefab;
+    public int poolSize = 10;
+    
+    private Queue<EnemyFSM> pool = new Queue<EnemyFSM>();
+    */
+    
     void Awake()
     {
         pools = new List<GameObject>[prefabs.Length];
@@ -45,4 +56,40 @@ public class PoolManager : MonoBehaviour
         
         return select;
     }
+    
+
+    /*
+    void Start()
+    {
+        for (int i = 0; i < poolSize; i++)
+        {
+            EnemyFSM monster = Instantiate(monsterPrefab);
+            monster.Deactivate();
+            pool.Enqueue(monster);
+        }
+    }
+
+    public EnemyFSM GetMonster()
+    {
+        if (pool.Count > 0)
+        {
+            EnemyFSM monster = pool.Dequeue();
+            monster.Activate();
+            return monster;
+        }
+
+        else // 풀이 비었다면 새로운 몬스터 생성
+        {
+            EnemyFSM monster = Instantiate(monsterPrefab);
+            monster.Activate();
+            return monster;
+        }
+    }
+    
+    public void ReturnMonster(EnemyFSM monster)
+    {
+        monster.Deactivate();
+        pool.Enqueue(monster);
+    }
+    */
 }

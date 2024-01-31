@@ -74,6 +74,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
         monsterLayerMask = LayerMask.GetMask("Enemy");
         PlayerHPSlider();
         StartCoroutine(DetectNearestMonsterCoroutine());
+        
+        attackEffect.SetActive(false);
     }
     
     void Update()
@@ -189,6 +191,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         }
     }
     
+    // 추가: 캐릭터 정면에 있을 때만 공격 가능 
     void DetectAndAttackNearestMonster()
     {
         float detectionRadius = 5f; 
@@ -226,6 +229,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
             Debug.Log(enemyFsm != null);
             enemyFsm.HitEnemy(CombatPower);
             Debug.Log("3. HitEnemy");
+            CreateAttackEffect();
         }
     }
     
@@ -233,8 +237,11 @@ public class PlayerController : MonoBehaviour, IPlayerController
     {
         if (attackEffect != null && attackPosition != null)
         {
-            GameObject effectInstance = Instantiate(attackEffect, attackPosition.position, attackPosition.rotation);
-            effectInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); // 크기를 0.1로 설정
+            attackEffect.SetActive(true);
+            // 추가 : 1초 후, 다시 SetActive(false)로 변환 
+            
+            //GameObject effectInstance = Instantiate(attackEffect, attackPosition.position, attackPosition.rotation);
+            //effectInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); // 크기를 0.1로 설정
         }
     }
 
@@ -249,31 +256,9 @@ public class PlayerController : MonoBehaviour, IPlayerController
             Debug.Log(enemyFsm != null);
             enemyFsm.HitEnemy(CombatPower);
             Debug.Log("3. HitEnemy");
+            //CreateAttackEffect();
         }
-        /*
-        // 레이 생성한 후, 발사될 위치 + 진행 방향
-        Ray ray = new Ray(transform.position, Monster.transform.position);
         
-        Monster = GameObject.FindGameObjectWithTag("monster");
-        // 레이가 부딪힌 대상의 정보를 저장할 변수를 생성
-        RaycastHit hitInfo = new RaycastHit();
-
-        Debug.Log("1. Lay");
-        
-        float radius = 1f; // Radius of the sphere cast
-        float distance = 1f;
-        if (Physics.SphereCast(ray, radius, out hitInfo, distance))
-        {
-            Debug.Log("2. Lay Hit");
-            // 만일 레이에 부딪힌 대상의 태그가 monster라면, 데미지 함수를 실행
-            if (hitInfo.transform.gameObject.tag == "monster")
-            {
-                Debug.Log("3. Lay Enemy Hit");
-                EnemyFSM eFSM = Monster.GetComponent<EnemyFSM>();
-                eFSM.HitEnemy(CombatPower);
-            }
-        }
-        */
     }
     
     // 일반 공격 

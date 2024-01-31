@@ -354,4 +354,14 @@ public class EnemyFSM : MonoBehaviour
         //hpSlider.value = Mathf.Lerp((float) hpSlider.value, (float)currentHP / (float)maxHP, Time.deltaTime * 100);
         hpSlider.value = (float) currentHP / (float) maxHP; 
     }
+
+    public void Activate()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Deactivate()
+    {
+        gameObject.SetActive(false);
+    }
 }
