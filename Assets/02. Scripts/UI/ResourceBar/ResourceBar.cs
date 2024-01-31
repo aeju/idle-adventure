@@ -8,24 +8,38 @@ using TMPro;
 // 코인 단위 축약 : 4자리 미만 -> 축약할 필요 x
 // 전투력 
 // 드랍 아이템 -> 리소스바 UI 반영 
+
+// 추가 작업 필요: 전투력 변화 -> 업데이트
 public class ResourceBar : MonoBehaviour
 {
     protected ResourceManager resoureInfo;
+    protected CombatManager combatInfo;
     
     public int ruby;
     public int coin;
+    public int combatPower;
+    
     public int summon_Ticket;
+    
 
     public TextMeshProUGUI rubyText;
     public TextMeshProUGUI coinText;
+    public TextMeshProUGUI combatPowerText;
     
     void Start()
     {
         resoureInfo = ResourceManager.Instance;
+        combatInfo = CombatManager.Instance;
         
         if (resoureInfo == null)
         {
             Debug.LogError("ResourceManager null");
+            return;
+        }
+        
+        if (combatInfo == null)
+        {
+            Debug.LogError("CombatManager null");
             return;
         }
         
@@ -43,6 +57,7 @@ public class ResourceBar : MonoBehaviour
     
     void UpdateUI()
     {
+        // 리소스: 루비, 코인
         if (resoureInfo != null)
         {
             // 루비, 코인, 티켓 null 처리 
@@ -53,6 +68,14 @@ public class ResourceBar : MonoBehaviour
             rubyText.text = ruby.ToString();
             //coinText.text = coin.ToString();
             coinText.text = FormatCoinUnit(coin);
+        }
+
+        // 컴뱃: 전투력
+        if (combatInfo != null)
+        {
+            combatPower = combatInfo.combatPower;
+
+            combatPowerText.text = combatPower.ToString();
         }
     }
 

@@ -988,7 +988,7 @@ GameObject:
   - component: {fileID: 1336026304982722795}
   - component: {fileID: 5244894589866148181}
   m_Layer: 5
-  m_Name: State Bar
+  m_Name: Resource Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1028,9 +1028,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ruby: 0
   coin: 0
+  combatPower: 0
   summon_Ticket: 0
   rubyText: {fileID: 6551148171864189857}
   coinText: {fileID: 7058106962482925386}
+  combatPowerText: {fileID: 7473122314281363869}
 --- !u!1 &8744326186516506659
 GameObject:
   m_ObjectHideFlags: 0
