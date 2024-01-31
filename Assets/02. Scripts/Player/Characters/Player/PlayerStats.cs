@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     // 스탯
-    public int HP; // 생명력 
+    public int MaxHP; // 생명력 
     public int Attack; // 공격력 
     public int Defense; // 방어력
     public int Critical_Hit_Rate; // 치명타 확률
