@@ -56,6 +56,13 @@ public class EnemyFSM : MonoBehaviour
     public int currentHP;
     public Slider hpSlider;
     
+    // 경험치
+    public int expReward = 50;
+    protected UserInfoManager userInfo;
+    // 금화
+    public int coinReward = 1000;
+    protected ResourceManager resourceInfo;
+    
     // 애니메이션 
     private Animator anim;
     private SkeletonMecanim skeletonMecanim;
@@ -346,6 +353,18 @@ public class EnemyFSM : MonoBehaviour
         Tween moveTween = item.transform.DOMove(playerPosition, duration).SetEase(Ease.InOutQuad);
         yield return moveTween.WaitForCompletion();
         Destroy(item); 
+        
+        if (userInfo != null)
+        {
+            userInfo.AddExperience(expReward);
+            Debug.Log("Add Exp");
+        }
+
+        if (resourceInfo != null)
+        {
+            resourceInfo.AddCoin(coinReward);
+            Debug.Log("Add Coin");
+        }
     }
     
     void HPSliderUpdate()
