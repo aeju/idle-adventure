@@ -39,7 +39,6 @@ public class ScreenManager : MonoBehaviour
 
     private void Update()
     {
-        //currentTime = 0;
         // 사용자의 입력이 감지되면 타이머를 초기화
         if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
@@ -69,7 +68,6 @@ public class ScreenManager : MonoBehaviour
     {
         if (!idleModeCanvas.enabled)
         {
-            Debug.Log("Idle Mode On (Button)");
             idleModeCanvas.enabled = true;
             countTime.IdleModeOn();
         }
@@ -79,7 +77,6 @@ public class ScreenManager : MonoBehaviour
     {
         if (idleModeCanvas.enabled)
         {
-            Debug.Log("Idle Mode Off");
             idleModeCanvas.enabled = false;
             countTime.IdleModeOff();
         }

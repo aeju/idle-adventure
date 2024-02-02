@@ -35,13 +35,13 @@ public class MenuBtn : MonoBehaviour
             // 세팅 패널 열리지 않았을 때만 눌리게 
             if (!settingBtn.settingPanel.activeSelf)
             {
-                Open();
+                Open(); // 세팅 패널 On
             }
         }).AddTo(this);
         
         closeBtn.OnClickAsObservable().Subscribe(_ =>
         {
-            Close();
+            Close(); // 세팅 패널 Off
         }).AddTo(this);
     }
 

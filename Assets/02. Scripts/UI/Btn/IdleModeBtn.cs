@@ -16,14 +16,14 @@ public class IdleModeBtn : MonoBehaviour
         {
             idleModeButton.OnClickAsObservable().Subscribe(_ => 
                 {
-                    Debug.Log("Click Btn");
+                    //Debug.Log("Click Btn");
                     screenManager.ActivateIdleModeScreen();
                 })
                 .AddTo(this);
         }
         else
         {
-            Debug.LogError("Button or ScreenManager is null");
+            Debug.LogError("IdleMode Button or ScreenManager is null");
         }
     }
 }

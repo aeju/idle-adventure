@@ -10,8 +10,8 @@ using TMPro;
 public class BatteryStatus : MonoBehaviour
 {
     public Image batteryImage;
-    public Sprite[] batterySprites; // 충전 중x, 스프라이트 배열 (battery level_0, battery level_1, battery level_2, battery level_3, battery level_4)
-    public Sprite chargingSprite; // 충전 중 (battery level_9)
+    public Sprite[] batterySprites; 
+    public Sprite chargingSprite; 
 
     // BatteryManager 이벤트에 메서드 등록
     private void OnEnable()
@@ -64,7 +64,7 @@ public class BatteryStatus : MonoBehaviour
             return 2;
         else if (batteryPercentage <= 75)
             return 3;
-        else
+        else // 100 이하
             return 4;
     }
 }
