@@ -6,12 +6,14 @@ using UnityEngine;
 public class CombatManager : MonoBehaviour
 {
     public static CombatManager Instance { get; private set; }
+
+    private GameObject player;
     
-    public PlayerStats playerStats;
-    
-    public int maxHP;
-    public int attack;
-    public int defense;
+    private PlayerController playerStats;
+
+    [SerializeField] private int maxHP;
+    private int attack;
+    private int defense;
 
     public int combatPower;
 
@@ -30,11 +32,21 @@ public class CombatManager : MonoBehaviour
     
     void Start()
     {
-        maxHP = playerStats.MaxHP;
-        attack = playerStats.Attack;
-        defense = playerStats.Defense;
+        player = GameObject.FindGameObjectWithTag("player");
 
-        combatPower = CalculateCombatPower(maxHP, attack, defense);
+        if (player != null)
+        {
+            playerStats = player.GetComponent<PlayerController>();
+            if (playerStats != null)
+            {
+                Debug.Log("playerStats.maxHP" + playerStats.maxHP);
+                Debug.Log("playerStats.attack" + playerStats.attack);
+                Debug.Log("playerStats.defense" + playerStats.defense);
+                combatPower = CalculateCombatPower(playerStats.maxHP, playerStats.attack, playerStats.defense);
+                Debug.Log("playerStats.combatPower" + combatPower);
+            }
+        }
+        
     }
 
     public int CalculateCombatPower(int maxHP, int attack, int defense)

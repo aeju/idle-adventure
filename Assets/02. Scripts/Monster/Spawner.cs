@@ -28,7 +28,7 @@ public class Spawner : MonoBehaviour
     void Spawn()
     {
         //GameManager.instance.pool.Get(1);
-        GameObject enemy = GameManager.instance.pool.Get(Random.Range(0, 2));
+        GameObject enemy = GameManager.Instance.pool.Get(Random.Range(0, 2));
         enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position; // 자식 오브젝트에서만 선택되도록 랜덤 시작은 1부터
     }
 }

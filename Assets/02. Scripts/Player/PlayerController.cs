@@ -12,16 +12,15 @@ public interface IPlayerController
 }
 
 // 필요 : 공격 -> Move x (state 분리)
-public class PlayerController : MonoBehaviour, IPlayerController
+public partial class PlayerController : MonoBehaviour, IPlayerController
 {
+    public PlayerStat statss;
+    
     // 체력
-    public int maxHP = 100;
-    public int currentHP;
+    //public int maxHP;
+    //public int currentHP;
     
-    public Slider hpSlider;
-    public Slider cooldownSlider;
-    
-    private PlayerStats playerStats;
+    //private PlayerStats playerStats;
     
     // 애니메이션
     private Animator anim;
@@ -48,30 +47,47 @@ public class PlayerController : MonoBehaviour, IPlayerController
     // 레이어 마스크 : 가장 가까운 몬스터 탐지에 필요
     public LayerMask monsterLayerMask;
     
-    [SerializeField]
-    private GameObject nearestMonster;
+    [SerializeField] private GameObject nearestMonster;
     
     // 공격 이펙트
-    public Transform attackPosition;
-    public Transform skillPosition;
     public GameObject attackEffect;
     public GameObject skillEffect;
 
     void Start()
     {
-        playerStats = GetComponent<PlayerStats>();
+        
+        //playerStats = GetComponent<PlayerStats>();
+        
+        //statss = Resources.Load<PlayerStat>(Assets/02. Scripts/Test/PonpoStat.asset);
+        
+        int CCombatPower = statss.MaxHP + statss.Attack + statss.Defense;
+        Debug.Log("CombatPower" + CCombatPower);
+        
+        AssignStats();
         anim = GetComponent<Animator>();
 
-        Monster = GameObject.FindGameObjectWithTag("monster");
+        // Monster = GameObject.FindGameObjectWithTag("monster");
 
-        currentHP = maxHP;
-        hpSlider.value = (float) currentHP / (float) maxHP;
+        currentHP = maxHP; // HP 초기화
+        HPSliderUpdate();
 
         attackEffect.SetActive(false);
         
         monsterLayerMask = LayerMask.GetMask("Enemy");
         StartCoroutine(DetectNearestMonsterCoroutine());
     }
+    
+    
+    /*
+    void AssignPlayerStatDynamically(string path)
+    {
+        playerStat = Resources.Load<PlayerStat>(path);
+        if (playerStat == null)
+        {
+            Debug.LogError($"Failed to load PlayerStat at path: {path}");
+        }
+    }
+    */
     
     void Update()
     {
@@ -146,7 +162,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
             combinedInput = new Vector3(horizontalInput, 0, verticalInput);
         }
         
-        Vector3 moveVelocity = combinedInput.normalized * playerStats.Movement_Speed * Time.deltaTime;
+        //Vector3 moveVelocity = combinedInput.normalized * playerStats.Movement_Speed * Time.deltaTime;
+        Vector3 moveVelocity = combinedInput.normalized * statss.Movement_Speed * Time.deltaTime;
         transform.position += moveVelocity;
         
         // 애니메이션
@@ -223,13 +240,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
     void CreateAttackEffect()
     {
         attackEffect.SetActive(true);
-        /*
-        if (attackEffect != null && attackPosition != null)
-        {
-            GameObject effectInstance = Instantiate(attackEffect, attackPosition.position, attackPosition.rotation);
-            effectInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); // 크기를 0.1로 설정
-        }
-        */
     }
 
     // 치명타 공격 (attack01)
@@ -314,7 +324,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
                 cooldownSlider.value = cooldownSlider.maxValue;
             }
         }
-        
     }
 
     // 피격 함수
@@ -322,12 +331,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
     {
         // 에너미의 공격력만큼 플레이어의 체력 깎기
         currentHP -= damage;
-        // 현재 플레이어 hp(%)를 hp 슬라이더의 value에 반영
-        hpSlider.value = (float) currentHP / (float) maxHP; 
-    }
-
-    public void HPSliderUpdate()
-    {
-        
+        HPSliderUpdate();
     }
 }
