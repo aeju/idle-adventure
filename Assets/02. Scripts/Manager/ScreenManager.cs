@@ -13,14 +13,14 @@ public class ScreenManager : MonoBehaviour
     private float currentTime;
     
     public Canvas idleModeCanvas; // idle Mode(검은 화면) 표시 Canvas
-    private CountTime countTime;
+    public IdleModeCountTime countTime;
     
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Optional: Keep the instance alive across scenes
+            DontDestroyOnLoad(gameObject); 
         }
         else
         {
@@ -34,7 +34,7 @@ public class ScreenManager : MonoBehaviour
         idleModeCanvas.enabled = false; 
         currentTime = 0; // 타이머 초기화
 
-        countTime = gameObject.AddComponent<CountTime>();
+        //countTime = GetComponent<IdleModeCountTime>();
     }
 
     private void Update()
@@ -56,7 +56,6 @@ public class ScreenManager : MonoBehaviour
             // 지정된 방치 시간이 초과되면 검은 화면을 활성화
             if (currentTime >= idleTime && !idleModeCanvas.enabled)
             {
-                Debug.Log("Idle Mode Screen On");
                 idleModeCanvas.enabled = true; // idle Mode 잠금화면 활성화
                 countTime.IdleModeOn();
             }
