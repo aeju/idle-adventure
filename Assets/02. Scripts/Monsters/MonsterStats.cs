@@ -16,6 +16,7 @@ public class MonsterStats : MonoBehaviour
     
     public int coin;
     public string monsterName;
+    public int exp;
 
     public void Start()
     {
@@ -38,6 +39,7 @@ public class MonsterStats : MonoBehaviour
         movement_Speed = monsterStats.Movement_Speed; // 이동속도
     
         coin = monsterStats.Coin;
+        exp = monsterStats.Exp;
         monsterName = monsterStats.Monster_Name;
     }
 }

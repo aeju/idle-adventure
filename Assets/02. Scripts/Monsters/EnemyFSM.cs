@@ -4,6 +4,7 @@ using Spine.Unity;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 // 필요 1: Idle상태 -> 주변 배회
 // 필요 2: damaged 애니메이션
@@ -30,9 +31,6 @@ public class EnemyFSM : MonoBehaviour
     public float findDistance = 8f;
     // 공격 가능 범위
     public float attackDistance = 2f;
-    
-    // 이동 속도
-    //public float moveSpeed = 5f;
     
     // 캐릭터 컨트롤러 컴포넌트
     private CharacterController cc;
@@ -62,6 +60,8 @@ public class EnemyFSM : MonoBehaviour
     // 애니메이션 
     private Animator anim;
     private SkeletonMecanim skeletonMecanim;
+    
+    public GameObject dropItem;
 
     void Start()
     {
@@ -326,6 +326,7 @@ public class EnemyFSM : MonoBehaviour
 
     IEnumerator DieProcess()
     {
+        ItemDrop();
         hpSlider.value = (float) monsterStats.currentHP / (float) monsterStats.maxHP; 
         // 캐릭터 컨트롤러 컴포넌트를 비활성화
         cc.enabled = false;
@@ -341,5 +342,25 @@ public class EnemyFSM : MonoBehaviour
         // 현재 몬스터 hp(%)를 hp 슬라이더의 value에 반영
         //hpSlider.value = Mathf.Lerp((float) hpSlider.value, (float)currentHP / (float)maxHP, Time.deltaTime * 100);
         hpSlider.value = (float) monsterStats.currentHP / (float) monsterStats.maxHP; 
+    }
+    
+    // 지면으로 띄우기 
+    void ItemDrop()
+    {
+        Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, 0);
+        GameObject droppedItem = Instantiate(dropItem, dropPosition, Quaternion.identity);
+
+        StartCoroutine(MoveItemToPlayer(droppedItem));
+    }
+    
+    IEnumerator MoveItemToPlayer(GameObject item)
+    {
+        float duration = 1.0f; // 이동 
+        //Vector3 playerPosition = Player[1].transform.position; // Player-prefab
+        Vector3 playerPosition = target.transform.position; // Player-prefab
+        
+        Tween moveTween = item.transform.DOMove(playerPosition, duration).SetEase(Ease.InOutQuad);
+        yield return moveTween.WaitForCompletion();
+        Destroy(item); 
     }
 }

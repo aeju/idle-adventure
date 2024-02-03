@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 245751987182268518}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.06, y: 1.1, z: -1}
+  m_LocalPosition: {x: -4.06, y: 1.1, z: -2}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -169,6 +169,14 @@ PrefabInstance:
     - target: {fileID: 2897190460447808419, guid: 6b07e64e239e1485d951edac11b8cf9e, type: 3}
       propertyPath: m_Name
       value: Coin
+      objectReference: {fileID: 0}
+    - target: {fileID: 4007685006573179988, guid: 6b07e64e239e1485d951edac11b8cf9e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 41082912d6a14499ca0df96d4c2bc55e, type: 3}
+    - target: {fileID: 4007685006573179988, guid: 6b07e64e239e1485d951edac11b8cf9e, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8637275857087306260, guid: 6b07e64e239e1485d951edac11b8cf9e, type: 3}
       propertyPath: m_LocalPosition.x

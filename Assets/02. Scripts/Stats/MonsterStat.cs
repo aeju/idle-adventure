@@ -8,4 +8,5 @@ public class MonsterStat : StatBase
 {
     public string Monster_Name;
     public int Coin;
+    public int Exp;
 }
