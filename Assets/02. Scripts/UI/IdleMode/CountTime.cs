@@ -3,17 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+// black screen이 활성화 -> 시간 측정
 public class CountTime : MonoBehaviour
 {
     public float blackScreenTime;
     public bool isBlackScreenActive;
-    
-    public TextMeshProUGUI idleModeTime;
-    
-    // Start is called before the first frame update
+
+    public TextMeshProUGUI idleModeTime_text;
+
     void Start()
     {
-        idleModeTime.text = "0분";
+        idleModeTime_text = GameObject.Find("Idle Mode Count Time").GetComponent<TextMeshProUGUI>();
+        
+        if (idleModeTime_text == null)
+        {
+            Debug.LogError("Failed to find TextMeshProUGUI component");
+        }
+    }
+    
+    public void IdleModeOn()
+    {
+        Debug.Log("[count Time]Idle Mode On");
+        isBlackScreenActive = true;
+        blackScreenTime = 0; // 타이머 초기화 
+    }
+
+    public void IdleModeOff()
+    {
+        isBlackScreenActive = false;
     }
 
     void Update()
@@ -21,9 +38,9 @@ public class CountTime : MonoBehaviour
         if (isBlackScreenActive)
         {
             blackScreenTime += Time.deltaTime;
-            if (idleModeTime != null)
+            if (idleModeTime_text != null)
             {
-                idleModeTime.text = FormatTime(blackScreenTime);
+                idleModeTime_text.text = FormatTime(blackScreenTime);
             }
             else
             {
@@ -31,7 +48,7 @@ public class CountTime : MonoBehaviour
             }
         }
     }
-    
+
     // 시간 형식 : 60분 이하 -> @@분, 60분 이상 -> @시간 @분
     private string FormatTime(float time)
     {
@@ -47,7 +64,7 @@ public class CountTime : MonoBehaviour
             return minutes + "분";
         }
     }
-    
+
     public float GetCountTime()
     {
         return blackScreenTime;
