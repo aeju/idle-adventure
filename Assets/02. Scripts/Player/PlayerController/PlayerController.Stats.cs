@@ -18,12 +18,12 @@ public partial class PlayerController : MonoBehaviour
     
     public void AssignStats()
     {
-        maxHP = statss.MaxHP;
+        maxHP = playerStats.MaxHP;
         currentHP = maxHP; // HP 초기화
-        attack = statss.Attack;
-        defense = statss.Defense;
-        movement_Speed = statss.Movement_Speed;
-        critical_Hit_Rate = statss.Critical_Hit_Rate;
-        hP_Recovery = statss.HP_Recovery;
+        attack = playerStats.Attack;
+        defense = playerStats.Defense;
+        movement_Speed = playerStats.Movement_Speed;
+        critical_Hit_Rate = playerStats.Critical_Hit_Rate;
+        hP_Recovery = playerStats.HP_Recovery;
     }
 }

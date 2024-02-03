@@ -14,7 +14,7 @@ public interface IPlayerController
 // 필요 : 공격 -> Move x (state 분리)
 public partial class PlayerController : MonoBehaviour, IPlayerController
 {
-    public PlayerStat statss;
+    public PlayerStat playerStats;
     
     // 체력
     //public int maxHP;
@@ -141,8 +141,8 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             combinedInput = new Vector3(horizontalInput, 0, verticalInput);
         }
         
-        //Vector3 moveVelocity = combinedInput.normalized * playerStats.Movement_Speed * Time.deltaTime;
-        Vector3 moveVelocity = combinedInput.normalized * statss.Movement_Speed * Time.deltaTime;
+        Vector3 moveVelocity = combinedInput.normalized * playerStats.Movement_Speed * Time.deltaTime;
+        //Vector3 moveVelocity = combinedInput.normalized * movement_Speed * Time.deltaTime;
         transform.position += moveVelocity;
         
         // 애니메이션
