@@ -11,19 +11,21 @@ public class CountTime : MonoBehaviour
 
     public TextMeshProUGUI idleModeTime_text;
 
-    void Start()
+    void Update()
     {
-        idleModeTime_text = GameObject.Find("Idle Mode Count Time").GetComponent<TextMeshProUGUI>();
-        
         if (idleModeTime_text == null)
         {
             Debug.LogError("Failed to find TextMeshProUGUI component");
+        }
+        else if (isBlackScreenActive)
+        {
+            blackScreenTime += Time.deltaTime; // blackScreenTime 시간 증가
+            idleModeTime_text.text = FormatTime(blackScreenTime);
         }
     }
     
     public void IdleModeOn()
     {
-        Debug.Log("[count Time]Idle Mode On");
         isBlackScreenActive = true;
         blackScreenTime = 0; // 타이머 초기화 
     }
@@ -31,22 +33,6 @@ public class CountTime : MonoBehaviour
     public void IdleModeOff()
     {
         isBlackScreenActive = false;
-    }
-
-    void Update()
-    {
-        if (isBlackScreenActive)
-        {
-            blackScreenTime += Time.deltaTime;
-            if (idleModeTime_text != null)
-            {
-                idleModeTime_text.text = FormatTime(blackScreenTime);
-            }
-            else
-            {
-                Debug.LogError("TextMeshProUGUI is not assigned in CountTime");
-            }
-        }
     }
 
     // 시간 형식 : 60분 이하 -> @@분, 60분 이상 -> @시간 @분
@@ -63,10 +49,5 @@ public class CountTime : MonoBehaviour
         {
             return minutes + "분";
         }
-    }
-
-    public float GetCountTime()
-    {
-        return blackScreenTime;
     }
 }

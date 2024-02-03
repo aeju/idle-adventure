@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +14,7 @@ public class ScreenManager : MonoBehaviour
     private float currentTime;
     
     public Canvas idleModeCanvas; // idle Mode(검은 화면) 표시 Canvas
-    private CountTime countTime;
+    public CountTime countTime;
     
     private void Awake()
     {
@@ -33,8 +34,6 @@ public class ScreenManager : MonoBehaviour
     {
         idleModeCanvas.enabled = false; 
         currentTime = 0; // 타이머 초기화
-
-        countTime = gameObject.AddComponent<CountTime>();
     }
 
     private void Update()
@@ -42,7 +41,7 @@ public class ScreenManager : MonoBehaviour
         // 사용자의 입력이 감지되면 타이머를 초기화
         if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
-            currentTime = 0;
+            currentTime = 0; // 캔버스가 켜질 때마다 시간 초기화 
             if (idleModeCanvas.enabled)
             {
                 idleModeCanvas.enabled = false; 
