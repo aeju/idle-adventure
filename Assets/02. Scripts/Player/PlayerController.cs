@@ -266,14 +266,13 @@ public class PlayerController : MonoBehaviour, IPlayerController
     // 일반 공격 
     void PlayerAttack()
     {
-        anim.SetTrigger("BasicAttackTrigger");
-        //anim.SetTrigger("CriticalAttackTrigger");
+        anim.SetTrigger("AttackTrigger");
     }
     
     // 치명타 공격 (쿨타임 10초) -> 코루틴으로 변경
     void PlayerSkill()
     {
-        anim.SetTrigger("CriticalAttackTrigger");
+        anim.SetTrigger("SkillTrigger");
         
         if (!isSkillOnCooldown)
         {
