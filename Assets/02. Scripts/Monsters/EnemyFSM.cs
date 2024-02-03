@@ -9,6 +9,8 @@ using UnityEngine.UI;
 // 필요 2: damaged 애니메이션
 public class EnemyFSM : MonoBehaviour
 {
+    public MonsterStats monsterStats;
+    
     // 에너미 상태 상수
     enum EnemyState
     {
@@ -30,7 +32,7 @@ public class EnemyFSM : MonoBehaviour
     public float attackDistance = 2f;
     
     // 이동 속도
-    public float moveSpeed = 5f;
+    //public float moveSpeed = 5f;
     
     // 캐릭터 컨트롤러 컴포넌트
     private CharacterController cc;
@@ -45,7 +47,7 @@ public class EnemyFSM : MonoBehaviour
     private float attackDelay = 2f; // 공격 딜레이 시간
     
     // 공격력
-    public int attackPower = 3;
+    //public int attackPower;
     
     // 초기 위치 저장용 변수
     private Vector3 originPos;
@@ -53,8 +55,8 @@ public class EnemyFSM : MonoBehaviour
     public float moveDistance = 20f;
     
     // 체력
-    public int maxHP = 30;
-    public int currentHP;
+    //public int maxHP;
+    //public int currentHP;
     public Slider hpSlider;
     
     // 애니메이션 
@@ -72,15 +74,6 @@ public class EnemyFSM : MonoBehaviour
             target = playerObject.GetComponent<PlayerController>();
         }
         
-        // 플레이어의 트랜스폼 컴포넌트 받아오기 (코드 합칠 필요 o)
-        /*
-        if (gameObject.tag != "player")
-        {
-            player = GameObject.FindGameObjectWithTag("player").transform;
-            
-        }
-        */
-        
         // 캐릭터 컨트롤러 컴포넌트 받아오기
         cc = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
@@ -90,7 +83,7 @@ public class EnemyFSM : MonoBehaviour
         originPos = transform.position;
 
         // 현재 체력 = 최대 체력으로 초기화
-        currentHP = maxHP;
+        monsterStats.currentHP = monsterStats.maxHP;
         HPSliderUpdate();
     }
 
@@ -186,7 +179,7 @@ public class EnemyFSM : MonoBehaviour
 
             // 이동
             //anim.SetTrigger("Move");
-            cc.Move(dir * moveSpeed * Time.deltaTime);
+            cc.Move(dir * monsterStats.movement_Speed * Time.deltaTime);
             //transform.forward = dir;
         }
         
@@ -242,7 +235,8 @@ public class EnemyFSM : MonoBehaviour
     // 플레이어의 스크립트의 데미지 처리 함수 실행
     public void AttackAction()
     {
-        player.GetComponent<PlayerController>().PlayerDamaged(attackPower);
+        //player.GetComponent<PlayerController>().PlayerDamaged(attackPower);
+        player.GetComponent<PlayerController>().PlayerDamaged(monsterStats.attack);
     }
 
     void Return()
@@ -252,7 +246,7 @@ public class EnemyFSM : MonoBehaviour
         {
             //anim.SetTrigger("Move");
             Vector3 dir = (originPos - transform.position).normalized;
-            cc.Move(dir * moveSpeed * Time.deltaTime);
+            cc.Move(dir * monsterStats.movement_Speed * Time.deltaTime);
         }
         // 그렇지 않다면, 자신의 위치를 초기 위치로 조정 + 현재 상태를 대기로 전환
         else
@@ -277,10 +271,10 @@ public class EnemyFSM : MonoBehaviour
         }
         
         // 플레이어의 공격력만큼 에너미의 체력 감소
-        currentHP -= hitPower;
+        monsterStats.currentHP -= hitPower;
         
         // 에너미의 체력이 0보다 크면 피격 상태로 전환
-        if (currentHP > 0)
+        if (monsterStats.currentHP > 0)
         {
             m_State = EnemyState.Damaged;
             print("상태 전환: Any state -> Damaged");
@@ -332,7 +326,7 @@ public class EnemyFSM : MonoBehaviour
 
     IEnumerator DieProcess()
     {
-        hpSlider.value = (float) currentHP / (float) maxHP; 
+        hpSlider.value = (float) monsterStats.currentHP / (float) monsterStats.maxHP; 
         // 캐릭터 컨트롤러 컴포넌트를 비활성화
         cc.enabled = false;
         
@@ -346,6 +340,6 @@ public class EnemyFSM : MonoBehaviour
     {
         // 현재 몬스터 hp(%)를 hp 슬라이더의 value에 반영
         //hpSlider.value = Mathf.Lerp((float) hpSlider.value, (float)currentHP / (float)maxHP, Time.deltaTime * 100);
-        hpSlider.value = (float) currentHP / (float) maxHP; 
+        hpSlider.value = (float) monsterStats.currentHP / (float) monsterStats.maxHP; 
     }
 }

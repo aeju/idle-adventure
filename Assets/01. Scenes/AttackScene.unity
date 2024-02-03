@@ -17818,72 +17818,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &1335395457 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7106887405609920340, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+--- !u!114 &1335395483 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4529345012598012450, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
   m_PrefabInstance: {fileID: 2731497204483584437}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1335395465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1335395457}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6570bb9cb93944e2a67c55800585365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  findDistance: 8
-  attackDistance: 2
-  moveSpeed: 5
-  player: {fileID: 0}
-  target: {fileID: 0}
-  attackPower: 3
-  moveDistance: 20
-  maxHP: 30
-  currentHP: 15
-  hpSlider: {fileID: 1825117924}
---- !u!143 &1335395466
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1335395457}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 6.56
-  m_Radius: 2.62609
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: -0.18, y: 2.9, z: 0}
---- !u!114 &1335395473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1335395457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ead6d5e2c1b7456fb6721f441e6675d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  efsm: {fileID: 1335395465}
 --- !u!1 &1339247522
 GameObject:
   m_ObjectHideFlags: 0
@@ -23213,17 +23158,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 0}
---- !u!114 &1825117924 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6017040050078356040, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
-  m_PrefabInstance: {fileID: 2731497204483584437}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1828165957
 GameObject:
   m_ObjectHideFlags: 0
@@ -23707,15 +23641,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6570bb9cb93944e2a67c55800585365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  monsterStats: {fileID: 0}
   findDistance: 8
   attackDistance: 2
-  moveSpeed: 5
   player: {fileID: 0}
   target: {fileID: 0}
-  attackPower: 3
   moveDistance: 20
-  maxHP: 30
-  currentHP: 15
   hpSlider: {fileID: 1705634046}
 --- !u!1 &1881570619
 GameObject:
@@ -26278,15 +26209,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6570bb9cb93944e2a67c55800585365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  monsterStats: {fileID: 0}
   findDistance: 8
   attackDistance: 2
-  moveSpeed: 5
   player: {fileID: 0}
   target: {fileID: 0}
-  attackPower: 3
   moveDistance: 20
-  maxHP: 30
-  currentHP: 15
   hpSlider: {fileID: 2137074055}
 --- !u!1001 &749595718045661465
 PrefabInstance:
@@ -26736,6 +26664,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4448798565652652043, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+      propertyPath: efsm
+      value: 
+      objectReference: {fileID: 1335395483}
     - target: {fileID: 6017040050078356040, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
       propertyPath: m_Value
       value: 1
@@ -26829,19 +26761,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 6652928554354244908, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7106887405609920340, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1335395465}
-    - targetCorrespondingSourceObject: {fileID: 7106887405609920340, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1335395466}
-    - targetCorrespondingSourceObject: {fileID: 7106887405609920340, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1335395473}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
 --- !u!4 &7460767467318369621 stripped
 Transform:

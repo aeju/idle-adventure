@@ -1,21 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MonsterStats : MonoBehaviour
 {
-    public string MonsterName;
-    
+    public MonsterStat monsterStats;
+
     // 스탯
-    public int HP = 20; // 생명력 
-    public int Attack; // 공격력 
-    public int Defense; // 방어력
-    public int Critical_Hit_Rate; // 치명타 확률
-    public int Accuracy; // 명중 
-    public int Critical_Hit_Damage; // 치명타 피해
-    public int Evasion; // 회피
-    public int Attack_Speed; // 공격속도
-    public int HP_Recovery; // 생명력 회복
-    public int Movement_Speed = 10; // 이동속도
-    public int Critical_Hit_Rate_Resist; // 치명타 확률 저항
+    public int maxHP; // 생명력
+    public int currentHP;
+    public int attack; // 공격력 
+    public int defense; // 방어력
+    public int movement_Speed; // 이동속도
+    
+    public int coin;
+    public string monsterName;
+
+    public void Start()
+    {
+        if (monsterStats != null)
+        {
+            AssignStats();
+        }
+        else
+        {
+            // 경고
+        }
+    }
+
+    public void AssignStats()
+    {
+        maxHP = monsterStats.MaxHP;
+        currentHP = maxHP;
+        attack = monsterStats.Attack; 
+        defense = monsterStats.Defense; 
+        movement_Speed = monsterStats.Movement_Speed; // 이동속도
+    
+        coin = monsterStats.Coin;
+        monsterName = monsterStats.Monster_Name;
+    }
 }

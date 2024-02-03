@@ -9,4 +9,5 @@ public class PlayerStat : StatBase
     public int Accuracy; // 명중 
     public int HP_Recovery; // 생명력 회복
     public string Class; // 직업 종류
+    public string Character_Name;
 }
