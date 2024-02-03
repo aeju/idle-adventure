@@ -13,13 +13,12 @@ using TMPro;
 public class ResourceBar : MonoBehaviour
 {
     protected ResourceManager resoureInfo;
-    protected CombatManager combatInfo;
+    public PlayerController player;
     
     public int ruby;
     public int coin;
-    public int combatPower;
-    
-    public int summon_Ticket;
+
+    //public int summon_Ticket;
     
 
     public TextMeshProUGUI rubyText;
@@ -29,17 +28,16 @@ public class ResourceBar : MonoBehaviour
     void Start()
     {
         resoureInfo = ResourceManager.Instance;
-        combatInfo = CombatManager.Instance;
-        
+
         if (resoureInfo == null)
         {
-            Debug.LogError("ResourceManager null");
+            Debug.LogError("Resource Manager null");
             return;
         }
         
-        if (combatInfo == null)
+        if (player == null)
         {
-            Debug.LogError("CombatManager null");
+            Debug.LogError("Player Controller null");
             return;
         }
         
@@ -57,24 +55,37 @@ public class ResourceBar : MonoBehaviour
     
     void UpdateUI()
     {
-        // 리소스: 루비, 코인
+        ResourceUpdate(); // 리소스: 루비, 코인
+        CombatPowerUpdate(); // 전투력
+    }
+
+    void ResourceUpdate()
+    {
+        
         if (resoureInfo != null)
         {
             // 루비, 코인, 티켓 null 처리 
             ruby = resoureInfo.current_Ruby;
             coin = resoureInfo.current_Coin;
-            summon_Ticket = resoureInfo.current_summon_Ticket;
 
             rubyText.text = ruby.ToString();
             //coinText.text = coin.ToString();
             coinText.text = FormatCoinUnit(coin);
         }
+    }
 
-        // 컴뱃: 전투력
-        if (combatInfo != null)
+    void CombatPowerUpdate()
+    {
+        if (player != null)
         {
-            combatPower = combatInfo.combatPower;
-
+            //int combatPower = player.CombatPower;
+            
+            int maxHP = player.maxHP;
+            int attack = player.attack;
+            int defense = player.defense;
+            
+            int combatPower = player.CalculateCombatPower(maxHP, attack, defense);
+            
             combatPowerText.text = combatPower.ToString();
         }
     }

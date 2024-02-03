@@ -5,7 +5,7 @@ using UnityEngine;
 [SerializeField]
 public partial class PlayerController : MonoBehaviour
 {
-    public int currentHP;
+    public int currentHP; // 현재 체력
     
     public int maxHP; // 생명력 
     public int attack; // 공격력 
@@ -19,6 +19,7 @@ public partial class PlayerController : MonoBehaviour
     public void AssignStats()
     {
         maxHP = statss.MaxHP;
+        currentHP = maxHP; // HP 초기화
         attack = statss.Attack;
         defense = statss.Defense;
         movement_Speed = statss.Movement_Speed;

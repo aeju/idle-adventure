@@ -55,20 +55,11 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
 
     void Start()
     {
-        
-        //playerStats = GetComponent<PlayerStats>();
-        
-        //statss = Resources.Load<PlayerStat>(Assets/02. Scripts/Test/PonpoStat.asset);
-        
-        int CCombatPower = statss.MaxHP + statss.Attack + statss.Defense;
-        Debug.Log("CombatPower" + CCombatPower);
-        
         AssignStats();
         anim = GetComponent<Animator>();
 
         // Monster = GameObject.FindGameObjectWithTag("monster");
-
-        currentHP = maxHP; // HP 초기화
+        
         HPSliderUpdate();
 
         attackEffect.SetActive(false);
@@ -76,19 +67,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         monsterLayerMask = LayerMask.GetMask("Enemy");
         StartCoroutine(DetectNearestMonsterCoroutine());
     }
-    
-    
-    /*
-    void AssignPlayerStatDynamically(string path)
-    {
-        playerStat = Resources.Load<PlayerStat>(path);
-        if (playerStat == null)
-        {
-            Debug.LogError($"Failed to load PlayerStat at path: {path}");
-        }
-    }
-    */
-    
+
     void Update()
     {
         if (isAlive)
