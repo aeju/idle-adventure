@@ -67,6 +67,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         currentHP = maxHP;
         hpSlider.value = (float) currentHP / (float) maxHP;
 
+        attackEffect.SetActive(false);
         
         monsterLayerMask = LayerMask.GetMask("Enemy");
         StartCoroutine(DetectNearestMonsterCoroutine());
@@ -149,7 +150,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
         transform.position += moveVelocity;
         
         // 애니메이션
-        // bool isMoving = moveDirection != Vector3.zero;
         bool isMoving = joystick.isDragging ? joystick.GetInputDirection() != Vector2.zero : (horizontalInput != 0 || verticalInput != 0);
         
         
@@ -168,11 +168,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
             }
             anim.SetBool("isMove", true);
         }
-    }
-    
-    void PlayerAutoMove()
-    {
-        
     }
 
     // 체크 시간 : 3초
@@ -215,7 +210,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         Debug.Log("1. PlayerAttackAnim()");
         EnemyFSM enemyFsm = nearestMonster.GetComponent<EnemyFSM>();
 
-        // CreateAttackEffect();
+        CreateAttackEffect();
         
         if (enemyFsm != null)
         {
@@ -227,11 +222,14 @@ public class PlayerController : MonoBehaviour, IPlayerController
     
     void CreateAttackEffect()
     {
+        attackEffect.SetActive(true);
+        /*
         if (attackEffect != null && attackPosition != null)
         {
             GameObject effectInstance = Instantiate(attackEffect, attackPosition.position, attackPosition.rotation);
             effectInstance.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f); // 크기를 0.1로 설정
         }
+        */
     }
 
     // 치명타 공격 (attack01)
@@ -326,5 +324,10 @@ public class PlayerController : MonoBehaviour, IPlayerController
         currentHP -= damage;
         // 현재 플레이어 hp(%)를 hp 슬라이더의 value에 반영
         hpSlider.value = (float) currentHP / (float) maxHP; 
+    }
+
+    public void HPSliderUpdate()
+    {
+        
     }
 }
