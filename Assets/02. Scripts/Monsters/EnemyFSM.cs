@@ -12,6 +12,9 @@ public class EnemyFSM : MonoBehaviour
 {
     public MonsterStats monsterStats;
     
+    protected UserInfoManager userInfo;
+    protected ResourceManager resourceInfo;
+
     // 에너미 상태 상수
     enum EnemyState
     {
@@ -78,6 +81,9 @@ public class EnemyFSM : MonoBehaviour
         cc = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
         skeletonMecanim = GetComponent<SkeletonMecanim>();
+        
+        userInfo = UserInfoManager.Instance;
+        resourceInfo = ResourceManager.Instance;
         
         // 자신의 초기 위치 저장하기
         originPos = transform.position;
@@ -334,7 +340,6 @@ public class EnemyFSM : MonoBehaviour
         
         // 2초 동안 기다린 후, 자기 자신을 제거 (나중에 손 봐야함!)
         yield return new WaitForSeconds(2f);
-        print("Die");
         Destroy(gameObject);
     }
 
@@ -361,6 +366,22 @@ public class EnemyFSM : MonoBehaviour
         
         Tween moveTween = item.transform.DOMove(playerPosition, duration).SetEase(Ease.InOutQuad);
         yield return moveTween.WaitForCompletion();
-        Destroy(item); 
+        Destroy(item);
+        EarnRewards();
+    }
+
+    void EarnRewards()
+    {
+        if (userInfo != null)
+        {
+            userInfo.AddExperience(monsterStats.exp);
+            Debug.Log("Add Exp");
+        }
+
+        if (resourceInfo != null)
+        {
+            resourceInfo.AddCoin(monsterStats.coin);
+            Debug.Log("Add Coin");
+        }
     }
 }

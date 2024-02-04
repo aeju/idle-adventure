@@ -14,4 +14,6 @@ public class PlayerStat : StatBase
     public float Attack_Multiplier; // 기본 공격 퍼센트
     public float Critical_Multiplier; // 치명타 퍼센트
     public float Skill_Multiplier; // 스킬 공격 퍼센트
+
+    public int Attack_Distance;
 }
