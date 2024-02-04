@@ -36,7 +36,7 @@ public class MonsterStats : MonoBehaviour
         currentHP = maxHP;
         attack = monsterStats.Attack; 
         defense = monsterStats.Defense; 
-        movement_Speed = monsterStats.Movement_Speed; // 이동속도
+        movement_Speed = monsterStats.Movement_Speed; 
     
         coin = monsterStats.Coin;
         exp = monsterStats.Exp;

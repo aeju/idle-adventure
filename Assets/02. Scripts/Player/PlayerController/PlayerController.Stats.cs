@@ -28,7 +28,6 @@ public partial class PlayerController : MonoBehaviour
         defense = playerStats.Defense;
         movement_Speed = playerStats.Movement_Speed;
         critical_Hit_Rate = playerStats.Critical_Hit_Rate;
-        hP_Recovery = playerStats.HP_Recovery;
 
         attack_Multiplier = playerStats.Attack_Multiplier;
         critical_Multiplier = playerStats.Critical_Multiplier;
