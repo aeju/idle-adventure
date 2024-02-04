@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 9166606283146243645}
   - component: {fileID: 4448798565652652043}
   - component: {fileID: 4529345012598012450}
+  - component: {fileID: 1045929636077619274}
+  - component: {fileID: 4517039246359427285}
   m_Layer: 8
   m_Name: '[Monster]Flower (14)'
   m_TagString: monster
@@ -201,15 +203,61 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6570bb9cb93944e2a67c55800585365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  monsterStats: {fileID: 4517039246359427285}
   findDistance: 8
   attackDistance: 2
-  moveSpeed: 5
   player: {fileID: 0}
-  attackPower: 3
+  target: {fileID: 0}
   moveDistance: 20
-  maxHP: 30
-  currentHP: 0
   hpSlider: {fileID: 6017040050078356040}
+  dropItem: {fileID: 245751987182268518, guid: 160949c2be9b546238025fd7070c02c6, type: 3}
+--- !u!143 &1045929636077619274
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7106887405609920340}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 6.56
+  m_Radius: 2.62609
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: -0.18, y: 2.9, z: 0}
+--- !u!114 &4517039246359427285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7106887405609920340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd7ce05e752784296b6e41ae53e58aaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterStats: {fileID: 11400000, guid: 0526c017172d3401c9571b77816b0246, type: 2}
+  maxHP: 0
+  currentHP: 0
+  attack: 0
+  defense: 0
+  movement_Speed: 0
+  coin: 0
+  monsterName: 
+  exp: 0
 --- !u!1001 &2200414630965212441
 PrefabInstance:
   m_ObjectHideFlags: 0
