@@ -21,9 +21,6 @@ public class MonsterController : MonoBehaviour
     public int Max_HP = 20;
     public int Current_HP = 20;
 
-    // 공격력
-    public int Combat;
-    
     // 드랍
     public GameObject dropItem;
     

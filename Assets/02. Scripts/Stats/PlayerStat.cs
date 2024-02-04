@@ -9,5 +9,9 @@ public class PlayerStat : StatBase
     public int Accuracy; // 명중 
     public int HP_Recovery; // 생명력 회복
     public string Class; // 직업 종류
-    public string Character_Name;
+    public string Character_Name; // 캐릭터 이름
+
+    public float Attack_Multiplier; // 기본 공격 퍼센트
+    public float Critical_Multiplier; // 치명타 퍼센트
+    public float Skill_Multiplier; // 스킬 공격 퍼센트
 }

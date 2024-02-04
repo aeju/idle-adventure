@@ -17930,7 +17930,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6192724089161036652, guid: e17d9a3f04750764c8c0a7a0461e4c3b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6192724089161036652, guid: e17d9a3f04750764c8c0a7a0461e4c3b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -23648,6 +23648,7 @@ MonoBehaviour:
   target: {fileID: 0}
   moveDistance: 20
   hpSlider: {fileID: 1705634046}
+  dropItem: {fileID: 0}
 --- !u!1 &1881570619
 GameObject:
   m_ObjectHideFlags: 0
@@ -26216,6 +26217,7 @@ MonoBehaviour:
   target: {fileID: 0}
   moveDistance: 20
   hpSlider: {fileID: 2137074055}
+  dropItem: {fileID: 0}
 --- !u!1001 &749595718045661465
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26452,7 +26454,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 2d2e0ad4d3f504d81826a10aeec48513, type: 2}
     - target: {fileID: 3671563622867584473, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.08
+      value: -1.32
       objectReference: {fileID: 0}
     - target: {fileID: 3671563622867584473, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
       propertyPath: m_LocalPosition.y

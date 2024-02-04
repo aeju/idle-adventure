@@ -327,7 +327,8 @@ public class EnemyFSM : MonoBehaviour
     IEnumerator DieProcess()
     {
         ItemDrop();
-        hpSlider.value = (float) monsterStats.currentHP / (float) monsterStats.maxHP; 
+        HPSliderUpdate();
+        
         // 캐릭터 컨트롤러 컴포넌트를 비활성화
         cc.enabled = false;
         
@@ -356,7 +357,6 @@ public class EnemyFSM : MonoBehaviour
     IEnumerator MoveItemToPlayer(GameObject item)
     {
         float duration = 1.0f; // 이동 
-        //Vector3 playerPosition = Player[1].transform.position; // Player-prefab
         Vector3 playerPosition = target.transform.position; // Player-prefab
         
         Tween moveTween = item.transform.DOMove(playerPosition, duration).SetEase(Ease.InOutQuad);

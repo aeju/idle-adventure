@@ -16,6 +16,10 @@ public partial class PlayerController : MonoBehaviour
     protected int accuracy; // 명중 
     protected int hP_Recovery; // 생명력 회복
     
+    public float attack_Multiplier; // 기본 공격 퍼센트
+    public float critical_Multiplier; // 치명타 퍼센트
+    public float skill_Multiplier; // 스킬 공격 퍼센트
+    
     public void AssignStats()
     {
         maxHP = playerStats.MaxHP;
@@ -25,5 +29,9 @@ public partial class PlayerController : MonoBehaviour
         movement_Speed = playerStats.Movement_Speed;
         critical_Hit_Rate = playerStats.Critical_Hit_Rate;
         hP_Recovery = playerStats.HP_Recovery;
+
+        attack_Multiplier = playerStats.Attack_Multiplier;
+        critical_Multiplier = playerStats.Critical_Multiplier;
+        skill_Multiplier = playerStats.Skill_Multiplier;
     }
 }

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2256019819125600630}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: DropItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,9 +82,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3044265724464447028, guid: 502c8deb512c34c528765839559ae4c4, type: 3}
+      propertyPath: m_SortingLayer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3044265724464447028, guid: 502c8deb512c34c528765839559ae4c4, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1176104491
+      objectReference: {fileID: 0}
     - target: {fileID: 3728272807327009835, guid: 502c8deb512c34c528765839559ae4c4, type: 3}
       propertyPath: m_Name
       value: EXP
+      objectReference: {fileID: 0}
+    - target: {fileID: 3728272807327009835, guid: 502c8deb512c34c528765839559ae4c4, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -148,6 +160,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Potion
       objectReference: {fileID: 0}
+    - target: {fileID: 4296492710534205647, guid: d69f1a5f4a4f342fe9fa1c250d25de8d, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4306347778597647330, guid: d69f1a5f4a4f342fe9fa1c250d25de8d, type: 3}
+      propertyPath: m_SortingLayer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4306347778597647330, guid: d69f1a5f4a4f342fe9fa1c250d25de8d, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1176104491
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -170,10 +194,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin
       objectReference: {fileID: 0}
+    - target: {fileID: 2897190460447808419, guid: 6b07e64e239e1485d951edac11b8cf9e, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4007685006573179988, guid: 6b07e64e239e1485d951edac11b8cf9e, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 41082912d6a14499ca0df96d4c2bc55e, type: 3}
+    - target: {fileID: 4007685006573179988, guid: 6b07e64e239e1485d951edac11b8cf9e, type: 3}
+      propertyPath: m_SortingLayer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4007685006573179988, guid: 6b07e64e239e1485d951edac11b8cf9e, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1176104491
+      objectReference: {fileID: 0}
     - target: {fileID: 4007685006573179988, guid: 6b07e64e239e1485d951edac11b8cf9e, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1

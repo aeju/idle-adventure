@@ -16,12 +16,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
 {
     public PlayerStat playerStats;
     
-    // 체력
-    //public int maxHP;
-    //public int currentHP;
-    
-    //private PlayerStats playerStats;
-    
     // 애니메이션
     private Animator anim;
     
@@ -55,11 +49,11 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
 
     void Start()
     {
-        AssignStats();
         anim = GetComponent<Animator>();
 
         // Monster = GameObject.FindGameObjectWithTag("monster");
         
+        AssignStats();
         HPSliderUpdate();
 
         attackEffect.SetActive(false);
@@ -200,25 +194,36 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         }
     }
     
-    // 기본 공격 (attack02)
+    // 기본 공격 (attack02): 치명타 - 공격력의 175% (나중)
     void PlayerAttackAnim()
     {
         Debug.Log("1. PlayerAttackAnim()");
         EnemyFSM enemyFsm = nearestMonster.GetComponent<EnemyFSM>();
 
         CreateAttackEffect();
-        
+
         if (enemyFsm != null)
         {
-            Debug.Log(enemyFsm != null);
-            enemyFsm.HitEnemy(CombatPower);
+            int attackDamage = CalculateAttack(attack, attack_Multiplier);
+            enemyFsm.HitEnemy(attackDamage); // 일반공격 
             Debug.Log("3. HitEnemy");
+        }
+        else
+        {
+            return;
         }
     }
     
-    void CreateAttackEffect()
+    void CreateAttackEffect() // 1.5초 후, 끄기 (수정: 스킬 재사용 시간)
     {
         attackEffect.SetActive(true);
+        StartCoroutine(DeactivateEffect());
+    }
+    
+    IEnumerator DeactivateEffect()
+    {
+        yield return new WaitForSeconds(1.5f);
+        attackEffect.SetActive(false);
     }
 
     // 치명타 공격 (attack01)

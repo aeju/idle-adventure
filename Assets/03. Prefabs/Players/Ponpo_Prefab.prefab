@@ -673,6 +673,9 @@ MonoBehaviour:
   maxHP: 30
   attack: 0
   defense: 0
+  attack_Multiplier: 0
+  critical_Multiplier: 0
+  skill_Multiplier: 0
   hpSlider: {fileID: 2430768775089695635}
   cooldownSlider: {fileID: 4465815573033820671}
 --- !u!54 &8166059088494096257
@@ -1524,6 +1527,10 @@ PrefabInstance:
       value: Impact02
       objectReference: {fileID: 0}
     - target: {fileID: 6192724089161036641, guid: e17d9a3f04750764c8c0a7a0461e4c3b, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6192724089161036641, guid: e17d9a3f04750764c8c0a7a0461e4c3b, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -1537,7 +1544,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6192724089161036652, guid: e17d9a3f04750764c8c0a7a0461e4c3b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6192724089161036652, guid: e17d9a3f04750764c8c0a7a0461e4c3b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1566,6 +1573,14 @@ PrefabInstance:
     - target: {fileID: 6192724089161036652, guid: e17d9a3f04750764c8c0a7a0461e4c3b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6192724089161036654, guid: e17d9a3f04750764c8c0a7a0461e4c3b, type: 3}
+      propertyPath: m_SortingLayer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6192724089161036654, guid: e17d9a3f04750764c8c0a7a0461e4c3b, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -962228097
       objectReference: {fileID: 0}
     - target: {fileID: 6192724089161036654, guid: e17d9a3f04750764c8c0a7a0461e4c3b, type: 3}
       propertyPath: m_Materials.Array.size

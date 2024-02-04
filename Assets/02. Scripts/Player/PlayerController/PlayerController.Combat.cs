@@ -10,4 +10,11 @@ public partial class PlayerController : MonoBehaviour
         CombatPower = maxHP + attack + defense;
         return CombatPower; 
     }
+    
+    // 기본 공격 계산식 
+    public int CalculateAttack(int attack, float attack_Multiplier)
+    {
+        int attackDamage = (int)(playerStats.Attack * (attack_Multiplier / 100));
+        return attackDamage;
+    }
 }
