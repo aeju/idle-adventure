@@ -69,7 +69,6 @@ public class ResourceBar : MonoBehaviour
             coin = resoureInfo.current_Coin;
 
             rubyText.text = ruby.ToString();
-            //coinText.text = coin.ToString();
             coinText.text = FormatCoinUnit(coin);
         }
     }
@@ -78,8 +77,6 @@ public class ResourceBar : MonoBehaviour
     {
         if (player != null)
         {
-            //int combatPower = player.CombatPower;
-            
             int maxHP = player.maxHP;
             int attack = player.attack;
             int defense = player.defense;

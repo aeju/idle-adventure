@@ -36,7 +36,7 @@ public partial class EnemyFSM : MonoBehaviour
     IEnumerator MoveItemToPlayer(GameObject item)
     {
         float duration = 1.0f; // 이동 
-        Vector3 playerPosition = target.transform.position; // Player-prefab
+        Vector3 playerPosition = target.transform.position; 
         
         Tween moveTween = item.transform.DOMove(playerPosition, duration).SetEase(Ease.InOutQuad);
         yield return moveTween.WaitForCompletion();
