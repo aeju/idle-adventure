@@ -111,16 +111,16 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4282532607
-  m_fontColor: {r: 1, g: 0.25943398, b: 0.25943398, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
+  m_colorMode: 2
   m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
+    topLeft: {r: 0.6981132, g: 0.0032929946, b: 0.0032929946, a: 1}
+    topRight: {r: 0.6981132, g: 0.0032929946, b: 0.0032929946, a: 1}
+    bottomLeft: {r: 1, g: 0.48952377, b: 0, a: 1}
+    bottomRight: {r: 1, g: 0.48952377, b: 0, a: 1}
+  m_fontColorGradientPreset: {fileID: 11400000, guid: 18581159d67d846a3943636086b75953, type: 2}
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
@@ -187,3 +187,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 0
+  textColor: {r: 0, g: 0, b: 0, a: 0}

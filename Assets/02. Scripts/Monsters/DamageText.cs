@@ -11,17 +11,20 @@ public class DamageText : MonoBehaviour
     private EnemyFSM enemyFSM;
     
     public int damage;
-
-
+    public Color textColor;
+    
     void Start()
     {
         damagetext = GetComponent<TextMeshPro>();
         damagetext.text = damage.ToString();
-
+        
         enemyFSM = GetComponentInParent<EnemyFSM>(); // 부모객체에서 EnemyFSM 컴포넌트 가져오기
 
         if (enemyFSM != null)
         {
+            textColor = Color.red;
+            damagetext.color = textColor; 
+            
             // 몬스터의 방향에 따라 애니메이션 방향 결정
             AnimateDamageTextBasedOnDirection(enemyFSM.flipX);
         }
