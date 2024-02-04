@@ -275,23 +275,8 @@ public class EnemyFSM : MonoBehaviour
         
         // 플레이어의 공격력만큼 에너미의 체력 감소
         monsterStats.currentHP -= hitPower;
-        
-        // 데미지 텍스트 
-        if (hudDamageText != null)
-        {
-            if (flipX == true)
-            {
-                Vector3 damagePosition = transform.position + new Vector3(-1.0f, 2.0f, 0);
-                GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
-                damageText.GetComponent<DamageText>().damage = hitPower;
-            }
-            else
-            {
-                Vector3 damagePosition = transform.position + new Vector3(1.0f, 2.0f, 0);
-                GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
-                damageText.GetComponent<DamageText>().damage = hitPower;
-            }
-        }
+
+        CreateDamageText(hitPower);
         
         // 에너미의 체력이 0보다 크면 피격 상태로 전환
         if (monsterStats.currentHP > 0)
@@ -314,6 +299,26 @@ public class EnemyFSM : MonoBehaviour
             // 죽음 애니메이션을 플레이
             anim.SetTrigger("Die");
             Die();
+        }
+    }
+
+    void CreateDamageText(int hitPower)
+    {
+        // 데미지 텍스트 
+        if (hudDamageText != null)
+        {
+            if (flipX == true)
+            {
+                Vector3 damagePosition = transform.position + new Vector3(-1.0f, 2.0f, 0);
+                GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
+                damageText.GetComponent<DamageText>().damage = hitPower;
+            }
+            else
+            {
+                Vector3 damagePosition = transform.position + new Vector3(1.0f, 2.0f, 0);
+                GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
+                damageText.GetComponent<DamageText>().damage = hitPower;
+            }
         }
     }
     
