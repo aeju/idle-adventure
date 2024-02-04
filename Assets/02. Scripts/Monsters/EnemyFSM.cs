@@ -41,7 +41,7 @@ public class EnemyFSM : MonoBehaviour
     private CharacterController cc;
     
     // 플레이어 위치
-    public Transform player;
+    //public Transform player;
     // 플레이어 
     public PlayerController target;
     
@@ -49,16 +49,13 @@ public class EnemyFSM : MonoBehaviour
     private float currentTime = 0; // 누적 시간
     private float attackDelay = 2f; // 공격 딜레이 시간
     
-    public bool flipX = false;
+    public bool flipX;
     
     // 초기 위치 저장용 변수
     private Vector3 originPos;
     // 이동 가능 범위
     public float moveDistance = 20f;
     
-    // 체력
-    //public int maxHP;
-    //public int currentHP;
     public Slider hpSlider;
     
     // 애니메이션 
@@ -74,7 +71,6 @@ public class EnemyFSM : MonoBehaviour
         GameObject playerObject = GameObject.FindGameObjectWithTag("player");
         if (playerObject != null)
         {
-            player = playerObject.transform;
             target = playerObject.GetComponent<PlayerController>();
         }
         
@@ -86,21 +82,18 @@ public class EnemyFSM : MonoBehaviour
         userInfo = UserInfoManager.Instance;
         resourceInfo = ResourceManager.Instance;
         
-        // 자신의 초기 위치 저장하기
-        originPos = transform.position;
+        originPos = transform.position; // 자신의 초기 위치 저장
 
-        // 현재 체력 = 최대 체력으로 초기화
-        monsterStats.currentHP = monsterStats.maxHP;
+        monsterStats.currentHP = monsterStats.maxHP;  // 현재 체력 = 최대 체력으로 초기화
         HPSliderUpdate();
     }
 
     void Update()
     {
-        if (player == null)
+        if (target == null)
         {
             m_State = EnemyState.Idle;
             return;
-            Debug.Log("Player X");
         }
         
         // 현재 상태를 체크해 해당 상태별로 정해진 기능을 수행하게 함
@@ -131,15 +124,13 @@ public class EnemyFSM : MonoBehaviour
     // 플레이어가 왼쪽에 있다면, scalex = -1 (좌우반전)
     private void FlipTowardsPlayer()
     {
-        //flipX = false;
-        
         if (m_State == EnemyState.Return) // originPos
         {
             flipX = originPos.x > transform.position.x; 
         }
-        else if (player != null)
+        else if (target != null)
         {
-            flipX = player.position.x > transform.position.x;
+            flipX = target.transform.position.x > transform.position.x;
         }
         else 
         {
@@ -152,8 +143,7 @@ public class EnemyFSM : MonoBehaviour
     void Idle()
     {
         // 만일, 플레이어와의 거리가 액션 시작 범위 이내라면 Move 상태로 전환
-        if (Vector3.Distance(transform.position, player.position) < findDistance)
-        //if (Vector3.Distance(transform.position, player.transform.position) < findDistance)
+        if (Vector3.Distance(transform.position, target.transform.position) < findDistance)
         {
             m_State = EnemyState.Move;
             print("상태 전환: Idle -> Move");
@@ -176,15 +166,11 @@ public class EnemyFSM : MonoBehaviour
         }
         
         // 만일, 플레이어와의 거리가 공격 범위 밖이라면, 플레이어를 향해 이동
-        else if (Vector3.Distance(transform.position, player.position) > attackDistance)
+        else if (Vector3.Distance(transform.position, target.transform.position) > attackDistance)
         {
             // 이동 방향 설정
-            Vector3 dir = (player.position - transform.position).normalized;
-
-            // 이동
-            //anim.SetTrigger("Move");
-            cc.Move(dir * monsterStats.movement_Speed * Time.deltaTime);
-            //transform.forward = dir;
+            Vector3 dir = (target.transform.position - transform.position).normalized;
+            cc.Move(dir * monsterStats.movement_Speed * Time.deltaTime); // 이동
         }
         
         // 그렇지 않다면, 현재 상태를 공격으로 전환
@@ -206,7 +192,7 @@ public class EnemyFSM : MonoBehaviour
     void Attack()
     {
         // 만일, 플레이어가 공격 범위 이내에 있다면 플레이어를 공격
-        if (Vector3.Distance(transform.position, player.position) < attackDistance)
+        if (Vector3.Distance(transform.position, target.transform.position) < attackDistance)
         {
             // 플레이어 hp > 0일 때만, (생존 상태)
             if (target.currentHP > 0)
@@ -215,11 +201,9 @@ public class EnemyFSM : MonoBehaviour
                 currentTime += Time.deltaTime; // 경과 시간 누적
                 if (currentTime > attackDelay) // 경과 시간 > 공격 딜레이 시간
                 {
-                    //player.GetComponent<PlayerController>().PlayerDamaged(attackPower);
-                    print("공격, PlayerHP: " + player.GetComponent<PlayerController>().currentHP);
+                    print("공격, PlayerHP: " + target.GetComponent<PlayerController>().currentHP);
                     currentTime = 0; // 경과 시간 초기화
-                    // 공격 애니메이션 플레이
-                    anim.SetTrigger("StartAttack");
+                    anim.SetTrigger("StartAttack"); // 공격 애니메이션 플레이
                 }
             }
         }
@@ -239,7 +223,7 @@ public class EnemyFSM : MonoBehaviour
     // 플레이어의 스크립트의 데미지 처리 함수 실행
     public void AttackAction()
     {
-        player.GetComponent<PlayerController>().PlayerDamaged(monsterStats.attack);
+        target.GetComponent<PlayerController>().PlayerDamaged(monsterStats.attack);
     }
 
     void Return()
@@ -247,7 +231,6 @@ public class EnemyFSM : MonoBehaviour
         // 만일 초기 위치에서 거리가 0.1f이상이라면, 초기 위치 쪽으로 이동
         if (Vector3.Distance(transform.position, originPos) > 0.1f)
         {
-            //anim.SetTrigger("Move");
             Vector3 dir = (originPos - transform.position).normalized;
             cc.Move(dir * monsterStats.movement_Speed * Time.deltaTime);
         }
@@ -275,7 +258,7 @@ public class EnemyFSM : MonoBehaviour
         
         // 플레이어의 공격력만큼 에너미의 체력 감소
         monsterStats.currentHP -= hitPower;
-
+        // 데미지 텍스트 생성
         CreateDamageText(hitPower);
         
         // 에너미의 체력이 0보다 크면 피격 상태로 전환
@@ -284,8 +267,7 @@ public class EnemyFSM : MonoBehaviour
             m_State = EnemyState.Damaged;
             print("상태 전환: Any state -> Damaged");
             
-            // 피격 애니메이션 플레이 (애니메이션 만들어야함!)
-            anim.SetTrigger("Damaged");
+            anim.SetTrigger("Damaged"); // 피격 애니메이션 플레이 
             
             Damaged();;
         }
@@ -304,29 +286,21 @@ public class EnemyFSM : MonoBehaviour
 
     void CreateDamageText(int hitPower)
     {
-        // 데미지 텍스트 
-        if (hudDamageText != null)
+        
+        if (hudDamageText != null) // 데미지 텍스트 
         {
-            if (flipX == true)
-            {
-                Vector3 damagePosition = transform.position + new Vector3(-1.0f, 2.0f, 0);
-                GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
-                damageText.GetComponent<DamageText>().damage = hitPower;
-            }
-            else
-            {
-                Vector3 damagePosition = transform.position + new Vector3(1.0f, 2.0f, 0);
-                GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
-                damageText.GetComponent<DamageText>().damage = hitPower;
-            }
+            // flipX을 기준으로 위치 계산
+            float offsetDirection = flipX ? -1.0f : 1.0f;
+            Vector3 damagePosition = transform.position + new Vector3(offsetDirection * 1.0f, 2.0f, 0);
+            GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
+            damageText.GetComponent<DamageText>().damage = hitPower;
         }
     }
     
     void Damaged()
     {
         HPSliderUpdate();
-        // 피격 상태를 처리하기 위한 코루틴 실행
-        StartCoroutine(DamageProcess());
+        StartCoroutine(DamageProcess()); // 피격 상태를 처리하기 위한 코루틴
     }
 
     // 데미지 처리용 코루틴 함수 (피격 모션이 이뤄질 시간이 경과 -> 현재 상태를 다시 이동 상태로 전환)
@@ -362,9 +336,9 @@ public class EnemyFSM : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // 현재 몬스터 hp(%)를 hp 슬라이더의 value에 반영
     void HPSliderUpdate()
     {
-        // 현재 몬스터 hp(%)를 hp 슬라이더의 value에 반영
         //hpSlider.value = Mathf.Lerp((float) hpSlider.value, (float)currentHP / (float)maxHP, Time.deltaTime * 100);
         hpSlider.value = (float) monsterStats.currentHP / (float) monsterStats.maxHP; 
     }
@@ -394,13 +368,11 @@ public class EnemyFSM : MonoBehaviour
         if (userInfo != null)
         {
             userInfo.AddExperience(monsterStats.exp);
-            Debug.Log("Add Exp");
         }
 
         if (resourceInfo != null)
         {
             resourceInfo.AddCoin(monsterStats.coin);
-            Debug.Log("Add Coin");
         }
     }
 }
