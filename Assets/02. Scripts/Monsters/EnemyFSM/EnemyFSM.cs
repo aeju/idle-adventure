@@ -12,14 +12,11 @@ public partial class EnemyFSM : MonoBehaviour
 {
     public MonsterStats monsterStats;
     
-<<<<<<<< HEAD:Assets/02. Scripts/Monsters/EnemyFSM.cs
-========
     protected UserInfoManager userInfo;
     protected ResourceManager resourceInfo;
     
     public GameObject hudDamageText;
 
->>>>>>>> feature/attack10:Assets/02. Scripts/Monsters/EnemyFSM/EnemyFSM.cs
     // 에너미 상태 상수
     enum EnemyState
     {
@@ -50,24 +47,13 @@ public partial class EnemyFSM : MonoBehaviour
     private float currentTime = 0; // 누적 시간
     private float attackDelay = 2f; // 공격 딜레이 시간
     
-<<<<<<<< HEAD:Assets/02. Scripts/Monsters/EnemyFSM.cs
-    // 공격력
-    //public int attackPower;
-========
     public bool flipX;
->>>>>>>> feature/attack10:Assets/02. Scripts/Monsters/EnemyFSM/EnemyFSM.cs
-    
+
     // 초기 위치 저장용 변수
     private Vector3 originPos;
     // 이동 가능 범위
     public float moveDistance = 20f;
     
-<<<<<<<< HEAD:Assets/02. Scripts/Monsters/EnemyFSM.cs
-    // 체력
-    //public int maxHP;
-    //public int currentHP;
-========
->>>>>>>> feature/attack10:Assets/02. Scripts/Monsters/EnemyFSM/EnemyFSM.cs
     public Slider hpSlider;
     
     // 애니메이션 
@@ -95,13 +81,8 @@ public partial class EnemyFSM : MonoBehaviour
         resourceInfo = ResourceManager.Instance;
         
         originPos = transform.position; // 자신의 초기 위치 저장
-
-<<<<<<<< HEAD:Assets/02. Scripts/Monsters/EnemyFSM.cs
-        // 현재 체력 = 최대 체력으로 초기화
-        monsterStats.currentHP = monsterStats.maxHP;
-========
+        
         monsterStats.currentHP = monsterStats.maxHP;  // 현재 체력 = 최대 체력으로 초기화
->>>>>>>> feature/attack10:Assets/02. Scripts/Monsters/EnemyFSM/EnemyFSM.cs
         HPSliderUpdate();
     }
 
@@ -186,17 +167,9 @@ public partial class EnemyFSM : MonoBehaviour
         else if (Vector3.Distance(transform.position, target.transform.position) > attackDistance)
         {
             // 이동 방향 설정
-<<<<<<<< HEAD:Assets/02. Scripts/Monsters/EnemyFSM.cs
-            Vector3 dir = (player.position - transform.position).normalized;
 
-            // 이동
-            //anim.SetTrigger("Move");
-            cc.Move(dir * monsterStats.movement_Speed * Time.deltaTime);
-            //transform.forward = dir;
-========
             Vector3 dir = (target.transform.position - transform.position).normalized;
             cc.Move(dir * monsterStats.movement_Speed * Time.deltaTime); // 이동
->>>>>>>> feature/attack10:Assets/02. Scripts/Monsters/EnemyFSM/EnemyFSM.cs
         }
         
         // 그렇지 않다면, 현재 상태를 공격으로 전환
@@ -249,12 +222,7 @@ public partial class EnemyFSM : MonoBehaviour
     // 플레이어의 스크립트의 데미지 처리 함수 실행
     public void AttackAction()
     {
-<<<<<<<< HEAD:Assets/02. Scripts/Monsters/EnemyFSM.cs
-        //player.GetComponent<PlayerController>().PlayerDamaged(attackPower);
-        player.GetComponent<PlayerController>().PlayerDamaged(monsterStats.attack);
-========
         target.GetComponent<PlayerController>().PlayerDamaged(monsterStats.attack);
->>>>>>>> feature/attack10:Assets/02. Scripts/Monsters/EnemyFSM/EnemyFSM.cs
     }
 
     void Return()
@@ -289,12 +257,10 @@ public partial class EnemyFSM : MonoBehaviour
         
         // 플레이어의 공격력만큼 에너미의 체력 감소
         monsterStats.currentHP -= hitPower;
-<<<<<<<< HEAD:Assets/02. Scripts/Monsters/EnemyFSM.cs
-========
+
         // 데미지 텍스트 생성
         CreateDamageText(hitPower);
->>>>>>>> feature/attack10:Assets/02. Scripts/Monsters/EnemyFSM/EnemyFSM.cs
-        
+
         // 에너미의 체력이 0보다 크면 피격 상태로 전환
         if (monsterStats.currentHP > 0)
         {
@@ -356,33 +322,4 @@ public partial class EnemyFSM : MonoBehaviour
         yield return new WaitForSeconds(2f);
         Destroy(gameObject);
     }
-
-<<<<<<<< HEAD:Assets/02. Scripts/Monsters/EnemyFSM.cs
-    void HPSliderUpdate()
-    {
-        // 현재 몬스터 hp(%)를 hp 슬라이더의 value에 반영
-        //hpSlider.value = Mathf.Lerp((float) hpSlider.value, (float)currentHP / (float)maxHP, Time.deltaTime * 100);
-        hpSlider.value = (float) monsterStats.currentHP / (float) monsterStats.maxHP; 
-    }
-    
-    // 지면으로 띄우기 
-    void ItemDrop()
-    {
-        Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, 0);
-        GameObject droppedItem = Instantiate(dropItem, dropPosition, Quaternion.identity);
-
-        StartCoroutine(MoveItemToPlayer(droppedItem));
-    }
-    
-    IEnumerator MoveItemToPlayer(GameObject item)
-    {
-        float duration = 1.0f; // 이동 
-        Vector3 playerPosition = target.transform.position; // Player-prefab
-        
-        Tween moveTween = item.transform.DOMove(playerPosition, duration).SetEase(Ease.InOutQuad);
-        yield return moveTween.WaitForCompletion();
-        Destroy(item); 
-    }
-========
->>>>>>>> feature/attack10:Assets/02. Scripts/Monsters/EnemyFSM/EnemyFSM.cs
 }
