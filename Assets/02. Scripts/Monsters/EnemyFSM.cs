@@ -49,8 +49,7 @@ public class EnemyFSM : MonoBehaviour
     private float currentTime = 0; // 누적 시간
     private float attackDelay = 2f; // 공격 딜레이 시간
     
-    // 공격력
-    //public int attackPower;
+    public bool flipX = false;
     
     // 초기 위치 저장용 변수
     private Vector3 originPos;
@@ -119,11 +118,9 @@ public class EnemyFSM : MonoBehaviour
             case EnemyState.Return:
                 Return();
                 break;
-            case EnemyState.Damaged:
-                // Damaged(); 매 프레임마다 반복x, 1회만 실행
+            case EnemyState.Damaged: // 매 프레임마다 반복x, 1회만 실행
                 break;
             case EnemyState.Die:
-                // Die();
                 break;
         }
         
@@ -134,12 +131,11 @@ public class EnemyFSM : MonoBehaviour
     // 플레이어가 왼쪽에 있다면, scalex = -1 (좌우반전)
     private void FlipTowardsPlayer()
     {
-        bool flipX = false;
-        
+        //flipX = false;
         
         if (m_State == EnemyState.Return) // originPos
         {
-            flipX = originPos.x > transform.position.x;
+            flipX = originPos.x > transform.position.x; 
         }
         else if (player != null)
         {
@@ -150,7 +146,7 @@ public class EnemyFSM : MonoBehaviour
             flipX = skeletonMecanim.Skeleton.ScaleX > 0;
         }
         
-        skeletonMecanim.Skeleton.ScaleX = flipX ? 1 : -1;
+        skeletonMecanim.Skeleton.ScaleX = flipX ? 1 : -1; // true = 오른쪽, false = 왼쪽
     }
 
     void Idle()
@@ -243,7 +239,6 @@ public class EnemyFSM : MonoBehaviour
     // 플레이어의 스크립트의 데미지 처리 함수 실행
     public void AttackAction()
     {
-        //player.GetComponent<PlayerController>().PlayerDamaged(attackPower);
         player.GetComponent<PlayerController>().PlayerDamaged(monsterStats.attack);
     }
 
@@ -284,9 +279,18 @@ public class EnemyFSM : MonoBehaviour
         // 데미지 텍스트 
         if (hudDamageText != null)
         {
-            Vector3 damagePosition = transform.position + new Vector3(-1.0f, 2.0f, 0);
-            GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
-            damageText.GetComponent<DamageText>().damage = hitPower;
+            if (flipX == true)
+            {
+                Vector3 damagePosition = transform.position + new Vector3(-1.0f, 2.0f, 0);
+                GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
+                damageText.GetComponent<DamageText>().damage = hitPower;
+            }
+            else
+            {
+                Vector3 damagePosition = transform.position + new Vector3(1.0f, 2.0f, 0);
+                GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
+                damageText.GetComponent<DamageText>().damage = hitPower;
+            }
         }
         
         // 에너미의 체력이 0보다 크면 피격 상태로 전환

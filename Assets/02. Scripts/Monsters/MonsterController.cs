@@ -32,8 +32,7 @@ public class MonsterController : MonoBehaviour
     protected ResourceManager resourceInfo;
 
     private bool isDead = false;
-
-    private DamageTextAnimator damageTextAnimator;
+    
     public GameObject hudDamageText;
     
     void Start()
@@ -48,7 +47,6 @@ public class MonsterController : MonoBehaviour
         
         userInfo = UserInfoManager.Instance;
         resourceInfo = ResourceManager.Instance;
-        damageTextAnimator = FindObjectOfType<DamageTextAnimator>();
     }
     
     void Update()
