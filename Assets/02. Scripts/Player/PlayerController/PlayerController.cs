@@ -204,7 +204,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
 
         if (enemyFsm != null)
         {
-            int attackDamage = CalculateAttack(attack, attack_Multiplier);
+            int attackDamage = CalculateAttackDamage(attack, attack_Multiplier);
             enemyFsm.HitEnemy(attackDamage); // 일반공격 
             Debug.Log("3. HitEnemy");
         }
@@ -226,7 +226,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         attackEffect.SetActive(false);
     }
 
-    // 치명타 공격 (attack01)
+    // 스킬 공격 (attack01)
     void PlayerSkillAnim()
     {
         // 레이 생성한 후, 발사될 위치 + 진행 방향
@@ -251,8 +251,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
                 eFSM.HitEnemy(CombatPower);
             }
         }
-        
-        Debug.DrawRay(ray.origin, ray.direction * distance, Color.red);
     }
     
     // 일반 공격 
