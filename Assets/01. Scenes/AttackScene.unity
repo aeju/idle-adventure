@@ -22368,6 +22368,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1752958116}
   m_CullTransparentMesh: 1
+--- !u!1 &1764964392 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6765058733150916205, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
+  m_PrefabInstance: {fileID: 1973571045766634987}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1774370584
 GameObject:
   m_ObjectHideFlags: 0
@@ -26316,7 +26321,7 @@ PrefabInstance:
     - target: {fileID: 3941135481408444755, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
       propertyPath: skillEffect
       value: 
-      objectReference: {fileID: 1347205046}
+      objectReference: {fileID: 1764964392}
     - target: {fileID: 3941135481408444755, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
       propertyPath: attackEffect
       value: 
@@ -26367,15 +26372,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6377297835192526916, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6377297835192526916, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6377297835192526916, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6696151055930022599, guid: 77bb9369978464bceb74d15b23c0007a, type: 3}
       propertyPath: m_AnchorMax.x
