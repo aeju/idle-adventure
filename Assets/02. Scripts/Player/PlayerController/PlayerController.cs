@@ -203,7 +203,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
 
         if (enemyFsm != null)
         {
-            int attackDamage = CalculateAttackDamage(attack, attack_Multiplier);
+            int attackDamage = CalculateAttackDamage(attack, attack_Multiplier, critical_Multiplier);
             enemyFsm.HitEnemy(attackDamage); // 일반공격 
             Debug.Log("3. HitEnemy");
         }
