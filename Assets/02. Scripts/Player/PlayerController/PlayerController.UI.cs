@@ -11,6 +11,6 @@ public partial class PlayerController : MonoBehaviour
     public void HPSliderUpdate()
     {
         // 현재 플레이어 hp(%)를 hp 슬라이더의 value에 반영
-        hpSlider.value = (float) currentHP / (float) maxHP; 
+        hpSlider.value = (float) playerStats.currentHP / (float) playerStats.maxHP; 
     }
 }

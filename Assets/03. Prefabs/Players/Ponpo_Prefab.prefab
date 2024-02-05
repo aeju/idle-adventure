@@ -592,6 +592,7 @@ GameObject:
   - component: {fileID: 3664821248208720415}
   - component: {fileID: 3941135481408444755}
   - component: {fileID: 8166059088494096257}
+  - component: {fileID: 8902390195157632309}
   m_Layer: 3
   m_Name: Ponpo_Prefab
   m_TagString: player
@@ -651,7 +652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d065af6b7694e477887976e6b5501f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: feb0fd570df7f47bd8f636f219dc7899, type: 2}
+  playerStats: {fileID: 8902390195157632309}
   isAlive: 1
   terrainLayer:
     serializedVersion: 2
@@ -669,13 +670,6 @@ MonoBehaviour:
   nearestMonster: {fileID: 0}
   attackEffect: {fileID: 4401240591317292247}
   skillEffect: {fileID: 6765058733150916205}
-  currentHP: 100
-  maxHP: 30
-  attack: 0
-  defense: 0
-  attack_Multiplier: 0
-  critical_Multiplier: 0
-  skill_Multiplier: 0
   hpSlider: {fileID: 2430768775089695635}
   cooldownSlider: {fileID: 4465815573033820671}
 --- !u!54 &8166059088494096257
@@ -705,6 +699,30 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 64
   m_CollisionDetection: 0
+--- !u!114 &8902390195157632309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3392151444568403379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b83c09a7ff54461cba319b7d7eb774a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats: {fileID: 11400000, guid: feb0fd570df7f47bd8f636f219dc7899, type: 2}
+  currentHP: 0
+  maxHP: 0
+  attack: 0
+  defense: 0
+  movement_Speed: 0
+  critical_Hit_Rate: 0
+  accuracy: 0
+  hP_Recovery: 0
+  attack_Multiplier: 0
+  critical_Multiplier: 0
+  skill_Multiplier: 0
 --- !u!1 &3791405883042723065
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,13 +8,12 @@ using UnityEngine.UI;
 public interface IPlayerController
 {
     void PlayerMove();
-    //bool alive { get; set; }
 }
 
 // 필요 : 공격 -> Move x (state 분리)
 public partial class PlayerController : MonoBehaviour, IPlayerController
 {
-    public PlayerStat playerStats;
+    public PlayerStats playerStats;
     
     // 애니메이션
     private Animator anim;
@@ -53,7 +52,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
 
         // Monster = GameObject.FindGameObjectWithTag("monster");
         
-        AssignStats();
         HPSliderUpdate();
 
         attackEffect.SetActive(false);
@@ -87,7 +85,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         }
         
         // 죽음 -> 나중: GameManager에서 관리 
-        if (isAlive == true && currentHP <= 0) // 죽음 1회만 처리하기 위한 플래그
+        if (isAlive == true && playerStats.currentHP <= 0) // 죽음 1회만 처리하기 위한 플래그
         {
             // 애니메이션 -> 죽음
             anim.SetTrigger("isDead");
@@ -136,7 +134,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             combinedInput = new Vector3(horizontalInput, 0, verticalInput);
         }
         
-        Vector3 moveVelocity = combinedInput.normalized * playerStats.Movement_Speed * Time.deltaTime;
+        Vector3 moveVelocity = combinedInput.normalized * playerStats.movement_Speed * Time.deltaTime;
         //Vector3 moveVelocity = combinedInput.normalized * movement_Speed * Time.deltaTime;
         transform.position += moveVelocity;
         
@@ -203,7 +201,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
 
         if (enemyFsm != null)
         {
-            int attackDamage = CalculateAttackDamage(attack, attack_Multiplier, critical_Multiplier);
+            int attackDamage = CalculateAttackDamage(playerStats.attack, playerStats.attack_Multiplier, playerStats.critical_Multiplier);
             enemyFsm.HitEnemy(attackDamage); // 일반공격 
             Debug.Log("3. HitEnemy");
         }
@@ -221,7 +219,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
 
         if (enemyFsm != null)
         {
-            int attackDamage = CalculateSkillDamage(attack, skill_Multiplier);
+            int attackDamage = CalculateSkillDamage(playerStats.attack, playerStats.skill_Multiplier);
             enemyFsm.HitEnemy(attackDamage); // 스킬공격 
             Debug.Log("3. HitEnemy");
         }
@@ -314,7 +312,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     public void PlayerDamaged(int damage)
     {
         // 에너미의 공격력만큼 플레이어의 체력 깎기
-        currentHP -= damage;
+        playerStats.currentHP -= damage;
         HPSliderUpdate();
     }
 }

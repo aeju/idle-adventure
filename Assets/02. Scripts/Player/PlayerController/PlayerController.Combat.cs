@@ -27,14 +27,14 @@ public partial class PlayerController : MonoBehaviour
             multiplier = attack_Multiplier;
         }
         
-        int attackDamage = (int)(playerStats.Attack * (multiplier / 100));
+        int attackDamage = (int)(playerStats.attack * (multiplier / 100));
         return attackDamage;
     }
     
     // 스킬 공격 계산식 
     public int CalculateSkillDamage(int attack, float skill_Multiplier)
     {
-        int skillDamage = (int)(playerStats.Attack * (skill_Multiplier / 100));
+        int skillDamage = (int)(playerStats.attack * (skill_Multiplier / 100));
         return skillDamage;
     }
 }

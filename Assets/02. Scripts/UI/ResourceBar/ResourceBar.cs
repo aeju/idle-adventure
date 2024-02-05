@@ -77,9 +77,9 @@ public class ResourceBar : MonoBehaviour
     {
         if (player != null)
         {
-            int maxHP = player.maxHP;
-            int attack = player.attack;
-            int defense = player.defense;
+            int maxHP = player.playerStats.maxHP;
+            int attack = player.playerStats.attack;
+            int defense = player.playerStats.defense;
             
             int combatPower = player.CalculateCombatPower(maxHP, attack, defense);
             

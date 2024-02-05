@@ -42,7 +42,7 @@ public partial class EnemyFSM : MonoBehaviour
 
     // 플레이어 
     public PlayerController target;
-    
+
     // 일정한 시간 간격으로 공격 -> 누적 시간, 공격 딜레이 시간
     private float currentTime = 0; // 누적 시간
     private float attackDelay = 2f; // 공격 딜레이 시간
@@ -193,13 +193,13 @@ public partial class EnemyFSM : MonoBehaviour
         if (Vector3.Distance(transform.position, target.transform.position) < attackDistance)
         {
             // 플레이어 hp > 0일 때만, (생존 상태)
-            if (target.currentHP > 0)
+            if (target.playerStats.currentHP > 0)
             {
                 // 일정한 시간마다 플레이어를 공격
                 currentTime += Time.deltaTime; // 경과 시간 누적
                 if (currentTime > attackDelay) // 경과 시간 > 공격 딜레이 시간
                 {
-                    print("공격, PlayerHP: " + target.GetComponent<PlayerController>().currentHP);
+                    print("공격, PlayerHP: " + target.GetComponent<PlayerController>().playerStats.currentHP);
                     currentTime = 0; // 경과 시간 초기화
                     anim.SetTrigger("StartAttack"); // 공격 애니메이션 플레이
                 }
