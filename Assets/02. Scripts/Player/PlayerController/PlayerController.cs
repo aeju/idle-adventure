@@ -57,6 +57,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         HPSliderUpdate();
 
         attackEffect.SetActive(false);
+        skillEffect.SetActive(false);
         
         monsterLayerMask = LayerMask.GetMask("Enemy");
         StartCoroutine(DetectNearestMonsterCoroutine());
@@ -197,15 +198,31 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     // 기본 공격 (attack02): 치명타 - 공격력의 175% (나중)
     void PlayerAttackAnim()
     {
-        Debug.Log("1. PlayerAttackAnim()");
         EnemyFSM enemyFsm = nearestMonster.GetComponent<EnemyFSM>();
-
         CreateAttackEffect();
 
         if (enemyFsm != null)
         {
-            int attackDamage = CalculateAttackDamage(attack, attack_Multiplier);
+            int attackDamage = CalculateAttackDamage(attack, attack_Multiplier, critical_Multiplier);
             enemyFsm.HitEnemy(attackDamage); // 일반공격 
+            Debug.Log("3. HitEnemy");
+        }
+        else
+        {
+            return;
+        }
+    }
+    
+    // 스킬 공격 (attack01)
+    void PlayerSkillAnim()
+    {
+        EnemyFSM enemyFsm = nearestMonster.GetComponent<EnemyFSM>();
+        CreateSkillEffect();
+
+        if (enemyFsm != null)
+        {
+            int attackDamage = CalculateSkillDamage(attack, skill_Multiplier);
+            enemyFsm.HitEnemy(attackDamage); // 스킬공격 
             Debug.Log("3. HitEnemy");
         }
         else
@@ -217,40 +234,25 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     void CreateAttackEffect() // 1.5초 후, 끄기 (수정: 스킬 재사용 시간)
     {
         attackEffect.SetActive(true);
-        StartCoroutine(DeactivateEffect());
+        StartCoroutine(DeactivateAttackEffect());
     }
     
-    IEnumerator DeactivateEffect()
+    void CreateSkillEffect() // 1.5초 후, 끄기 (수정: 스킬 재사용 시간)
+    {
+        skillEffect.SetActive(true);
+        StartCoroutine(DeactivateSkillEffect());
+    }
+    
+    IEnumerator DeactivateAttackEffect()
     {
         yield return new WaitForSeconds(1.5f);
         attackEffect.SetActive(false);
     }
-
-    // 스킬 공격 (attack01)
-    void PlayerSkillAnim()
+    
+    IEnumerator DeactivateSkillEffect()
     {
-        // 레이 생성한 후, 발사될 위치 + 진행 방향
-        Ray ray = new Ray(transform.position, Monster.transform.position);
-        
-        Monster = GameObject.FindGameObjectWithTag("monster");
-        // 레이가 부딪힌 대상의 정보를 저장할 변수를 생성
-        RaycastHit hitInfo = new RaycastHit();
-
-        Debug.Log("1. Lay");
-        
-        float radius = 1f; // Radius of the sphere cast
-        float distance = 1f;
-        if (Physics.SphereCast(ray, radius, out hitInfo, distance))
-        {
-            Debug.Log("2. Lay Hit");
-            // 만일 레이에 부딪힌 대상의 태그가 monster라면, 데미지 함수를 실행
-            if (hitInfo.transform.gameObject.tag == "monster")
-            {
-                Debug.Log("3. Lay Enemy Hit");
-                EnemyFSM eFSM = Monster.GetComponent<EnemyFSM>();
-                eFSM.HitEnemy(CombatPower);
-            }
-        }
+        yield return new WaitForSeconds(1.5f);
+        skillEffect.SetActive(false);
     }
     
     // 일반 공격 

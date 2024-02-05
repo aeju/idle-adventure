@@ -48,7 +48,7 @@ public partial class EnemyFSM : MonoBehaviour
     private float attackDelay = 2f; // 공격 딜레이 시간
     
     public bool flipX;
-
+    
     // 초기 위치 저장용 변수
     private Vector3 originPos;
     // 이동 가능 범위
@@ -81,7 +81,7 @@ public partial class EnemyFSM : MonoBehaviour
         resourceInfo = ResourceManager.Instance;
         
         originPos = transform.position; // 자신의 초기 위치 저장
-        
+
         monsterStats.currentHP = monsterStats.maxHP;  // 현재 체력 = 최대 체력으로 초기화
         HPSliderUpdate();
     }
@@ -167,7 +167,6 @@ public partial class EnemyFSM : MonoBehaviour
         else if (Vector3.Distance(transform.position, target.transform.position) > attackDistance)
         {
             // 이동 방향 설정
-
             Vector3 dir = (target.transform.position - transform.position).normalized;
             cc.Move(dir * monsterStats.movement_Speed * Time.deltaTime); // 이동
         }
@@ -257,10 +256,9 @@ public partial class EnemyFSM : MonoBehaviour
         
         // 플레이어의 공격력만큼 에너미의 체력 감소
         monsterStats.currentHP -= hitPower;
-
         // 데미지 텍스트 생성
         CreateDamageText(hitPower);
-
+        
         // 에너미의 체력이 0보다 크면 피격 상태로 전환
         if (monsterStats.currentHP > 0)
         {
@@ -322,4 +320,5 @@ public partial class EnemyFSM : MonoBehaviour
         yield return new WaitForSeconds(2f);
         Destroy(gameObject);
     }
+
 }
