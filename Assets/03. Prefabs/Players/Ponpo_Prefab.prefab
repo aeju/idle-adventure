@@ -593,6 +593,7 @@ GameObject:
   - component: {fileID: 3941135481408444755}
   - component: {fileID: 8166059088494096257}
   - component: {fileID: 8902390195157632309}
+  - component: {fileID: 4788422810784545579}
   m_Layer: 3
   m_Name: Ponpo_Prefab
   m_TagString: player
@@ -658,7 +659,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   groundDist: 0
-  Monster: {fileID: 0}
   CombatPower: 10
   skillCooldown: 5
   lastSkillTime: -5
@@ -723,6 +723,18 @@ MonoBehaviour:
   attack_Multiplier: 0
   critical_Multiplier: 0
   skill_Multiplier: 0
+--- !u!114 &4788422810784545579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3392151444568403379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5a3cbb0d4f4843108a137e6938ae3f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3791405883042723065
 GameObject:
   m_ObjectHideFlags: 0

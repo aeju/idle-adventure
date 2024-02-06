@@ -9,8 +9,20 @@ public class PlayerIdleState : MonoBehaviour, IPlayerState
     public void Handle(PlayerController playerController)
     {
         if (!_playerController)
+        {
             _playerController = playerController;
-        
-        //_playerController.Current
+
+            _playerController.isAlive = true;
+            
+            _playerController.anim = _playerController.GetComponent<Animator>();
+
+            _playerController.HPSliderUpdate();
+
+            _playerController.attackEffect.SetActive(false);
+            _playerController.skillEffect.SetActive(false);
+            
+            _playerController.monsterLayerMask = LayerMask.GetMask("Enemy");
+            StartCoroutine(_playerController.DetectNearestMonsterCoroutine());
+        }
     }
 }

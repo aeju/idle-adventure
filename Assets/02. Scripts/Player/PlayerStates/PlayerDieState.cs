@@ -10,7 +10,5 @@ public class PlayerDieState : MonoBehaviour, IPlayerState
     {
         if (!_playerController)
             _playerController = playerController;
-        
-        //_playerController.Current
     }
 }

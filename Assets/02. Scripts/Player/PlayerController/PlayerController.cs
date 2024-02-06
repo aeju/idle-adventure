@@ -52,7 +52,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     // 레이어 마스크 : 가장 가까운 몬스터 탐지에 필요
     public LayerMask monsterLayerMask;
     
-    [SerializeField] private GameObject nearestMonster;
+    public GameObject nearestMonster;
     
     // 공격 이펙트
     public GameObject attackEffect;
@@ -109,6 +109,25 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     {
         CurrentMoveDirection = direction;
         _playerStateContext.Transition(_moveState);
+    }
+
+    // EnemyFSM에서 공격할 때, 호출 (->_damageState)
+    public void ReceiveDamage(int damage)
+    {
+        if (isAlive && playerStats.currentHP > 0)
+        {
+            playerStats.currentHP -= damage;
+            HPSliderUpdate();
+            
+            if (playerStats.currentHP <= 0)
+            {
+                DiePlayer();
+            }
+            else
+            {
+                DamagedPlayer();
+            }
+        }
     }
     
 
@@ -215,79 +234,9 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         }
     }
     
-    // 기본 공격 (attack02): 치명타 - 공격력의 175% (나중)
-    void PlayerAttackAnim()
-    {
-        EnemyFSM enemyFsm = nearestMonster.GetComponent<EnemyFSM>();
-        CreateAttackEffect();
-
-        if (enemyFsm != null)
-        {
-            int attackDamage = CalculateAttackDamage(playerStats.attack, playerStats.attack_Multiplier, playerStats.critical_Multiplier);
-            enemyFsm.HitEnemy(attackDamage); // 일반공격 
-            Debug.Log("3. HitEnemy");
-        }
-        else
-        {
-            return;
-        }
-    }
     
-    // 스킬 공격 (attack01)
-    void PlayerSkillAnim()
-    {
-        EnemyFSM enemyFsm = nearestMonster.GetComponent<EnemyFSM>();
-        CreateSkillEffect();
-
-        if (enemyFsm != null)
-        {
-            int attackDamage = CalculateSkillDamage(playerStats.attack, playerStats.skill_Multiplier);
-            enemyFsm.HitEnemy(attackDamage); // 스킬공격 
-            Debug.Log("3. HitEnemy");
-        }
-        else
-        {
-            return;
-        }
-    }
     
-    // 이펙트, 코루틴을 파라미터로 받는 공통 함수 (일정 시간 후 비활성화)
-    void ActivateEffect(GameObject effect, float duration)
-    {
-        if (effect != null)
-        {
-            effect.SetActive(true);
-            StartCoroutine(DeactivateEffect(effect, duration));
-        }
-    }
-
-    // 지정된 시간이 지난 후 게임 오브젝트를 비활성화하는 코루틴
-    IEnumerator DeactivateEffect(GameObject effect, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        if (effect != null)
-        {
-            effect.SetActive(false);
-        }
-    }
     
-    // 기본 공격 이펙트
-    void CreateAttackEffect()
-    {
-        ActivateEffect(attackEffect, 1.5f); 
-    }
 
-    // 스킬 공격 이펙트
-    void CreateSkillEffect()
-    {
-        ActivateEffect(skillEffect, 1.5f); 
-    }
-
-    // 피격 함수
-    public void PlayerDamaged(int damage)
-    {
-        // 에너미의 공격력만큼 플레이어의 체력 깎기
-        playerStats.currentHP -= damage;
-        HPSliderUpdate();
-    }
+    
 }
