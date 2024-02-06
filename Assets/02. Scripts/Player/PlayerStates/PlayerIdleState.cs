@@ -20,9 +20,6 @@ public class PlayerIdleState : MonoBehaviour, IPlayerState
 
             _playerController.attackEffect.SetActive(false);
             _playerController.skillEffect.SetActive(false);
-            
-            _playerController.monsterLayerMask = LayerMask.GetMask("Enemy");
-            StartCoroutine(_playerController.DetectNearestMonsterCoroutine());
         }
     }
 }

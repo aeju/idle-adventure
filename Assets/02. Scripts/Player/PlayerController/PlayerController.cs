@@ -60,15 +60,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
 
     void Start()
     {
-        /*
-        anim = GetComponent<Animator>();
-        HPSliderUpdate();
-        attackEffect.SetActive(false);
-        skillEffect.SetActive(false);
-        monsterLayerMask = LayerMask.GetMask("Enemy");
-        StartCoroutine(DetectNearestMonsterCoroutine());
-        */
-
         _playerStateContext = new PlayerStateContext(this);
 
         _idleState = gameObject.AddComponent<PlayerIdleState>();
@@ -104,13 +95,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     {
         _playerStateContext.Transition(_dieState);
     }
-
-    public void Move(Direction direction)
-    {
-        CurrentMoveDirection = direction;
-        _playerStateContext.Transition(_moveState);
-    }
-
+    
     // EnemyFSM에서 공격할 때, 호출 (->_damageState)
     public void ReceiveDamage(int damage)
     {
@@ -130,113 +115,11 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         }
     }
     
-
     /*
-    public void PlayerMove()
-    {
-        // terrain raycast
-        RaycastHit hit;
-        Vector3 castPos = transform.position;
-        castPos.y += 1;
-
-        float UIDist = 0.75f;
-        
-        if (Physics.Raycast(castPos, -transform.up, out hit, Mathf.Infinity, terrainLayer))
-        {
-            if (hit.collider != null)
-            {
-                Vector3 movePos = transform.position;
-                movePos.y = hit.point.y + groundDist + UIDist;
-                transform.position = movePos;
-            }
-        }
-        
-        anim.SetBool("isMove", false);
-        
-        float horizontalInput = 0f;
-        float verticalInput = 0f;
-        
-        // 키보드 + 조이스틱 입력을 위한 새로운 변수
-        Vector3 combinedInput = Vector3.zero;;
-
-        if (joystick.isDragging) // 조이스틱값 들어올 때만
-        {
-            // 조이스틱 입력값
-            Vector2 joystickInput = joystick.GetInputDirection();
-            combinedInput = new Vector3(joystickInput.x, 0, joystickInput.y);
-            Debug.Log(combinedInput);
-        }
-        else // 키보드
-        {
-            horizontalInput = Input.GetAxisRaw("Horizontal");
-            verticalInput = Input.GetAxisRaw("Vertical");
-            combinedInput = new Vector3(horizontalInput, 0, verticalInput);
-        }
-        
-        Vector3 moveVelocity = combinedInput.normalized * playerStats.movement_Speed * Time.deltaTime;
-        //Vector3 moveVelocity = combinedInput.normalized * movement_Speed * Time.deltaTime;
-        transform.position += moveVelocity;
-        
-        // 애니메이션
-        bool isMoving = joystick.isDragging ? joystick.GetInputDirection() != Vector2.zero : (horizontalInput != 0 || verticalInput != 0);
-        
-        
-        if (isMoving)
-        {
-            // isDragging : true -> joystick 입력값 / false -> 키보드 입력값
-            float xDirectionInput = joystick.isDragging ? joystick.GetInputDirection().x : horizontalInput; 
-            
-            if (xDirectionInput > 0)
-            {
-                transform.localScale = new Vector3(-2f, 2f, -1f);
-            }
-            else
-            {
-                transform.localScale = new Vector3(2f, 2f, -1f);
-            }
-            anim.SetBool("isMove", true);
-        }
-    }
-    */
-
-    
-    // 체크 시간 : 3초
-    public IEnumerator DetectNearestMonsterCoroutine()
-    {
-        while (true)
-        {
-            DetectAndAttackNearestMonster();
-            yield return new WaitForSeconds(3f);
-        }
-    }
-    
-    void DetectAndAttackNearestMonster()
-    {
-        float detectionRadius = 5f; 
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, monsterLayerMask);
-
-        nearestMonster = null;
-        float minDistance = Mathf.Infinity;
-
-        foreach (Collider collider in hitColliders)
-        {
-            float distance = Vector3.Distance(transform.position, collider.transform.position);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                nearestMonster = collider.gameObject;
-            }
-        }
-
-        if (nearestMonster != null)
-        {
-            Debug.Log("nearestMonster:" + nearestMonster);
-        }
-    }
-    
-    
-    
-    
-
-    
+   public void Move(Direction direction)
+   {
+       CurrentMoveDirection = direction;
+       _playerStateContext.Transition(_moveState);
+   }
+   */
 }

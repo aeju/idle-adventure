@@ -11,6 +11,9 @@ public class PlayerAttackState : MonoBehaviour, IPlayerState
     {
         if (!_playerController)
             _playerController = playerController;
+        
+        _playerController.monsterLayerMask = LayerMask.GetMask("Enemy");
+        StartCoroutine(DetectNearestMonsterCoroutine());
     }
 
     void Update()
@@ -53,7 +56,7 @@ public class PlayerAttackState : MonoBehaviour, IPlayerState
     
     public IEnumerator SkillCoroutine()
     {
-        _playerController.anim.SetTrigger("CriticalAttackTrigger");
+        //_playerController.anim.SetTrigger("SkillTrigger");
 
         _playerController.isSkillOnCooldown = true;
         _playerController.lastSkillTime = Time.time;
@@ -114,6 +117,41 @@ public class PlayerAttackState : MonoBehaviour, IPlayerState
     void CreateSkillEffect()
     {
         ActivateEffect(_playerController.skillEffect, 1.5f); 
+    }
+    
+    
+    // 체크 시간 : 3초
+    public IEnumerator DetectNearestMonsterCoroutine()
+    {
+        while (true)
+        {
+            DetectAndAttackNearestMonster();
+            yield return new WaitForSeconds(3f);
+        }
+    }
+    
+    void DetectAndAttackNearestMonster()
+    {
+        float detectionRadius = 5f; 
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, _playerController.monsterLayerMask);
+
+        _playerController.nearestMonster = null;
+        float minDistance = Mathf.Infinity;
+
+        foreach (Collider collider in hitColliders)
+        {
+            float distance = Vector3.Distance(transform.position, collider.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                _playerController.nearestMonster = collider.gameObject;
+            }
+        }
+
+        if (_playerController.nearestMonster != null)
+        {
+            Debug.Log("nearestMonster:" + _playerController.nearestMonster);
+        }
     }
     
     // 기본 공격 (attack02): 치명타 - 공격력의 175% (나중)

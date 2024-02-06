@@ -21,27 +21,6 @@ public class PlayerMoveState : MonoBehaviour, IPlayerState
     
     public void PlayerMove()
     {
-        // terrain raycast
-        RaycastHit hit;
-        Vector3 castPos = transform.position;
-        castPos.y += 1;
-
-        float UIDist = 0.75f;
-        
-        /*
-        if (Physics.Raycast(castPos, -transform.up, out hit, Mathf.Infinity, _playerController.terrainLayer))
-        {
-            if (hit.collider != null)
-            {
-                Vector3 movePos = transform.position;
-                movePos.y = hit.point.y + _playerController.groundDist + UIDist;
-                transform.position = movePos;
-            }
-        }
-        */
-        
-        _playerController.anim.SetBool("isMove", false);
-        
         float horizontalInput = 0f;
         float verticalInput = 0f;
         
@@ -68,7 +47,6 @@ public class PlayerMoveState : MonoBehaviour, IPlayerState
         // 애니메이션
         bool isMoving = _playerController.joystick.isDragging ? _playerController.joystick.GetInputDirection() != Vector2.zero : (horizontalInput != 0 || verticalInput != 0);
         
-        
         if (isMoving)
         {
             // isDragging : true -> joystick 입력값 / false -> 키보드 입력값
@@ -84,5 +62,33 @@ public class PlayerMoveState : MonoBehaviour, IPlayerState
             }
             _playerController.anim.SetBool("isMove", true);
         }
+        
+        else
+        {
+            _playerController.anim.SetBool("isMove", false);
+        }
+    }
+
+    // 사용 x
+    void AdjustTerrain()
+    {
+        // terrain raycast
+        RaycastHit hit;
+        Vector3 castPos = transform.position;
+        castPos.y += 1;
+
+        float UIDist = 0.75f;
+        
+        /*
+        if (Physics.Raycast(castPos, -transform.up, out hit, Mathf.Infinity, _playerController.terrainLayer))
+        {
+            if (hit.collider != null)
+            {
+                Vector3 movePos = transform.position;
+                movePos.y = hit.point.y + _playerController.groundDist + UIDist;
+                transform.position = movePos;
+            }
+        }
+        */
     }
 }
