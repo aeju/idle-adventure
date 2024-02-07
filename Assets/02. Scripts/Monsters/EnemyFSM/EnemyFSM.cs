@@ -83,7 +83,8 @@ public partial class EnemyFSM : MonoBehaviour
         originPos = transform.position; // 자신의 초기 위치 저장
 
         monsterStats.currentHP = monsterStats.maxHP;  // 현재 체력 = 최대 체력으로 초기화
-        HPSliderUpdate();
+        
+        CombatUtilities.HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
     }
 
     void Update()
@@ -226,7 +227,6 @@ public partial class EnemyFSM : MonoBehaviour
         {
             //target.ReceiveDamage(monsterStats.attack);
             target.ReceiveDamage(CombatCalculator.CalculateAttackDamage(monsterStats.attack, monsterStats.attack_multiplier, monsterStats.critical_multiplier));
-            Debug.Log(CombatCalculator.CalculateAttackDamage(monsterStats.attack, monsterStats.attack_multiplier, monsterStats.critical_multiplier));
         }
     }
 
@@ -290,7 +290,8 @@ public partial class EnemyFSM : MonoBehaviour
     
     void Damaged()
     {
-        HPSliderUpdate();
+        //HPSliderUpdate();
+        CombatUtilities.HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
         StartCoroutine(DamageProcess()); // 피격 상태를 처리하기 위한 코루틴
     }
 
@@ -317,7 +318,8 @@ public partial class EnemyFSM : MonoBehaviour
     IEnumerator DieProcess()
     {
         ItemDrop();
-        HPSliderUpdate();
+        //HPSliderUpdate();
+        CombatUtilities.HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
         
         // 캐릭터 컨트롤러 컴포넌트를 비활성화
         cc.enabled = false;

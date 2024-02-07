@@ -32,6 +32,10 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     
     // 조이스틱
     public FullScreenJoystick joystick;
+    
+    // 슬라이더
+    public Slider hpSlider;
+    public Slider cooldownSlider;
 
     // 가장 가까운 몬스터 탐지
     public LayerMask monsterLayerMask; // 레이어 마스크 
@@ -62,7 +66,8 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         
         isAlive = true;
         DeactivateEffects();
-        HPSliderUpdate();
+        //HPSliderUpdate();
+        HPSliderUpdate(hpSlider, playerStats.currentHP, playerStats.maxHP);
         monsterLayerMask = LayerMask.GetMask("Enemy");
         StartCoroutine(DetectNearestMonsterCoroutine());
     }
@@ -103,8 +108,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         if (isAlive && playerStats.currentHP > 0)
         {
             playerStats.currentHP -= damage;
-            HPSliderUpdate();
-            
+            HPSliderUpdate(hpSlider, playerStats.currentHP, playerStats.maxHP);
             if (playerStats.currentHP > 0)
             {
                 DamagedPlayer();
@@ -139,5 +143,10 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
                 nearestMonster = collider.gameObject;
             }
         }
+    }
+
+    void HPSliderUpdate(Slider hpSlider, int currentHP, int maxHP)
+    {
+        CombatUtilities.HPSliderUpdate(hpSlider, playerStats.currentHP, playerStats.maxHP);
     }
 }

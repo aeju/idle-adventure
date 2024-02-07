@@ -16,14 +16,7 @@ public partial class EnemyFSM : MonoBehaviour
             damageText.GetComponent<DamageText>().damage = hitPower;
         }
     }
-    
-    // 현재 몬스터 hp(%)를 hp 슬라이더의 value에 반영
-    void HPSliderUpdate()
-    {
-        //hpSlider.value = Mathf.Lerp((float) hpSlider.value, (float)currentHP / (float)maxHP, Time.deltaTime * 100);
-        hpSlider.value = (float) monsterStats.currentHP / (float) monsterStats.maxHP; 
-    }
-    
+
     // 지면으로 띄우기 
     void ItemDrop()
     {

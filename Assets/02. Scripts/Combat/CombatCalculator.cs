@@ -9,7 +9,6 @@ public static class CombatCalculator
     public static int CalculateAttackDamage(int attack, float attack_Multiplier, float critical_Multiplier)
     {
         float multiplier;
-        
         if (UnityEngine.Random.value < 0.3f) // 30% 확률로 치명타
         {
             multiplier = critical_Multiplier;
