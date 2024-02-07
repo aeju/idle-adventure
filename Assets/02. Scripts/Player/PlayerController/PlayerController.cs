@@ -105,11 +105,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             playerStats.currentHP -= damage;
             HPSliderUpdate();
             
-            if (playerStats.currentHP <= 0)
-            {
-                DiePlayer();
-            }
-            else
+            if (playerStats.currentHP > 0)
             {
                 DamagedPlayer();
             }
