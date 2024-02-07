@@ -222,10 +222,8 @@ public partial class EnemyFSM : MonoBehaviour
     // 플레이어의 스크립트의 데미지 처리 함수 실행
     public void AttackAction()
     {
-        //target.GetComponent<PlayerController>().PlayerDamaged(monsterStats.attack);
         if (target != null)
         {
-            //target.ReceiveDamage(monsterStats.attack);
             target.ReceiveDamage(CombatCalculator.CalculateAttackDamage(monsterStats.attack, monsterStats.attack_multiplier, monsterStats.critical_multiplier));
         }
     }

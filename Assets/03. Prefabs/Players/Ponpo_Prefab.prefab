@@ -660,19 +660,20 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   groundDist: 0
-  CombatPower: 10
-  skillCooldown: 5
-  lastSkillTime: -5
-  isSkillOnCooldown: 0
   joystick: {fileID: 0}
+  hpSlider: {fileID: 2430768775089695635}
+  cooldownSlider: {fileID: 4465815573033820671}
   monsterLayerMask:
     serializedVersion: 2
     m_Bits: 2048
   nearestMonster: {fileID: 0}
+  hudDamageText: {fileID: 7825407166849429008, guid: b94564b4556864b92be1b804a6449fe9, type: 3}
   attackEffect: {fileID: 4401240591317292247}
   skillEffect: {fileID: 6765058733150916205}
-  hpSlider: {fileID: 2430768775089695635}
-  cooldownSlider: {fileID: 4465815573033820671}
+  duration: 1.5
+  skillCooldown: 5
+  lastSkillTime: -5
+  isSkillOnCooldown: 0
 --- !u!54 &8166059088494096257
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -724,6 +725,7 @@ MonoBehaviour:
   attack_Multiplier: 0
   critical_Multiplier: 0
   skill_Multiplier: 0
+  combatPower: 0
 --- !u!114 &4788422810784545579
 MonoBehaviour:
   m_ObjectHideFlags: 0

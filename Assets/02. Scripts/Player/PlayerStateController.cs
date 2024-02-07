@@ -30,9 +30,14 @@ public class PlayerStateController : MonoBehaviour
                 _playerController.SkillPlayer();
                 Debug.Log("SkillState");
             }
-            else if (combinedInput != Vector3.zero)
+            else if (combinedInput != Vector3.zero) // 터치 조이스틱도 추가해야! 
             {
                 _playerController.MovePlayer();
+            }
+            else if (0 < _playerController.playerStats.currentHP ||
+                     _playerController.playerStats.currentHP < _playerController.playerStats.maxHP)
+            {
+                _playerController.DamagedPlayer();
             }
             else if (_playerController.playerStats.currentHP <= 0)
             {

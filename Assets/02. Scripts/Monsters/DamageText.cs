@@ -9,10 +9,12 @@ public class DamageText : MonoBehaviour
 {
     private TextMeshPro damagetext;
     private EnemyFSM enemyFSM;
-    
+
+    private PlayerController playerController;
+
     public int damage;
-    public Color textColor;
-    
+    private Color textColor;
+
     void Start()
     {
         damagetext = GetComponent<TextMeshPro>();
@@ -23,10 +25,22 @@ public class DamageText : MonoBehaviour
         if (enemyFSM != null)
         {
             textColor = Color.red;
-            damagetext.color = textColor; 
+            damagetext.color = textColor;
+            damagetext.fontSize = 15;
             
             // 몬스터의 방향에 따라 애니메이션 방향 결정
             AnimateDamageTextBasedOnDirection(enemyFSM.flipX);
+        }
+
+        playerController = GetComponentInParent<PlayerController>();
+        if (playerController != null)
+        {
+            textColor = Color.blue;
+            damagetext.color = textColor; 
+            damagetext.fontSize = 7.5f;
+            
+            // 몬스터의 방향에 따라 애니메이션 방향 결정
+            AnimateDamageTextBasedOnDirection(playerController.flipX);
         }
     }
     

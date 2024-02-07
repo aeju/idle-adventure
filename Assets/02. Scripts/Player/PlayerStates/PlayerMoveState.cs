@@ -58,10 +58,12 @@ public class PlayerMoveState : IPlayerState
             if (xDirectionInput > 0)
             {
                 _playerController.transform.localScale = new Vector3(-2f, 2f, -1f);
+                _playerController.flipX = false;
             }
             else
             {
                 _playerController.transform.localScale = new Vector3(2f, 2f, -1f);
+                _playerController.flipX = true;
             }
             _playerController.anim.SetBool("isMove", true);
             
