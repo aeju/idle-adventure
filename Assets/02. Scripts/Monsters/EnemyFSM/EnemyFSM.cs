@@ -224,7 +224,9 @@ public partial class EnemyFSM : MonoBehaviour
         //target.GetComponent<PlayerController>().PlayerDamaged(monsterStats.attack);
         if (target != null)
         {
-            target.ReceiveDamage(monsterStats.attack);
+            //target.ReceiveDamage(monsterStats.attack);
+            target.ReceiveDamage(CombatCalculator.CalculateAttackDamage(monsterStats.attack, monsterStats.attack_multiplier, monsterStats.critical_multiplier));
+            Debug.Log(CombatCalculator.CalculateAttackDamage(monsterStats.attack, monsterStats.attack_multiplier, monsterStats.critical_multiplier));
         }
     }
 

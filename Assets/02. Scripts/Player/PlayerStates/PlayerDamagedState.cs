@@ -8,7 +8,7 @@ public class PlayerDamagedState : IPlayerState
 
     public void Enter(PlayerController playerController)
     {
-
+        
     }
 
     public void Handle(PlayerController playerController)
@@ -21,4 +21,6 @@ public class PlayerDamagedState : IPlayerState
     {
 
     }
+    
+    
 }

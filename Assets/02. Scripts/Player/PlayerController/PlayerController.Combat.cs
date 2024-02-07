@@ -5,8 +5,7 @@ using UnityEngine;
 
 public partial class PlayerController : MonoBehaviour
 {
-    
-    
+    /*
     // 기본 공격 계산식 (공격력 * 스킬 퍼센트)
     // 일반 공격 / 치명타 공격 
     public int CalculateAttackDamage(int attack, float attack_Multiplier, float critical_Multiplier)
@@ -32,4 +31,5 @@ public partial class PlayerController : MonoBehaviour
         int skillDamage = (int)(playerStats.attack * (skill_Multiplier / 100));
         return skillDamage;
     }
+    */
 }
