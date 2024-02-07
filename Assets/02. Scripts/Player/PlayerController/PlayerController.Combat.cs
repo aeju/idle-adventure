@@ -5,12 +5,7 @@ using UnityEngine;
 
 public partial class PlayerController : MonoBehaviour
 {
-    // 전투력 계산 공식
-    public int CalculateCombatPower(int maxHP, int attack, int defense)
-    {
-        CombatPower = maxHP + attack + defense;
-        return CombatPower; 
-    }
+    
     
     // 기본 공격 계산식 (공격력 * 스킬 퍼센트)
     // 일반 공격 / 치명타 공격 

@@ -81,7 +81,8 @@ public class ResourceBar : MonoBehaviour
             int attack = player.playerStats.attack;
             int defense = player.playerStats.defense;
             
-            int combatPower = player.CalculateCombatPower(maxHP, attack, defense);
+            //int combatPower = player.CalculateCombatPower(maxHP, attack, defense);
+            int combatPower = player.playerStats.combatPower;
             
             combatPowerText.text = combatPower.ToString();
         }

@@ -32,6 +32,8 @@ public class PlayerStats : MonoBehaviour
     public float attack_Multiplier; // 기본 공격 퍼센트
     public float critical_Multiplier; // 치명타 퍼센트
     public float skill_Multiplier; // 스킬 공격 퍼센트
+
+    public int combatPower; // 전투력
     
     public void AssignStats()
     {
@@ -45,5 +47,14 @@ public class PlayerStats : MonoBehaviour
         attack_Multiplier = playerStats.Attack_Multiplier;
         critical_Multiplier = playerStats.Critical_Multiplier;
         skill_Multiplier = playerStats.Skill_Multiplier;
+
+        CalculateCombatPower(playerStats.MaxHP, playerStats.Attack, playerStats.Defense);
+    }
+    
+    // 전투력 계산 공식
+    public int CalculateCombatPower(int maxHP, int attack, int defense)
+    {
+        combatPower = maxHP + attack + defense;
+        return combatPower; 
     }
 }
