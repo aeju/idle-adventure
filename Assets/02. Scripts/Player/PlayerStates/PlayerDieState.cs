@@ -8,13 +8,16 @@ public class PlayerDieState : IPlayerState
 
     public void Enter(PlayerController playerController)
     {
+        if (!_playerController)
+            _playerController = playerController;
         
+        _playerController.anim.SetTrigger("isDead"); // 애니메이션 -> 죽음
+        _playerController.isAlive = false;
     }
     
     public void Handle(PlayerController playerController)
     {
-        if (!_playerController)
-            _playerController = playerController;
+       
     }
 
     public void Exit(PlayerController playerController)

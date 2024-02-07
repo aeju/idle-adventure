@@ -33,18 +33,21 @@ public class PlayerStateController : MonoBehaviour
                 //Debug.Log("MoveState");
             }
 
-            if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X))
+            if (Input.GetKeyDown(KeyCode.Z))
             {
                 _playerController.AttackPlayer();
                 Debug.Log("AttackState");
+            }
+
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                _playerController.SkillPlayer();
+                Debug.Log("SkillState");
             }
             
             if (_playerController.playerStats.currentHP <= 0) 
             {
                 _playerController.DiePlayer();
-                
-                _playerController.anim.SetTrigger("isDead"); // 애니메이션 -> 죽음
-                _playerController.isAlive = false;
             }
         }
     }

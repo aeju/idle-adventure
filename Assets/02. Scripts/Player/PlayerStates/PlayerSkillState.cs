@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerIdleState : IPlayerState
+public class PlayerSkillState : IPlayerState
 {
     private PlayerController _playerController;
 
     public void Enter(PlayerController playerController)
     {
-        if (!_playerController)
-            _playerController = playerController;
-        
-        _playerController.isAlive = true;
-        _playerController.anim.SetBool("isMove", false);
+        _playerController = playerController;
+
+        if (_playerController.nearestMonster != null)
+        {
+            _playerController.PlayerSkill();
+        }
     }
     
     public void Handle(PlayerController playerController)

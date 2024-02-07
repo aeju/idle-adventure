@@ -17,13 +17,6 @@ public class PlayerStateContext
         _playerController = playerController;
     }
 
-    /*
-    public void Transition()
-    {
-        CurrentState.Handle(_playerController);
-    }
-    */
-    
     public void Transition(IPlayerState newState)
     {
         // 현재 상태가 있다면, 현재 상태의 Exit 메서드를 호출

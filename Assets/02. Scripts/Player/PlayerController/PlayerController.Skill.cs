@@ -6,6 +6,12 @@ using UnityEngine;
 // Attack, Skill 로직
 public partial class PlayerController : MonoBehaviour
 {
+    // 쿨타임
+    public float skillCooldown = 5f;
+    public float lastSkillTime = -5f;
+    public bool isSkillOnCooldown = false;
+
+    
     // 일반 공격 (z)
     public void PlayerAttack()
     {

@@ -8,7 +8,8 @@ public class PlayerMoveState : IPlayerState
 
     public void Enter(PlayerController playerController)
     {
-        _playerController = playerController;
+        if (!_playerController)
+            _playerController = playerController;
         
         if (_playerController.playerStats == null)
         {

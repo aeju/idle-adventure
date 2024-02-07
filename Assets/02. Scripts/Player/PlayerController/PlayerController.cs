@@ -14,7 +14,7 @@ public interface IPlayerController
 public partial class PlayerController : MonoBehaviour, IPlayerController
 {
     // State Pattern 적용을 위해 추가 
-    private IPlayerState _idleState, _moveState, _attackState, _damagedState, _dieState;
+    private IPlayerState _idleState, _moveState, _attackState, _skillState, _damagedState, _dieState;
 
     private PlayerStateContext _playerStateContext;
     
@@ -30,14 +30,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     public LayerMask terrainLayer;
     public float groundDist;
     
-    // 공격
-    public int CombatPower = 10; // 전투력
-    
-    // 쿨타임
-    public float skillCooldown = 5f;
-    public float lastSkillTime = -5f;
-    public bool isSkillOnCooldown = false;
-    
     // 조이스틱
     public FullScreenJoystick joystick;
 
@@ -52,26 +44,26 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         _idleState = new PlayerIdleState(); 
         _moveState = new PlayerMoveState();
         _attackState = new PlayerAttackState();
+        _skillState = new PlayerSkillState();
         _damagedState = new PlayerDamagedState();
         _dieState = new PlayerDieState();
-
         
         // 상태 관리자 인스턴스 생성 및 초기 상태로 전환
         _playerStateContext = new PlayerStateContext(this);
         _playerStateContext.Transition(_idleState);
-        
+
+        PlayerInit();
+    }
+
+    void PlayerInit()
+    {
         // 초기 1회 필요 
         anim = GetComponent<Animator>();
         
+        isAlive = true;
         DeactivateEffects();
         HPSliderUpdate();
-        
         monsterLayerMask = LayerMask.GetMask("Enemy");
-        StartCoroutine(DetectNearestMonsterCoroutine());
-    }
-
-    void Update()
-    {
         StartCoroutine(DetectNearestMonsterCoroutine());
     }
 
@@ -88,6 +80,11 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     public void AttackPlayer()
     {
         _playerStateContext.Transition(_attackState);
+    }
+    
+    public void SkillPlayer()
+    {
+        _playerStateContext.Transition(_skillState);
     }
     
     public void DamagedPlayer()
