@@ -13,18 +13,10 @@ public interface IPlayerController
 // 필요 : 공격 -> Move x (state 분리)
 public partial class PlayerController : MonoBehaviour, IPlayerController
 {
+    // State Pattern 적용을 위해 추가 
     private IPlayerState _idleState, _moveState, _attackState, _damagedState, _dieState;
 
     private PlayerStateContext _playerStateContext;
-    
-    // 교체 필요
-    public Direction CurrentMoveDirection
-    {
-        get;
-        private set;
-    }
-    
-    // 이전 스크립트
     
     public PlayerStats playerStats;
     
@@ -49,26 +41,38 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     // 조이스틱
     public FullScreenJoystick joystick;
 
-    // 레이어 마스크 : 가장 가까운 몬스터 탐지에 필요
-    public LayerMask monsterLayerMask;
-    
+    // 가장 가까운 몬스터 탐지
+    public LayerMask monsterLayerMask; // 레이어 마스크 
     public GameObject nearestMonster;
     
-    // 공격 이펙트
-    public GameObject attackEffect;
-    public GameObject skillEffect;
-
+    // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
     void Start()
     {
-        _playerStateContext = new PlayerStateContext(this);
+        // 상태 객체: 인스턴스화 필요 (일반 클래스 인스턴스로 생성)
+        _idleState = new PlayerIdleState(); 
+        _moveState = new PlayerMoveState();
+        _attackState = new PlayerAttackState();
+        _damagedState = new PlayerDamagedState();
+        _dieState = new PlayerDieState();
 
-        _idleState = gameObject.AddComponent<PlayerIdleState>();
-        _moveState = gameObject.AddComponent<PlayerMoveState>();
-        _attackState = gameObject.AddComponent<PlayerAttackState>();
-        _damagedState = gameObject.AddComponent<PlayerDamagedState>();
-        _dieState = gameObject.AddComponent<PlayerDieState>();
         
+        // 상태 관리자 인스턴스 생성 및 초기 상태로 전환
+        _playerStateContext = new PlayerStateContext(this);
         _playerStateContext.Transition(_idleState);
+        
+        // 초기 1회 필요 
+        anim = GetComponent<Animator>();
+        
+        DeactivateEffects();
+        HPSliderUpdate();
+        
+        monsterLayerMask = LayerMask.GetMask("Enemy");
+        StartCoroutine(DetectNearestMonsterCoroutine());
+    }
+
+    void Update()
+    {
+        StartCoroutine(DetectNearestMonsterCoroutine());
     }
 
     public void IdlePlayer()
@@ -115,11 +119,32 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         }
     }
     
-    /*
-   public void Move(Direction direction)
-   {
-       CurrentMoveDirection = direction;
-       _playerStateContext.Transition(_moveState);
-   }
-   */
+    // 체크 시간 : 3초
+    public IEnumerator DetectNearestMonsterCoroutine()
+    {
+        while (true)
+        {
+            DetectAndAttackNearestMonster();
+            yield return new WaitForSeconds(3f);
+        }
+    }
+    
+    void DetectAndAttackNearestMonster()
+    {
+        float detectionRadius = 5f; 
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, monsterLayerMask);
+
+        nearestMonster = null;
+        float minDistance = Mathf.Infinity;
+
+        foreach (Collider collider in hitColliders)
+        {
+            float distance = Vector3.Distance(transform.position, collider.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearestMonster = collider.gameObject;
+            }
+        }
+    }
 }

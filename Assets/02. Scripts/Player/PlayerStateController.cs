@@ -11,6 +11,7 @@ public class PlayerStateController : MonoBehaviour
         _playerController = FindObjectOfType<PlayerController>();
     }
 
+    // 상태 전환
     void Update()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -19,23 +20,24 @@ public class PlayerStateController : MonoBehaviour
 
         if (_playerController.isAlive)
         {
+            
             if (combinedInput == Vector3.zero)
             {
                 _playerController.IdlePlayer();
-                Debug.Log("IdleState");
+                //Debug.Log("IdleState");
             }
 
             if (combinedInput != Vector3.zero)
             {
                 _playerController.MovePlayer();
-                Debug.Log("MoveState");
+                //Debug.Log("MoveState");
             }
 
             if (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.X))
             {
                 _playerController.AttackPlayer();
+                Debug.Log("AttackState");
             }
-            
             
             if (_playerController.playerStats.currentHP <= 0) 
             {

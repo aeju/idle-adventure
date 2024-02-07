@@ -18,7 +18,6 @@ public class PlayerStats : MonoBehaviour
             // 경고
         }
     }
-
     
     public int currentHP; // 현재 체력
     public int maxHP; // 생명력 

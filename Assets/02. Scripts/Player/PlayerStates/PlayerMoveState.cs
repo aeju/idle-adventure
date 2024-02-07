@@ -2,31 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMoveState : MonoBehaviour, IPlayerState
+public class PlayerMoveState : IPlayerState
 {
     private PlayerController _playerController;
 
-    public void Handle(PlayerController playerController)
+    public void Enter(PlayerController playerController)
     {
-        if (!_playerController)
+        _playerController = playerController;
+        
+        if (_playerController.playerStats == null)
         {
-            _playerController = playerController;
+            Debug.LogError("PlayerStats is null");
         }
     }
-
-    void Update()
+    
+    public void Handle(PlayerController playerController)
     {
+        _playerController = playerController;
         PlayerMove();
     }
-    
+
     public void PlayerMove()
     {
-        float horizontalInput = 0f;
-        float verticalInput = 0f;
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float verticalInput = Input.GetAxisRaw("Vertical");
         
         // 키보드 + 조이스틱 입력을 위한 새로운 변수
-        Vector3 combinedInput = Vector3.zero;;
+        Vector3 combinedInput = new Vector3(horizontalInput, 0, verticalInput);
 
+        /*
         if (_playerController.joystick.isDragging) // 조이스틱값 들어올 때만
         {
             // 조이스틱 입력값
@@ -34,19 +38,36 @@ public class PlayerMoveState : MonoBehaviour, IPlayerState
             combinedInput = new Vector3(joystickInput.x, 0, joystickInput.y);
             Debug.Log(combinedInput);
         }
-        else // 키보드
-        {
-            horizontalInput = Input.GetAxisRaw("Horizontal");
-            verticalInput = Input.GetAxisRaw("Vertical");
-            combinedInput = new Vector3(horizontalInput, 0, verticalInput);
-        }
-        
+        */
+        //else // 키보드
+        // 
+
         Vector3 moveVelocity = combinedInput.normalized * _playerController.playerStats.movement_Speed * Time.deltaTime;
-        transform.position += moveVelocity;
+        //transform.position += moveVelocity;
+        _playerController.transform.position += moveVelocity;
         
         // 애니메이션
-        bool isMoving = _playerController.joystick.isDragging ? _playerController.joystick.GetInputDirection() != Vector2.zero : (horizontalInput != 0 || verticalInput != 0);
+        bool isMoving = (horizontalInput != 0 || verticalInput != 0);
+        //bool isMoving = _playerController.joystick.isDragging ? _playerController.joystick.GetInputDirection() != Vector2.zero : (horizontalInput != 0 || verticalInput != 0);
         
+        if (isMoving)
+        {
+            float xDirectionInput = horizontalInput; 
+            
+            if (xDirectionInput > 0)
+            {
+                _playerController.transform.localScale = new Vector3(-2f, 2f, -1f);
+            }
+            else
+            {
+                _playerController.transform.localScale = new Vector3(2f, 2f, -1f);
+            }
+            _playerController.anim.SetBool("isMove", true);
+            
+            //_playerController.transform.localScale = xDirectionInput > 0 ? new Vector3(-2f, 2f, -1f) : new Vector3(2f, 2f, -1f);
+        }
+        
+        /*
         if (isMoving)
         {
             // isDragging : true -> joystick 입력값 / false -> 키보드 입력값
@@ -67,8 +88,9 @@ public class PlayerMoveState : MonoBehaviour, IPlayerState
         {
             _playerController.anim.SetBool("isMove", false);
         }
+        /*
     }
-
+    
     // 사용 x
     void AdjustTerrain()
     {
@@ -90,5 +112,9 @@ public class PlayerMoveState : MonoBehaviour, IPlayerState
             }
         }
         */
+    }
+    public void Exit(PlayerController playerController)
+    {
+        _playerController.anim.SetBool("isMove", false);
     }
 }
