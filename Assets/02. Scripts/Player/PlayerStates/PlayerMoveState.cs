@@ -58,8 +58,8 @@ public class PlayerMoveState : IPlayerState
             
             if (xDirectionInput > 0)
             {
-                //_playerController.transform.localScale = new Vector3(-2f, 2f, -1f);
-                _playerController.ponpo.localScale = new Vector3(-2f, 2f, -1f);
+                _playerController.transform.localScale = new Vector3(-2f, 2f, -1f);
+                //_playerController.ponpo.localScale = new Vector3(-2f, 2f, -1f);
                 
                 //_playerController.transform.localScale = new Vector3(-1f, 1f, -1f);
                 
@@ -71,7 +71,8 @@ public class PlayerMoveState : IPlayerState
             }
             else
             {
-                _playerController.ponpo.localScale = new Vector3(2f, 2f, -1f);
+                _playerController.transform.localScale = new Vector3(2f, 2f, -1f);
+                //_playerController.ponpo.localScale = new Vector3(2f, 2f, -1f);
                 //_playerController.transform.localScale = new Vector3(1f, 1f, -1f);
                 _playerController.flipX = true;
             }

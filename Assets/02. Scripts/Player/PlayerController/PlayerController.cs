@@ -50,13 +50,11 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     //public RectTransform flipExclude;
 
     public Transform ponpo;
-    //public GameObject ponpo;
 
     // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
     void Start()
     {
         ponpo = transform.GetChild(0);
-        //ponpo = gameObject.transform.GetChild(0).GetChild(0).gameObject;
 
         // 상태 객체: 인스턴스화 필요 (일반 클래스 인스턴스로 생성)
         _idleState = new PlayerIdleState(); 
@@ -77,8 +75,8 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     {
         // 초기 1회 필요 
        
-        //anim = GetComponent<Animator>();
-        anim = ponpo.GetComponent<Animator>();
+        anim = GetComponent<Animator>();
+        //anim = ponpo.GetComponent<Animator>();
         
         isAlive = true;
         flipX = false;
@@ -176,7 +174,14 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             // flipX을 기준으로 위치 계산
             float offsetDirection = flipX ? -1.0f : 1.0f;
             Vector3 damagePosition = transform.position + new Vector3(1.0f, 2.0f, 0);
-            GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform.root); // 자식으로 생성
+            //Vector3 damagePosition = transform.position + new Vector3(offsetDirection * 1.0f, 2.0f, 0);
+            //GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform.root); // 자식으로 생성
+            
+            GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
+            
+            Vector3 damageScale = new Vector3(offsetDirection * 1.0f, 1.0f, 1.0f);
+            damageText.transform.localScale = damageScale;
+            
             damageText.GetComponent<DamageText>().damage = hitPower;
         }
     }
