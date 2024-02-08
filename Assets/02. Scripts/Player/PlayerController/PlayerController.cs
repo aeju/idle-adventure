@@ -174,10 +174,12 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         if (!flipX)
         {
             hpSlider.direction = Slider.Direction.RightToLeft;
+            cooldownSlider.direction = Slider.Direction.RightToLeft;
         }
         else
         {
             hpSlider.direction = Slider.Direction.LeftToRight;
+            cooldownSlider.direction = Slider.Direction.RightToLeft;
         }
     }
 }
