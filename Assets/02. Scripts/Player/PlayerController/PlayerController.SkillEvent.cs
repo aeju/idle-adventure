@@ -6,7 +6,7 @@ using UnityEngine;
 public partial class PlayerController : MonoBehaviour
 {
     // 기본 공격 (attack02)
-    void PlayerAttackAnim()
+    public void PlayerAttackAnim()
     {
         EnemyFSM enemyFsm = nearestMonster.GetComponent<EnemyFSM>();
         CreateAttackEffect();
@@ -24,7 +24,7 @@ public partial class PlayerController : MonoBehaviour
     }
     
     // 스킬 공격 (attack01)
-    void PlayerSkillAnim()
+    public void PlayerSkillAnim()
     {
         EnemyFSM enemyFsm = nearestMonster.GetComponent<EnemyFSM>();
         CreateSkillEffect();

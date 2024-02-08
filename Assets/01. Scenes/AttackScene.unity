@@ -7053,8 +7053,6 @@ GameObject:
   m_Component:
   - component: {fileID: 537391112}
   - component: {fileID: 537391113}
-  - component: {fileID: 537391115}
-  - component: {fileID: 537391114}
   m_Layer: 0
   m_Name: ponpo parent
   m_TagString: Untagged
@@ -7091,7 +7089,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d065af6b7694e477887976e6b5501f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 537391115}
+  playerStats: {fileID: 8166059087866294080}
   anim: {fileID: 3664821248386159264}
   isAlive: 1
   terrainLayer:
@@ -7114,43 +7112,6 @@ MonoBehaviour:
   skillCooldown: 5
   lastSkillTime: -5
   isSkillOnCooldown: 0
---- !u!114 &537391114
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537391111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5a3cbb0d4f4843108a137e6938ae3f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &537391115
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537391111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b83c09a7ff54461cba319b7d7eb774a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: feb0fd570df7f47bd8f636f219dc7899, type: 2}
-  currentHP: 0
-  maxHP: 0
-  attack: 0
-  defense: 0
-  movement_Speed: 0
-  critical_Hit_Rate: 0
-  accuracy: 0
-  hP_Recovery: 0
-  attack_Multiplier: 0
-  critical_Multiplier: 0
-  skill_Multiplier: 0
-  combatPower: 0
 --- !u!1 &542311415
 GameObject:
   m_ObjectHideFlags: 0
@@ -26381,7 +26342,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.498
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -26819,10 +26780,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3671563623765919078}
   - component: {fileID: 3664821248386159264}
-  - component: {fileID: 3941135481569106412}
   - component: {fileID: 8166059087866294078}
-  - component: {fileID: 8902390194479433098}
-  - component: {fileID: 4788422810876001172}
+  - component: {fileID: 8166059087866294079}
+  - component: {fileID: 8166059087866294080}
   m_Layer: 3
   m_Name: Ponpo_Prefab (1)
   m_TagString: player
@@ -27003,41 +26963,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &3941135481569106412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3392151443904883980}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d065af6b7694e477887976e6b5501f60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerStats: {fileID: 8902390194479433098}
-  anim: {fileID: 3664821248386159264}
-  isAlive: 1
-  terrainLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  groundDist: 0
-  joystick: {fileID: 255732651}
-  hpSlider: {fileID: 2430768774140504876}
-  cooldownSlider: {fileID: 4465815573661622592}
-  monsterLayerMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  nearestMonster: {fileID: 0}
-  hudDamageText: {fileID: 7825407166849429008, guid: b94564b4556864b92be1b804a6449fe9, type: 3}
-  flipX: 0
-  ponpo: {fileID: 0}
-  attackEffect: {fileID: 4401240592314258536}
-  skillEffect: {fileID: 6765058732470161106}
-  duration: 1.5
-  skillCooldown: 5
-  lastSkillTime: -5
-  isSkillOnCooldown: 0
 --- !u!4 &3975476731239344299
 Transform:
   m_ObjectHideFlags: 0
@@ -32155,18 +32080,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &4788422810876001172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3392151443904883980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5a3cbb0d4f4843108a137e6938ae3f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4877309491185336859
 GameObject:
   m_ObjectHideFlags: 0
@@ -37880,6 +37793,43 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &8166059087866294079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3392151443904883980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5a3cbb0d4f4843108a137e6938ae3f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8166059087866294080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3392151443904883980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b83c09a7ff54461cba319b7d7eb774a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats: {fileID: 11400000, guid: feb0fd570df7f47bd8f636f219dc7899, type: 2}
+  currentHP: 0
+  maxHP: 0
+  attack: 0
+  defense: 0
+  movement_Speed: 0
+  critical_Hit_Rate: 0
+  accuracy: 0
+  hP_Recovery: 0
+  attack_Multiplier: 0
+  critical_Multiplier: 0
+  skill_Multiplier: 0
+  combatPower: 0
 --- !u!223 &8170893439505980486
 Canvas:
   m_ObjectHideFlags: 0
@@ -38004,31 +37954,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &8902390194479433098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3392151443904883980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b83c09a7ff54461cba319b7d7eb774a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: feb0fd570df7f47bd8f636f219dc7899, type: 2}
-  currentHP: 0
-  maxHP: 0
-  attack: 0
-  defense: 0
-  movement_Speed: 0
-  critical_Hit_Rate: 0
-  accuracy: 0
-  hP_Recovery: 0
-  attack_Multiplier: 0
-  critical_Multiplier: 0
-  skill_Multiplier: 0
-  combatPower: 0
 --- !u!114 &9014165140660117019
 MonoBehaviour:
   m_ObjectHideFlags: 0

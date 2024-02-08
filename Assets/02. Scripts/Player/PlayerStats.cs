@@ -6,6 +6,8 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     public PlayerStat playerStats;
+
+    private PlayerController _playerController;
     
     public void Start()
     {
@@ -17,6 +19,8 @@ public class PlayerStats : MonoBehaviour
         {
             // 경고
         }
+
+        _playerController = GetComponentInParent<PlayerController>();
     }
     
     public int currentHP; // 현재 체력
@@ -57,4 +61,21 @@ public class PlayerStats : MonoBehaviour
         combatPower = maxHP + attack + defense;
         return combatPower; 
     }
+
+    public void AttackAnim()
+    {
+        if (_playerController != null)
+        {
+            _playerController.PlayerAttackAnim();
+        }
+    }
+
+    public void SkillAnim()
+    {
+        if (_playerController != null)
+        {
+            _playerController.PlayerSkillAnim();
+        }
+    }
+    
 }
