@@ -290,7 +290,6 @@ public partial class EnemyFSM : MonoBehaviour
     void Damaged()
     {
         HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
-        //CombatUtilities.HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
         StartCoroutine(DamageProcess()); // 피격 상태를 처리하기 위한 코루틴
     }
 
@@ -318,8 +317,7 @@ public partial class EnemyFSM : MonoBehaviour
     {
         ItemDrop();
         HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
-        //CombatUtilities.HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
-        
+
         // 캐릭터 컨트롤러 컴포넌트를 비활성화
         cc.enabled = false;
         

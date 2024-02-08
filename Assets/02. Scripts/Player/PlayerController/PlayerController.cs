@@ -71,15 +71,15 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     void PlayerInit()
     {
         // 초기 1회 필요 
-       
-        //anim = GetComponent<Animator>();
         isAlive = true;
         flipX = false;
         DeactivateEffects();
-        //HPSliderUpdate();
         HPSliderUpdate(hpSlider, playerStats.currentHP, playerStats.maxHP);
         monsterLayerMask = LayerMask.GetMask("Enemy");
         StartCoroutine(DetectNearestMonsterCoroutine());
+        
+        isSkillOnCooldown = false;
+        lastSkillTime = Time.time - skillCooldown;
     }
 
     public void IdlePlayer()

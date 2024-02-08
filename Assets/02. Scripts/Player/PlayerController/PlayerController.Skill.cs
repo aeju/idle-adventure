@@ -7,9 +7,9 @@ using UnityEngine;
 public partial class PlayerController : MonoBehaviour
 {
     // 쿨타임
-    public float skillCooldown = 5f;
-    public float lastSkillTime = -5f;
-    public bool isSkillOnCooldown = false;
+    public float skillCooldown = 5f; 
+    public float lastSkillTime;
+    public bool isSkillOnCooldown = false; // 스킬이 쿨다운 중인지 확인 (false -> 스킬 실행 o)
 
     
     // 일반 공격 (z)
@@ -23,7 +23,7 @@ public partial class PlayerController : MonoBehaviour
     {
         anim.SetTrigger("SkillTrigger");
         
-        if (!isSkillOnCooldown)
+        if (!isSkillOnCooldown) // 쿨다운 false = 스킬 실행 o
         {
             StartCoroutine(SkillCoroutine());
         }
@@ -37,17 +37,18 @@ public partial class PlayerController : MonoBehaviour
     public IEnumerator SkillCoroutine()
     {
         isSkillOnCooldown = true;
-        lastSkillTime = Time.time;
+        lastSkillTime = Time.time; // 현재 시간
 
         // 스킬 쿨타임 슬라이더
         {
-            if (cooldownSlider != null) // 슬라이더 초기화 
+            // 슬라이더 초기화 
+            if (cooldownSlider != null) 
             {
                 cooldownSlider.value = 0;
                 cooldownSlider.maxValue = skillCooldown;
             }
 
-            // 쿨타임 동안 슬라이더 업데이트
+            // 쿨타임 동안 슬라이더 업데이트 (lastSkillTime + skillCooldown)
             while (Time.time < lastSkillTime + skillCooldown)
             {
                 if (cooldownSlider != null)
@@ -56,7 +57,7 @@ public partial class PlayerController : MonoBehaviour
                 }
                 yield return null; // 다음 프레임까지 기다리도록 보장
             }
-            isSkillOnCooldown = false;
+            isSkillOnCooldown = false; // 쿨타임 종료 -> 스킬 다시 사용 가능
 
             if (cooldownSlider != null)
             {

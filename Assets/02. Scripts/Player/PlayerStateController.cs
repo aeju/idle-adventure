@@ -25,7 +25,7 @@ public class PlayerStateController : MonoBehaviour
                 _playerController.AttackPlayer();
                 Debug.Log("AttackState");
             }
-            else if (Input.GetKeyDown(KeyCode.X))
+            else if (Input.GetKeyDown(KeyCode.X) && !_playerController.isSkillOnCooldown)
             {
                 _playerController.SkillPlayer();
                 Debug.Log("SkillState");
