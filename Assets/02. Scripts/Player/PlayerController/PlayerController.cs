@@ -116,6 +116,11 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             CreateDamageText(damage);
             HPSliderUpdate(hpSlider, playerStats.currentHP, playerStats.maxHP);
         }
+
+        else
+        {
+            DiePlayer();
+        }
     }
     
     // 체크 시간 : 3초
@@ -157,10 +162,22 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         if (hudDamageText != null) // 데미지 텍스트 
         {
             // flipX을 기준으로 위치 계산
-            //float offsetDirection = flipX ? -1.0f : 1.0f;
+            float offsetDirection = flipX ? -1.0f : 1.0f;
             Vector3 damagePosition = transform.position + new Vector3(1.0f, 2.0f, 0);
             GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
             damageText.GetComponent<DamageText>().damage = hitPower;
+        }
+    }
+
+    public void SliderRight()
+    {
+        if (!flipX)
+        {
+            hpSlider.direction = Slider.Direction.RightToLeft;
+        }
+        else
+        {
+            hpSlider.direction = Slider.Direction.LeftToRight;
         }
     }
 }

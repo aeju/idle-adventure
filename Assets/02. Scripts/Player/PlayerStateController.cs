@@ -34,11 +34,13 @@ public class PlayerStateController : MonoBehaviour
             {
                 _playerController.MovePlayer();
             }
+            /*
             else if (0 < _playerController.playerStats.currentHP ||
                      _playerController.playerStats.currentHP < _playerController.playerStats.maxHP)
             {
                 _playerController.DamagedPlayer();
             }
+            */
             else if (_playerController.playerStats.currentHP <= 0)
             {
                 _playerController.DiePlayer();

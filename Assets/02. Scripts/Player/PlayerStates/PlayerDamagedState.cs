@@ -15,6 +15,7 @@ public class PlayerDamagedState : IPlayerState
     {
         if (!_playerController)
             _playerController = playerController;
+        
     }
 
     public void Exit(PlayerController playerController)

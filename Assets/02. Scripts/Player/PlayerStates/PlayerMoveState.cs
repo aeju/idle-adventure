@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMoveState : IPlayerState
 {
@@ -66,10 +67,10 @@ public class PlayerMoveState : IPlayerState
                 _playerController.flipX = true;
             }
             _playerController.anim.SetBool("isMove", true);
-            
+            _playerController.SliderRight();
             //_playerController.transform.localScale = xDirectionInput > 0 ? new Vector3(-2f, 2f, -1f) : new Vector3(2f, 2f, -1f);
         }
-        
+
         /*
         if (isMoving)
         {
