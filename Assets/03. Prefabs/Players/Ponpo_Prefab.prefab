@@ -668,6 +668,8 @@ MonoBehaviour:
     m_Bits: 2048
   nearestMonster: {fileID: 0}
   hudDamageText: {fileID: 7825407166849429008, guid: b94564b4556864b92be1b804a6449fe9, type: 3}
+  flipX: 0
+  flipExclude: {fileID: 0}
   attackEffect: {fileID: 4401240591317292247}
   skillEffect: {fileID: 6765058733150916205}
   duration: 1.5
@@ -1032,7 +1034,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 271.10504, y: 479.635}
-  m_SizeDelta: {x: 1080, y: 1920}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &8170893438523694329
 Canvas:

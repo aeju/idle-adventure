@@ -59,16 +59,24 @@ public class PlayerMoveState : IPlayerState
             if (xDirectionInput > 0)
             {
                 //_playerController.transform.localScale = new Vector3(-2f, 2f, -1f);
-                _playerController.transform.localScale = new Vector3(-1f, 1f, -1f);
-                _playerController.flipX = false;
+                _playerController.ponpo.localScale = new Vector3(-2f, 2f, -1f);
+                
+                //_playerController.transform.localScale = new Vector3(-1f, 1f, -1f);
+                
+                //_playerController.flipExclude.localScale = new Vector3(-0.02f, 0.02f, 1);
+                //_playerController.flipExclude.localScale = new Vector3(-_playerController.flipExclude.localScale.x, _playerController.flipExclude.localScale.y, -1f);
+                
+                //_playerController.flipX = false;
+                //ExcludeFlip();
             }
             else
             {
-                _playerController.transform.localScale = new Vector3(1f, 1f, -1f);
+                _playerController.ponpo.localScale = new Vector3(2f, 2f, -1f);
+                //_playerController.transform.localScale = new Vector3(1f, 1f, -1f);
                 _playerController.flipX = true;
             }
             _playerController.anim.SetBool("isMove", true);
-            _playerController.SliderRight();
+            //_playerController.SliderRight();
             //_playerController.transform.localScale = xDirectionInput > 0 ? new Vector3(-2f, 2f, -1f) : new Vector3(2f, 2f, -1f);
         }
 
@@ -122,4 +130,15 @@ public class PlayerMoveState : IPlayerState
     {
         _playerController.anim.SetBool("isMove", false);
     }
+
+    /*
+    public void ExcludeFlip()
+    {
+        if (_playerController.flipExclude)
+        {
+            _playerController.flipExclude.localScale = new Vector3(-_playerController.flipExclude.localScale.x, _playerController.flipExclude.localScale.y, -1f);
+            //_playerController.flipExclude.localScale = new Vector3(-_playerController.flipExclude.localScale.x, 1, 1);
+        }
+    }
+    */
 }
