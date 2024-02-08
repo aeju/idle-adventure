@@ -65,12 +65,14 @@ public partial class EnemyFSM : MonoBehaviour
     void Start()
     {
         m_State = EnemyState.Idle; // 최초의 에너미 상태 : Idle
-        
+        target = FindObjectOfType<PlayerController>();
+        /*
         GameObject playerObject = GameObject.FindGameObjectWithTag("player");
         if (playerObject != null)
         {
             target = playerObject.GetComponent<PlayerController>();
         }
+        */
         
         // 캐릭터 컨트롤러 컴포넌트 받아오기
         cc = GetComponent<CharacterController>();
