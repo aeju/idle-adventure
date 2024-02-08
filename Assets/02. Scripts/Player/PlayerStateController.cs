@@ -17,6 +17,9 @@ public class PlayerStateController : MonoBehaviour
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
         Vector3 combinedInput = new Vector3(horizontalInput, 0, verticalInput);
+        
+        // 터치 입력 (조이스틱)
+        bool isJoystickActive = _playerController.joystick.isDragging; 
 
         if (_playerController.isAlive)
         {
@@ -30,9 +33,10 @@ public class PlayerStateController : MonoBehaviour
                 _playerController.SkillPlayer();
                 Debug.Log("SkillState");
             }
-            else if (combinedInput != Vector3.zero) // 터치 조이스틱도 추가해야! 
+            else if (combinedInput != Vector3.zero || isJoystickActive) 
             {
                 _playerController.MovePlayer();
+                Debug.Log("MoveState");
             }
             /*
             else if (0 < _playerController.playerStats.currentHP ||
