@@ -42,7 +42,7 @@ public partial class EnemyFSM : MonoBehaviour
 
     // 플레이어 
     public PlayerController target;
-    
+
     // 일정한 시간 간격으로 공격 -> 누적 시간, 공격 딜레이 시간
     private float currentTime = 0; // 누적 시간
     private float attackDelay = 2f; // 공격 딜레이 시간
@@ -83,7 +83,8 @@ public partial class EnemyFSM : MonoBehaviour
         originPos = transform.position; // 자신의 초기 위치 저장
 
         monsterStats.currentHP = monsterStats.maxHP;  // 현재 체력 = 최대 체력으로 초기화
-        HPSliderUpdate();
+        
+        HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
     }
 
     void Update()
@@ -193,13 +194,13 @@ public partial class EnemyFSM : MonoBehaviour
         if (Vector3.Distance(transform.position, target.transform.position) < attackDistance)
         {
             // 플레이어 hp > 0일 때만, (생존 상태)
-            if (target.currentHP > 0)
+            if (target.playerStats.currentHP > 0)
             {
                 // 일정한 시간마다 플레이어를 공격
                 currentTime += Time.deltaTime; // 경과 시간 누적
                 if (currentTime > attackDelay) // 경과 시간 > 공격 딜레이 시간
                 {
-                    print("공격, PlayerHP: " + target.GetComponent<PlayerController>().currentHP);
+                    print("공격, PlayerHP: " + target.GetComponent<PlayerController>().playerStats.currentHP);
                     currentTime = 0; // 경과 시간 초기화
                     anim.SetTrigger("StartAttack"); // 공격 애니메이션 플레이
                 }
@@ -221,7 +222,11 @@ public partial class EnemyFSM : MonoBehaviour
     // 플레이어의 스크립트의 데미지 처리 함수 실행
     public void AttackAction()
     {
-        target.GetComponent<PlayerController>().PlayerDamaged(monsterStats.attack);
+        if (target != null)
+        {
+            target.DamagedPlayer();
+            target.ReceiveDamage(CombatCalculator.CalculateAttackDamage(monsterStats.attack, monsterStats.attack_multiplier, monsterStats.critical_multiplier));
+        }
     }
 
     void Return()
@@ -284,7 +289,7 @@ public partial class EnemyFSM : MonoBehaviour
     
     void Damaged()
     {
-        HPSliderUpdate();
+        HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
         StartCoroutine(DamageProcess()); // 피격 상태를 처리하기 위한 코루틴
     }
 
@@ -311,8 +316,8 @@ public partial class EnemyFSM : MonoBehaviour
     IEnumerator DieProcess()
     {
         ItemDrop();
-        HPSliderUpdate();
-        
+        HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
+
         // 캐릭터 컨트롤러 컴포넌트를 비활성화
         cc.enabled = false;
         
@@ -320,5 +325,9 @@ public partial class EnemyFSM : MonoBehaviour
         yield return new WaitForSeconds(2f);
         Destroy(gameObject);
     }
-
+    
+    void HPSliderUpdate(Slider hpSlider, int currentHP, int maxHP)
+    {
+        CombatUtilities.HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
+    }
 }

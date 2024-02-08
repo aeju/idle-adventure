@@ -14,6 +14,9 @@ public class MonsterStats : MonoBehaviour
     public int defense; // 방어력
     public int movement_Speed; // 이동속도
     
+    public float attack_multiplier; 
+    public float critical_multiplier;
+
     public int coin;
     public string monsterName;
     public int exp;
@@ -36,10 +39,13 @@ public class MonsterStats : MonoBehaviour
         currentHP = maxHP;
         attack = monsterStats.Attack; 
         defense = monsterStats.Defense; 
-        movement_Speed = monsterStats.Movement_Speed; 
-    
+        movement_Speed = monsterStats.Movement_Speed;
+
+        attack_multiplier = monsterStats.Attack_Multiplier;
+        critical_multiplier = monsterStats.Critical_Multiplier;
+        
         coin = monsterStats.Coin;
         exp = monsterStats.Exp;
-        monsterName = monsterStats.Monster_Name;
+        monsterName = monsterStats.Name;
     }
 }
