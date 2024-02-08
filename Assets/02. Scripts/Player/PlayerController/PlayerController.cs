@@ -44,10 +44,18 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     public GameObject hudDamageText;
 
     public bool flipX;
+
+    //private GameObject ponpo;
     
     // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
     void Start()
     {
+        Transform ponpo = transform.GetChild(0);
+        
+        
+        //transform.localScale = new Vector3(-1f, 1f, -1f);
+        ponpo.transform.localScale = new Vector3(-2f, 2f, -1f);
+        
         // 상태 객체: 인스턴스화 필요 (일반 클래스 인스턴스로 생성)
         _idleState = new PlayerIdleState(); 
         _moveState = new PlayerMoveState();
@@ -66,7 +74,8 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     void PlayerInit()
     {
         // 초기 1회 필요 
-        anim = GetComponent<Animator>();
+        anim = GetComponentInChildren<Animator>();
+        //anim = GetComponent<Animator>();
         
         isAlive = true;
         flipX = false;
