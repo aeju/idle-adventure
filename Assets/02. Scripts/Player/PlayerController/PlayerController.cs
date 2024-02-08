@@ -15,7 +15,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
 {
     // State Pattern 적용을 위해 추가 
     private IPlayerState _idleState, _moveState, _attackState, _skillState, _damagedState, _dieState;
-
+    
     private PlayerStateContext _playerStateContext;
     
     public PlayerStats playerStats;
@@ -109,6 +109,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     
     public void DiePlayer()
     {
+        if (!isAlive) return;
         _playerStateContext.Transition(_dieState);
     }
     
@@ -120,14 +121,19 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             playerStats.currentHP -= damage;
             CreateDamageText(damage);
             HPSliderUpdate(hpSlider, playerStats.currentHP, playerStats.maxHP);
-        }
-
-        else
-        {
-            DiePlayer();
+            
+            if (playerStats.currentHP <= 0)
+            {
+                DiePlayer();
+            }
+            
+            else
+            {
+                DamagedPlayer();
+            }
         }
     }
-    
+
     // 체크 시간 : 3초
     public IEnumerator DetectNearestMonsterCoroutine()
     {

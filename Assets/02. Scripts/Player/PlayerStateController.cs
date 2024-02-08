@@ -14,45 +14,47 @@ public class PlayerStateController : MonoBehaviour
     // 상태 전환
     void Update()
     {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-        float verticalInput = Input.GetAxisRaw("Vertical");
-        Vector3 combinedInput = new Vector3(horizontalInput, 0, verticalInput);
-        
-        // 터치 입력 (조이스틱)
-        bool isJoystickActive = _playerController.joystick.isDragging; 
-
         if (_playerController.isAlive)
         {
             if (Input.GetKeyDown(KeyCode.Z))
             {
                 _playerController.AttackPlayer();
-                Debug.Log("AttackState");
             }
             else if (Input.GetKeyDown(KeyCode.X) && !_playerController.isSkillOnCooldown)
             {
                 _playerController.SkillPlayer();
-                Debug.Log("SkillState");
             }
-            else if (combinedInput != Vector3.zero || isJoystickActive) 
+            else // idle, move 판단
             {
-                _playerController.MovePlayer();
-                Debug.Log("MoveState");
+                JudgeMovement(); 
             }
-            /*
-            else if (0 < _playerController.playerStats.currentHP ||
-                     _playerController.playerStats.currentHP < _playerController.playerStats.maxHP)
-            {
-                _playerController.DamagedPlayer();
-            }
-            */
-            else if (_playerController.playerStats.currentHP <= 0)
-            {
-                _playerController.DiePlayer();
-            }
-            else
-            {
-                _playerController.IdlePlayer();
-            }
+        }
+    }
+
+    void JudgeMovement()
+    {
+        Vector3 combinedInput;
+        bool isJoystickActive = _playerController.joystick.isDragging; 
+
+        if (isJoystickActive) // 조이스틱
+        {
+            Vector2 joystickInput = _playerController.joystick.GetInputDirection();
+            combinedInput = new Vector3(joystickInput.x, 0, joystickInput.y);
+        }
+        else // 키보드
+        {
+            float horizontalInput = Input.GetAxisRaw("Horizontal");
+            float verticalInput = Input.GetAxisRaw("Vertical");
+            combinedInput = new Vector3(horizontalInput, 0, verticalInput);
+        }
+        
+        if (combinedInput != Vector3.zero)
+        {
+            _playerController.MovePlayer();
+        }
+        else
+        {
+            _playerController.IdlePlayer();
         }
     }
 }

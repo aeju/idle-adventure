@@ -8,13 +8,12 @@ public class PlayerDamagedState : IPlayerState
 
     public void Enter(PlayerController playerController)
     {
-        
+        if (!_playerController)
+            _playerController = playerController;
     }
 
     public void Handle(PlayerController playerController)
     {
-        if (!_playerController)
-            _playerController = playerController;
         
     }
 
@@ -22,6 +21,5 @@ public class PlayerDamagedState : IPlayerState
     {
 
     }
-    
     
 }

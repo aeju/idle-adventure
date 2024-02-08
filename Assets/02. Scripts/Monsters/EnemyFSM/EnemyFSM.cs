@@ -85,7 +85,6 @@ public partial class EnemyFSM : MonoBehaviour
         monsterStats.currentHP = monsterStats.maxHP;  // 현재 체력 = 최대 체력으로 초기화
         
         HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
-        //CombatUtilities.HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
     }
 
     void Update()
@@ -225,6 +224,7 @@ public partial class EnemyFSM : MonoBehaviour
     {
         if (target != null)
         {
+            target.DamagedPlayer();
             target.ReceiveDamage(CombatCalculator.CalculateAttackDamage(monsterStats.attack, monsterStats.attack_multiplier, monsterStats.critical_multiplier));
         }
     }
