@@ -5,13 +5,13 @@ using UnityEngine;
 [SerializeField]
 public class PlayerStats : MonoBehaviour
 {
-    public PlayerStat playerStats;
+    public PlayerStat playerStat;
 
     private PlayerController _playerController;
     
-    public void Start()
+    public void Awake()
     {
-        if (playerStats != null)
+        if (playerStat != null)
         {
             AssignStats();
         }
@@ -32,27 +32,34 @@ public class PlayerStats : MonoBehaviour
     public int critical_Hit_Rate; // 치명타 확률
     public int accuracy; // 명중 
     public int hP_Recovery; // 생명력 회복
+
+    public string name;
+    public string class_Type;
     
     public float attack_Multiplier; // 기본 공격 퍼센트
     public float critical_Multiplier; // 치명타 퍼센트
     public float skill_Multiplier; // 스킬 공격 퍼센트
 
     public int combatPower; // 전투력
-    
+
     public void AssignStats()
     {
-        maxHP = playerStats.MaxHP;
+        maxHP = playerStat.MaxHP;
         currentHP = maxHP; // HP 초기화
-        attack = playerStats.Attack;
-        defense = playerStats.Defense;
-        movement_Speed = playerStats.Movement_Speed;
-        critical_Hit_Rate = playerStats.Critical_Hit_Rate;
+        attack = playerStat.Attack;
+        defense = playerStat.Defense;
+        movement_Speed = playerStat.Movement_Speed;
+        critical_Hit_Rate = playerStat.Critical_Hit_Rate;
 
-        attack_Multiplier = playerStats.Attack_Multiplier;
-        critical_Multiplier = playerStats.Critical_Multiplier;
-        skill_Multiplier = playerStats.Skill_Multiplier;
+        name = playerStat.Name;
+        class_Type = playerStat.Class_Type;
+        
+        attack_Multiplier = playerStat.Attack_Multiplier;
+        critical_Multiplier = playerStat.Critical_Multiplier;
+        skill_Multiplier = playerStat.Skill_Multiplier;
+        
 
-        CalculateCombatPower(playerStats.MaxHP, playerStats.Attack, playerStats.Defense);
+        CalculateCombatPower(playerStat.MaxHP, playerStat.Attack, playerStat.Defense);
     }
     
     // 전투력 계산 공식
