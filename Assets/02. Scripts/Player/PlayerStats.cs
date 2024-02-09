@@ -9,7 +9,7 @@ public class PlayerStats : MonoBehaviour
 
     private PlayerController _playerController;
     
-    public void Start()
+    public void Awake()
     {
         if (playerStat != null)
         {
