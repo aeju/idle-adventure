@@ -19,12 +19,23 @@ public class HeroStatsUI : MonoBehaviour
 
    public void Start()
    {
-      maxHP.text = playerStats.maxHP.ToString();
-      attack.text = playerStats.attack.ToString();
-      defense.text = playerStats.defense.ToString();
-      movement_Speed.text = playerStats.movement_Speed.ToString();
+      if (playerStats == null)
+         playerStats = GetComponent<PlayerStats>();
       
-      hero_name.text = playerStats.name;
-      class_Type.text = playerStats.class_Type;
+      if (playerStats != null)
+      {
+         SetStatsText(maxHP, playerStats.maxHP);
+         SetStatsText(attack, playerStats.attack);
+         SetStatsText(defense, playerStats.defense);
+         SetStatsText(movement_Speed, playerStats.movement_Speed);
+
+         hero_name.text = playerStats.name;
+         class_Type.text = playerStats.class_Type;
+      }
+   }
+   
+   private void SetStatsText(TextMeshProUGUI tmp, int statValue)
+   {
+      tmp.text = statValue.ToString();
    }
 }
