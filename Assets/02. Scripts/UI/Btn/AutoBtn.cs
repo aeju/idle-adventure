@@ -7,6 +7,8 @@ using UnityEngine.UI;
 // 터치 : AutoOff -> AutoOn:회전 -> AutoOff
 public class AutoBtn : MonoBehaviour
 {
+    public PlayerController playerController;
+    
     public GameObject AutoOn; 
     public GameObject AutoOff; 
 
@@ -20,6 +22,8 @@ public class AutoBtn : MonoBehaviour
         AutoBtn.OnClickAsObservable().Subscribe(_ =>
         {
             Rotation(); // 클릭하면 Rotation 실행
+            //playerController.AutoModeActive = true;
+            playerController.AutoModeActive = !playerController.AutoModeActive;;
         }).AddTo(this);
         
         // 초기 상태 : Off 활성화
@@ -32,11 +36,7 @@ public class AutoBtn : MonoBehaviour
             .SetEase(Ease.Linear) // 속도 : 일정
             .SetLoops(-1, LoopType.Incremental) // 무한 반복
             .Pause(); // 시작 : 실행 x
-    }
-
-    public void Rotation()
-    {
-        isRotating.Value = !isRotating.Value; // 회전 상태 전환
+        
         
         isRotating.Subscribe(rotating =>
         {
@@ -55,5 +55,12 @@ public class AutoBtn : MonoBehaviour
                 AutoOff.SetActive(true);
             }
         });
+    }
+    
+    // isRotating에 대한 구독: Start 내에서 1회
+    // Rotation(): 단지 상태 전환만 하도록 (매번 호출될 때마다 새로운 구독 X)
+    public void Rotation()
+    {
+        isRotating.Value = !isRotating.Value; // 회전 상태 전환
     }
 }

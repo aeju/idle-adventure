@@ -16,17 +16,24 @@ public class PlayerStateController : MonoBehaviour
     {
         if (_playerController.isAlive)
         {
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (_playerController.AutoModeActive)
             {
-                _playerController.AttackPlayer();
+                _playerController.AutoPlayer();
             }
-            else if (Input.GetKeyDown(KeyCode.X) && !_playerController.isSkillOnCooldown)
+            else 
             {
-                _playerController.SkillPlayer();
-            }
-            else // idle, move 판단
-            {
-                JudgeMovement(); 
+                if (Input.GetKeyDown(KeyCode.Z))
+                {
+                    _playerController.AttackPlayer();
+                }
+                else if (Input.GetKeyDown(KeyCode.X) && !_playerController.isSkillOnCooldown)
+                {
+                    _playerController.SkillPlayer();
+                }
+                else // idle, move 판단
+                {
+                    JudgeMovement(); 
+                }
             }
         }
     }
