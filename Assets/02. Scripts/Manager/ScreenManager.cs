@@ -16,6 +16,8 @@ public class ScreenManager : MonoBehaviour
     public Canvas idleModeCanvas; // idle Mode(검은 화면) 표시 Canvas
     public CountTime countTime;
     
+    private bool isIdleModeActive = false;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -32,32 +34,32 @@ public class ScreenManager : MonoBehaviour
     
     private void Start()
     {
-        idleModeCanvas.enabled = false; 
-        currentTime = 0; // 타이머 초기화
+        idleModeCanvas.enabled = false;
+        ResetIdleModeTimer(); // 타이머 초기화
     }
 
     private void Update()
     {
-        // 사용자의 입력이 감지되면 타이머를 초기화
-        if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1))
-        {
-            currentTime = 0; // 캔버스가 켜질 때마다 시간 초기화 
-            if (idleModeCanvas.enabled)
-            {
-                idleModeCanvas.enabled = false; 
-                countTime.IdleModeOff();
-            }
-        }
-        else
-        {
-            currentTime += Time.deltaTime; // 입력이 없을 경우 타이머 증가
 
-            // 지정된 방치 시간이 초과되면 검은 화면을 활성화
-            if (currentTime >= idleTime && !idleModeCanvas.enabled)
+        if (!isIdleModeActive)
+        {
+            // 입력값이 있으면, 절전모드 타이머 초기화
+            if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1))
             {
-                Debug.Log("Idle Mode Screen On");
-                idleModeCanvas.enabled = true; // idle Mode 잠금화면 활성화
-                countTime.IdleModeOn();
+                ResetIdleModeTimer();
+            }
+
+            else
+            {
+                currentTime += Time.deltaTime; // 입력이 없을 경우 타이머 증가
+
+                // 지정된 방치 시간이 초과되면 검은 화면을 활성화
+                if (currentTime >= idleTime && !idleModeCanvas.enabled)
+                {
+                    Debug.Log("Idle Mode Screen On");
+                    idleModeCanvas.enabled = true; // idle Mode 잠금화면 활성화
+                    countTime.IdleModeOn();
+                }
             }
         }
     }
@@ -79,5 +81,10 @@ public class ScreenManager : MonoBehaviour
             idleModeCanvas.enabled = false;
             countTime.IdleModeOff();
         }
+    }
+    
+    public void ResetIdleModeTimer()
+    {
+        currentTime = 0;
     }
 }
