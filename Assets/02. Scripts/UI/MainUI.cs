@@ -7,6 +7,25 @@ using UniRx;
 // 닫힘: X 버튼, 뒤로가기
 public class MainUI : MonoBehaviour
 {
+    [SerializeField] private GameObject X_btn_off;
+    [SerializeField] private GameObject X_btn_on;
+    [SerializeField] private Button X_btn;
+
+    [SerializeField] private Button Hero_Btn;
+    [SerializeField] private Button Inventory_Btn;
+    [SerializeField] private Button Strengthen_Btn;
+    [SerializeField] private Button Contents_Btn;
+    [SerializeField] private Button Mission_Btn;
+    [SerializeField] private Button Shop_Btn;
+
+    [SerializeField] private GameObject Hero_Page;
+    [SerializeField] private GameObject Inventory_Page;
+    [SerializeField] private GameObject Strengthen_Page;
+    [SerializeField] private GameObject Contents_Page;
+    [SerializeField] private GameObject Mission_Page;
+    [SerializeField] private GameObject Shop_Page;
+    
+    /*
     public GameObject X_btn_off;
     public GameObject X_btn_on;
     public Button X_btn;
@@ -24,6 +43,8 @@ public class MainUI : MonoBehaviour
     public GameObject Contents_Page;
     public GameObject Mission_Page;
     public GameObject Shop_Page;
+    */
+    
     private GameObject currentOpenPage = null; // 현재 열려있는 페이지
 
     // X버튼 누를 때! 
