@@ -50,12 +50,12 @@ public class MainUI : MonoBehaviour
             Shop_Page
         };
 
-        foreach (var page in pages)
+        foreach (var page in pages) // 2. 모든 페이지 닫기
         {
             page.SetActive(false);
         }
         
-        // 버튼 - 페이지 매핑 
+        // 3. 버튼 - 페이지 매핑, 구독 목적
         buttonPage = new Dictionary<Button, GameObject>
         {
             { Hero_Btn, Hero_Page },
@@ -66,7 +66,7 @@ public class MainUI : MonoBehaviour
             { Shop_Btn, Shop_Page }
         };
         
-        foreach (var btn in buttonPage)
+        foreach (var btn in buttonPage) 
         {
             btn.Key.OnClickAsObservable().Subscribe(_ =>
             {

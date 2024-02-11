@@ -2,12 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[SerializeField]
+
 public class PlayerStats : MonoBehaviour
 {
+    [SerializeField]
     public PlayerStat playerStat;
 
     private PlayerController _playerController;
+    
+    public int currentHP;  // 현재 체력
+    
+    public int maxHP { get; private set; } // 생명력 
+    public int attack { get; private set; } // 공격력 
+    public int defense { get; private set; } // 방어력
+    public int movement_Speed { get; private set; } // 이동속도
+    
+    public int critical_Hit_Rate; // 치명타 확률
+    public int accuracy; // 명중 
+    public int hP_Recovery; // 생명력 회복
+
+    public string name { get; private set; }
+    public string class_Type { get; private set; }
+    
+    public float attack_Multiplier { get; private set; } // 기본 공격 퍼센트
+    public float critical_Multiplier { get; private set; } // 치명타 퍼센트
+    public float skill_Multiplier { get; private set; } // 스킬 공격 퍼센트
+
+    public int combatPower; // 전투력
     
     public void Awake()
     {
@@ -23,24 +44,7 @@ public class PlayerStats : MonoBehaviour
         _playerController = GetComponentInParent<PlayerController>();
     }
     
-    public int currentHP; // 현재 체력
-    public int maxHP; // 생명력 
-    public int attack; // 공격력 
-    public int defense; // 방어력
-    public int movement_Speed; // 이동속도
     
-    public int critical_Hit_Rate; // 치명타 확률
-    public int accuracy; // 명중 
-    public int hP_Recovery; // 생명력 회복
-
-    public string name;
-    public string class_Type;
-    
-    public float attack_Multiplier; // 기본 공격 퍼센트
-    public float critical_Multiplier; // 치명타 퍼센트
-    public float skill_Multiplier; // 스킬 공격 퍼센트
-
-    public int combatPower; // 전투력
 
     public void AssignStats()
     {
