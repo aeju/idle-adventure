@@ -38,6 +38,7 @@ public class ScreenManager : MonoBehaviour
 
     private void Update()
     {
+        /*
         // 사용자의 입력이 감지되면 타이머를 초기화
         if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
@@ -50,6 +51,7 @@ public class ScreenManager : MonoBehaviour
         }
         else
         {
+        */
             currentTime += Time.deltaTime; // 입력이 없을 경우 타이머 증가
 
             // 지정된 방치 시간이 초과되면 검은 화면을 활성화
@@ -59,7 +61,6 @@ public class ScreenManager : MonoBehaviour
                 idleModeCanvas.enabled = true; // idle Mode 잠금화면 활성화
                 countTime.IdleModeOn();
             }
-        }
     }
     
     // IdleModeBtn에서 호출
@@ -79,5 +80,10 @@ public class ScreenManager : MonoBehaviour
             idleModeCanvas.enabled = false;
             countTime.IdleModeOff();
         }
+    }
+    
+    public void ResetIdleModeTimer()
+    {
+        currentTime = 0;
     }
 }
