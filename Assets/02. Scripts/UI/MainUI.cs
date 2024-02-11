@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 
+// 닫힘: X 버튼, 뒤로가기
 public class MainUI : MonoBehaviour
 {
     public GameObject X_btn_off;
@@ -23,12 +24,14 @@ public class MainUI : MonoBehaviour
     public GameObject Contents_Page;
     public GameObject Mission_Page;
     public GameObject Shop_Page;
+    private GameObject currentOpenPage = null; // 현재 열려있는 페이지
 
     // X버튼 누를 때! 
-    public List<GameObject> pages;
+    private List<GameObject> pages;
+    
 
     // 버튼-페이지 딕셔너리
-    public Dictionary<Button, GameObject> buttonPage;
+    private Dictionary<Button, GameObject> buttonPage;
 
     private void Awake()
     {
@@ -66,8 +69,7 @@ public class MainUI : MonoBehaviour
         
         X_btn.OnClickAsObservable().Subscribe(_ =>
         {
-            // 무슨 창이든 닫기게
-            CloseAllPages();
+            CloseAllPages(); // 무슨 창이든 닫기게
         }).AddTo(this);
         
         foreach (var btn in buttonPage)
@@ -77,52 +79,34 @@ public class MainUI : MonoBehaviour
                 OpenPage(btn.Value);
             }).AddTo(this);
         }
-
-        /* // 버튼 누르면, 해당 페이지 UI 켜지게
-        Hero_Btn.OnClickAsObservable().Subscribe(_ =>
-        {
-            Hero_Page.SetActive(true);
-            XbtnOpen();
-
-        }).AddTo(this);
-
-        Inventory_Btn.OnClickAsObservable().Subscribe(_ =>
-        {
-            Inventory_Page.SetActive(true);
-            XbtnOpen();
-        }).AddTo(this);
-
-        Strengthen_Btn.OnClickAsObservable().Subscribe(_ =>
-        {
-            Strengthen_Page.SetActive(true);
-            XbtnOpen();
-        }).AddTo(this);
-
-        Contents_Btn.OnClickAsObservable().Subscribe(_ =>
-        {
-            Contents_Page.SetActive(true);
-            XbtnOpen();
-        }).AddTo(this);
-
-        Mission_Btn.OnClickAsObservable().Subscribe(_ =>
-        {
-            Mission_Page.SetActive(true);
-            XbtnOpen();
-        }).AddTo(this);
-
-        Shop_Btn.OnClickAsObservable().Subscribe(_ =>
-        {
-            Shop_Page.SetActive(true);
-            XbtnOpen();
-        }).AddTo(this);
-        */
     }
     
     private void OpenPage(GameObject page)
     {
         CloseAllPages();
         page.SetActive(true);
+        currentOpenPage = page; // 현재 열린 페이지 업데이트
         XbtnOpen();
+    }
+    
+    private void CloseAllPages()
+    {
+        // 페이지가 열려있는 경우에만 
+        if (currentOpenPage != null)
+        {
+            currentOpenPage.SetActive(false);
+            currentOpenPage = null;
+            XbtnClose();
+        }
+    }
+    
+    private void Update()
+    {
+        // 어떤 페이지가 열려있고, 뒤로가기를 누를 때 
+        if (currentOpenPage != null && Input.GetKeyDown(KeyCode.Escape))
+        {
+            CloseAllPages();
+        }
     }
     
     private void XbtnOpen()
@@ -135,14 +119,5 @@ public class MainUI : MonoBehaviour
     {
         X_btn_off.SetActive(true);
         X_btn_on.SetActive(false);
-    }
-    
-    private void CloseAllPages()
-    {
-        foreach (var page in pages)
-        {
-            page.SetActive(false);
-        }
-        XbtnClose();
     }
 }
