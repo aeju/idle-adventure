@@ -7,25 +7,32 @@ using UnityEngine;
 public partial class PlayerController : MonoBehaviour
 {
     // 쿨타임
-    public float skillCooldown = 5f; 
-    public float lastSkillTime;
+    public float skillCooldown = 3f; 
+    public float lastSkillTime; // start에서 초기화
     public bool isSkillOnCooldown = false; // 스킬이 쿨다운 중인지 확인 (false -> 스킬 실행 o)
 
-    
+    // 자동공격 시간 간격
+    public float hitCooldown = 2f;
+    public float lastHitTime;
+
     // 일반 공격 (z)
     public void PlayerAttack()
     {
-        anim.SetTrigger("AttackTrigger");
+        if (Time.time >= lastHitTime + hitCooldown)
+        {
+            anim.SetTrigger("AttackTrigger");
+            lastHitTime = Time.time; // 공격 쿨타임 업데이트
+        }
     }
 
     // 치명타 공격 (x, 쿨타임 o)
     public void PlayerSkill()
     {
-        anim.SetTrigger("SkillTrigger");
-        
-        if (!isSkillOnCooldown) // 쿨다운 false = 스킬 실행 o
+        if (!isSkillOnCooldown && Time.time >= lastHitTime + hitCooldown) // 쿨다운 false = 스킬 실행 o
         {
+            anim.SetTrigger("SkillTrigger");
             StartCoroutine(SkillCoroutine());
+            lastHitTime = Time.time; // 공격 쿨타임 업데이트
         }
         else
         {

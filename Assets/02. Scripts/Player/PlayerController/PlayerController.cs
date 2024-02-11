@@ -14,7 +14,7 @@ public interface IPlayerController
 public partial class PlayerController : MonoBehaviour, IPlayerController
 {
     // State Pattern 적용을 위해 추가 
-    private IPlayerState _idleState, _moveState, _attackState, _skillState, _damagedState, _dieState;
+    private IPlayerState _idleState, _moveState, _autoState, _attackState, _skillState, _damagedState, _dieState;
     
     private PlayerStateContext _playerStateContext;
     
@@ -57,11 +57,12 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         // 상태 객체: 인스턴스화 필요 (일반 클래스 인스턴스로 생성)
         _idleState = new PlayerIdleState(); 
         _moveState = new PlayerMoveState();
+        _autoState = new PlayerAutoState();
         _attackState = new PlayerAttackState();
         _skillState = new PlayerSkillState();
         _damagedState = new PlayerDamagedState();
         _dieState = new PlayerDieState();
-        
+
         // 상태 관리자 인스턴스 생성 및 초기 상태로 전환
         _playerStateContext = new PlayerStateContext(this);
         _playerStateContext.Transition(_idleState);
@@ -80,7 +81,9 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         StartCoroutine(DetectNearestMonsterCoroutine());
         
         isSkillOnCooldown = false;
-        lastSkillTime = Time.time - skillCooldown;
+        //lastSkillTime = Time.time - skillCooldown;
+        lastSkillTime = -skillCooldown;
+        lastHitTime = -hitCooldown;
     }
 
     public void IdlePlayer()
@@ -91,6 +94,11 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     public void MovePlayer()
     {
         _playerStateContext.Transition(_moveState);
+    }
+
+    public void AutoPlayer()
+    {
+        _playerStateContext.Transition(_autoState);
     }
     
     public void AttackPlayer()
@@ -187,20 +195,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             */
             
             damageText.GetComponent<DamageText>().damage = hitPower;
-        }
-    }
-
-    public void SliderRight()
-    {
-        if (!flipX)
-        {
-            hpSlider.direction = Slider.Direction.RightToLeft;
-            cooldownSlider.direction = Slider.Direction.RightToLeft;
-        }
-        else
-        {
-            hpSlider.direction = Slider.Direction.LeftToRight;
-            cooldownSlider.direction = Slider.Direction.RightToLeft;
         }
     }
 }
