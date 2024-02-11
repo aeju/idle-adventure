@@ -24,50 +24,22 @@ public class MainUI : MonoBehaviour
     [SerializeField] private GameObject Contents_Page;
     [SerializeField] private GameObject Mission_Page;
     [SerializeField] private GameObject Shop_Page;
-    
-    /*
-    public GameObject X_btn_off;
-    public GameObject X_btn_on;
-    public Button X_btn;
 
-    public Button Hero_Btn;
-    public Button Inventory_Btn;
-    public Button Strengthen_Btn;
-    public Button Contents_Btn;
-    public Button Mission_Btn;
-    public Button Shop_Btn;
-
-    public GameObject Hero_Page;
-    public GameObject Inventory_Page;
-    public GameObject Strengthen_Page;
-    public GameObject Contents_Page;
-    public GameObject Mission_Page;
-    public GameObject Shop_Page;
-    */
-    
     private GameObject currentOpenPage = null; // 현재 열려있는 페이지
 
     // X버튼 누를 때! 
     private List<GameObject> pages;
     
-
     // 버튼-페이지 딕셔너리
     private Dictionary<Button, GameObject> buttonPage;
-
-    private void Awake()
-    {
-        X_btn_on.SetActive(false);
-
-        Hero_Page.SetActive(false);
-        Inventory_Page.SetActive(false);
-        Strengthen_Page.SetActive(false);
-        Contents_Page.SetActive(false);
-        Mission_Page.SetActive(false);
-        Shop_Page.SetActive(false);
-    }
-
+    
+    // 1. X버튼 비활성화
+    // 2. 모든 페이지 비활성화
+    // 3. 버튼 - 페이지 연결
     private void Start()
     {
+        XbtnClose(); // 1. 초기 X 버튼: 비활성화
+        
         pages = new List<GameObject>
         {
             Hero_Page,
@@ -77,7 +49,13 @@ public class MainUI : MonoBehaviour
             Mission_Page,
             Shop_Page
         };
+
+        foreach (var page in pages)
+        {
+            page.SetActive(false);
+        }
         
+        // 버튼 - 페이지 매핑 
         buttonPage = new Dictionary<Button, GameObject>
         {
             { Hero_Btn, Hero_Page },
@@ -88,11 +66,6 @@ public class MainUI : MonoBehaviour
             { Shop_Btn, Shop_Page }
         };
         
-        X_btn.OnClickAsObservable().Subscribe(_ =>
-        {
-            CloseAllPages(); // 무슨 창이든 닫기게
-        }).AddTo(this);
-        
         foreach (var btn in buttonPage)
         {
             btn.Key.OnClickAsObservable().Subscribe(_ =>
@@ -100,6 +73,11 @@ public class MainUI : MonoBehaviour
                 OpenPage(btn.Value);
             }).AddTo(this);
         }
+        
+        X_btn.OnClickAsObservable().Subscribe(_ =>
+        {
+            CloseAllPages(); // 무슨 창이든 닫기게
+        }).AddTo(this);
     }
     
     private void OpenPage(GameObject page)
@@ -121,6 +99,7 @@ public class MainUI : MonoBehaviour
         }
     }
     
+    // 뒤로가기 = 페이지 닫기
     private void Update()
     {
         // 어떤 페이지가 열려있고, 뒤로가기를 누를 때 
