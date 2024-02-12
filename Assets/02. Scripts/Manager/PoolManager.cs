@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 게임 오브젝트 풀링 관리
 public class PoolManager : MonoBehaviour
 {
-    // 프리팹 보관할 변수
+    // 프리팹 보관할 변수 (풀링할 프리팹들)
     public GameObject[] prefabs;
-    // 풀 담당 리스트 (변수 개수와 1:1 관계)
+    // 풀 담당 리스트 (변수 개수와 1:1 관계), 현재 활성화되지 않은 게임 오브젝트들의 리스트
     private List<GameObject>[] pools;
 
+    // 1대1 관계
     void Awake()
     {
         pools = new List<GameObject>[prefabs.Length];
@@ -19,6 +21,7 @@ public class PoolManager : MonoBehaviour
         }
     }
 
+    // 요청된 인덱스에 해당하는 풀에서 비활성화된 게임 오브젝트를 찾아 반환 (없으면 새로 생성)
     public GameObject Get(int index)
     {
         GameObject select = null;
