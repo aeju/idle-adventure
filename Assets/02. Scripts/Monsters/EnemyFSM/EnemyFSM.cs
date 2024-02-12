@@ -10,12 +10,12 @@ using DG.Tweening;
 // 필요 2: damaged 애니메이션
 public partial class EnemyFSM : MonoBehaviour
 {
-    public MonsterStats monsterStats;
+    [SerializeField] private MonsterStats monsterStats;
     
-    protected UserInfoManager userInfo;
-    protected ResourceManager resourceInfo;
+    [SerializeField] private UserInfoManager userInfo;
+    [SerializeField] private ResourceManager resourceInfo;
     
-    public GameObject hudDamageText;
+    [SerializeField] private GameObject hudDamageText;
 
     // 에너미 상태 상수
     enum EnemyState
@@ -33,9 +33,9 @@ public partial class EnemyFSM : MonoBehaviour
     private Rigidbody rigid;
     
     // 플레이어 발견 범위
-    public float findDistance = 8f;
+    [SerializeField] float findDistance = 8f;
     // 공격 가능 범위
-    public float attackDistance = 2f;
+    [SerializeField] float attackDistance = 2f;
     
     // 캐릭터 컨트롤러 컴포넌트
     private CharacterController cc;
@@ -52,15 +52,15 @@ public partial class EnemyFSM : MonoBehaviour
     // 초기 위치 저장용 변수
     private Vector3 originPos;
     // 이동 가능 범위
-    public float moveDistance = 20f;
+    [SerializeField] float moveDistance = 20f;
     
-    public Slider hpSlider;
+    [SerializeField] Slider hpSlider;
     
     // 애니메이션 
     private Animator anim;
     private SkeletonMecanim skeletonMecanim;
     
-    public GameObject dropItem;
+    [SerializeField] GameObject dropItem;
 
     void Start()
     {

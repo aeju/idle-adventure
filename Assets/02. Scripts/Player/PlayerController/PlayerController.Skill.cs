@@ -6,11 +6,13 @@ using UnityEngine;
 // Attack, Skill 로직
 public partial class PlayerController : MonoBehaviour
 {
+    [Header("# 스킬 쿨다운")]
     // 쿨타임
     public float skillCooldown = 3f; 
     public float lastSkillTime; // start에서 초기화
     public bool isSkillOnCooldown = false; // 스킬이 쿨다운 중인지 확인 (false -> 스킬 실행 o)
 
+    [Header("# 스킬 시간 간격")]
     // 자동공격 시간 간격
     public float hitCooldown = 2f;
     public float lastHitTime;
