@@ -12,9 +12,9 @@ public class PlayerStats : MonoBehaviour
     
     public int currentHP;  // 현재 체력
     
-    public int maxHP { get; private set; } // 생명력 
-    public int attack { get; private set; } // 공격력 
-    public int defense { get; private set; } // 방어력
+    public int maxHP { get; set; } // 생명력 
+    public int attack { get; set; } // 공격력 
+    public int defense { get; set; } // 방어력
     public int movement_Speed { get; private set; } // 이동속도
     
     public int critical_Hit_Rate; // 치명타 확률
