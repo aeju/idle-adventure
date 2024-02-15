@@ -13,7 +13,6 @@ public class FullScreenJoystick : MonoBehaviour, IPointerDownHandler, IDragHandl
     
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log("joystick down");
         // 조이스틱 위치 = 터치 위치 
         joystickBackground.position = eventData.position; // Vector3로 받아와서 x
         joystickHandle.position = eventData.position;
@@ -29,7 +28,8 @@ public class FullScreenJoystick : MonoBehaviour, IPointerDownHandler, IDragHandl
         Vector2 localPoint;
 
         // 마우스 위치 -> (RectTransform의) 로컬 좌표로 변환 
-        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(joystickBackground, eventData.position, eventData.pressEventCamera, out localPoint))
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle
+                (joystickBackground, eventData.position, eventData.pressEventCamera, out localPoint))
         {
             Vector2 direction = localPoint;
 

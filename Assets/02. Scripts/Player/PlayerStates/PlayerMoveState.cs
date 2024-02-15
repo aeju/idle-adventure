@@ -18,7 +18,7 @@ public class PlayerMoveState : IPlayerState
         PlayerMove();
     }
 
-    public void PlayerMove()
+    private void PlayerMove()
     {
         // 키보드 + 조이스틱 입력
         Vector2 joystickInput = _playerController.joystick.GetInputDirection(); // 조이스틱 입력값 
@@ -33,8 +33,7 @@ public class PlayerMoveState : IPlayerState
         // 애니메이션
         bool isMoving = combinedInput != Vector3.zero;
         _playerController.anim.SetBool("isMove", isMoving);
-
-        // Update character scale based on direction for flipping character
+        
         if (isMoving)
         {
             if (horizontalInput > 0)
@@ -53,27 +52,5 @@ public class PlayerMoveState : IPlayerState
     public void Exit(PlayerController playerController)
     {
         _playerController.anim.SetBool("isMove", false);
-    }  
-    
-    /* // 사용 x
-    void AdjustTerrain()
-    {
-        // terrain raycast
-        RaycastHit hit;
-        Vector3 castPos = transform.position;
-        castPos.y += 1;
-
-        float UIDist = 0.75f;
-        
-        /*
-        if (Physics.Raycast(castPos, -transform.up, out hit, Mathf.Infinity, _playerController.terrainLayer))
-        {
-            if (hit.collider != null)
-            {
-                Vector3 movePos = transform.position;
-                movePos.y = hit.point.y + _playerController.groundDist + UIDist;
-                transform.position = movePos;
-            }
-        }
-    */
+    }
 }

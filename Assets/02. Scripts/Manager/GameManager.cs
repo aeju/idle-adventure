@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public PoolManager pool;
     //public Player player;
     
+    
     private void Awake()
     {
         if (Instance == null)
@@ -20,4 +21,10 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public void GameStart()
+    {
+        
+    }
+    
 }

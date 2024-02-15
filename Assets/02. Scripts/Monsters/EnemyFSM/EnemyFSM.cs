@@ -10,12 +10,12 @@ using DG.Tweening;
 // 필요 2: damaged 애니메이션
 public partial class EnemyFSM : MonoBehaviour
 {
-    public MonsterStats monsterStats;
+    [SerializeField] private MonsterStats monsterStats;
     
-    protected UserInfoManager userInfo;
-    protected ResourceManager resourceInfo;
+    [SerializeField] private UserInfoManager userInfo;
+    [SerializeField] private ResourceManager resourceInfo;
     
-    public GameObject hudDamageText;
+    [SerializeField] private GameObject hudDamageText;
 
     // 에너미 상태 상수
     enum EnemyState
@@ -33,9 +33,9 @@ public partial class EnemyFSM : MonoBehaviour
     private Rigidbody rigid;
     
     // 플레이어 발견 범위
-    public float findDistance = 8f;
+    [SerializeField] float findDistance = 8f;
     // 공격 가능 범위
-    public float attackDistance = 2f;
+    [SerializeField] float attackDistance = 2f;
     
     // 캐릭터 컨트롤러 컴포넌트
     private CharacterController cc;
@@ -52,28 +52,21 @@ public partial class EnemyFSM : MonoBehaviour
     // 초기 위치 저장용 변수
     private Vector3 originPos;
     // 이동 가능 범위
-    public float moveDistance = 20f;
+    [SerializeField] float moveDistance = 20f;
     
-    public Slider hpSlider;
+    [SerializeField] Slider hpSlider;
     
     // 애니메이션 
     private Animator anim;
     private SkeletonMecanim skeletonMecanim;
     
-    public GameObject dropItem;
+    [SerializeField] GameObject dropItem;
 
     void Start()
     {
         m_State = EnemyState.Idle; // 최초의 에너미 상태 : Idle
         target = FindObjectOfType<PlayerController>();
-        /*
-        GameObject playerObject = GameObject.FindGameObjectWithTag("player");
-        if (playerObject != null)
-        {
-            target = playerObject.GetComponent<PlayerController>();
-        }
-        */
-        
+
         // 캐릭터 컨트롤러 컴포넌트 받아오기
         cc = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
@@ -97,7 +90,7 @@ public partial class EnemyFSM : MonoBehaviour
             return;
         }
         
-        // 현재 상태를 체크해 해당 상태별로 정해진 기능을 수행하게 함
+        // 현재 상태를 체크, 해당 상태별로 정해진 기능 수행
         switch (m_State)
         {
             case EnemyState.Idle:
@@ -112,12 +105,11 @@ public partial class EnemyFSM : MonoBehaviour
             case EnemyState.Return:
                 Return();
                 break;
-            case EnemyState.Damaged: // 매 프레임마다 반복x, 1회만 실행
+            case EnemyState.Damaged: 
                 break;
             case EnemyState.Die:
                 break;
         }
-        
         FlipTowardsPlayer();
     }
     
@@ -227,7 +219,8 @@ public partial class EnemyFSM : MonoBehaviour
         if (target != null)
         {
             target.DamagedPlayer();
-            target.ReceiveDamage(CombatCalculator.CalculateAttackDamage(monsterStats.attack, monsterStats.attack_multiplier, monsterStats.critical_multiplier));
+            target.ReceiveDamage(CombatCalculator.CalculateAttackDamage
+                (monsterStats.attack, monsterStats.attack_multiplier, monsterStats.critical_multiplier));
         }
     }
 
