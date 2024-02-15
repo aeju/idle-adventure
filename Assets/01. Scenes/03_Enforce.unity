@@ -4176,7 +4176,7 @@ GameObject:
   - component: {fileID: 222046194}
   - component: {fileID: 222046193}
   m_Layer: 5
-  m_Name: Image
+  m_Name: HPBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9727,8 +9727,9 @@ GameObject:
   m_Component:
   - component: {fileID: 472735588}
   - component: {fileID: 472735589}
+  - component: {fileID: 472735590}
   m_Layer: 5
-  m_Name: 2) Inventory Page
+  m_Name: 2) Enforce Page
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9769,6 +9770,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 472735587}
   m_CullTransparentMesh: 1
+--- !u!114 &472735590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 472735587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440850291a9684643803f29066b064eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackBtn: {fileID: 597594295}
+  maxHPBtn: {fileID: 222046193}
+  defenseBtn: {fileID: 714619029}
 --- !u!1 &480090744
 GameObject:
   m_ObjectHideFlags: 0
@@ -11289,7 +11305,7 @@ GameObject:
   - component: {fileID: 597594293}
   - component: {fileID: 597594295}
   m_Layer: 5
-  m_Name: Image
+  m_Name: AttackBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13249,7 +13265,7 @@ GameObject:
   - component: {fileID: 714619030}
   - component: {fileID: 714619029}
   m_Layer: 5
-  m_Name: Image
+  m_Name: DefenseBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29290,7 +29306,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uACF5\uACA9\uB825"
+  m_text: "\uBC29\uC5B4\uB825"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 82fd2b78f3c9d4cb39ce0c152d2019e1, type: 2}
   m_sharedMaterial: {fileID: -9174091106469151414, guid: 82fd2b78f3c9d4cb39ce0c152d2019e1, type: 2}
