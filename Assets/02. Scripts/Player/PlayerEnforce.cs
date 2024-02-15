@@ -20,7 +20,7 @@ public class PlayerEnforce : MonoBehaviour
     [SerializeField] private Button defenseBtn;
     
     // 비용
-    private float upgradeCoinCost;
+    private int upgradeCoinCost;
     
     void Start()
     {
@@ -54,7 +54,10 @@ public class PlayerEnforce : MonoBehaviour
             resourceInfo.current_Coin -= upgradeCoinCost;
             UpdateGoldDisplay();
         }
-        else // 경고
+        else // 경고 팝업
+        {
+            
+        }
     }
     
     private void UpgradeHP()
