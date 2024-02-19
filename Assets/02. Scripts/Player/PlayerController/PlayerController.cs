@@ -125,9 +125,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             playerStats.currentHP -= damage;
             CreateDamageText(damage);
             HPSliderUpdate(hpSlider, playerStats.currentHP, playerStats.maxHP);
-            // 몬스터의 위치 판단해서(nearestMonster), flip 
-            //FlipTowardsNearestMonster();
-            
+
             if (playerStats.currentHP <= 0)
             {
                 DiePlayer();
@@ -139,18 +137,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             }
         }
     }
-    
-    void FlipTowardsNearestMonster()
-    {
-        /* 가장 가까운 몬스터 
-        if (nearestMonster != null)
-        {
-            위치 비교해서
-            FlipPlayer();
-        }
-        */
-    }
-    
 
     // 체크 시간 : 3초
     public IEnumerator DetectNearestMonsterCoroutine()
