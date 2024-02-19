@@ -36,15 +36,7 @@ public class PlayerMoveState : IPlayerState
         
         if (isMoving)
         {
-            if (horizontalInput > 0)
-            {
-                _playerController.ponpo.localScale = new Vector3(-2f, 2f, -1f);
-            }
-            else if (horizontalInput < 0)
-            {
-                _playerController.ponpo.localScale = new Vector3(2f, 2f, -1f);
-                _playerController.flipX = true;
-            }
+            _playerController.FlipPlayer(horizontalInput);
             _playerController.anim.SetBool("isMove", true);
         }
     }
