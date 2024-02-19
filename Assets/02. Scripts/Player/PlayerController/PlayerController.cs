@@ -25,11 +25,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     
     // 상태 (생존)
     public bool isAlive = true;
-    
-    // terrain 
-    public LayerMask terrainLayer;
-    public float groundDist;
-    
+
     // 조이스틱
     public FullScreenJoystick joystick;
     
@@ -81,7 +77,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         StartCoroutine(DetectNearestMonsterCoroutine());
         
         isSkillOnCooldown = false;
-        //lastSkillTime = Time.time - skillCooldown;
         lastSkillTime = -skillCooldown;
         lastHitTime = -hitCooldown;
     }
@@ -130,6 +125,8 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             playerStats.currentHP -= damage;
             CreateDamageText(damage);
             HPSliderUpdate(hpSlider, playerStats.currentHP, playerStats.maxHP);
+            // 몬스터의 위치 판단해서(nearestMonster), flip 
+            //FlipTowardsNearestMonster();
             
             if (playerStats.currentHP <= 0)
             {
@@ -142,6 +139,18 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             }
         }
     }
+    
+    void FlipTowardsNearestMonster()
+    {
+        /* 가장 가까운 몬스터 
+        if (nearestMonster != null)
+        {
+            위치 비교해서
+            FlipPlayer();
+        }
+        */
+    }
+    
 
     // 체크 시간 : 3초
     public IEnumerator DetectNearestMonsterCoroutine()
@@ -195,6 +204,21 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             */
             
             damageText.GetComponent<DamageText>().damage = hitPower;
+        }
+    }
+    
+    public void FlipPlayer(float horizontalInput)
+    {
+        // FlipX 기준으로 스프라이트 방향 전환
+        if (horizontalInput < 0 && flipX || horizontalInput > 0 && !flipX)
+        {
+            // ponpo의 localScale x 값을 반전시켜 방향 전환
+            Vector3 theScale = ponpo.localScale;
+            theScale.x *= -1;
+            ponpo.localScale = theScale;
+
+            // flipX 상태 업데이트
+            flipX = !flipX;
         }
     }
 }
