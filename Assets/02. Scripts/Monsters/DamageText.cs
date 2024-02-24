@@ -4,6 +4,18 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 
+public struct TextAttributes
+{
+    public Color TextColor;
+    public float FontSize;
+
+    public TextAttributes(Color textColor, float fontSize)
+    {
+        TextColor = textColor;
+        FontSize = fontSize;
+    }
+}
+
 // 생성되고 일정 시간 뒤에 파괴되도록 
 public class DamageText : MonoBehaviour
 {
@@ -20,15 +32,17 @@ public class DamageText : MonoBehaviour
         damagetext = GetComponent<TextMeshPro>();
         damagetext.text = damage.ToString();
         
+        SetDamageTextProperties();
+        
+        /*
         enemyFSM = GetComponentInParent<EnemyFSM>(); // 부모객체에서 EnemyFSM 컴포넌트 가져오기
-
         if (enemyFSM != null)
         {
             textColor = Color.red;
             damagetext.color = textColor;
             damagetext.fontSize = 15;
             
-            // 몬스터의 방향에 따라 애니메이션 방향 결정
+            
             AnimateDamageTextBasedOnDirection(enemyFSM.flipX);
         }
 
@@ -42,12 +56,36 @@ public class DamageText : MonoBehaviour
             // 몬스터의 방향에 따라 애니메이션 방향 결정
             AnimateDamageTextBasedOnDirection(playerController.flipX);
         }
+        */
+    }
+    
+    private void SetDamageTextProperties()
+    {
+        TextAttributes attributes = new TextAttributes(); // 기본 속성
+
+        enemyFSM = GetComponentInParent<EnemyFSM>(); 
+        playerController = GetComponentInParent<PlayerController>();
+
+        if (enemyFSM != null)
+        {
+            attributes = new TextAttributes(Color.red, 15f);
+            AnimateDamageText(enemyFSM.flipX); 
+        }
+        else if (playerController != null)
+        {
+            attributes = new TextAttributes(Color.blue, 7.5f);
+            AnimateDamageText(playerController.flipX);
+        }
+        
+        // 속성 적용
+        damagetext.color = attributes.TextColor;
+        damagetext.fontSize = attributes.FontSize;
     }
     
     // 몬스터의 flipX 상태에 따라 데미지 텍스트 애니메이션 방향 결정
     // 오른쪽 : (-1, 0.5, 0) -> (-2, -0.5, 0)
     // 왼쪽 : (1, 0.5, 0) -> (2, -0.5, 0)
-    public void AnimateDamageTextBasedOnDirection(bool isFacingRight)
+    public void AnimateDamageText(bool isFacingRight)
     {
         float directionMultiplier = isFacingRight ? -1f : 1f; // 오른쪽을 바라보면 -1, 왼쪽이면 1
 

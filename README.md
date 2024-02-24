@@ -1,2 +1,2 @@
 # idle-adventure
- 방치형 RPG
+2.5D 방치형 RPG

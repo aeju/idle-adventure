@@ -25,11 +25,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     
     // 상태 (생존)
     public bool isAlive = true;
-    
-    // terrain 
-    public LayerMask terrainLayer;
-    public float groundDist;
-    
+
     // 조이스틱
     public FullScreenJoystick joystick;
     
@@ -81,7 +77,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         StartCoroutine(DetectNearestMonsterCoroutine());
         
         isSkillOnCooldown = false;
-        //lastSkillTime = Time.time - skillCooldown;
         lastSkillTime = -skillCooldown;
         lastHitTime = -hitCooldown;
     }
@@ -130,7 +125,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             playerStats.currentHP -= damage;
             CreateDamageText(damage);
             HPSliderUpdate(hpSlider, playerStats.currentHP, playerStats.maxHP);
-            
+
             if (playerStats.currentHP <= 0)
             {
                 DiePlayer();
@@ -195,6 +190,21 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             */
             
             damageText.GetComponent<DamageText>().damage = hitPower;
+        }
+    }
+    
+    public void FlipPlayer(float horizontalInput)
+    {
+        // FlipX 기준으로 스프라이트 방향 전환
+        if (horizontalInput < 0 && flipX || horizontalInput > 0 && !flipX)
+        {
+            // ponpo의 localScale x 값을 반전시켜 방향 전환
+            Vector3 theScale = ponpo.localScale;
+            theScale.x *= -1;
+            ponpo.localScale = theScale;
+
+            // flipX 상태 업데이트
+            flipX = !flipX;
         }
     }
 }
