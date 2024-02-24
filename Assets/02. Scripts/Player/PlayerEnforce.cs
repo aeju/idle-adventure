@@ -35,7 +35,6 @@ public class PlayerEnforce : MonoBehaviour
     {
         playerStats = FindObjectOfType<PlayerStats>();
         resourceInfo = ResourceManager.Instance;
-
         
         attackBtn.OnClickAsObservable().Subscribe(_ =>
         {
