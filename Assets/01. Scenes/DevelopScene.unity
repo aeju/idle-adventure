@@ -14162,6 +14162,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'Ponpo_Prefab '
       objectReference: {fileID: 0}
+    - target: {fileID: 4744923234643571730, guid: 476ac786242ed4561b57123074a4ebc6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744923234643571730, guid: 476ac786242ed4561b57123074a4ebc6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744923234643571730, guid: 476ac786242ed4561b57123074a4ebc6, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6153622050007014304, guid: 476ac786242ed4561b57123074a4ebc6, type: 3}
       propertyPath: playerStat
       value: 
@@ -18259,7 +18271,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1095094104
 RectTransform:
   m_ObjectHideFlags: 0
