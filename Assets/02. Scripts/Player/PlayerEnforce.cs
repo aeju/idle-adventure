@@ -9,23 +9,13 @@ using TMPro;
 // 2. 스탯 올리기 (골드가 있을 때만) 
 // 2-1. 골드가 없으면, 버튼 클릭x? 클릭 o + 경고문?
 // 2-2. 골드 UI 업데이트 
-public class PlayerEnforce : MonoBehaviour
+public class PlayerEnforce : EnforceSubject
 {
-    private PlayerStats playerStats;
-    private ResourceManager resourceInfo;
-    
     // 버튼
-    //[SerializeField] private Button attackBtn;
-    //[SerializeField] private Button maxHPBtn;
-    //[SerializeField] private Button defenseBtn;
+    [SerializeField] private Button attackBtn;
+    [SerializeField] private Button maxHPBtn;
+    [SerializeField] private Button defenseBtn;
     
-    public Button attackBtn;
-    public Button maxHPBtn;
-    public Button defenseBtn;
-    
-    // 비용
-    private int upgradeCoinCost;
-
     // 증가량, 변수 이름 수정 필요 
     public int attack;
     public int hp;
@@ -40,10 +30,18 @@ public class PlayerEnforce : MonoBehaviour
     public TextMeshProUGUI maxHPCostText;
     public TextMeshProUGUI defenseCostText;
     
-    void Start()
+    // 옵저버 패턴
+    private PlayerStats playerStats;
+    private ResourceManager resourceInfo;
+
+    void Awake()
     {
         playerStats = FindObjectOfType<PlayerStats>();
         resourceInfo = ResourceManager.Instance;
+    }
+    
+    void Start()
+    {
         UpdateCostUI();
         
         attackBtn.OnClickAsObservable().Subscribe(_ =>
@@ -83,6 +81,7 @@ public class PlayerEnforce : MonoBehaviour
         }
         else // 경고 -> string 색 빨강으로 변경 
         {
+            // 이렇게가 아니고, 버튼 클릭 -> UI / 전투력 반영, 보유 코인 반영, 코인 버튼 색 업데이트
             Debug.Log("Coin 부족");
             attackCostText.color = Color.red;
         }
@@ -128,6 +127,18 @@ public class PlayerEnforce : MonoBehaviour
     
     // 영웅 페이지 - 스탯 
     private void UpdateStatsDisplay()
+    {
+        
+    }
+    
+    // 관찰자 연결 활성화, 비활성화
+    void OnEnable()
+    {
+        if (resourceInfo)
+            Attach(resourceInfo);
+    }
+
+    void OnDisable()
     {
         
     }
