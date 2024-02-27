@@ -6,12 +6,20 @@ using TMPro;
 public class TextBlink : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI blinkText; 
-    [SerializeField] private float blinkSpeed = 0.5f;
+    private readonly float blinkSpeed = 0.5f;
 
     private void Start()
     {
-        StartCoroutine(Blink());
+        blinkText.enabled = true;
+        StartCoroutine(InitialDelay());
     }
+    
+    private IEnumerator InitialDelay()
+    {
+        yield return new WaitForSeconds(blinkSpeed); // blinkSpeed만큼 대기
+        StartCoroutine(Blink()); // 그 후에 깜빡임 시작
+    }
+
 
     private IEnumerator Blink()
     {
