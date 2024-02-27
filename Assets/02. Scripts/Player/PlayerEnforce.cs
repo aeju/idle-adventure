@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
-using Unity.VisualScripting;
+using TMPro;
 
 // 1. 골드 차감
 // 2. 스탯 올리기 (골드가 있을 때만) 
@@ -30,11 +30,21 @@ public class PlayerEnforce : MonoBehaviour
     public int attack;
     public int hp;
     public int defense;
+
+    // 골드 비용
+    public int attackCost;
+    public int maxHPCost;
+    public int defenseCost;
+
+    public TextMeshProUGUI attackCostText;
+    public TextMeshProUGUI maxHPCostText;
+    public TextMeshProUGUI defenseCostText;
     
     void Start()
     {
         playerStats = FindObjectOfType<PlayerStats>();
         resourceInfo = ResourceManager.Instance;
+        UpdateCostUI();
         
         attackBtn.OnClickAsObservable().Subscribe(_ =>
         {
@@ -52,21 +62,29 @@ public class PlayerEnforce : MonoBehaviour
         }).AddTo(this);
     }
 
+    void UpdateCostUI()
+    {
+        attackCostText.text = attackCost.ToString();
+        maxHPCostText.text = maxHPCost.ToString();
+        defenseCostText.text = defenseCost.ToString();
+    }
+
     // + 5 <- 변수로 변경 
     private void UpgradeAttack()
     {
         Debug.Log("1. playerAttack : " + playerStats.attack);
-        if (resourceInfo.current_Coin >= upgradeCoinCost)
+        if (resourceInfo.current_Coin >= maxHPCost)
         {
             Debug.Log("Attack Upgrade");
             playerStats.attack += 5;
             Debug.Log("2. playerAttack : " + playerStats.attack);
-            resourceInfo.current_Coin -= upgradeCoinCost;
+            resourceInfo.current_Coin -= maxHPCost;
             UpdateGoldDisplay();
         }
-        else // 경고 팝업
+        else // 경고 -> string 색 빨강으로 변경 
         {
             Debug.Log("Coin 부족");
+            attackCostText.color = Color.red;
         }
     }
     
@@ -74,14 +92,14 @@ public class PlayerEnforce : MonoBehaviour
     private void UpgradeHP()
     {
         Debug.Log("1. playerHP : " + playerStats.maxHP);
-        if (resourceInfo.current_Coin >= upgradeCoinCost)
+        if (resourceInfo.current_Coin >= maxHPCost)
         {
             Debug.Log("HP Upgrade");
             playerStats.maxHP += 5;
             playerStats.currentHP = playerStats.maxHP;
             // 필요: PlayerController HPSliderUpdate();
             Debug.Log("2. playerHP : " + playerStats.maxHP);
-            resourceInfo.current_Coin -= upgradeCoinCost;
+            resourceInfo.current_Coin -= maxHPCost;
             UpdateGoldDisplay();
             UpdateStatsDisplay();
         }
@@ -91,12 +109,12 @@ public class PlayerEnforce : MonoBehaviour
     private void UpgradeDefense()
     {
         Debug.Log("1. playerDefense : " + playerStats.maxHP);
-        if (resourceInfo.current_Coin >= upgradeCoinCost)
+        if (resourceInfo.current_Coin >= defenseCost)
         {
             Debug.Log("Defense Upgrade");
             playerStats.defense += 5;
             Debug.Log("2. playerDefense : " + playerStats.defense);
-            resourceInfo.current_Coin -= upgradeCoinCost;
+            resourceInfo.current_Coin -= defenseCost;
             UpdateGoldDisplay();
             UpdateStatsDisplay();
         }

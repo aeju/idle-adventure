@@ -1864,7 +1864,7 @@ GameObject:
   - component: {fileID: 102298268}
   - component: {fileID: 102298267}
   m_Layer: 5
-  m_Name: Attack (2)
+  m_Name: Defense
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9559,11 +9559,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackBtn: {fileID: 597594295}
-  maxHPBtn: {fileID: 0}
-  defenseBtn: {fileID: 0}
+  maxHPBtn: {fileID: 1869937550}
+  defenseBtn: {fileID: 903823495}
   attack: 0
   hp: 0
   defense: 0
+  attackCost: 100
+  maxHPCost: 500
+  defenseCost: 1000
+  attackCostText: {fileID: 647181972}
+  maxHPCostText: {fileID: 924038932}
+  defenseCostText: {fileID: 748645447}
 --- !u!1 &480090744
 GameObject:
   m_ObjectHideFlags: 0
