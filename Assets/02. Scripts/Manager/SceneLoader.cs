@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class SceneLoader : MonoBehaviour, IPointerDownHandler
 {
-    public string loadingScene = "LoadingScene";
+    [SerializeField]private string loadingScene = "LoadingScene";
     
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -17,4 +17,5 @@ public class SceneLoader : MonoBehaviour, IPointerDownHandler
     {
         SceneManager.LoadScene(loadingScene); 
     }
+
 }
