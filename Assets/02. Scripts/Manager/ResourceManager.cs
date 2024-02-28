@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResourceManager : MonoBehaviour
+public class ResourceManager : MonoBehaviour 
 {
     public static ResourceManager Instance { get; private set; }
 
@@ -13,8 +13,12 @@ public class ResourceManager : MonoBehaviour
     public int current_Coin = 0;
     public int current_summon_Ticket = 0;
     
+   
+    
     void Awake()
     {
+        
+        
         if (Instance == null)
         {
             Instance = this;
@@ -31,4 +35,6 @@ public class ResourceManager : MonoBehaviour
         current_Coin += coin;
         OnResourcesUpdated?.Invoke();
     }
+    
+    
 }
