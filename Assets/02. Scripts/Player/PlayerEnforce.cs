@@ -18,10 +18,15 @@ public class PlayerEnforce : EnforceSubject
     [SerializeField] private Button maxHPBtn;
     [SerializeField] private Button defenseBtn;
     
-    // 증가량, 변수 이름 수정 필요 
-    public int attack;
-    public int hp;
-    public int defense;
+    // 업그레이드 증가량
+    public int AttackIncrease = 2;
+    public int hpIncrease;
+    public int defenseIncrease;
+    
+    // 총 증가량  
+    public int totalAttackIncrease;
+    public int totalhpIncrease;
+    public int totaldefenseIncrease;
 
     // 골드 비용
     public int attackCost;
@@ -76,7 +81,7 @@ public class PlayerEnforce : EnforceSubject
         if (resourceInfo.current_Coin >= attackCost)
         {
             Debug.Log("Attack Upgrade");
-            playerStats.attack += 5;
+            playerStats.attack += AttackIncrease;
             Debug.Log("2. playerAttack : " + playerStats.attack);
             resourceInfo.current_Coin -= attackCost;
             UpdateGoldDisplay();
@@ -96,7 +101,7 @@ public class PlayerEnforce : EnforceSubject
         if (resourceInfo.current_Coin >= maxHPCost)
         {
             Debug.Log("HP Upgrade");
-            playerStats.maxHP += 5;
+            playerStats.maxHP += hpIncrease;
             playerStats.currentHP = playerStats.maxHP;
             // 필요: PlayerController HPSliderUpdate();
             Debug.Log("2. playerHP : " + playerStats.maxHP);
@@ -113,7 +118,7 @@ public class PlayerEnforce : EnforceSubject
         if (resourceInfo.current_Coin >= defenseCost)
         {
             Debug.Log("Defense Upgrade");
-            playerStats.defense += 5;
+            playerStats.defense += defenseIncrease;
             Debug.Log("2. playerDefense : " + playerStats.defense);
             resourceInfo.current_Coin -= defenseCost;
             UpdateGoldDisplay();

@@ -67,7 +67,6 @@ public class ResourceBar : MonoBehaviour
             coin = resoureInfo.current_Coin;
 
             rubyText.text = ruby.ToString();
-            //coinText.text = FormatCoinUnit(coin);
             coinText.text = NumberFormatter.FormatNumberUnit(coin);
         }
     }
@@ -76,14 +75,14 @@ public class ResourceBar : MonoBehaviour
     {
         if (player != null)
         {
-            int maxHP = player.playerStats.maxHP;
             int attack = player.playerStats.attack;
+            int maxHP = player.playerStats.maxHP;
             int defense = player.playerStats.defense;
+            // int combatPower = player.playerStats.combatPower;
             
-            //int combatPower = player.CalculateCombatPower(maxHP, attack, defense);
-            int combatPower = player.playerStats.combatPower;
+            // 전투력 : 다시 계산
+            int combatPower = CombatCalculator.CalculateCombatPower(attack, maxHP, defense);
             
-            //combatPowerText.text = combatPower.ToString();
             combatPowerText.text = NumberFormatter.FormatNumberUnit(combatPower);
         }
     }
