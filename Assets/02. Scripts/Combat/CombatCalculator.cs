@@ -32,7 +32,7 @@ public static class CombatCalculator
     public static int CalculateCombatPower(int attack, int maxHP, int defense)
     {
         //combatPower = maxHP + attack + defense;
-        int combatPower = (attack * 10) + maxHP +  defense;
+        int combatPower = 500 + (int)((attack * 10) + (maxHP * 0.5) +  (defense * 2));
         return combatPower; 
     }
 }
