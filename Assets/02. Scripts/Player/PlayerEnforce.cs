@@ -9,6 +9,8 @@ using TMPro;
 // 2. 스탯 올리기 (골드가 있을 때만) 
 // 2-1. 골드가 없으면, 버튼 클릭x? 클릭 o + 경고문?
 // 2-2. 골드 UI 업데이트 
+
+// 코인 표시 = CoinFormatter.FormatCoinUnit(coin);
 public class PlayerEnforce : EnforceSubject
 {
     // 버튼
@@ -62,21 +64,21 @@ public class PlayerEnforce : EnforceSubject
 
     void UpdateCostUI()
     {
-        attackCostText.text = attackCost.ToString();
-        maxHPCostText.text = maxHPCost.ToString();
-        defenseCostText.text = defenseCost.ToString();
+        attackCostText.text = NumberFormatter.FormatNumberUnit(attackCost);
+        maxHPCostText.text = NumberFormatter.FormatNumberUnit(maxHPCost);
+        defenseCostText.text = NumberFormatter.FormatNumberUnit(defenseCost);
     }
 
     // + 5 <- 변수로 변경 
     private void UpgradeAttack()
     {
         Debug.Log("1. playerAttack : " + playerStats.attack);
-        if (resourceInfo.current_Coin >= maxHPCost)
+        if (resourceInfo.current_Coin >= attackCost)
         {
             Debug.Log("Attack Upgrade");
             playerStats.attack += 5;
             Debug.Log("2. playerAttack : " + playerStats.attack);
-            resourceInfo.current_Coin -= maxHPCost;
+            resourceInfo.current_Coin -= attackCost;
             UpdateGoldDisplay();
         }
         else // 경고 -> string 색 빨강으로 변경 

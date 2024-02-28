@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using TMPro;
 
 // 루비, 코인(단위!) / 뽑기 = 카드 
-// 코인 단위 축약 : 4자리 미만 -> 축약할 필요 x
 // 전투력 
 // 드랍 아이템 -> 리소스바 UI 반영 
 
@@ -19,7 +18,6 @@ public class ResourceBar : MonoBehaviour
     public int coin;
 
     //public int summon_Ticket;
-    
 
     public TextMeshProUGUI rubyText;
     public TextMeshProUGUI coinText;
@@ -70,7 +68,7 @@ public class ResourceBar : MonoBehaviour
 
             rubyText.text = ruby.ToString();
             //coinText.text = FormatCoinUnit(coin);
-            coinText.text = CoinFormatter.FormatCoinUnit(coin);
+            coinText.text = NumberFormatter.FormatNumberUnit(coin);
         }
     }
 
@@ -85,7 +83,14 @@ public class ResourceBar : MonoBehaviour
             //int combatPower = player.CalculateCombatPower(maxHP, attack, defense);
             int combatPower = player.playerStats.combatPower;
             
-            combatPowerText.text = combatPower.ToString();
+            //combatPowerText.text = combatPower.ToString();
+            combatPowerText.text = NumberFormatter.FormatNumberUnit(combatPower);
         }
+    }
+
+    void Update()
+    {
+        ResourceUpdate(); // 리소스: 루비, 코인
+        CombatPowerUpdate(); // 전투력
     }
 }

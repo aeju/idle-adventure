@@ -10,10 +10,11 @@ using UnityEngine;
 // E(Exa 엑사) : 1,000,000,000,000,000,000
 // Z(Zetta 제타) : 1,000,000,000,000,000,000,000
 // Y(Yotta 요타) : 1,000,000,000,000,000,000,000,000
-// 각 단위 : 1000의 거듭제곱 
-public static class CoinFormatter 
+// 각 단위 : 1000의 거듭제곱
+// 코인 단위 축약 : 4자리 미만 -> 축약할 필요 x
+public static class NumberFormatter 
 {
-    public static string FormatCoinUnit(int number)
+    public static string FormatNumberUnit(int number)
     {
         if (number >= 1000)
         {
