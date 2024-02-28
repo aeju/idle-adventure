@@ -27,4 +27,12 @@ public static class CombatCalculator
         int skillDamage = (int)(attack * (skillMultiplier / 100));
         return skillDamage;
     }
+    
+    // 전투력 계산 공식
+    public static int CalculateCombatPower(int attack, int maxHP, int defense)
+    {
+        //combatPower = maxHP + attack + defense;
+        int combatPower = (attack * 10) + maxHP +  defense;
+        return combatPower; 
+    }
 }

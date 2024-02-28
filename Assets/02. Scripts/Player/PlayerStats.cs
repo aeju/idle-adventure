@@ -63,14 +63,7 @@ public class PlayerStats : MonoBehaviour
         skill_Multiplier = playerStat.Skill_Multiplier;
         
 
-        CalculateCombatPower(playerStat.MaxHP, playerStat.Attack, playerStat.Defense);
-    }
-    
-    // 전투력 계산 공식
-    public int CalculateCombatPower(int maxHP, int attack, int defense)
-    {
-        combatPower = maxHP + attack + defense;
-        return combatPower; 
+        CombatCalculator.CalculateCombatPower(playerStat.MaxHP, playerStat.Attack, playerStat.Defense);
     }
 
     public void AttackAnim()
