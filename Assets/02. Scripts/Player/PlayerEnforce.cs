@@ -24,9 +24,9 @@ public class PlayerEnforce : EnforceSubject
     public int defenseIncrease = 1;
     
     // 총 증가량  
-    public int totalAttackIncrease = 0;
-    public int totalHpIncrease = 0;
-    public int totalDefenseIncrease = 0 ;
+    private int totalAttackIncrease = 0;
+    private int totalHpIncrease = 0;
+    private int totalDefenseIncrease = 0 ;
 
     public TextMeshProUGUI totalAttackIncreaseText;
     public TextMeshProUGUI totalHpIncreaseText;
@@ -50,33 +50,41 @@ public class PlayerEnforce : EnforceSubject
     public TextMeshProUGUI maxHPLevelText;
     public TextMeshProUGUI defenseLevelText;
     
+    private ResourceManager resourceInfo;
+    
     // 옵저버 패턴
     private PlayerStats playerStats;
-    private ResourceManager resourceInfo;
+    private ResourceBar resourceBar;
 
     void Awake()
     {
-        playerStats = FindObjectOfType<PlayerStats>();
         resourceInfo = ResourceManager.Instance;
+        playerStats = FindObjectOfType<PlayerStats>();
+        resourceBar = FindObjectOfType<ResourceBar>();
     }
     
     void Start()
     {
         UpdateCostUI();
+        UpdateStatsUI();
+        UpdateLevelUI();
         
         attackBtn.OnClickAsObservable().Subscribe(_ =>
         {
             UpgradeAttack();
+            NotifyObservers();
         }).AddTo(this);
 
         maxHPBtn.OnClickAsObservable().Subscribe(_ =>
         {
             UpgradeHP();
+            NotifyObservers();
         }).AddTo(this);
         
         defenseBtn.OnClickAsObservable().Subscribe(_ =>
         {
             UpgradeDefense();
+            NotifyObservers();
         }).AddTo(this);
     }
 
@@ -127,6 +135,7 @@ public class PlayerEnforce : EnforceSubject
             // 이렇게가 아니고, 버튼 클릭 -> UI / 전투력 반영, 보유 코인 반영, 코인 버튼 색 업데이트
             Debug.Log("Coin 부족");
             attackCostText.color = Color.red;
+            // UI팝업 생성
         }
     }
 
@@ -142,8 +151,18 @@ public class PlayerEnforce : EnforceSubject
             // 필요: PlayerController HPSliderUpdate();
             Debug.Log("2. playerHP : " + playerStats.maxHP);
             resourceInfo.current_Coin -= maxHPCost;
-            UpdateGoldDisplay();
+            
+            totalHpIncrease += hpIncrease;
+            maxHPCost++;
+            maxHPLevel++;
+            
+            UpdateCostUI();
             UpdateStatsUI();
+            UpdateLevelUI();
+        }
+        else
+        {
+            Debug.Log("Coin 부족");
         }
     }
     
@@ -157,32 +176,32 @@ public class PlayerEnforce : EnforceSubject
             playerStats.defense += defenseIncrease;
             Debug.Log("2. playerDefense : " + playerStats.defense);
             resourceInfo.current_Coin -= defenseCost;
-            UpdateGoldDisplay();
+            
+            totalDefenseIncrease += defenseIncrease;
+            defenseCost++;
+            defenseLevel++;
+            
+            UpdateCostUI();
             UpdateStatsUI();
+            UpdateLevelUI();
+        }
+        else
+        {
+            Debug.Log("Coin 부족");
         }
     }
 
-    // 리소스바 - 보유 골드 
-    private void UpdateGoldDisplay()
-    {
-        
-    }
-    
-    // 영웅 페이지 - 스탯 
-    private void UpdateStatsDisplay()
-    {
-        
-    }
-    
     // 관찰자 연결 활성화, 비활성화
+    // resourcaManager부터 하고, stat도! 
     void OnEnable()
     {
-        if (resourceInfo)
-            Attach(resourceInfo);
+        if (resourceBar)
+            Attach(resourceBar);
     }
 
     void OnDisable()
     {
-        
+        if (resourceBar)
+            Detach(resourceBar);
     }
 }

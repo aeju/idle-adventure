@@ -9,10 +9,12 @@ using TMPro;
 // 드랍 아이템 -> 리소스바 UI 반영 
 
 // 추가 작업 필요: 전투력 변화 -> 업데이트
-public class ResourceBar : MonoBehaviour
+public class ResourceBar : EnforceObserver 
 {
     protected ResourceManager resoureInfo;
     public PlayerController player;
+    
+    private PlayerEnforce playerEnforce;
     
     public int ruby;
     public int coin;
@@ -22,10 +24,11 @@ public class ResourceBar : MonoBehaviour
     public TextMeshProUGUI rubyText;
     public TextMeshProUGUI coinText;
     public TextMeshProUGUI combatPowerText;
-    
+
     void Start()
     {
         resoureInfo = ResourceManager.Instance;
+        playerEnforce = (PlayerEnforce) FindObjectOfType(typeof(PlayerEnforce));
 
         if (resoureInfo == null)
         {
@@ -78,18 +81,19 @@ public class ResourceBar : MonoBehaviour
             int attack = player.playerStats.attack;
             int maxHP = player.playerStats.maxHP;
             int defense = player.playerStats.defense;
-            // int combatPower = player.playerStats.combatPower;
-            
+
             // 전투력 : 다시 계산
             int combatPower = CombatCalculator.CalculateCombatPower(attack, maxHP, defense);
-            
             combatPowerText.text = NumberFormatter.FormatNumberUnit(combatPower);
         }
     }
-
-    void Update()
+    
+    public override void Notify(EnforceSubject subject)
     {
-        ResourceUpdate(); // 리소스: 루비, 코인
-        CombatPowerUpdate(); // 전투력
+        if (!playerEnforce)
+            playerEnforce = subject.GetComponent<PlayerEnforce>();
+
+        if (playerEnforce)
+            UpdateUI();
     }
 }
