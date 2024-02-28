@@ -62,7 +62,6 @@ public class PlayerStats : MonoBehaviour
         critical_Multiplier = playerStat.Critical_Multiplier;
         skill_Multiplier = playerStat.Skill_Multiplier;
         
-
         CombatCalculator.CalculateCombatPower(playerStat.MaxHP, playerStat.Attack, playerStat.Defense);
     }
 

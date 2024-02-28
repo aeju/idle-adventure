@@ -9561,15 +9561,27 @@ MonoBehaviour:
   attackBtn: {fileID: 597594295}
   maxHPBtn: {fileID: 1869937550}
   defenseBtn: {fileID: 903823495}
-  attack: 0
-  hp: 0
-  defense: 0
+  attackIncrease: 2
+  hpIncrease: 0
+  defenseIncrease: 0
+  totalAttackIncrease: 0
+  totalHpIncrease: 0
+  totalDefenseIncrease: 0
+  totalAttackIncreaseText: {fileID: 633474994}
+  totalHpIncreaseText: {fileID: 1841956737}
+  totalDefenseIncreaseText: {fileID: 1223835032}
   attackCost: 100
-  maxHPCost: 500
-  defenseCost: 1000
+  maxHPCost: 100
+  defenseCost: 100
   attackCostText: {fileID: 647181972}
   maxHPCostText: {fileID: 924038932}
   defenseCostText: {fileID: 748645447}
+  attackLevel: 0
+  maxHPLevel: 0
+  defenseLevel: 0
+  attackLevelText: {fileID: 625474170}
+  maxHPLevelText: {fileID: 1140456169}
+  defenseLevelText: {fileID: 2048509042}
 --- !u!1 &480090744
 GameObject:
   m_ObjectHideFlags: 0
@@ -11588,7 +11600,7 @@ GameObject:
   - component: {fileID: 625474171}
   - component: {fileID: 625474170}
   m_Layer: 5
-  m_Name: Current Level
+  m_Name: Attack Current Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11980,7 +11992,7 @@ GameObject:
   - component: {fileID: 633474995}
   - component: {fileID: 633474994}
   m_Layer: 5
-  m_Name: Amount
+  m_Name: Attack Increase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19763,7 +19775,7 @@ GameObject:
   - component: {fileID: 1140456170}
   - component: {fileID: 1140456169}
   m_Layer: 5
-  m_Name: Current Level
+  m_Name: HP Current Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21935,7 +21947,7 @@ GameObject:
   - component: {fileID: 1223835033}
   - component: {fileID: 1223835032}
   m_Layer: 5
-  m_Name: Amount
+  m_Name: Defense Increase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33665,7 +33677,7 @@ GameObject:
   - component: {fileID: 1841956738}
   - component: {fileID: 1841956737}
   m_Layer: 5
-  m_Name: Amount
+  m_Name: HP Increase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37287,7 +37299,7 @@ GameObject:
   - component: {fileID: 2048509043}
   - component: {fileID: 2048509042}
   m_Layer: 5
-  m_Name: Current Level
+  m_Name: Defense Current Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
