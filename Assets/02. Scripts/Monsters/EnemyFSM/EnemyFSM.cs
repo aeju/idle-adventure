@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Unity.VisualScripting.Dependencies.NCalc;
 
 // 필요 1: Idle상태 -> 주변 배회
 // 필요 2: damaged 애니메이션
@@ -21,6 +22,7 @@ public partial class EnemyFSM : MonoBehaviour
     enum EnemyState
     {
         Idle,
+        Wander,
         Move,
         Attack,
         Return,
@@ -96,6 +98,9 @@ public partial class EnemyFSM : MonoBehaviour
             case EnemyState.Idle:
                 Idle();
                 break;
+            case EnemyState.Wander:
+                Wander();
+                break;
             case EnemyState.Move:
                 Move();
                 break;
@@ -146,6 +151,11 @@ public partial class EnemyFSM : MonoBehaviour
         }
     }
 
+    void Wander()
+    {
+        
+    }
+    
     // 1) 공격 범위 안에 들어오지 않았을 때: 이동
     // 2) 공격 범위 안에 들어왔을 때: 상태 전환(공격)
     void Move()
