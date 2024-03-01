@@ -1885,9 +1885,9 @@ RectTransform:
   - {fileID: 296630017}
   m_Father: {fileID: 790917914}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 710, y: -250}
   m_SizeDelta: {x: 260, y: 510}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &102298267
@@ -8226,6 +8226,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 636313810843500960, guid: 15d6151dd8ed849408efd6d4789d10ef, type: 3}
   m_PrefabInstance: {fileID: 396409962}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &399709665 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8636070534766695247, guid: 5c44231224f1e46db835242f04eeb149, type: 3}
+  m_PrefabInstance: {fileID: 5431757095871544358}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &401111931
 GameObject:
   m_ObjectHideFlags: 0
@@ -9709,7 +9714,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &472735588
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9780,6 +9785,7 @@ MonoBehaviour:
   attackLevelText: {fileID: 625474170}
   maxHPLevelText: {fileID: 1140456169}
   defenseLevelText: {fileID: 2048509042}
+  alertPopup: {fileID: 399709665}
 --- !u!1 &480090744
 GameObject:
   m_ObjectHideFlags: 0
@@ -21219,9 +21225,9 @@ RectTransform:
   - {fileID: 790019625}
   m_Father: {fileID: 790917914}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 420, y: -250}
   m_SizeDelta: {x: 260, y: 510}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1182311746
@@ -26539,7 +26545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStats: {fileID: 1295429454}
-  maxHP: {fileID: 269261864}
+  maxHP: {fileID: 1546154880}
   attack: {fileID: 1180263538}
   defense: {fileID: 1064680328}
   movement_Speed: {fileID: 1165577529}
@@ -28399,7 +28405,7 @@ RectTransform:
   m_Father: {fileID: 1086993155}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.548, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -31547,9 +31553,9 @@ RectTransform:
   - {fileID: 141465407}
   m_Father: {fileID: 790917914}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 130, y: -250}
   m_SizeDelta: {x: 260, y: 510}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1711340292

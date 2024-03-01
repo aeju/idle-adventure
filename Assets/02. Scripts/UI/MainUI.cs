@@ -72,7 +72,7 @@ public class MainUI : MonoBehaviour
             {
                 OpenPage(btn.Value);
             }).AddTo(this);
-        }
+        } 
         
         X_btn.OnClickAsObservable().Subscribe(_ =>
         {
@@ -90,8 +90,7 @@ public class MainUI : MonoBehaviour
     
     private void CloseAllPages()
     {
-        // 페이지가 열려있는 경우에만 
-        if (currentOpenPage != null)
+        if (currentOpenPage != null) // 페이지가 열려있는 경우에만 
         {
             currentOpenPage.SetActive(false);
             currentOpenPage = null;
