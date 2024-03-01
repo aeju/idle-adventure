@@ -1,11 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using Unity.VisualScripting;
 
-public class HeroStatsUI : MonoBehaviour
+public class HeroStatsUI : MonoBehaviour 
 {
    public PlayerStats playerStats;
    
@@ -17,11 +15,17 @@ public class HeroStatsUI : MonoBehaviour
    public TextMeshProUGUI hero_name;
    public TextMeshProUGUI class_Type;
 
+
    public void Start()
    {
       if (playerStats == null)
          playerStats = GetComponent<PlayerStats>();
-      
+
+      InitUI();
+   }
+
+   private void InitUI()
+   {
       if (playerStats != null)
       {
          SetStatsText(maxHP, playerStats.maxHP);
@@ -34,8 +38,36 @@ public class HeroStatsUI : MonoBehaviour
       }
    }
    
+   public void OnEnable()
+   {
+      UpdateUI();
+   }
+   
+   // 강화되는 스탯 
+   private void UpdateUI()
+   {
+      if (playerStats != null)
+      {
+         SetStatsText(maxHP, playerStats.maxHP);
+         SetStatsText(attack, playerStats.attack);
+         SetStatsText(defense, playerStats.defense);
+      }
+   }
+   
    private void SetStatsText(TextMeshProUGUI tmp, int statValue)
    {
       tmp.text = statValue.ToString();
    }
+   /*
+   public override void Notify(EnforceSubject subject)
+   {
+      if (!playerEnforce)
+         playerEnforce = subject.GetComponent<PlayerEnforce>();
+
+      if (playerEnforce != null)
+      {
+         UpdateUI();
+      }
+   }
+   */
 }
