@@ -55,12 +55,20 @@ public class PlayerEnforce : EnforceSubject
     // 옵저버 패턴
     private PlayerStats playerStats;
     private ResourceBar resourceBar;
+    
+    // 경고 팝업
+    [SerializeField] private GameObject alertPopup;
 
     void Awake()
     {
         resourceInfo = ResourceManager.Instance;
         playerStats = FindObjectOfType<PlayerStats>();
         resourceBar = FindObjectOfType<ResourceBar>();
+
+        if (alertPopup != null)
+        {
+            alertPopup.SetActive(false);
+        }
     }
     
     void Start()
@@ -136,6 +144,10 @@ public class PlayerEnforce : EnforceSubject
             Debug.Log("Coin 부족");
             attackCostText.color = Color.red;
             // UI팝업 생성
+            if (alertPopup != null && !alertPopup.activeSelf)
+            {
+                alertPopup.SetActive(true);
+            }
         }
     }
 
