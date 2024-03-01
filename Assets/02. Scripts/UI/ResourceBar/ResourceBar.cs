@@ -62,7 +62,6 @@ public class ResourceBar : EnforceObserver
 
     void ResourceUpdate()
     {
-        
         if (resoureInfo != null)
         {
             // 루비, 코인, 티켓 null 처리 
