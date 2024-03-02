@@ -13,12 +13,8 @@ public class ResourceManager : MonoBehaviour
     public int current_Coin = 0;
     public int current_summon_Ticket = 0;
     
-   
-    
     void Awake()
     {
-        
-        
         if (Instance == null)
         {
             Instance = this;
@@ -35,6 +31,4 @@ public class ResourceManager : MonoBehaviour
         current_Coin += coin;
         OnResourcesUpdated?.Invoke();
     }
-    
-    
 }

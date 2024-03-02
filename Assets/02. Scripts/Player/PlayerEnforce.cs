@@ -17,31 +17,45 @@ public class UpgradeOption
     public int maxLevel;
     private int totalIncrease = 0;
     public Slider levelSlider;
+    public Image upgradeAvailableImage;
+    public Image upgradeUnavailableImage;
+    public TextMeshProUGUI buttonText;
 
     private Action onNotEnoughCoins; // 코인 부족 시 실행할 콜백
+
+    // 업그레이드 가능 : 현재 레벨 < 최대 레벨, 강화 비용 <= 보유 코인
+    private bool CanUpgrade()
+    {
+        return level < maxLevel && ResourceManager.Instance.current_Coin >= cost;
+    }
     
     // 스탯 강화
     public void Upgrade(Action upgradeAction)
     {
-        if (level < maxLevel) // 현재 레벨이 최대 레벨보다 낮을 경우에만
+        if (CanUpgrade()) // 업그레이드 가능
         {
-            if (ResourceManager.Instance.current_Coin >= cost)
-            {
-                upgradeAction(); // 업그레이드
-                ResourceManager.Instance.current_Coin -= cost; // 비용 차감
+            upgradeAction(); // 업그레이드
+            ResourceManager.Instance.current_Coin -= cost; // 비용 차감
             
-                totalIncrease += increaseAmount; // 증가량 
-                cost++; // 비용
-                level++; // 레벨
+            totalIncrease += increaseAmount; // 증가량 
+            cost++; // 비용
+            level++; // 레벨
 
-                // UI 업데이트
-                UIUpdate();
-            }
-            else // 보유 코인 부족
-            {
-                onNotEnoughCoins?.Invoke(); // 코인 부족 콜백 실행
-            }
+            // UI 업데이트
+            UIUpdate();
+            CheckUpgradeAvailability(); 
         }
+        else // 업그레이드 불가능
+        {
+            onNotEnoughCoins?.Invoke(); // 코인 부족 콜백 실행
+        }
+    }
+
+    // 업그레이드 가능 상태 검사 + UI 초기화
+    public void UIInit()
+    {
+        UIUpdate();
+        CheckUpgradeAvailability(); 
     }
     
     public void UIUpdate()
@@ -49,11 +63,21 @@ public class UpgradeOption
         costText.text = NumberFormatter.FormatNumberUnit(cost);
         levelText.text = "Lv. " + level.ToString();
         totalIncreaseText.text = "+" + totalIncrease;
+        buttonText.text = "레벨업";
         
         if (levelSlider != null)
         {
             levelSlider.value = (float)level / maxLevel; 
         }
+    }
+    
+    public void CheckUpgradeAvailability()
+    {
+        bool canUpgrade = CanUpgrade();
+        upgradeAvailableImage.gameObject.SetActive(canUpgrade);
+        upgradeUnavailableImage.gameObject.SetActive(!canUpgrade);
+        costText.color = canUpgrade ? Color.white : Color.red;
+        buttonText.color = canUpgrade ? Color.white : Color.black;
     }
     
     // 코인 부족 -> 실행할 콜백
@@ -79,7 +103,6 @@ public class PlayerEnforce : EnforceSubject
     {
         playerStats = FindObjectOfType<PlayerStats>();
         resourceBar = FindObjectOfType<ResourceBar>();
-
         alertPopup?.SetActive(false);
     }
 
@@ -88,13 +111,16 @@ public class PlayerEnforce : EnforceSubject
         InitUpgradeOptions(attackUpgrade, amount => playerStats.attack += amount);
         InitUpgradeOptions(maxHPUpgrade, amount => playerStats.maxHP += amount);
         InitUpgradeOptions(defenseUpgrade, amount => playerStats.defense += amount);
+        
+        // ResourceManager의 코인 변경을 구독하여 모든 UpgradeOption의 UI 업데이트
+        ResourceManager.Instance.OnResourcesUpdated += UpdateAllUpgradeOptionsUI;
     }
     
     // UI 초기화, 코인 부족 콜백, 스탯 증가 이벤트 구독
     void InitUpgradeOptions(UpgradeOption upgradeOption, Action<int> statIncreaseAction)
     {
         // 초기 UI 상태 설정
-        upgradeOption.UIUpdate();
+        upgradeOption.UIInit();
     
         // 코인 부족, 콜백 설정
         upgradeOption.SetOnNotEnoughCoinsAction(ShowAlertPopup);
@@ -105,6 +131,14 @@ public class PlayerEnforce : EnforceSubject
             upgradeOption.Upgrade(() => statIncreaseAction(upgradeOption.increaseAmount));
             NotifyObservers();
         }).AddTo(this);
+    }
+    
+    // 모든 UpgradeOption의 UI 업데이트
+    void UpdateAllUpgradeOptionsUI()
+    {
+        attackUpgrade.CheckUpgradeAvailability();
+        maxHPUpgrade.CheckUpgradeAvailability();
+        defenseUpgrade.CheckUpgradeAvailability();
     }
 
     // 경고 팝업 활성화
