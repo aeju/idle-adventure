@@ -13,32 +13,34 @@ public class UpgradeOption
     public int increaseAmount;
     public int cost = 100;
     public TextMeshProUGUI costText, levelText, totalIncreaseText;
-    //public int level = 0;
     private int level = 0;
-    //public int totalIncrease = 0;
+    public int maxLevel;
     private int totalIncrease = 0;
+    public Slider levelSlider;
 
     private Action onNotEnoughCoins; // 코인 부족 시 실행할 콜백
     
     // 스탯 강화
     public void Upgrade(Action upgradeAction)
     {
-        if (ResourceManager.Instance.current_Coin >= cost)
+        if (level < maxLevel) // 현재 레벨이 최대 레벨보다 낮을 경우에만
         {
-            upgradeAction(); // 업그레이드
-            ResourceManager.Instance.current_Coin -= cost; // 비용 차감
+            if (ResourceManager.Instance.current_Coin >= cost)
+            {
+                upgradeAction(); // 업그레이드
+                ResourceManager.Instance.current_Coin -= cost; // 비용 차감
             
-            totalIncrease += increaseAmount; // 증가량 
-            cost++; // 비용
-            level++; // 레벨
+                totalIncrease += increaseAmount; // 증가량 
+                cost++; // 비용
+                level++; // 레벨
 
-            // UI 업데이트
-            UIUpdate();
-        }
-        else // 보유 코인 부족
-        {
-            Debug.Log("Not enough coins");
-            onNotEnoughCoins?.Invoke(); // 코인 부족 콜백 실행
+                // UI 업데이트
+                UIUpdate();
+            }
+            else // 보유 코인 부족
+            {
+                onNotEnoughCoins?.Invoke(); // 코인 부족 콜백 실행
+            }
         }
     }
     
@@ -47,6 +49,11 @@ public class UpgradeOption
         costText.text = NumberFormatter.FormatNumberUnit(cost);
         levelText.text = "Lv. " + level.ToString();
         totalIncreaseText.text = "+" + totalIncrease;
+        
+        if (levelSlider != null)
+        {
+            levelSlider.value = (float)level / maxLevel; 
+        }
     }
     
     // 코인 부족 -> 실행할 콜백
