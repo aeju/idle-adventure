@@ -36,6 +36,12 @@ public class UpgradeOption
             Debug.Log("Not enough coins");
         }
     }
+    
+    // 초기 UI 설정
+    public void InitializeUI()
+    {
+        UIUpdate(); 
+    }
 
     private void UIUpdate()
     {
@@ -71,6 +77,11 @@ public class PlayerEnforce : EnforceSubject
 
     void Start()
     {
+        // 초기 UI 상태 설정
+        attackUpgrade.InitializeUI();
+        maxHPUpgrade.InitializeUI();
+        defenseUpgrade.InitializeUI();
+        
         // 각 스탯 UpgradeOption에 대해 이벤트 구독
         SubscribeUpgradeEvent(attackUpgrade, () => playerStats.attack += attackUpgrade.increaseAmount);
         SubscribeUpgradeEvent(maxHPUpgrade, () => playerStats.maxHP += maxHPUpgrade.increaseAmount);
