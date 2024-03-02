@@ -13,9 +13,13 @@ public class UpgradeOption
     public int increaseAmount;
     public int cost = 100;
     public TextMeshProUGUI costText, levelText, totalIncreaseText;
-    public int level = 0;
-    public int totalIncrease = 0;
+    //public int level = 0;
+    private int level = 0;
+    //public int totalIncrease = 0;
+    private int totalIncrease = 0;
 
+    private Action onNotEnoughCoins; // 코인 부족 시 실행할 콜백
+    
     // 스탯 강화
     public void Upgrade(Action upgradeAction)
     {
@@ -34,20 +38,21 @@ public class UpgradeOption
         else // 보유 코인 부족
         {
             Debug.Log("Not enough coins");
+            onNotEnoughCoins?.Invoke(); // 코인 부족 콜백 실행
         }
     }
     
-    // 초기 UI 설정
-    public void InitializeUI()
-    {
-        UIUpdate(); 
-    }
-
-    private void UIUpdate()
+    public void UIUpdate()
     {
         costText.text = NumberFormatter.FormatNumberUnit(cost);
         levelText.text = "Lv. " + level.ToString();
         totalIncreaseText.text = "+" + totalIncrease;
+    }
+    
+    // 코인 부족 -> 실행할 콜백
+    public void SetOnNotEnoughCoinsAction(Action action)
+    {
+        onNotEnoughCoins = action;
     }
 }
 
@@ -65,47 +70,46 @@ public class PlayerEnforce : EnforceSubject
     
     void Awake()
     {
-        // 기존
         playerStats = FindObjectOfType<PlayerStats>();
         resourceBar = FindObjectOfType<ResourceBar>();
 
-        if (alertPopup != null)
-        {
-            alertPopup.SetActive(false);
-        }
+        alertPopup?.SetActive(false);
     }
 
     void Start()
     {
+        InitUpgradeOptions(attackUpgrade, amount => playerStats.attack += amount);
+        InitUpgradeOptions(maxHPUpgrade, amount => playerStats.maxHP += amount);
+        InitUpgradeOptions(defenseUpgrade, amount => playerStats.defense += amount);
+    }
+    
+    // UI 초기화, 코인 부족 콜백, 스탯 증가 이벤트 구독
+    void InitUpgradeOptions(UpgradeOption upgradeOption, Action<int> statIncreaseAction)
+    {
         // 초기 UI 상태 설정
-        InitAllOptionsUpgrade();
-        
-        // 각 스탯 UpgradeOption에 대해 이벤트 구독
-        SubscribeUpgradeEvent(attackUpgrade, () => playerStats.attack += attackUpgrade.increaseAmount);
-        SubscribeUpgradeEvent(maxHPUpgrade, () => playerStats.maxHP += maxHPUpgrade.increaseAmount);
-        SubscribeUpgradeEvent(defenseUpgrade, () => playerStats.defense += defenseUpgrade.increaseAmount);
-    }
-
-    void InitAllOptionsUpgrade()
-    {
-        var upgradeOptions = new List<UpgradeOption> { attackUpgrade, maxHPUpgrade, defenseUpgrade };
-        
-        foreach (var upgradeOption in upgradeOptions)
-        {
-            upgradeOption.InitializeUI();
-        }
-    }
-
-    private void SubscribeUpgradeEvent(UpgradeOption upgradeOption, Action action)
-    {
+        upgradeOption.UIUpdate();
+    
+        // 코인 부족, 콜백 설정
+        upgradeOption.SetOnNotEnoughCoinsAction(ShowAlertPopup);
+    
+        // 스탯 증가 이벤트 구독
         upgradeOption.upgradeButton.OnClickAsObservable().Subscribe(_ =>
         {
-            upgradeOption.Upgrade(action);
+            upgradeOption.Upgrade(() => statIncreaseAction(upgradeOption.increaseAmount));
             NotifyObservers();
         }).AddTo(this);
     }
+
+    // 경고 팝업 활성화
+    void ShowAlertPopup()
+    {
+        if (alertPopup != null)
+        {
+            alertPopup.SetActive(true);
+        }
+    }
     
-    // 관찰자 연결 활성화, 비활성화
+    // 옵저버 연결 활성화, 비활성화
     void OnEnable()
     {
         if (resourceBar)

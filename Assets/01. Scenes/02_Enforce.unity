@@ -9248,26 +9248,20 @@ MonoBehaviour:
     costText: {fileID: 647181972}
     levelText: {fileID: 625474170}
     totalIncreaseText: {fileID: 633474994}
-    level: 0
-    totalIncrease: 0
   maxHPUpgrade:
     upgradeButton: {fileID: 1869937550}
     increaseAmount: 150
     cost: 100
-    costText: {fileID: 647181972}
+    costText: {fileID: 924038932}
     levelText: {fileID: 1140456169}
     totalIncreaseText: {fileID: 1841956737}
-    level: 0
-    totalIncrease: 0
   defenseUpgrade:
     upgradeButton: {fileID: 903823495}
     increaseAmount: 1
     cost: 100
-    costText: {fileID: 924038932}
+    costText: {fileID: 748645447}
     levelText: {fileID: 2048509042}
     totalIncreaseText: {fileID: 1223835032}
-    level: 0
-    totalIncrease: 0
   alertPopup: {fileID: 399709665}
 --- !u!1 &480090744
 GameObject:
@@ -12070,7 +12064,7 @@ GameObject:
   - component: {fileID: 647181973}
   - component: {fileID: 647181972}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Attack Coin Text (TMP) (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13596,7 +13590,7 @@ GameObject:
   - component: {fileID: 748645448}
   - component: {fileID: 748645447}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Defense Coin Text (TMP) (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16326,7 +16320,7 @@ GameObject:
   - component: {fileID: 924038933}
   - component: {fileID: 924038932}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: HP Coin Text (TMP) (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
