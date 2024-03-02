@@ -78,14 +78,22 @@ public class PlayerEnforce : EnforceSubject
     void Start()
     {
         // 초기 UI 상태 설정
-        attackUpgrade.InitializeUI();
-        maxHPUpgrade.InitializeUI();
-        defenseUpgrade.InitializeUI();
+        InitAllOptionsUpgrade();
         
         // 각 스탯 UpgradeOption에 대해 이벤트 구독
         SubscribeUpgradeEvent(attackUpgrade, () => playerStats.attack += attackUpgrade.increaseAmount);
         SubscribeUpgradeEvent(maxHPUpgrade, () => playerStats.maxHP += maxHPUpgrade.increaseAmount);
         SubscribeUpgradeEvent(defenseUpgrade, () => playerStats.defense += defenseUpgrade.increaseAmount);
+    }
+
+    void InitAllOptionsUpgrade()
+    {
+        var upgradeOptions = new List<UpgradeOption> { attackUpgrade, maxHPUpgrade, defenseUpgrade };
+        
+        foreach (var upgradeOption in upgradeOptions)
+        {
+            upgradeOption.InitializeUI();
+        }
     }
 
     private void SubscribeUpgradeEvent(UpgradeOption upgradeOption, Action action)
