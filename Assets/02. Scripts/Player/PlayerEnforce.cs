@@ -43,7 +43,7 @@ public class UpgradeOption
 
             // UI 업데이트
             UIUpdate();
-            CheckUpgradeAvailability(); 
+            CheckUpgrade(); 
         }
         else // 업그레이드 불가능
         {
@@ -55,7 +55,7 @@ public class UpgradeOption
     public void UIInit()
     {
         UIUpdate();
-        CheckUpgradeAvailability(); 
+        CheckUpgrade(); 
     }
     
     public void UIUpdate()
@@ -71,7 +71,7 @@ public class UpgradeOption
         }
     }
     
-    public void CheckUpgradeAvailability()
+    public void CheckUpgrade()
     {
         bool isMaxLevelReached = level >= maxLevel;
         bool hasNotEnoughCoins = ResourceManager.Instance.current_Coin < cost;
@@ -160,9 +160,9 @@ public class PlayerEnforce : EnforceSubject
     // 모든 UpgradeOption의 UI 업데이트
     void UpdateAllUpgradeOptionsUI()
     {
-        attackUpgrade.CheckUpgradeAvailability();
-        maxHPUpgrade.CheckUpgradeAvailability();
-        defenseUpgrade.CheckUpgradeAvailability();
+        attackUpgrade.CheckUpgrade();
+        maxHPUpgrade.CheckUpgrade();
+        defenseUpgrade.CheckUpgrade();
     }
 
     // 경고 팝업 활성화
