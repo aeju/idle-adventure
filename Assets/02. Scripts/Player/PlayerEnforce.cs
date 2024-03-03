@@ -73,11 +73,35 @@ public class UpgradeOption
     
     public void CheckUpgradeAvailability()
     {
-        bool canUpgrade = CanUpgrade();
-        upgradeAvailableImage.gameObject.SetActive(canUpgrade);
-        upgradeUnavailableImage.gameObject.SetActive(!canUpgrade);
-        costText.color = canUpgrade ? Color.white : Color.red;
-        buttonText.color = canUpgrade ? Color.white : Color.black;
+        bool isMaxLevelReached = level >= maxLevel;
+        bool hasNotEnoughCoins = ResourceManager.Instance.current_Coin < cost;
+        
+        // 강화 완료
+        if (isMaxLevelReached)
+        {
+            upgradeButton.interactable = false; // 버튼 비활성화
+            upgradeAvailableImage.gameObject.SetActive(false);
+            upgradeUnavailableImage.gameObject.SetActive(true);
+            buttonText.text = "강화 완료";
+            costText.text = "";
+            costText.color = Color.black; 
+            buttonText.color = Color.white; 
+        }
+        // 코인 부족
+        else if (hasNotEnoughCoins)
+        {
+            upgradeAvailableImage.gameObject.SetActive(false);
+            upgradeUnavailableImage.gameObject.SetActive(true);
+            costText.color = Color.red; 
+            buttonText.color = Color.black; 
+        }
+        else // 강화 가능
+        {
+            upgradeAvailableImage.gameObject.SetActive(true);
+            upgradeUnavailableImage.gameObject.SetActive(false);
+            costText.color = Color.white; 
+            buttonText.color = Color.white; 
+        }
     }
     
     // 코인 부족 -> 실행할 콜백
