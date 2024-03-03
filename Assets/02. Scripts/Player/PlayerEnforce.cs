@@ -19,6 +19,7 @@ public class UpgradeOption
     public Slider levelSlider;
     public Image upgradeAvailableImage;
     public Image upgradeUnavailableImage;
+    //public Image upgradeCompleteImage;
     public TextMeshProUGUI buttonText;
 
     private Action onNotEnoughCoins; // 코인 부족 시 실행할 콜백
@@ -35,7 +36,7 @@ public class UpgradeOption
         if (CanUpgrade()) // 업그레이드 가능
         {
             upgradeAction(); // 업그레이드
-            ResourceManager.Instance.current_Coin -= cost; // 비용 차감
+            ResourceManager.Instance.UseCoin(cost); // 코인 사용
             
             totalIncrease += increaseAmount; // 증가량 
             cost++; // 비용
@@ -73,6 +74,7 @@ public class UpgradeOption
     
     public void CheckUpgrade()
     {
+        Debug.Log("upgrade0");
         bool isMaxLevelReached = level >= maxLevel;
         bool hasNotEnoughCoins = ResourceManager.Instance.current_Coin < cost;
         
@@ -81,7 +83,8 @@ public class UpgradeOption
         {
             upgradeButton.interactable = false; // 버튼 비활성화
             upgradeAvailableImage.gameObject.SetActive(false);
-            upgradeUnavailableImage.gameObject.SetActive(true);
+            upgradeUnavailableImage.gameObject.SetActive(false);
+            //upgradeCompleteImage.gameObject.SetActive(true);
             buttonText.text = "강화 완료";
             costText.text = "";
             costText.color = Color.black; 
@@ -92,6 +95,7 @@ public class UpgradeOption
         {
             upgradeAvailableImage.gameObject.SetActive(false);
             upgradeUnavailableImage.gameObject.SetActive(true);
+            //upgradeCompleteImage.gameObject.SetActive(false);
             costText.color = Color.red; 
             buttonText.color = Color.black; 
         }
@@ -99,6 +103,7 @@ public class UpgradeOption
         {
             upgradeAvailableImage.gameObject.SetActive(true);
             upgradeUnavailableImage.gameObject.SetActive(false);
+            //upgradeCompleteImage.gameObject.SetActive(false);
             costText.color = Color.white; 
             buttonText.color = Color.white; 
         }

@@ -28,7 +28,17 @@ public class ResourceManager : MonoBehaviour
     
     public void AddCoin(int coin)
     {
-        current_Coin += coin;
+        current_Coin += coin; // 코인 증가 
+        Debug.Log($"Upgrade, Coin Updated: {current_Coin}"); 
         OnResourcesUpdated?.Invoke();
+    }
+    
+    public void UseCoin(int coin)
+    {
+        if (current_Coin >= coin)
+        {
+            current_Coin -= coin; // 코인 감소
+            OnResourcesUpdated?.Invoke(); // 코인 변화에 대한 이벤트 트리거
+        }
     }
 }
