@@ -24,20 +24,6 @@ public static class CombatCalculator
             finalDamage = 0;
 
         return (int)finalDamage;
-        
-        /*
-        float multiplier;
-        if (UnityEngine.Random.value < 0.3f) // 30% 확률로 치명타
-        {
-            multiplier = critical_Multiplier;
-        }
-        else
-        {
-            multiplier = attack_Multiplier;
-        }
-        int attackDamage = (int)(attack * (multiplier / 100) - defense * (0.5));
-        return attackDamage;
-        */
     }
 
     // 플레이어만 사용 
@@ -55,11 +41,6 @@ public static class CombatCalculator
             finalSkillDamage = 0;
 
         return (int)finalSkillDamage;
-        
-        /*
-        int skillDamage = (int)(attack * (skillMultiplier / 100));
-        return skillDamage;
-        */
     }
     
     // 전투력 계산 공식

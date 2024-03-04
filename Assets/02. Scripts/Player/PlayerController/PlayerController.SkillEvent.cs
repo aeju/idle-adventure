@@ -14,7 +14,8 @@ public partial class PlayerController : MonoBehaviour
         if (enemyFsm != null)
         {
             //int attackDamage = CombatCalculator.CalculateAttackDamage(playerStats.attack, playerStats.attack_Multiplier, playerStats.critical_Multiplier);
-            int attackDamage = CombatCalculator.CalculateAttackDamage(playerStats.attack, playerStats.defense, playerStats.attack_Multiplier, playerStats.critical_Multiplier);
+            //int attackDamage = CombatCalculator.CalculateAttackDamage(playerStats.attack, playerStats.defense, playerStats.attack_Multiplier, playerStats.critical_Multiplier);
+            int attackDamage = CombatCalculator.CalculateAttackDamage(enemyFsm.monsterStats.attack, enemyFsm.monsterStats.defense, enemyFsm.monsterStats.attack_multiplier, enemyFsm.monsterStats.critical_multiplier);
             enemyFsm.HitEnemy(attackDamage); // 일반공격 
             Debug.Log("3. HitEnemy");
         }
