@@ -10,7 +10,7 @@ using DG.Tweening;
 // 필요 2: damaged 애니메이션
 public partial class EnemyFSM : MonoBehaviour
 {
-    [SerializeField] private MonsterStats monsterStats;
+    [SerializeField] public MonsterStats monsterStats;
     
     [SerializeField] private UserInfoManager userInfo;
     [SerializeField] private ResourceManager resourceInfo;
@@ -219,8 +219,7 @@ public partial class EnemyFSM : MonoBehaviour
         if (target != null)
         {
             target.DamagedPlayer();
-            target.ReceiveDamage(CombatCalculator.CalculateAttackDamage
-                (monsterStats.attack, monsterStats.attack_multiplier, monsterStats.critical_multiplier));
+            target.ReceiveDamage(CombatCalculator.CalculateAttackDamage(monsterStats.attack, target.playerStats.defense, monsterStats.attack_multiplier, monsterStats.critical_multiplier));
             
             // 플레이어가 반대 방향 보고 있으면, 뒤집기 
             float playerToMonsterDistance = transform.position.x - target.transform.position.x;

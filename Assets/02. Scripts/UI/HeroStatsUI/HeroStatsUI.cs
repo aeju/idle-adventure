@@ -58,16 +58,4 @@ public class HeroStatsUI : MonoBehaviour
    {
       tmp.text = statValue.ToString();
    }
-   /*
-   public override void Notify(EnforceSubject subject)
-   {
-      if (!playerEnforce)
-         playerEnforce = subject.GetComponent<PlayerEnforce>();
-
-      if (playerEnforce != null)
-      {
-         UpdateUI();
-      }
-   }
-   */
 }
