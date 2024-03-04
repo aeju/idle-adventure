@@ -9,7 +9,7 @@ using TMPro;
 // 드랍 아이템 -> 리소스바 UI 반영 
 
 // 추가 작업 필요: 전투력 변화 -> 업데이트
-public class ResourceBar : EnforceObserver 
+public class ResourceBar : IEnforceObserver 
 {
     protected ResourceManager resoureInfo;
     public PlayerController player;
@@ -87,7 +87,7 @@ public class ResourceBar : EnforceObserver
         }
     }
     
-    public override void Notify(EnforceSubject subject)
+    public override void Notify(IEnforceSubject subject)
     {
         if (!playerEnforce)
             playerEnforce = subject.GetComponent<PlayerEnforce>();
