@@ -11,16 +11,15 @@ public class UpgradeOption
 {
     public Button upgradeButton;
     public int increaseAmount;
-    public int cost = 100;
-    public TextMeshProUGUI costText, levelText, totalIncreaseText;
-    private int level = 0;
-    public int maxLevel;
-    private int totalIncrease = 0;
-    public Slider levelSlider;
-    public Image upgradeAvailableImage;
-    public Image upgradeUnavailableImage;
-    //public Image upgradeCompleteImage;
-    public TextMeshProUGUI buttonText;
+    [SerializeField] private int cost = 100;
+    [SerializeField] private TextMeshProUGUI costText, levelText, totalIncreaseText;
+    [SerializeField] private int level = 0;
+    [SerializeField] private int maxLevel;
+    [SerializeField] private int totalIncrease = 0;
+    [SerializeField] private Slider levelSlider;
+    [SerializeField] private Image upgradeAvailableImage;
+    [SerializeField] private Image upgradeUnavailableImage;
+    [SerializeField] private TextMeshProUGUI buttonText;
 
     private Action onNotEnoughCoins; // 코인 부족 시 실행할 콜백
 
@@ -84,7 +83,6 @@ public class UpgradeOption
             upgradeButton.interactable = false; // 버튼 비활성화
             upgradeAvailableImage.gameObject.SetActive(false);
             upgradeUnavailableImage.gameObject.SetActive(false);
-            //upgradeCompleteImage.gameObject.SetActive(true);
             buttonText.text = "강화 완료";
             costText.text = "";
             costText.color = Color.black; 
@@ -95,7 +93,6 @@ public class UpgradeOption
         {
             upgradeAvailableImage.gameObject.SetActive(false);
             upgradeUnavailableImage.gameObject.SetActive(true);
-            //upgradeCompleteImage.gameObject.SetActive(false);
             costText.color = Color.red; 
             buttonText.color = Color.black; 
         }
@@ -103,7 +100,6 @@ public class UpgradeOption
         {
             upgradeAvailableImage.gameObject.SetActive(true);
             upgradeUnavailableImage.gameObject.SetActive(false);
-            //upgradeCompleteImage.gameObject.SetActive(false);
             costText.color = Color.white; 
             buttonText.color = Color.white; 
         }

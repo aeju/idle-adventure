@@ -219,9 +219,7 @@ public partial class EnemyFSM : MonoBehaviour
         if (target != null)
         {
             target.DamagedPlayer();
-            //target.ReceiveDamage(CombatCalculator.CalculateAttackDamage(monsterStats.attack, monsterStats.attack_multiplier, monsterStats.critical_multiplier));
-            //target.ReceiveDamage(CombatCalculator.CalculateAttackDamage(monsterStats.attack, monsterStats.defense, monsterStats.attack_multiplier, monsterStats.critical_multiplier));
-            target.ReceiveDamage(CombatCalculator.CalculateAttackDamage(target.playerStats.attack, target.playerStats.defense, target.playerStats.attack_Multiplier, target.playerStats.skill_Multiplier));
+            target.ReceiveDamage(CombatCalculator.CalculateAttackDamage(monsterStats.attack, target.playerStats.defense, monsterStats.attack_multiplier, monsterStats.critical_multiplier));
             
             // 플레이어가 반대 방향 보고 있으면, 뒤집기 
             float playerToMonsterDistance = transform.position.x - target.transform.position.x;
