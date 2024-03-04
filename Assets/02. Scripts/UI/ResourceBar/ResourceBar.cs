@@ -69,7 +69,7 @@ public class ResourceBar : IEnforceObserver
             coin = resoureInfo.current_Coin;
 
             rubyText.text = ruby.ToString();
-            coinText.text = NumberFormatter.FormatNumberUnit(coin);
+            coinText.text = Utilities.FormatNumberUnit(coin);
         }
     }
 
@@ -83,7 +83,7 @@ public class ResourceBar : IEnforceObserver
 
             // 전투력 : 다시 계산
             int combatPower = CombatCalculator.CalculateCombatPower(attack, maxHP, defense);
-            combatPowerText.text = NumberFormatter.FormatNumberUnit(combatPower);
+            combatPowerText.text = Utilities.FormatNumberUnit(combatPower);
         }
     }
     

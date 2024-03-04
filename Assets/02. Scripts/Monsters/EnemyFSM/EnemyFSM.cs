@@ -326,6 +326,6 @@ public partial class EnemyFSM : MonoBehaviour
     
     void HPSliderUpdate(Slider hpSlider, int currentHP, int maxHP)
     {
-        CombatUtilities.HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
+        Utilities.HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
     }
 }

@@ -169,7 +169,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
 
     void HPSliderUpdate(Slider hpSlider, int currentHP, int maxHP)
     {
-        CombatUtilities.HPSliderUpdate(hpSlider, playerStats.currentHP, playerStats.maxHP);
+        Utilities.HPSliderUpdate(hpSlider, playerStats.currentHP, playerStats.maxHP);
     }
     
     void CreateDamageText(int hitPower)
