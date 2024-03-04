@@ -13,6 +13,15 @@ public class ResourceManager : MonoBehaviour
     public int current_Coin = 0;
     public int current_summon_Ticket = 0;
 
+    // 버프
+    public float coinBonusMultiplier = 0f;
+    
+    // 코인 보너스 증가
+    public void IncreaseCoinBonus(float percentage)
+    {
+        coinBonusMultiplier += percentage / 100f;
+    }
+    
     void Awake()
     {
         if (Instance == null)
@@ -29,7 +38,6 @@ public class ResourceManager : MonoBehaviour
     public void AddCoin(int coin)
     {
         current_Coin += coin; // 코인 증가 
-        Debug.Log($"Upgrade, Coin Updated: {current_Coin}"); 
         OnResourcesUpdated?.Invoke();
     }
     

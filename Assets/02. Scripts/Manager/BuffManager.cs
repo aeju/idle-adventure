@@ -7,7 +7,9 @@ public class BuffManager : MonoBehaviour
     public static BuffManager Instance { get; private set; }
 
     public GameObject BuffActiveIcon;
-    
+
+    public float CoinMultiplier { get; set; } = 1; // 코인 획득량에 적용할 배수
+
     private void Awake()
     {
         if (Instance == null)
@@ -21,17 +23,17 @@ public class BuffManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    void Start()
     {
         BuffIconOff();
     }
-
-    private void BuffIconOn()
+    
+    public void BuffIconOn()
     {
-        
+        BuffActiveIcon.SetActive(true);
     }
     
-    private void BuffIconOff()
+    public void BuffIconOff()
     {
         BuffActiveIcon.SetActive(false);
     }

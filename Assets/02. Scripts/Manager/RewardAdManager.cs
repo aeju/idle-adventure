@@ -6,7 +6,7 @@ using GoogleMobileAds.Api;
 using UniRx;
 using UnityEngine.Rendering;
 
-public class AdsBuff : MonoBehaviour
+public class RewardAdManager : MonoBehaviour
 {
     [SerializeField] Button rewardADBtn;
     // 광고 테스트 ID
