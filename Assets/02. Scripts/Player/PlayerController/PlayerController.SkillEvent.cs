@@ -13,8 +13,8 @@ public partial class PlayerController : MonoBehaviour
 
         if (enemyFsm != null)
         {
-            int attackDamage = CombatCalculator.CalculateAttackDamage
-                (playerStats.attack, playerStats.attack_Multiplier, playerStats.critical_Multiplier);
+            //int attackDamage = CombatCalculator.CalculateAttackDamage(playerStats.attack, playerStats.attack_Multiplier, playerStats.critical_Multiplier);
+            int attackDamage = CombatCalculator.CalculateAttackDamage(playerStats.attack, playerStats.defense, playerStats.attack_Multiplier, playerStats.critical_Multiplier);
             enemyFsm.HitEnemy(attackDamage); // 일반공격 
             Debug.Log("3. HitEnemy");
         }
@@ -32,8 +32,8 @@ public partial class PlayerController : MonoBehaviour
 
         if (enemyFsm != null)
         {
-            int attackDamage = CombatCalculator.CalculateSkillDamage
-                (playerStats.attack, playerStats.skill_Multiplier);
+            //int attackDamage = CombatCalculator.CalculateSkillDamage(playerStats.attack, playerStats.skill_Multiplier);
+            int attackDamage = CombatCalculator.CalculateSkillDamage(playerStats.attack, playerStats.defense, playerStats.skill_Multiplier);
             enemyFsm.HitEnemy(attackDamage); // 스킬공격 
             Debug.Log("3. HitEnemy");
         }

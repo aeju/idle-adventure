@@ -14801,6 +14801,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1812239274121682893, guid: 476ac786242ed4561b57123074a4ebc6, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1812239274121682893, guid: 476ac786242ed4561b57123074a4ebc6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1812239274121682893, guid: 476ac786242ed4561b57123074a4ebc6, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2332372738178126829, guid: 476ac786242ed4561b57123074a4ebc6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.8
@@ -36067,7 +36079,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dac603a5ac774aaeaf50ca8f6b4cc2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BuffActiveIcon: {fileID: 820348153}
+  BuffActiveIcon: {fileID: 0}
 --- !u!1 &1867916402
 GameObject:
   m_ObjectHideFlags: 0
