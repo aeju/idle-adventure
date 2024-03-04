@@ -4,203 +4,182 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using TMPro;
-using UnityEditor.Experimental.GraphView;
+using System;
 
+[Serializable]
 public class UpgradeOption
 {
+    public Button upgradeButton;
+    public int increaseAmount;
+    public int cost = 100;
+    public TextMeshProUGUI costText, levelText, totalIncreaseText;
+    private int level = 0;
+    public int maxLevel;
+    private int totalIncrease = 0;
+    public Slider levelSlider;
+    public Image upgradeAvailableImage;
+    public Image upgradeUnavailableImage;
+    //public Image upgradeCompleteImage;
+    public TextMeshProUGUI buttonText;
+
+    private Action onNotEnoughCoins; // 코인 부족 시 실행할 콜백
+
+    // 업그레이드 가능 : 현재 레벨 < 최대 레벨, 강화 비용 <= 보유 코인
+    private bool CanUpgrade()
+    {
+        return level < maxLevel && ResourceManager.Instance.current_Coin >= cost;
+    }
     
+    // 스탯 강화
+    public void Upgrade(Action upgradeAction)
+    {
+        if (CanUpgrade()) // 업그레이드 가능
+        {
+            upgradeAction(); // 업그레이드
+            ResourceManager.Instance.UseCoin(cost); // 코인 사용
+            
+            totalIncrease += increaseAmount; // 증가량 
+            cost++; // 비용
+            level++; // 레벨
+
+            // UI 업데이트
+            UIUpdate();
+            CheckUpgrade(); 
+        }
+        else // 업그레이드 불가능
+        {
+            onNotEnoughCoins?.Invoke(); // 코인 부족 콜백 실행
+        }
+    }
+
+    // 업그레이드 가능 상태 검사 + UI 초기화
+    public void UIInit()
+    {
+        UIUpdate();
+        CheckUpgrade(); 
+    }
+    
+    public void UIUpdate()
+    {
+        costText.text = NumberFormatter.FormatNumberUnit(cost);
+        levelText.text = "Lv. " + level.ToString();
+        totalIncreaseText.text = "+" + totalIncrease;
+        buttonText.text = "레벨업";
+        
+        if (levelSlider != null)
+        {
+            levelSlider.value = (float)level / maxLevel; 
+        }
+    }
+    
+    public void CheckUpgrade()
+    {
+        Debug.Log("upgrade0");
+        bool isMaxLevelReached = level >= maxLevel;
+        bool hasNotEnoughCoins = ResourceManager.Instance.current_Coin < cost;
+        
+        // 강화 완료
+        if (isMaxLevelReached)
+        {
+            upgradeButton.interactable = false; // 버튼 비활성화
+            upgradeAvailableImage.gameObject.SetActive(false);
+            upgradeUnavailableImage.gameObject.SetActive(false);
+            //upgradeCompleteImage.gameObject.SetActive(true);
+            buttonText.text = "강화 완료";
+            costText.text = "";
+            costText.color = Color.black; 
+            buttonText.color = Color.white; 
+        }
+        // 코인 부족
+        else if (hasNotEnoughCoins)
+        {
+            upgradeAvailableImage.gameObject.SetActive(false);
+            upgradeUnavailableImage.gameObject.SetActive(true);
+            //upgradeCompleteImage.gameObject.SetActive(false);
+            costText.color = Color.red; 
+            buttonText.color = Color.black; 
+        }
+        else // 강화 가능
+        {
+            upgradeAvailableImage.gameObject.SetActive(true);
+            upgradeUnavailableImage.gameObject.SetActive(false);
+            //upgradeCompleteImage.gameObject.SetActive(false);
+            costText.color = Color.white; 
+            buttonText.color = Color.white; 
+        }
+    }
+    
+    // 코인 부족 -> 실행할 콜백
+    public void SetOnNotEnoughCoinsAction(Action action)
+    {
+        onNotEnoughCoins = action;
+    }
 }
 
 public class PlayerEnforce : EnforceSubject
 {
-    // 버튼 (공격력/HP/방어력)
-    [SerializeField] private Button attackBtn, maxHPBtn, defenseBtn;
-    
-    // 업그레이드 증가량
-    public int attackIncrease = 2;
-    public int hpIncrease = 15;
-    public int defenseIncrease = 1;
-    
-    // 총 증가량  
-    private int totalAttackIncrease = 0;
-    private int totalHpIncrease = 0;
-    private int totalDefenseIncrease = 0 ;
+    public UpgradeOption attackUpgrade, maxHPUpgrade, defenseUpgrade;
 
-    public TextMeshProUGUI totalAttackIncreaseText;
-    public TextMeshProUGUI totalHpIncreaseText;
-    public TextMeshProUGUI totalDefenseIncreaseText;
-
-    // 골드 비용
-    public int attackCost = 100;
-    public int maxHPCost = 100;
-    public int defenseCost = 100;
-
-    public TextMeshProUGUI attackCostText;
-    public TextMeshProUGUI maxHPCostText;
-    public TextMeshProUGUI defenseCostText;
-    
-    // 레벨
-    public int attackLevel = 0;
-    public int maxHPLevel = 0;
-    public int defenseLevel = 0;
-
-    public TextMeshProUGUI attackLevelText;
-    public TextMeshProUGUI maxHPLevelText;
-    public TextMeshProUGUI defenseLevelText;
-    
-    private ResourceManager resourceInfo;
-    
-    // 옵저버 패턴
     private PlayerStats playerStats;
     
+    // 옵저버 패턴
     private ResourceBar resourceBar;
-    private HeroStatsUI heroStatsUI; 
     
     // 경고 팝업
     [SerializeField] private GameObject alertPopup;
-
+    
     void Awake()
     {
-        resourceInfo = ResourceManager.Instance;
         playerStats = FindObjectOfType<PlayerStats>();
         resourceBar = FindObjectOfType<ResourceBar>();
-
-        if (alertPopup != null)
-        {
-            alertPopup.SetActive(false);
-        }
+        alertPopup?.SetActive(false);
     }
-    
+
     void Start()
     {
-        UpdateCostUI();
-        UpdateStatsUI();
-        UpdateLevelUI();
+        InitUpgradeOptions(attackUpgrade, amount => playerStats.attack += amount);
+        InitUpgradeOptions(maxHPUpgrade, amount => playerStats.maxHP += amount);
+        InitUpgradeOptions(defenseUpgrade, amount => playerStats.defense += amount);
         
-        attackBtn.OnClickAsObservable().Subscribe(_ =>
+        // ResourceManager의 코인 변경을 구독하여 모든 UpgradeOption의 UI 업데이트
+        ResourceManager.Instance.OnResourcesUpdated += UpdateAllUpgradeOptionsUI;
+    }
+    
+    // UI 초기화, 코인 부족 콜백, 스탯 증가 이벤트 구독
+    void InitUpgradeOptions(UpgradeOption upgradeOption, Action<int> statIncreaseAction)
+    {
+        // 초기 UI 상태 설정
+        upgradeOption.UIInit();
+    
+        // 코인 부족, 콜백 설정
+        upgradeOption.SetOnNotEnoughCoinsAction(ShowAlertPopup);
+    
+        // 스탯 증가 이벤트 구독
+        upgradeOption.upgradeButton.OnClickAsObservable().Subscribe(_ =>
         {
-            UpgradeAttack();
+            upgradeOption.Upgrade(() => statIncreaseAction(upgradeOption.increaseAmount));
             NotifyObservers();
         }).AddTo(this);
-
-        maxHPBtn.OnClickAsObservable().Subscribe(_ =>
-        {
-            UpgradeHP();
-            NotifyObservers();
-        }).AddTo(this);
-        
-        defenseBtn.OnClickAsObservable().Subscribe(_ =>
-        {
-            UpgradeDefense();
-            NotifyObservers();
-        }).AddTo(this);
-    }
-
-    // 스탯 업그레이드 메소드 일반화
-    
-    
-    void UpdateCostUI()
-    {
-        attackCostText.text = NumberFormatter.FormatNumberUnit(attackCost);
-        maxHPCostText.text = NumberFormatter.FormatNumberUnit(maxHPCost);
-        defenseCostText.text = NumberFormatter.FormatNumberUnit(defenseCost);
-    }
-
-    void UpdateLevelUI()
-    {
-        attackLevelText.text = "Lv. " + attackLevel.ToString();
-        maxHPLevelText.text = "Lv. " + maxHPLevel.ToString();
-        defenseLevelText.text = "Lv. " + defenseLevel.ToString();
     }
     
-    void UpdateStatsUI()
+    // 모든 UpgradeOption의 UI 업데이트
+    void UpdateAllUpgradeOptionsUI()
     {
-        totalAttackIncreaseText.text = "+" + totalAttackIncrease;
-        totalHpIncreaseText.text = "+" + totalHpIncrease;
-        totalDefenseIncreaseText.text = "+" + totalDefenseIncrease;
+        attackUpgrade.CheckUpgrade();
+        maxHPUpgrade.CheckUpgrade();
+        defenseUpgrade.CheckUpgrade();
     }
 
-    private void UpgradeAttack()
+    // 경고 팝업 활성화
+    void ShowAlertPopup()
     {
-        if (resourceInfo.current_Coin >= attackCost)
+        if (alertPopup != null)
         {
-            playerStats.attack += attackIncrease;
-            resourceInfo.current_Coin -= attackCost;
-            
-            totalAttackIncrease += attackIncrease; // 스탯 증가
-            attackCost++; // 강화 비용 증가
-            attackLevel++; // 강화 레벨 증가
-            
-            UpdateCostUI();
-            UpdateStatsUI();
-            UpdateLevelUI();
-        }
-        else // 경고 
-        {
-            // 이렇게가 아니고, 버튼 클릭 -> UI / 전투력 반영, 보유 코인 반영, 코인 버튼 색 업데이트
-            Debug.Log("Coin 부족");
-            attackCostText.color = Color.red; // 이 때말고, 버튼 클릭 후 판단하는 걸로 변경 
-            // UI팝업 생성
-            if (alertPopup != null && !alertPopup.activeSelf)
-            {
-                alertPopup.SetActive(true);
-            }
-        }
-    }
-
-    // 강화 + current HP 초기화 
-    private void UpgradeHP()
-    {
-        Debug.Log("1. playerHP : " + playerStats.maxHP);
-        if (resourceInfo.current_Coin >= maxHPCost)
-        {
-            Debug.Log("HP Upgrade");
-            playerStats.maxHP += hpIncrease;
-            playerStats.currentHP = playerStats.maxHP;
-            // 필요: PlayerController HPSliderUpdate();
-            Debug.Log("2. playerHP : " + playerStats.maxHP);
-            resourceInfo.current_Coin -= maxHPCost;
-            
-            totalHpIncrease += hpIncrease;
-            maxHPCost++;
-            maxHPLevel++;
-            
-            UpdateCostUI();
-            UpdateStatsUI();
-            UpdateLevelUI();
-        }
-        else
-        {
-            Debug.Log("Coin 부족");
+            alertPopup.SetActive(true);
         }
     }
     
-    // 데미지 식에 반영 
-    private void UpgradeDefense()
-    {
-        Debug.Log("1. playerDefense : " + playerStats.maxHP);
-        if (resourceInfo.current_Coin >= defenseCost)
-        {
-            Debug.Log("Defense Upgrade");
-            playerStats.defense += defenseIncrease;
-            Debug.Log("2. playerDefense : " + playerStats.defense);
-            resourceInfo.current_Coin -= defenseCost;
-            
-            totalDefenseIncrease += defenseIncrease;
-            defenseCost++;
-            defenseLevel++;
-            
-            UpdateCostUI();
-            UpdateStatsUI();
-            UpdateLevelUI();
-        }
-        else
-        {
-            Debug.Log("Coin 부족");
-        }
-    }
-
-    // 관찰자 연결 활성화, 비활성화
+    // 옵저버 연결 활성화, 비활성화
     void OnEnable()
     {
         if (resourceBar)
