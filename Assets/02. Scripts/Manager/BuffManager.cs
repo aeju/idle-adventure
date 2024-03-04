@@ -4,35 +4,15 @@ using UnityEngine;
 
 public class BuffManager : MonoBehaviour
 {
-    public static BuffManager Instance { get; private set; }
-
-    public GameObject BuffActiveIcon;
-    
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    private void Start()
-    {
-        BuffIconOff();
-    }
-
-    private void BuffIconOn()
+    // Start is called before the first frame update
+    void Start()
     {
         
     }
-    
-    private void BuffIconOff()
+
+    // Update is called once per frame
+    void Update()
     {
-        BuffActiveIcon.SetActive(false);
+        
     }
 }
