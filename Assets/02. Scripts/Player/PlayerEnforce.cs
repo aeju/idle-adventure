@@ -112,7 +112,7 @@ public class UpgradeOption
     }
 }
 
-public class PlayerEnforce : EnforceSubject
+public class PlayerEnforce : IEnforceSubject
 {
     public UpgradeOption attackUpgrade, maxHPUpgrade, defenseUpgrade;
 
