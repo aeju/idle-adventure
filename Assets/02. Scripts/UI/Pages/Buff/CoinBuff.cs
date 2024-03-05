@@ -19,15 +19,13 @@ public class CoinBuff : Buff
     {
         if (BuffManager.Instance != null)
         {
-            Debug.Log("buff manager O");
             duration = 1;
             UpdateUI();
-            Debug.Log("0. buff: BuffManager.Instance.CoinMultiplier" + BuffManager.Instance.CoinMultiplier);
             
             buffbtn.OnClickAsObservable().Subscribe(_ =>
             {
                 Debug.Log("buff: click1");
-                OnActivate();
+                Activate();
             }).AddTo(this);
         }
         else
@@ -42,19 +40,16 @@ public class CoinBuff : Buff
         percentText.text = $"금화 획득량 {coinIncreasePercentage}% 증가 ";
     }
 
-    // 코인 획득량 증가 로직을 구현
+    // 버프 활성화 (코인 획득량 증가 로직을 구현
     protected override void OnActivate()
     {
         Debug.Log("1. buff: BuffManager.Instance.CoinMultiplier" + BuffManager.Instance.CoinMultiplier);
-        Debug.Log("buff: onactivate");
         BuffManager.Instance.BuffIconOn();
-        //BuffManager.Instance.CoinMultiplier += coinIncreasePercentage / 100;
         BuffManager.Instance.CoinMultiplier += coinIncreasePercentage / 100.0f;
         Debug.Log("2. buff: BuffManager.Instance.CoinMultiplier" + BuffManager.Instance.CoinMultiplier);
-        Debug.Log("buff: " + coinIncreasePercentage + "%");
     }
 
-    // Deactivate에서는 버프가 끝났을 때의 로직을 구현
+    // Deactivate : 버프가 끝났을 때의 로직을 구현
     protected override void Deactivate()
     {
         BuffManager.Instance.BuffIconOff();
