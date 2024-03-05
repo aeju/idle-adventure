@@ -23,7 +23,8 @@ public class ResourceBar : EnforceObserver
     void Start()
     {
         playerEnforce = (PlayerEnforce)FindObjectOfType(typeof(PlayerEnforce));
-
+        player = FindObjectOfType<PlayerController>();
+        
         if (ResourceManager.Instance == null)
         {
             Debug.LogError("Resource Manager null");
@@ -33,6 +34,7 @@ public class ResourceBar : EnforceObserver
         if (player == null)
         {
             Debug.LogError("Player Controller null");
+            player = FindObjectOfType<PlayerController>();
             return;
         }
         
