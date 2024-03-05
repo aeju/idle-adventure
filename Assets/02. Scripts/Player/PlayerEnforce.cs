@@ -73,7 +73,6 @@ public class UpgradeOption
     
     public void CheckUpgrade()
     {
-        Debug.Log("upgrade0");
         bool isMaxLevelReached = level >= maxLevel;
         bool hasNotEnoughCoins = ResourceManager.Instance.current_Coin < cost;
         
@@ -112,10 +111,9 @@ public class UpgradeOption
     }
 }
 
-public class PlayerEnforce : IEnforceSubject
+public class PlayerEnforce : EnforceSubject
 {
     public UpgradeOption attackUpgrade, maxHPUpgrade, defenseUpgrade;
-
     private PlayerStats playerStats;
     
     // 옵저버 패턴
@@ -180,7 +178,6 @@ public class PlayerEnforce : IEnforceSubject
     {
         if (resourceBar)
         {
-            Debug.Log("Attach1");
             Attach(resourceBar);
         }
     }

@@ -9,6 +9,7 @@ public abstract class Buff : MonoBehaviour
     // 버프 활성화
     public void Activate()
     {
+        Debug.Log($"Buff activated at: {Time.time} seconds");
         OnActivate();
         StartCoroutine(DeactivateAfterDuration());
     }
@@ -24,5 +25,6 @@ public abstract class Buff : MonoBehaviour
     {
         yield return new WaitForSeconds(duration * 60);
         Deactivate();
+        Debug.Log($"Buff deactivated at: {Time.time} seconds");
     }
 }

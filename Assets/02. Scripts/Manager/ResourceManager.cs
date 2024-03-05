@@ -12,15 +12,6 @@ public class ResourceManager : MonoBehaviour
     public int current_Ruby = 0;
     public int current_Coin = 0;
     public int current_summon_Ticket = 0;
-
-    // 버프
-    public float coinBonusMultiplier = 0f;
-    
-    // 코인 보너스 증가
-    public void IncreaseCoinBonus(float percentage)
-    {
-        coinBonusMultiplier += percentage / 100f;
-    }
     
     void Awake()
     {
@@ -37,7 +28,11 @@ public class ResourceManager : MonoBehaviour
     
     public void AddCoin(int coin)
     {
-        current_Coin += coin; // 코인 증가 
+        // 버프에 따른 코인 계산을 항상 적용 (기본 coinMultiplier = 1)
+        int finalCoin = Mathf.FloorToInt(coin * BuffManager.Instance.CoinMultiplier);
+        
+        // 추가로 획득한 코인을 추가
+        current_Coin += finalCoin;
         OnResourcesUpdated?.Invoke();
     }
     
