@@ -7,8 +7,6 @@ using TMPro;
 // 루비, 코인(단위!) / 뽑기 = 카드 
 // 전투력 
 // 드랍 아이템 -> 리소스바 UI 반영 
-
-// 추가 작업 필요: 전투력 변화 -> 업데이트
 public class ResourceBar : IEnforceObserver 
 {
     protected ResourceManager resoureInfo;
@@ -18,7 +16,6 @@ public class ResourceBar : IEnforceObserver
     
     public int ruby;
     public int coin;
-
     //public int summon_Ticket;
 
     public TextMeshProUGUI rubyText;
