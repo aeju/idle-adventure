@@ -35,8 +35,7 @@ public static class CombatCalculator
         // 방어력 반영 데미지 감소 계산 
         float damageReductionMultiplier = 1 - (defense / (defense + 50.0f)); 
         int finalSkillDamage = (int)(rawSkillDamage * damageReductionMultiplier);
-
-        // 최종 스킬 데미지가 0보다 작지 않도록 보장
+        
         if (finalSkillDamage < 0) 
             finalSkillDamage = 0;
 

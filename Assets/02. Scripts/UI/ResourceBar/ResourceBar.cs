@@ -7,9 +7,7 @@ using TMPro;
 // 루비, 코인(단위!) / 뽑기 = 카드 
 // 전투력 
 // 드랍 아이템 -> 리소스바 UI 반영 
-
-// 추가 작업 필요: 전투력 변화 -> 업데이트
-public class ResourceBar : EnforceObserver 
+public class ResourceBar : IEnforceObserver 
 {
     protected ResourceManager resoureInfo;
     public PlayerController player;
@@ -18,7 +16,6 @@ public class ResourceBar : EnforceObserver
     
     public int ruby;
     public int coin;
-
     //public int summon_Ticket;
 
     public TextMeshProUGUI rubyText;
@@ -69,7 +66,7 @@ public class ResourceBar : EnforceObserver
             coin = resoureInfo.current_Coin;
 
             rubyText.text = ruby.ToString();
-            coinText.text = NumberFormatter.FormatNumberUnit(coin);
+            coinText.text = Utilities.FormatNumberUnit(coin);
         }
     }
 
@@ -83,11 +80,11 @@ public class ResourceBar : EnforceObserver
 
             // 전투력 : 다시 계산
             int combatPower = CombatCalculator.CalculateCombatPower(attack, maxHP, defense);
-            combatPowerText.text = NumberFormatter.FormatNumberUnit(combatPower);
+            combatPowerText.text = Utilities.FormatNumberUnit(combatPower);
         }
     }
     
-    public override void Notify(EnforceSubject subject)
+    public override void Notify(IEnforceSubject subject)
     {
         if (!playerEnforce)
             playerEnforce = subject.GetComponent<PlayerEnforce>();

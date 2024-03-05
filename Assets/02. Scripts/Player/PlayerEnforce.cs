@@ -60,7 +60,7 @@ public class UpgradeOption
     
     public void UIUpdate()
     {
-        costText.text = NumberFormatter.FormatNumberUnit(cost);
+        costText.text = Utilities.FormatNumberUnit(cost);
         levelText.text = "Lv. " + level.ToString();
         totalIncreaseText.text = "+" + totalIncrease;
         buttonText.text = "레벨업";
@@ -112,7 +112,7 @@ public class UpgradeOption
     }
 }
 
-public class PlayerEnforce : EnforceSubject
+public class PlayerEnforce : IEnforceSubject
 {
     public UpgradeOption attackUpgrade, maxHPUpgrade, defenseUpgrade;
 
