@@ -7,27 +7,24 @@ using TMPro;
 // 루비, 코인(단위!) / 뽑기 = 카드 
 // 전투력 
 // 드랍 아이템 -> 리소스바 UI 반영 
-public class ResourceBar : IEnforceObserver 
+public class ResourceBar : EnforceObserver 
 {
-    protected ResourceManager resoureInfo;
-    public PlayerController player;
-    
+    private PlayerController player;
     private PlayerEnforce playerEnforce;
     
-    public int ruby;
-    public int coin;
+    private int ruby;
+    private int coin;
     //public int summon_Ticket;
 
-    public TextMeshProUGUI rubyText;
-    public TextMeshProUGUI coinText;
-    public TextMeshProUGUI combatPowerText;
+    [SerializeField] private TextMeshProUGUI rubyText;
+    [SerializeField] private TextMeshProUGUI coinText;
+    [SerializeField] private TextMeshProUGUI combatPowerText;
 
     void Start()
     {
-        resoureInfo = ResourceManager.Instance;
-        playerEnforce = (PlayerEnforce) FindObjectOfType(typeof(PlayerEnforce));
+        playerEnforce = (PlayerEnforce)FindObjectOfType(typeof(PlayerEnforce));
 
-        if (resoureInfo == null)
+        if (ResourceManager.Instance == null)
         {
             Debug.LogError("Resource Manager null");
             return;
@@ -39,15 +36,15 @@ public class ResourceBar : IEnforceObserver
             return;
         }
         
-        resoureInfo.OnResourcesUpdated += UpdateUI; // 이벤트 구독 
+        ResourceManager.Instance.OnResourcesUpdated += UpdateUI; // 리소스 매니저 이벤트 직접 구독
         UpdateUI();
     }
 
     void OnDestroy()
     {
-        if (resoureInfo != null)
+        if (ResourceManager.Instance != null)
         {
-            resoureInfo.OnResourcesUpdated -= UpdateUI; // 구독 해제
+            ResourceManager.Instance.OnResourcesUpdated -= UpdateUI; // 구독 해제
         }
     }
     
@@ -57,14 +54,14 @@ public class ResourceBar : IEnforceObserver
         CombatPowerUpdate(); // 전투력
     }
 
+    // 리소스 업데이트
     void ResourceUpdate()
     {
-        if (resoureInfo != null)
+        if (ResourceManager.Instance != null)
         {
-            // 루비, 코인, 티켓 null 처리 
-            ruby = resoureInfo.current_Ruby;
-            coin = resoureInfo.current_Coin;
-
+            ruby = ResourceManager.Instance.current_Ruby;
+            coin = ResourceManager.Instance.current_Coin;
+            
             rubyText.text = ruby.ToString();
             coinText.text = Utilities.FormatNumberUnit(coin);
         }
@@ -84,7 +81,7 @@ public class ResourceBar : IEnforceObserver
         }
     }
     
-    public override void Notify(IEnforceSubject subject)
+    public override void Notify(EnforceSubject subject)
     {
         if (!playerEnforce)
             playerEnforce = subject.GetComponent<PlayerEnforce>();
