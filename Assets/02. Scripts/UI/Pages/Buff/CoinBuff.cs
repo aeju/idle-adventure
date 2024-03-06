@@ -15,16 +15,19 @@ public class CoinBuff : Buff
 
     [SerializeField] private Button buffbtn;
     
+    // 코인 버프 UI
+    [SerializeField] private CoinBuffUI coinBuffUI;
+    
     private void Start()
     {
+        //coinBuffUI = 
         if (BuffManager.Instance != null)
         {
-            duration = 1;
+            //duration = 1;
             UpdateUI();
             
             buffbtn.OnClickAsObservable().Subscribe(_ =>
             {
-                Debug.Log("buff: click1");
                 Activate();
             }).AddTo(this);
         }
@@ -40,7 +43,7 @@ public class CoinBuff : Buff
         percentText.text = $"금화 획득량 {coinIncreasePercentage}% 증가 ";
     }
 
-    // 버프 활성화 (코인 획득량 증가 로직을 구현
+    // 버프 활성화 (코인 획득량 증가)
     protected override void OnActivate()
     {
         Debug.Log("1. buff: BuffManager.Instance.CoinMultiplier" + BuffManager.Instance.CoinMultiplier);
@@ -49,10 +52,11 @@ public class CoinBuff : Buff
         Debug.Log("2. buff: BuffManager.Instance.CoinMultiplier" + BuffManager.Instance.CoinMultiplier);
     }
 
-    // Deactivate : 버프가 끝났을 때의 로직을 구현
+    // 버프 비활성화 
     protected override void Deactivate()
     {
         BuffManager.Instance.BuffIconOff();
         BuffManager.Instance.CoinMultiplier -= coinIncreasePercentage / 100;
+        //coinBuffUI.Deactivate();
     }
 }
