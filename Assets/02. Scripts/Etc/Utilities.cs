@@ -16,16 +16,14 @@ public static class Utilities
         }
     }
     
-    // K(Kilo 킬로) : 1,000
-    // M(Mega 메가) : 1,000,000
-    // G(Giga 기가) : 1,000,000,000
-    // T(Tera 테라) : 1,000,000,000,000
-    // P(Peta 페타) : 1,000,000,000,000,000
-    // E(Exa 엑사) : 1,000,000,000,000,000,000
-    // Z(Zetta 제타) : 1,000,000,000,000,000,000,000
-    // Y(Yotta 요타) : 1,000,000,000,000,000,000,000,000
-    // 각 단위 : 1000의 거듭제곱
-    // 코인 단위 축약 : 4자리 미만 -> 축약할 필요 x
+    /// <summary>
+    /// 숫자를 읽기 쉬운 단위로 포맷 (K, M, G, T, P, E, Z, Y)
+    /// </summary>
+    /// <param name="number">포맷할 숫자</param>
+    /// <returns>
+    /// 1000 미만일 경우 숫자를 그대로 반환
+    /// 1000 이상일 경우, 적절한 단위(1000dml 거듭제곱)로 포맷하여 문자열로 반환
+    /// </returns>
     public static string FormatNumberUnit(int number)
     {
         if (number >= 1000)
@@ -62,5 +60,15 @@ public static class Utilities
         {
             return number.ToString(); // 1000이하 : 축약 x
         }
+    }
+    
+    /// <summary>
+    /// 분을 초로 변환
+    /// </summary>
+    /// <param name="minutes">분</param>
+    /// <returns>초로 변환된 값</returns>
+    public static float MinutesToSeconds(float minutes)
+    {
+        return minutes * 60f;
     }
 }
