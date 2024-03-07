@@ -4,50 +4,41 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class CoinBuffUI : Buff
+
+public class CoinBuffUI : BuffUI
 {
-    [SerializeField] private Image buffIcon;
-    [SerializeField] private TextMeshProUGUI durationDisplayText;
-    private float remainingTime;
-
-    protected override void OnActivate()
+    // 버프 활성화 상태에 따른 UI 업데이트 로직
+    protected override void UpdateBuffUI(Buff buff)
     {
-        //remainingTime = duration * 60; // 지속 시간을 초 단위로 변환
-        remainingTime = Utilities.MinutesToSeconds(duration);
-        UpdateDurationDisplay();
-        StartCoroutine(UpdateDurationLoop());
-    }
+        // buff 객체가 coinBuff의 인스턴스인 경우
+        // buff 타입을 CoinBuff 타입으로 캐스팅하여 coinBuff 변수에 할당
+        var coinBuff = buff as CoinBuff;
+        // 캐스팅 성공 시, CoinBuff 관련 정보로 UI 업데이트
+        if (coinBuff != null)
+        {
+            // 전체 지속 시간, 남은 시간 설정
+            totalDurationSeconds = Utilities.MinutesToSeconds(coinBuff.durationMinute); // 전체 지속 시간 설정
+            remainingTime = totalDurationSeconds; // 남은 시간 초기화
+            
+            // 지속 시간을 UI에 반영 (이유 : 1초가 흐른 후에야 UI가 반영됨)
+            UpdateDurationDisplay();
+            
+            // 남은 시간 감소 및 UI 업데이트 시작
+            StartCoroutine(UpdateDurationLoop());
 
-    protected override void Deactivate()
+            buffNameText.text = coinBuff.buffName;
+            buffEffectText.text = $"{coinBuff.buffEffect} {coinBuff.IncreasePercentage}% 증가";
+            buffIconImage.sprite = coinBuff.buffIconSprite;
+        }
+    }
+    
+    // 버프 비활성화 상태에 따른 UI 클리어 로직
+    protected override void ClearBuffUI(Buff buff)
     {
         StopAllCoroutines();
         remainingTime = 0;
-        UpdateDurationDisplay();
-        // +) 비활성화 됐을 때의 UI 변경 로직 
-    }
-
-    private IEnumerator UpdateDurationLoop()
-    {
-        while (remainingTime > 0)
-        {
-            yield return new WaitForSeconds(1);
-            remainingTime--;
-            UpdateDurationDisplay();
-            UpdateBuffIcon();
-        }
-    }
-
-    private void UpdateDurationDisplay()
-    {
-        int minutes = Mathf.FloorToInt(remainingTime / 60);
-        int seconds = Mathf.FloorToInt(remainingTime % 60);
-        durationDisplayText.text = $"남은 시간: {minutes}분 {seconds}초";
-    }
-
-    private void UpdateBuffIcon()
-    {
-        // 남은 시간에 따라 버프 아이콘의 UI를 업데이트. 예를 들어, 남은 시간 비율에 따라 아이콘의 채워짐을 조정
-        //buffIcon.fillAmount = remainingTime / (duration * 60);
-        buffIcon.fillAmount = remainingTime / Utilities.MinutesToSeconds(duration);
+        UpdateDurationDisplay(); // 버프 아이콘 업데이트
+        blackImage.fillAmount = 1; // 검은 이미지 원래 상태로 복원
     }
 }
+

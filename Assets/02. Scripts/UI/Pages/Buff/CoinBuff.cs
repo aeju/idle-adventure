@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,22 +9,18 @@ using TMPro;
 public class CoinBuff : Buff
 {
     // 지속시간 1분, 획득량 증가율 20%
+    [SerializeField] private TextMeshProUGUI buffNameText;
+    [SerializeField] private TextMeshProUGUI buffEffectText;
     [SerializeField] private TextMeshProUGUI durationText;
     [SerializeField] private TextMeshProUGUI percentText;
-    
-    [SerializeField] private int coinIncreasePercentage = 20; // 코인 획득량 증가율
-
+    [SerializeField] private Image buffIconImage;
     [SerializeField] private Button buffbtn;
-    
-    // 코인 버프 UI
-    [SerializeField] private CoinBuffUI coinBuffUI;
     
     private void Start()
     {
         //coinBuffUI = 
         if (BuffManager.Instance != null)
         {
-            //duration = 1;
             UpdateUI();
             
             buffbtn.OnClickAsObservable().Subscribe(_ =>
@@ -37,10 +34,12 @@ public class CoinBuff : Buff
         }
     }
 
-    private void UpdateUI()
+    protected override void UpdateUI()
     {
-        durationText.text = $"지속시간 : {duration}분";
-        percentText.text = $"금화 획득량 {coinIncreasePercentage}% 증가 ";
+        buffIconImage.sprite = buffIconSprite;
+        buffNameText.text = buffName;
+        buffEffectText.text = $"{buffEffect} {IncreasePercentage}% 증가";
+        durationText.text = $"지속시간 : {durationMinute}분";
     }
 
     // 버프 활성화 (코인 획득량 증가)
@@ -48,7 +47,7 @@ public class CoinBuff : Buff
     {
         Debug.Log("1. buff: BuffManager.Instance.CoinMultiplier" + BuffManager.Instance.CoinMultiplier);
         BuffManager.Instance.BuffIconOn();
-        BuffManager.Instance.CoinMultiplier += coinIncreasePercentage / 100.0f;
+        BuffManager.Instance.CoinMultiplier += IncreasePercentage / 100.0f;
         Debug.Log("2. buff: BuffManager.Instance.CoinMultiplier" + BuffManager.Instance.CoinMultiplier);
     }
 
@@ -56,7 +55,6 @@ public class CoinBuff : Buff
     protected override void Deactivate()
     {
         BuffManager.Instance.BuffIconOff();
-        BuffManager.Instance.CoinMultiplier -= coinIncreasePercentage / 100;
-        //coinBuffUI.Deactivate();
+        BuffManager.Instance.CoinMultiplier -= IncreasePercentage / 100.0f;
     }
 }

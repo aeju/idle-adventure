@@ -140,7 +140,15 @@ public class PlayerEnforce : EnforceSubject
     {
         playerStats = FindObjectOfType<PlayerStats>();
         resourceBar = FindObjectOfType<ResourceBar>();
-        alertPopup?.SetActive(false);
+
+        if (alertPopup != null)
+        {
+            alertPopup.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("Not EnforceAlertPopupUI");
+        }
     }
 
     void Start()
