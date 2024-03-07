@@ -80,6 +80,16 @@ public class MainUI : MonoBehaviour
         }).AddTo(this);
     }
     
+    void OnEnable()
+    {
+        RewardAdManager.OnBuffActivated += CloseAllPages;
+    }
+
+    void OnDisable()
+    {
+        RewardAdManager.OnBuffActivated -= CloseAllPages;
+    }
+    
     private void OpenPage(GameObject page)
     {
         CloseAllPages();
