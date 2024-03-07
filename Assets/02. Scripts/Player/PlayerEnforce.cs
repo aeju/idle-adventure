@@ -36,14 +36,10 @@ public class UpgradeOption
         {
             upgradeAction(); // 업그레이드
             ResourceManager.Instance.UseCoin(cost); // 코인 사용
-            
             totalIncrease += increaseAmount; // 증가량 
             cost++; // 비용
             level++; // 레벨
-
-            // UI 업데이트
-            UIUpdate();
-            CheckUpgrade(); 
+            UpdateUI();
         }
         else // 업그레이드 불가능
         {
@@ -54,54 +50,72 @@ public class UpgradeOption
     // 업그레이드 가능 상태 검사 + UI 초기화
     public void UIInit()
     {
-        UIUpdate();
-        CheckUpgrade(); 
+        UpdateUI();
+        //UIUpdate();
+        //CheckUpgrade(); 
     }
     
-    public void UIUpdate()
+    public void UpdateUI()
     {
-        costText.text = Utilities.FormatNumberUnit(cost);
         levelText.text = "Lv. " + level.ToString();
         totalIncreaseText.text = "+" + totalIncrease;
-        buttonText.text = "레벨업";
         
         if (levelSlider != null)
         {
             levelSlider.value = (float)level / maxLevel; 
         }
-    }
-    
-    public void CheckUpgrade()
-    {
+        
+        // 업그레이드 상태에 따른 조건 확인
         bool isMaxLevelReached = level >= maxLevel;
         bool hasNotEnoughCoins = ResourceManager.Instance.current_Coin < cost;
-        
-        // 강화 완료
+
         if (isMaxLevelReached)
         {
-            upgradeButton.interactable = false; // 버튼 비활성화
-            upgradeAvailableImage.gameObject.SetActive(false);
-            upgradeUnavailableImage.gameObject.SetActive(false);
-            buttonText.text = "강화 완료";
-            costText.text = "";
-            costText.color = Color.black; 
-            buttonText.color = Color.white; 
+            // 최대 레벨 도달 시 UI 처리
+            MaxLevelReachedUI();
         }
-        // 코인 부족
         else if (hasNotEnoughCoins)
         {
-            upgradeAvailableImage.gameObject.SetActive(false);
-            upgradeUnavailableImage.gameObject.SetActive(true);
-            costText.color = Color.red; 
-            buttonText.color = Color.black; 
+            // 코인 부족 시 UI 처리
+            NotEnoughCoinsUI();
         }
-        else // 강화 가능
+        else
         {
-            upgradeAvailableImage.gameObject.SetActive(true);
-            upgradeUnavailableImage.gameObject.SetActive(false);
-            costText.color = Color.white; 
-            buttonText.color = Color.white; 
+            // 업그레이드 가능 시 UI 처리
+            UpgradeAvailableUI();
         }
+    }
+    
+    private void MaxLevelReachedUI()
+    {
+        buttonText.text = "강화 완료";
+        costText.text = "";
+        upgradeButton.interactable = false;
+        upgradeAvailableImage.gameObject.SetActive(false);
+        upgradeUnavailableImage.gameObject.SetActive(false);
+        costText.color = Color.black;
+        buttonText.color = Color.white;
+    }
+
+    private void NotEnoughCoinsUI()
+    {
+        buttonText.text = "레벨업";
+        costText.text = Utilities.FormatNumberUnit(cost);
+        upgradeAvailableImage.gameObject.SetActive(false);
+        upgradeUnavailableImage.gameObject.SetActive(true);
+        costText.color = Color.red;
+        buttonText.color = Color.black;
+    }
+
+    private void UpgradeAvailableUI()
+    {
+        buttonText.text = "레벨업";
+        costText.text = Utilities.FormatNumberUnit(cost);
+        upgradeButton.interactable = true;
+        upgradeAvailableImage.gameObject.SetActive(true);
+        upgradeUnavailableImage.gameObject.SetActive(false);
+        costText.color = Color.white;
+        buttonText.color = Color.white;
     }
     
     // 코인 부족 -> 실행할 콜백
@@ -159,9 +173,9 @@ public class PlayerEnforce : EnforceSubject
     // 모든 UpgradeOption의 UI 업데이트
     void UpdateAllUpgradeOptionsUI()
     {
-        attackUpgrade.CheckUpgrade();
-        maxHPUpgrade.CheckUpgrade();
-        defenseUpgrade.CheckUpgrade();
+        attackUpgrade.UpdateUI();
+        maxHPUpgrade.UpdateUI();
+        defenseUpgrade.UpdateUI();
     }
 
     // 경고 팝업 활성화
