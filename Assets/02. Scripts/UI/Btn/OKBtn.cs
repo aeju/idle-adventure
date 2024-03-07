@@ -10,6 +10,7 @@ public class OKBtn : MonoBehaviour
 {
     private Button okBtn;
     [SerializeField] private GameObject UIPanel;
+    [SerializeField] private float durationSecond = 3;
     
     void Start()
     {
@@ -23,7 +24,7 @@ public class OKBtn : MonoBehaviour
 
     void OnEnable()
     {
-        StartCoroutine(CloseUIPanelDelay(3)); 
+        StartCoroutine(CloseUIPanelDelay(durationSecond)); 
     }
 
     IEnumerator CloseUIPanelDelay(float delay)
