@@ -18,7 +18,6 @@ public class CoinBuff : Buff
     
     private void Start()
     {
-        //coinBuffUI = 
         if (BuffManager.Instance != null)
         {
             UpdateUI();

@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-
 public class CoinBuffUI : BuffUI
 {
     // 버프 활성화 상태에 따른 UI 업데이트 로직
