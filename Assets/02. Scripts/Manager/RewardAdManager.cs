@@ -1,13 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using GoogleMobileAds.Api;
 using UniRx;
-using UnityEngine.Rendering;
 
 public class RewardAdManager : MonoBehaviour
 {
+    [SerializeField] private CoinBuff coinBuff; // CoinBuff에 대한 참조
+    
     [SerializeField] Button rewardADBtn;
     // 광고 테스트 ID
     [SerializeField] string rewardedAdUnitId = "ca-app-pub-9942110624413430/2454306700";
@@ -15,6 +17,9 @@ public class RewardAdManager : MonoBehaviour
     // 광고 변수
     RewardedAd rewardedAd;
     AdRequest adRequest;
+    
+    // 버프 활성화 이벤트
+    public static event Action OnBuffActivated;
     
     void Start()
     {
@@ -24,6 +29,12 @@ public class RewardAdManager : MonoBehaviour
 
         // 보상형 광고를 미리 로드
         LoadRewardedAd();
+        
+        
+        if (!coinBuff)
+        {
+            coinBuff = FindObjectOfType<CoinBuff>();
+        }
         
         // rewardADBtn 버튼 - 클릭 리스너 추가
         rewardADBtn.onClick.AddListener(ShowRewardedAd);
@@ -73,10 +84,16 @@ public class RewardAdManager : MonoBehaviour
         }
     }
 
-    // 콜백 함수
+    // 콜백 함수 (광고를 본 후 보상 처리)
     void RewardHandler(Reward reward)
     {
-        // 광고를 본 후의 보상 처리를 수행
-        Debug.Log($"Type : {reward.Type}, Amount : {reward.Amount}");
+        // CoinBuff 활성화
+        if (coinBuff != null)
+        {
+            coinBuff.Activate();
+            
+            // 버프 활성화 이벤트 발생
+            OnBuffActivated?.Invoke();
+        }
     }
 }
