@@ -4,6 +4,8 @@ using UnityEngine;
 using UniRx;
 using UnityEngine.UI;
 
+// 1. 확인 버튼 눌렀을 때, 비활성화
+// 2. 3초가 지나면, 비활성화
 public class OKBtn : MonoBehaviour
 {
     private Button okBtn;
@@ -13,7 +15,6 @@ public class OKBtn : MonoBehaviour
     {
         okBtn = GetComponent<Button>();
         
-        // 1. 확인 버튼을 눌렀을 때, 비활성화
         okBtn.OnClickAsObservable().Subscribe(_ =>
         {
             UIPanel.SetActive(false);
@@ -22,10 +23,12 @@ public class OKBtn : MonoBehaviour
 
     void OnEnable()
     {
-        // 2. 3초가 지나면, 자동으로 비활성화
-        Observable.Timer(System.TimeSpan.FromSeconds(3)).Subscribe(_ =>
-        {
-            UIPanel.SetActive(false);
-        }).AddTo(this);
+        StartCoroutine(CloseUIPanelDelay(3)); 
+    }
+
+    IEnumerator CloseUIPanelDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        UIPanel.SetActive(false);
     }
 }
