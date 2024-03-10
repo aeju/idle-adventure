@@ -51,8 +51,6 @@ public class UpgradeOption
     public void UIInit()
     {
         UpdateUI();
-        //UIUpdate();
-        //CheckUpgrade(); 
     }
     
     public void UpdateUI()
