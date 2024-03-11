@@ -11,21 +11,21 @@ public class FOVBtn : MonoBehaviour
 {
     [SerializeField] private int currentFOV;
     
-    public Camera playerCam;
-    public Button fovBtn;
+    [SerializeField] private Camera playerCam;
+    [SerializeField] private Button fovBtn;
 
-    private int currentFovState = 0; 
+    [SerializeField] private int currentFovState = 0; 
     private readonly int[] fovStates = { 35, 45, 25 };
     
     // [UI]
-    public GameObject firstOn;
-    public GameObject firstOff;
+    [SerializeField] private GameObject firstOn;
+    [SerializeField] private GameObject firstOff;
 
-    public GameObject secondOn;
-    public GameObject secondOff;
+    [SerializeField] private GameObject secondOn;
+    [SerializeField] private GameObject secondOff;
 
-    public GameObject thirdOn;
-    public GameObject thirdOff;
+    [SerializeField] private GameObject thirdOn;
+    [SerializeField] private GameObject thirdOff;
 
     
 
