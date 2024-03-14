@@ -9,9 +9,9 @@ using TMPro;
 // BatteryStatus : Unknown / 연결x : Discharging, Notcharging / 연결o: Charging, Full
 public class BatteryStatus : MonoBehaviour
 {
-    public Image batteryImage;
-    public Sprite[] batterySprites; 
-    public Sprite chargingSprite; 
+    [SerializeField] private Image batteryImage;
+    [SerializeField] private Sprite[] batterySprites; 
+    [SerializeField] private Sprite chargingSprite; 
 
     // BatteryManager 이벤트에 메서드 등록
     private void OnEnable()
