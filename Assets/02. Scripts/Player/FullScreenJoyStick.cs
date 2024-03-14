@@ -5,8 +5,8 @@ using UnityEngine.EventSystems;
 // 드래그 : handle 
 public class FullScreenJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
-    public RectTransform joystickBackground;
-    public RectTransform joystickHandle;
+    [SerializeField] private RectTransform joystickBackground; // 배경 이미지
+    [SerializeField] private RectTransform joystickHandle; // 핸들 이미지
     
     private Vector2 startHandlePosition; // 핸들 시작값
     public bool isDragging = false; // 드래그되는 동안만 입력값 받기
@@ -44,15 +44,21 @@ public class FullScreenJoystick : MonoBehaviour, IPointerDownHandler, IDragHandl
     {
         isDragging = false;
         JoystickOff();
+        ResetJoystickHandle(); // 핸들 위치 초기화
+    }
+    
+    public void ResetJoystickHandle()
+    {
+        joystickHandle.anchoredPosition = Vector2.zero; // 핸들을 초기 위치로
     }
 
-    public void JoystickOn()
+    private void JoystickOn()
     {
         joystickBackground.gameObject.SetActive(true);
         joystickHandle.gameObject.SetActive(true);
     }
 
-    public void JoystickOff()
+    private void JoystickOff()
     {
         joystickBackground.gameObject.SetActive(false);
         joystickHandle.gameObject.SetActive(false);
