@@ -8,15 +8,17 @@ public abstract class Buff : MonoBehaviour
     public static event Action<Buff> OnBuffActivated;    
     public static event Action<Buff> OnBuffDeactivated;
     
-    public string buffName; // 버프 이름
-    public Sprite buffIconSprite; // 버프 이미지
-    public string buffEffect; // 버프 효과
-    public int IncreasePercentage = 20; // 증가율
-    [Tooltip("버프 지속 시간 (분)")] public float durationMinute; // 버프 지속 시간
+    [SerializeField] public string buffName; // 버프 이름
+    [SerializeField] public Sprite buffIconSprite; // 버프 이미지
+    [SerializeField] public string buffEffect; // 버프 효과
+    [SerializeField] public int IncreasePercentage = 20; // 증가율
+    [SerializeField] [Tooltip("버프 지속 시간 (분)")] public float durationMinute; // 버프 지속 시간
+    
     
     // 버프 활성화
     public void Activate()
     {
+        Debug.Log($"Buff activated at: {Time.time} seconds");
         OnActivate();
         OnBuffActivated?.Invoke(this);
         StartCoroutine(DeactivateAfterDuration());
@@ -37,5 +39,6 @@ public abstract class Buff : MonoBehaviour
         yield return new WaitForSeconds(seconds);
         Deactivate();
         OnBuffDeactivated?.Invoke(this);
+        Debug.Log($"Buff deactivated at: {Time.time} seconds");
     }
 }
