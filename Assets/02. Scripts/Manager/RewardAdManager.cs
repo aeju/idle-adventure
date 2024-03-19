@@ -90,6 +90,7 @@ public class RewardAdManager : MonoBehaviour
         // CoinBuff 활성화
         if (coinBuff != null)
         {
+            // 보상 -> 코루틴 X, 중간 한 단계 더 필요 
             coinBuff.Activate();
             
             // 버프 활성화 이벤트 발생

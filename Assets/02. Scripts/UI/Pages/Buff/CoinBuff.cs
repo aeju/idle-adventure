@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UniRx;
 using TMPro;
 
+// 버튼으로는 O, 보상형 리워드로는 X (원인 : 코루틴 적용) 
 public class CoinBuff : Buff
 {
     // 지속시간 1분, 획득량 증가율 20%
@@ -14,7 +15,7 @@ public class CoinBuff : Buff
     [SerializeField] private TextMeshProUGUI durationText;
     [SerializeField] private TextMeshProUGUI percentText;
     [SerializeField] private Image buffIconImage;
-    [SerializeField] private Button buffbtn;
+    [SerializeField] private Button buffbtn; // 기존 버프 활성화 버튼 
     
     private void Start()
     {
