@@ -37,11 +37,17 @@ public abstract class BuffUI : MonoBehaviour
     {
         while (remainingTime > 0)
         {
-            yield return new WaitForSeconds(1); // 1초 대기
-            remainingTime--; // 남은 시간 감소
-            UpdateDurationDisplay(); // 남은 시간 표시 업데이트
-            UpdateBuffIcon(); // 버프 아이콘 업데이트
+            UpdateDurationDisplay(); // 현재 남은 시간으로 UI 업데이트
+            UpdateBuffIcon(); // 버프 아이콘 상태 업데이트
+
+            yield return new WaitForSeconds(1); // 1초 기다림
+            remainingTime--; // 남은 시간 1초 감소
         }
+        // 루프 종료 후, 남은 시간이 0 이하인 경우 한 번 더 UI 업데이트를 확실히 수행
+        // (목적 : 남은 시간 음수 버그 방지)
+        remainingTime = 0;
+        UpdateDurationDisplay();
+        UpdateBuffIcon();
     }
 
     // 남은 시간 표시
