@@ -7,7 +7,7 @@ using TMPro;
 // 마지막 배터리 %, 현재 배터리 % 비교 필요 
 public class BatteryText : MonoBehaviour
 {
-    public TextMeshProUGUI batteryText;
+    [SerializeField] private TextMeshProUGUI batteryText;
 
     // BatteryManager 이벤트에 메서드 등록
     private void OnEnable()

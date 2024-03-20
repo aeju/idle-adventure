@@ -12,7 +12,7 @@ public class RewardAdManager : MonoBehaviour
     
     [SerializeField] Button rewardADBtn;
     // 광고 테스트 ID
-    [SerializeField] string rewardedAdUnitId = "ca-app-pub-9942110624413430/2454306700";
+    [SerializeField] private readonly string rewardedAdUnitId = "ca-app-pub-9942110624413430/2454306700";
     
     // 광고 변수
     RewardedAd rewardedAd;
@@ -90,6 +90,7 @@ public class RewardAdManager : MonoBehaviour
         // CoinBuff 활성화
         if (coinBuff != null)
         {
+            // 보상 -> 코루틴 X, 중간 한 단계 더 필요 
             coinBuff.Activate();
             
             // 버프 활성화 이벤트 발생
