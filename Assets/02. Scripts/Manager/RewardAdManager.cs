@@ -8,7 +8,7 @@ using UniRx;
 
 public class RewardAdManager : MonoBehaviour
 {
-    [SerializeField] private CoinBuff coinBuff; // CoinBuff에 대한 참조
+    [SerializeField] private GameObject rewardPopup; 
     
     [SerializeField] Button rewardADBtn;
     // 광고 테스트 ID
@@ -21,7 +21,8 @@ public class RewardAdManager : MonoBehaviour
     // 버프 활성화 이벤트
     public static event Action OnBuffActivated;
     
-    void Start()
+    
+    void Stat()
     {
         // 초기화
         MobileAds.Initialize(initStatus => { });
@@ -30,14 +31,21 @@ public class RewardAdManager : MonoBehaviour
         // 보상형 광고를 미리 로드
         LoadRewardedAd();
         
-        
+        /*
         if (!coinBuff)
         {
             coinBuff = FindObjectOfType<CoinBuff>();
         }
+        */
         
         // rewardADBtn 버튼 - 클릭 리스너 추가
         rewardADBtn.onClick.AddListener(ShowRewardedAd);
+        
+        // 팝업부터 띄우기
+        if (rewardPopup != null)
+        {
+            rewardPopup.SetActive(false);
+        }
     }
     
     void LoadRewardedAd(bool show = false)
@@ -87,6 +95,13 @@ public class RewardAdManager : MonoBehaviour
     // 콜백 함수 (광고를 본 후 보상 처리)
     void RewardHandler(Reward reward)
     {
+        // 팝업부터 띄우기
+        if (rewardPopup != null)
+        {
+            rewardPopup.SetActive(true);
+        }
+        
+        /*
         // CoinBuff 활성화
         if (coinBuff != null)
         {
@@ -96,5 +111,6 @@ public class RewardAdManager : MonoBehaviour
             // 버프 활성화 이벤트 발생
             OnBuffActivated?.Invoke();
         }
+        */
     }
 }
