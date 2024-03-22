@@ -8,7 +8,7 @@ using UniRx;
 
 public class RewardAdManager : MonoBehaviour
 {
-    private bool isAdWatched; // 광고 시청 여부 
+    public bool isAdWatched; // 광고 시청 여부 
     
     [SerializeField] private GameObject rewardPopup; 
     
@@ -26,6 +26,7 @@ public class RewardAdManager : MonoBehaviour
     void Start()
     {
         isAdWatched = false;
+        PopupOff();
         
         // 초기화
         MobileAds.Initialize(initStatus => { });
@@ -99,13 +100,32 @@ public class RewardAdManager : MonoBehaviour
 
     void Update()
     {
-        if (isAdWatched && !rewardPopup.activeSelf)
+        //if (isAdWatched && !rewardPopup.activeSelf)
+        if (isAdWatched)
         {
-            rewardPopup.SetActive(true);
+            PopupOn();
+            // 닫힐 때 바뀌도록
+            //isAdWatched = false;
             Debug.Log("isAdWatched");
         }
 
         else
+        {
+            rewardPopup.SetActive(false);
+        }
+    }
+    
+    void PopupOn()
+    {
+        if (rewardPopup != null)
+        {
+            rewardPopup.SetActive(true);
+        }
+    }
+
+    void PopupOff()
+    {
+        if (rewardPopup != null)
         {
             rewardPopup.SetActive(false);
         }

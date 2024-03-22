@@ -14901,15 +14901,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4744923234643571730, guid: 476ac786242ed4561b57123074a4ebc6, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4744923234643571730, guid: 476ac786242ed4561b57123074a4ebc6, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4744923234643571730, guid: 476ac786242ed4561b57123074a4ebc6, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6153622050007014304, guid: 476ac786242ed4561b57123074a4ebc6, type: 3}
       propertyPath: playerStat
@@ -22035,15 +22035,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3961380992310713331, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3961380992310713331, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3961380992310713331, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4448798565652652043, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
       propertyPath: efsm
@@ -22250,6 +22250,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: FullRewardPopupUI
       objectReference: {fileID: 0}
+    - target: {fileID: 3785822285260519493, guid: 89bf0092f56f74cfdab2d386cb7dd9aa, type: 3}
+      propertyPath: coinBuff
+      value: 
+      objectReference: {fileID: 1510700767}
+    - target: {fileID: 3785822285260519493, guid: 89bf0092f56f74cfdab2d386cb7dd9aa, type: 3}
+      propertyPath: rewardAdManager
+      value: 
+      objectReference: {fileID: 1510700766}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -27870,7 +27878,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c61e94b498e484a20b9fc28f0ea70b24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rewardPopupActive: {fileID: 1235764530}
+  isAdWatched: 0
+  rewardPopup: {fileID: 1235764530}
   rewardADBtn: {fileID: 495639085}
 --- !u!114 &1510700767
 MonoBehaviour:
