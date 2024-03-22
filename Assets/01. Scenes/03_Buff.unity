@@ -10079,7 +10079,7 @@ GameObject:
   - component: {fileID: 495639083}
   - component: {fileID: 495639085}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Button (Buff)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19178,6 +19178,7 @@ RectTransform:
   - {fileID: 536270172}
   - {fileID: 495639082}
   - {fileID: 830400813}
+  - {fileID: 944264861}
   m_Father: {fileID: 1510700764}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -27745,7 +27746,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1098916305}
-  - {fileID: 944264861}
   m_Father: {fileID: 1117071129}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -40236,7 +40236,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1510700764}
+    m_TransformParent: {fileID: 1098916305}
     m_Modifications:
     - target: {fileID: 2208342427825486362, guid: 89bf0092f56f74cfdab2d386cb7dd9aa, type: 3}
       propertyPath: m_Pivot.x
@@ -40268,7 +40268,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2208342427825486362, guid: 89bf0092f56f74cfdab2d386cb7dd9aa, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 860
       objectReference: {fileID: 0}
     - target: {fileID: 2208342427825486362, guid: 89bf0092f56f74cfdab2d386cb7dd9aa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -40304,7 +40304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2208342427825486362, guid: 89bf0092f56f74cfdab2d386cb7dd9aa, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 430
       objectReference: {fileID: 0}
     - target: {fileID: 2208342427825486362, guid: 89bf0092f56f74cfdab2d386cb7dd9aa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
