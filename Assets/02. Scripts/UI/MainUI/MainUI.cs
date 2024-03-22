@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 
-// 닫힘: X 버튼, 뒤로가기
 public class MainUI : MonoBehaviour
 {
     [SerializeField] private GameObject X_btn_off;

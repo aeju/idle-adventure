@@ -34,19 +34,20 @@ public class BuffRewardUI : MonoBehaviour
         {
             gameObject.SetActive(false);
             rewardAdManager.isAdWatched = false;
+
+            BuffOn();
         }
     }
 
-    /*
+
     void BuffOn()
     {
         if (coinBuff != null)
         {
             coinBuff.Activate();
-            
+
             // 버프 활성화 이벤트 발생
             OnBuffActivated?.Invoke();
         }
     }
-    */
 }
