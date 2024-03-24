@@ -79,15 +79,20 @@ public class MainUI : MonoBehaviour
         }).AddTo(this);
     }
     
+    /*
+    // Buff 인자를 받지만, 실제로 사용하지 않음
     void OnEnable()
     {
-        BuffManager.Instance.OnBuffActivated += CloseAllPages;
+        //BuffManager.Instance.OnBuffActivated += CloseAllPages;
+        BuffManager.Instance.OnBuffActivated += (buff) => CloseAllPages();
     }
 
     void OnDisable()
     {
-        BuffManager.Instance.OnBuffActivated -= CloseAllPages;
+        //BuffManager.Instance.OnBuffActivated -= CloseAllPages;
+        BuffManager.Instance.OnBuffActivated -= (buff) => CloseAllPages();
     }
+    */
     
     private void OpenPage(GameObject page)
     {
