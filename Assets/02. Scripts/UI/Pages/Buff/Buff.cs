@@ -20,8 +20,7 @@ public abstract class Buff : MonoBehaviour
     {
         Debug.Log($"Buff activated at: {Time.time} seconds");
         OnActivate();
-        //OnBuffActivated?.Invoke(this);
-        BuffManager.Instance.ActivateBuff(this); // 중앙 관리를 위해 BuffManager의 메서드 호출
+        OnBuffActivated?.Invoke(this);
         StartCoroutine(DeactivateAfterDuration());
     }
     
