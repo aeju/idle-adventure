@@ -23,14 +23,18 @@ public class BuffUI : MonoBehaviour
     // 이벤트에 메서드 구독 및 구독 취소
     protected void OnEnable()
     {
-        Buff.OnBuffActivated += UpdateBuffUI; // 버프 활성화 시 UpdateBuffUI 호출           
-        Buff.OnBuffDeactivated += ClearBuffUI; // 버프 비활성화 시 ClearBuffUI 호출
+        //Buff.OnBuffActivated += UpdateBuffUI; // 버프 활성화 시 UpdateBuffUI 호출           
+        BuffManager.Instance.OnBuffActivated += UpdateBuffUI; // 버프 활성화 시 UpdateBuffUI 호출           
+        //Buff.OnBuffDeactivated += ClearBuffUI; // 버프 비활성화 시 ClearBuffUI 호출
+        BuffManager.Instance.OnBuffDeactivated += ClearBuffUI; // 버프 비활성화 시 ClearBuffUI 호출
     }
 
     protected void OnDisable()
     {
-        Buff.OnBuffActivated -= UpdateBuffUI; // 버프 활성화 이벤트 구독 취소            
-        Buff.OnBuffDeactivated -= ClearBuffUI; // 버프 비활성화 이벤트 구독 취소
+        //Buff.OnBuffActivated -= UpdateBuffUI; // 버프 활성화 이벤트 구독 취소            
+        BuffManager.Instance.OnBuffActivated -= UpdateBuffUI; // 버프 활성화 이벤트 구독 취소            
+        //Buff.OnBuffDeactivated -= ClearBuffUI; // 버프 비활성화 이벤트 구독 취소
+        BuffManager.Instance.OnBuffDeactivated -= ClearBuffUI; // 버프 비활성화 이벤트 구독 취소
     }
     
     // 버프 활성화 상태에 따른 UI 업데이트 로직
