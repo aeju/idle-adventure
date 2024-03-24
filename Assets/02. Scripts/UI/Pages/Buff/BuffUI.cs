@@ -14,7 +14,7 @@ public class BuffUI : MonoBehaviour
     
     protected float remainingTime; // 남은 시간 (초)
     protected float totalDurationSeconds; // 총 지속 시간 (초)
-    protected Buff currentBuff;
+    //protected Buff currentBuff;
     
     // 버프 활성화/비활성화될 때 호출
     //protected abstract void UpdateBuffUI(Buff buff); 
@@ -40,7 +40,7 @@ public class BuffUI : MonoBehaviour
     // 버프 활성화 상태에 따른 UI 업데이트 로직
     protected virtual void UpdateBuffUI(Buff buff)
     {
-        currentBuff = buff;
+        //currentBuff = buff;
         
         // 전체 지속 시간, 남은 시간 설정
         totalDurationSeconds = Utilities.MinutesToSeconds(buff.durationMinute); // 전체 지속 시간 설정

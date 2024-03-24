@@ -2,22 +2,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
+using TMPro;
 
 public class BuffRewardUI : MonoBehaviour
 {
-    [SerializeField] private CoinBuff coinBuff; // CoinBuff에 대한 참조
+    [SerializeField] private Buff buff; 
     [SerializeField] private RewardAdManager rewardAdManager;
+    [SerializeField] private Image buffIconImage;
+    [SerializeField] private TextMeshProUGUI buffEffectText;
     
-    // 버프 활성화 이벤트
-    //public static event Action OnBuffActivated;
-
     void Start()
     {
-        if (!coinBuff)
+        UpdateUI(buff);
+        
+        if (!buff)
         {
-            Debug.LogError("rewardAdManager is null");
-            coinBuff = FindObjectOfType<CoinBuff>();
+            Debug.LogError("buff is null");
+            buff = FindObjectOfType<Buff>();
         }
 
         if (!rewardAdManager)
@@ -42,16 +44,20 @@ public class BuffRewardUI : MonoBehaviour
 
     void BuffOn()
     {
-        if (coinBuff != null)
+        if (buff != null)
         {
-            coinBuff.Activate();
-            
-            // 버프 매니저를 통해 버프를 활성화
-            BuffManager.Instance.ActivateBuff();
-            //BuffManager.OnBuffActivated?.Invoke();
-
-            // 버프 활성화 이벤트 발생 -> buffManager에서 관리
-            //OnBuffActivated?.Invoke();
+            buff.Activate();
         }
+        
+        else
+        {
+            Debug.LogError("buff is null");
+        }
+    }
+
+    void UpdateUI(Buff buff)
+    {
+        buffEffectText.text = $"버프 효과: {buff.buffEffect} {buff.IncreasePercentage}% 증가";
+        buffIconImage.sprite = buff.buffIconSprite;
     }
 }
