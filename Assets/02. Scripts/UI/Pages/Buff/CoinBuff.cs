@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UniRx;
 using TMPro;
 
-// 버튼으로는 O, 보상형 리워드로는 X (원인 : 코루틴 적용) 
+[RequireComponent(typeof(RewardAdManager))]
 public class CoinBuff : Buff
 {
     // 지속시간 1분, 획득량 증가율 20%
