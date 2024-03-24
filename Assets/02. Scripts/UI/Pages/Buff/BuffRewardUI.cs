@@ -10,7 +10,7 @@ public class BuffRewardUI : MonoBehaviour
     [SerializeField] private RewardAdManager rewardAdManager;
     
     // 버프 활성화 이벤트
-    public static event Action OnBuffActivated;
+    //public static event Action OnBuffActivated;
 
     void Start()
     {
@@ -45,9 +45,13 @@ public class BuffRewardUI : MonoBehaviour
         if (coinBuff != null)
         {
             coinBuff.Activate();
+            
+            // 버프 매니저를 통해 버프를 활성화
+            BuffManager.Instance.ActivateBuff();
+            //BuffManager.OnBuffActivated?.Invoke();
 
-            // 버프 활성화 이벤트 발생
-            OnBuffActivated?.Invoke();
+            // 버프 활성화 이벤트 발생 -> buffManager에서 관리
+            //OnBuffActivated?.Invoke();
         }
     }
 }
