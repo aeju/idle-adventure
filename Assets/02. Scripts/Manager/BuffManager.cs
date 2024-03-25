@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 버프 적용 중 : 다른 버프 X
 public class BuffManager : MonoBehaviour
 {
     public static BuffManager Instance { get; private set; }

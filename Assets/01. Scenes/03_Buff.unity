@@ -2798,7 +2798,7 @@ GameObject:
   - component: {fileID: 116227067}
   - component: {fileID: 116227066}
   m_Layer: 5
-  m_Name: Button (Buff)
+  m_Name: Buff Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10372,7 +10372,7 @@ GameObject:
   - component: {fileID: 495639083}
   - component: {fileID: 495639085}
   m_Layer: 5
-  m_Name: Button (Buff)
+  m_Name: Buff Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14848,9 +14848,9 @@ GameObject:
   - component: {fileID: 770610964}
   - component: {fileID: 770610967}
   - component: {fileID: 770610965}
-  - component: {fileID: 770610966}
+  - component: {fileID: 770610968}
   m_Layer: 5
-  m_Name: 5) Buff Page (2)
+  m_Name: 5) Exp Page
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14892,28 +14892,6 @@ MonoBehaviour:
   isAdWatched: 0
   rewardPopup: {fileID: 1647845568}
   rewardADBtn: {fileID: 116227066}
---- !u!114 &770610966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 770610963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de88e868ff3e946d48acb143b3716308, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buffName: "\uD06C\uB9BC \uD478\uD0A4 \uB9AC\uC870\uB610"
-  buffIconSprite: {fileID: 21300000, guid: 083a37662a89f4c1b93da9c0796d5795, type: 3}
-  buffEffect: "\uAE08\uD654 \uD68D\uB4DD\uB7C9"
-  IncreasePercentage: 20
-  durationMinute: 1
-  buffNameText: {fileID: 1245654856}
-  buffEffectText: {fileID: 1004287885}
-  durationText: {fileID: 1635433839}
-  percentText: {fileID: 1004287885}
-  buffIconImage: {fileID: 792450346}
 --- !u!222 &770610967
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14922,6 +14900,29 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 770610963}
   m_CullTransparentMesh: 1
+--- !u!114 &770610968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770610963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 125d863ff19d1416a992777f4853fc8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buffName: "\uAD6C\uC6B4 \uC640\uC774\uBC88 \uC54C"
+  buffIconSprite: {fileID: 21300000, guid: dd3d4a9a933464a61a48cc2546963f07, type: 3}
+  buffEffect: "\uACBD\uD5D8\uCE58 \uD68D\uB4DD\uB7C9"
+  IncreasePercentage: 30
+  durationMinute: 2
+  buffNameText: {fileID: 1245654856}
+  buffEffectText: {fileID: 1004287885}
+  durationText: {fileID: 1635433839}
+  percentText: {fileID: 1635433839}
+  buffIconImage: {fileID: 792450346}
+  buffbtn: {fileID: 116227066}
 --- !u!1 &776939222
 GameObject:
   m_ObjectHideFlags: 0
@@ -32542,11 +32543,11 @@ PrefabInstance:
     - target: {fileID: 3785822285260519493, guid: 89bf0092f56f74cfdab2d386cb7dd9aa, type: 3}
       propertyPath: buff
       value: 
-      objectReference: {fileID: 770610966}
+      objectReference: {fileID: 0}
     - target: {fileID: 3785822285260519493, guid: 89bf0092f56f74cfdab2d386cb7dd9aa, type: 3}
       propertyPath: coinBuff
       value: 
-      objectReference: {fileID: 770610966}
+      objectReference: {fileID: 0}
     - target: {fileID: 3785822285260519493, guid: 89bf0092f56f74cfdab2d386cb7dd9aa, type: 3}
       propertyPath: rewardAdManager
       value: 
