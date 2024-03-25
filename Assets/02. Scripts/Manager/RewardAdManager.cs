@@ -8,6 +8,8 @@ using UniRx;
 
 public class RewardAdManager : MonoBehaviour
 {
+    public bool isAdWatched; // 광고 시청 여부 
+    
     [SerializeField] private GameObject rewardPopup; 
     
     [SerializeField] Button rewardADBtn;
@@ -21,9 +23,11 @@ public class RewardAdManager : MonoBehaviour
     // 버프 활성화 이벤트
     public static event Action OnBuffActivated;
     
-    
-    void Stat()
+    void Start()
     {
+        isAdWatched = false;
+        PopupOff();
+        
         // 초기화
         MobileAds.Initialize(initStatus => { });
         adRequest = new AdRequest.Builder().Build();
@@ -31,22 +35,10 @@ public class RewardAdManager : MonoBehaviour
         // 보상형 광고를 미리 로드
         LoadRewardedAd();
         
-        /*
-        if (!coinBuff)
-        {
-            coinBuff = FindObjectOfType<CoinBuff>();
-        }
-        */
-        
         // rewardADBtn 버튼 - 클릭 리스너 추가
         rewardADBtn.onClick.AddListener(ShowRewardedAd);
-        
-        // 팝업부터 띄우기
-        if (rewardPopup != null)
-        {
-            rewardPopup.SetActive(false);
-        }
     }
+
     
     void LoadRewardedAd(bool show = false)
     {
@@ -77,7 +69,7 @@ public class RewardAdManager : MonoBehaviour
         });
     }
 
-    public void ShowRewardedAd()
+    void ShowRewardedAd()
     {
         // 보상형 광고가 로드되었고, 광고를 표시할 수 있는 상태인지 확인
         if (rewardedAd != null && rewardedAd.CanShowAd())
@@ -95,22 +87,47 @@ public class RewardAdManager : MonoBehaviour
     // 콜백 함수 (광고를 본 후 보상 처리)
     void RewardHandler(Reward reward)
     {
-        // 팝업부터 띄우기
+        if (rewardPopup != null)
+        {
+            isAdWatched = true;
+            Debug.Log("Click2");
+        }
+        else
+        {
+            Debug.Log("rewardPopupActive is null");
+        }
+    }
+
+    void Update()
+    {
+        //if (isAdWatched && !rewardPopup.activeSelf)
+        if (isAdWatched)
+        {
+            PopupOn();
+            // 닫힐 때 바뀌도록
+            //isAdWatched = false;
+            Debug.Log("isAdWatched");
+        }
+
+        else
+        {
+            rewardPopup.SetActive(false);
+        }
+    }
+    
+    void PopupOn()
+    {
         if (rewardPopup != null)
         {
             rewardPopup.SetActive(true);
         }
-        
-        /*
-        // CoinBuff 활성화
-        if (coinBuff != null)
+    }
+
+    void PopupOff()
+    {
+        if (rewardPopup != null)
         {
-            // 보상 -> 코루틴 X, 중간 한 단계 더 필요 
-            coinBuff.Activate();
-            
-            // 버프 활성화 이벤트 발생
-            OnBuffActivated?.Invoke();
+            rewardPopup.SetActive(false);
         }
-        */
     }
 }

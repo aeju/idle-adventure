@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 
-// 닫힘: X 버튼, 뒤로가기
 public class MainUI : MonoBehaviour
 {
     [SerializeField] private GameObject X_btn_off;
@@ -80,15 +79,20 @@ public class MainUI : MonoBehaviour
         }).AddTo(this);
     }
     
+    /*
+    // Buff 인자를 받지만, 실제로 사용하지 않음
     void OnEnable()
     {
-        RewardAdManager.OnBuffActivated += CloseAllPages;
+        //BuffManager.Instance.OnBuffActivated += CloseAllPages;
+        BuffManager.Instance.OnBuffActivated += (buff) => CloseAllPages();
     }
 
     void OnDisable()
     {
-        RewardAdManager.OnBuffActivated -= CloseAllPages;
+        //BuffManager.Instance.OnBuffActivated -= CloseAllPages;
+        BuffManager.Instance.OnBuffActivated -= (buff) => CloseAllPages();
     }
+    */
     
     private void OpenPage(GameObject page)
     {
