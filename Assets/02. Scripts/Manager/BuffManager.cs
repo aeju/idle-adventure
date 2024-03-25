@@ -10,13 +10,12 @@ public class BuffManager : MonoBehaviour
     public GameObject BuffActiveIcon;
 
     public float CoinMultiplier { get; set; } = 1; // 코인 획득량에 적용할 배수
+    public float ExpMultiplier { get; set; } = 1; // 경험치 획득량에 적용할 배수
 
     public bool IsBuffActive { get; private set; }
 
-    // 버프 활성화 및 비활성화 이벤트
-    //public event Action OnBuffActivated;
+    // 버프 활성화 / 비활성화 이벤트
     public event Action<Buff> OnBuffActivated;
-    //public event Action OnBuffDeactivated;
     public event Action<Buff> OnBuffDeactivated;
     
     private void Awake()
@@ -66,26 +65,4 @@ public class BuffManager : MonoBehaviour
             OnBuffDeactivated?.Invoke(buff);
         }
     }
-    
-    /*
-    // 버프를 활성화하는 메서드
-    public void ActivateBuff()
-    {
-        if (!IsBuffActive) // 비활성화된 상태
-        {
-            IsBuffActive = true;
-            OnBuffActivated?.Invoke();
-        }
-    }
-
-    // 버프를 비활성화하는 메서드
-    public void DeactivateBuff()
-    {
-        if (IsBuffActive) // 활성화된 상태
-        {
-            IsBuffActive = false;
-            OnBuffDeactivated?.Invoke();
-        }
-    }
-    */
 }
