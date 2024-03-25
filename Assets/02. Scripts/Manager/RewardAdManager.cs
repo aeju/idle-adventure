@@ -90,28 +90,24 @@ public class RewardAdManager : MonoBehaviour
         if (rewardPopup != null)
         {
             isAdWatched = true;
-            Debug.Log("Click2");
         }
         else
         {
-            Debug.Log("rewardPopupActive is null");
+            Debug.LogError("rewardPopupActive is null");
         }
     }
 
     void Update()
     {
-        //if (isAdWatched && !rewardPopup.activeSelf)
-        if (isAdWatched)
+        if (isAdWatched) // 닫힐 때 바뀌도록
         {
-            PopupOn();
-            // 닫힐 때 바뀌도록
-            //isAdWatched = false;
+            PopupOn(); 
             Debug.Log("isAdWatched");
         }
 
         else
         {
-            rewardPopup.SetActive(false);
+            PopupOff();
         }
     }
     
