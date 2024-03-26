@@ -21,7 +21,7 @@ public class RewardAdManager : MonoBehaviour
     AdRequest adRequest;
     
     // 버프 활성화 이벤트
-    public static event Action OnBuffActivated;
+    // public static event Action OnBuffActivated;
     
     void Start()
     {

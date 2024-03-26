@@ -3,25 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BuffType
+{
+    Coin,
+    Exp
+}
+
+
 public abstract class Buff : MonoBehaviour
 {
-    public static event Action<Buff> OnBuffActivated;    
-    public static event Action<Buff> OnBuffDeactivated;
-    
     [SerializeField] public string buffName; // 버프 이름
     [SerializeField] public Sprite buffIconSprite; // 버프 이미지
     [SerializeField] public string buffEffect; // 버프 효과
     [SerializeField] public int IncreasePercentage = 20; // 증가율
     [SerializeField] [Tooltip("버프 지속 시간 (분)")] public float durationMinute; // 버프 지속 시간
-    
+
+    public BuffType buffType;
     
     // 버프 활성화
     public void Activate()
     {
         Debug.Log($"Buff activated at: {Time.time} seconds");
         OnActivate();
-        //OnBuffActivated?.Invoke(this);
-        BuffManager.Instance.ActivateBuff(this); // 중앙 관리를 위해 BuffManager의 메서드 호출
+        
+        //BuffManager.Instance.ActivateBuff(this); // 중앙 관리를 위해 BuffManager의 메서드 호출
+        BuffManager.Instance.ActivateBuff(this, durationMinute); // 중앙 관리를 위해 BuffManager의 메서드 호출
         StartCoroutine(DeactivateAfterDuration());
     }
     
@@ -38,8 +44,10 @@ public abstract class Buff : MonoBehaviour
     {
         float seconds = Utilities.MinutesToSeconds(durationMinute);
         yield return new WaitForSeconds(seconds);
+        //BuffManager.Instance.DeactivateBuff(this); 
         Deactivate();
-        OnBuffDeactivated?.Invoke(this);
+        
         Debug.Log($"Buff deactivated at: {Time.time} seconds");
+        //OnBuffDeactivated?.Invoke(this);
     }
 }

@@ -48,7 +48,6 @@ public class CoinBuff : Buff
     protected override void OnActivate()
     {
         Debug.Log("1. buff: BuffManager.Instance.CoinMultiplier" + BuffManager.Instance.CoinMultiplier);
-        BuffManager.Instance.BuffIconOn();
         BuffManager.Instance.CoinMultiplier += IncreasePercentage / 100.0f;
         Debug.Log("2. buff: BuffManager.Instance.CoinMultiplier" + BuffManager.Instance.CoinMultiplier);
     }
@@ -56,7 +55,7 @@ public class CoinBuff : Buff
     // 버프 비활성화 
     protected override void Deactivate()
     {
-        BuffManager.Instance.BuffIconOff();
+        //BuffManager.Instance.BuffIconOff();
         BuffManager.Instance.CoinMultiplier -= IncreasePercentage / 100.0f;
     }
 }
