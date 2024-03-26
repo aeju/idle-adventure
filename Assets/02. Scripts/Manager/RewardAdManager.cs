@@ -8,7 +8,9 @@ using UniRx;
 
 public class RewardAdManager : MonoBehaviour
 {
-    [SerializeField] private CoinBuff coinBuff; // CoinBuff에 대한 참조
+    public bool isAdWatched; // 광고 시청 여부 
+    
+    [SerializeField] private GameObject rewardPopup; 
     
     [SerializeField] Button rewardADBtn;
     // 광고 테스트 ID
@@ -19,10 +21,13 @@ public class RewardAdManager : MonoBehaviour
     AdRequest adRequest;
     
     // 버프 활성화 이벤트
-    public static event Action OnBuffActivated;
+    // public static event Action OnBuffActivated;
     
     void Start()
     {
+        isAdWatched = false;
+        PopupOff();
+        
         // 초기화
         MobileAds.Initialize(initStatus => { });
         adRequest = new AdRequest.Builder().Build();
@@ -30,15 +35,10 @@ public class RewardAdManager : MonoBehaviour
         // 보상형 광고를 미리 로드
         LoadRewardedAd();
         
-        
-        if (!coinBuff)
-        {
-            coinBuff = FindObjectOfType<CoinBuff>();
-        }
-        
         // rewardADBtn 버튼 - 클릭 리스너 추가
         rewardADBtn.onClick.AddListener(ShowRewardedAd);
     }
+
     
     void LoadRewardedAd(bool show = false)
     {
@@ -69,7 +69,7 @@ public class RewardAdManager : MonoBehaviour
         });
     }
 
-    public void ShowRewardedAd()
+    void ShowRewardedAd()
     {
         // 보상형 광고가 로드되었고, 광고를 표시할 수 있는 상태인지 확인
         if (rewardedAd != null && rewardedAd.CanShowAd())
@@ -87,13 +87,43 @@ public class RewardAdManager : MonoBehaviour
     // 콜백 함수 (광고를 본 후 보상 처리)
     void RewardHandler(Reward reward)
     {
-        // CoinBuff 활성화
-        if (coinBuff != null)
+        if (rewardPopup != null)
         {
-            coinBuff.Activate();
-            
-            // 버프 활성화 이벤트 발생
-            OnBuffActivated?.Invoke();
+            isAdWatched = true;
+        }
+        else
+        {
+            Debug.LogError("rewardPopupActive is null");
+        }
+    }
+
+    void Update()
+    {
+        if (isAdWatched) // 닫힐 때 바뀌도록
+        {
+            PopupOn(); 
+            Debug.Log("isAdWatched");
+        }
+
+        else
+        {
+            PopupOff();
+        }
+    }
+    
+    void PopupOn()
+    {
+        if (rewardPopup != null)
+        {
+            rewardPopup.SetActive(true);
+        }
+    }
+
+    void PopupOff()
+    {
+        if (rewardPopup != null)
+        {
+            rewardPopup.SetActive(false);
         }
     }
 }

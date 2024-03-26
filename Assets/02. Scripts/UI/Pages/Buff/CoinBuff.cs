@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UniRx;
 using TMPro;
 
+[RequireComponent(typeof(RewardAdManager))]
 public class CoinBuff : Buff
 {
     // 지속시간 1분, 획득량 증가율 20%
@@ -14,7 +15,7 @@ public class CoinBuff : Buff
     [SerializeField] private TextMeshProUGUI durationText;
     [SerializeField] private TextMeshProUGUI percentText;
     [SerializeField] private Image buffIconImage;
-    [SerializeField] private Button buffbtn;
+    //[SerializeField] private Button buffbtn; // 기존 버프 활성화 버튼 
     
     private void Start()
     {
@@ -22,14 +23,16 @@ public class CoinBuff : Buff
         {
             UpdateUI();
             
+            /*
             buffbtn.OnClickAsObservable().Subscribe(_ =>
             {
                 Activate();
             }).AddTo(this);
+            */
         }
         else
         {
-            Debug.Log("buff manager X");
+            Debug.LogError("buff manager X");
         }
     }
 
@@ -45,7 +48,6 @@ public class CoinBuff : Buff
     protected override void OnActivate()
     {
         Debug.Log("1. buff: BuffManager.Instance.CoinMultiplier" + BuffManager.Instance.CoinMultiplier);
-        BuffManager.Instance.BuffIconOn();
         BuffManager.Instance.CoinMultiplier += IncreasePercentage / 100.0f;
         Debug.Log("2. buff: BuffManager.Instance.CoinMultiplier" + BuffManager.Instance.CoinMultiplier);
     }
@@ -53,7 +55,7 @@ public class CoinBuff : Buff
     // 버프 비활성화 
     protected override void Deactivate()
     {
-        BuffManager.Instance.BuffIconOff();
+        //BuffManager.Instance.BuffIconOff();
         BuffManager.Instance.CoinMultiplier -= IncreasePercentage / 100.0f;
     }
 }
