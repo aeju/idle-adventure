@@ -28,6 +28,8 @@ public class EnemyManager : MonoBehaviour
     public List<GameObject> enemyObjectPool;
     // SpawnPoint들
     public Transform[] spawnPoints;
+    // 사용된 spawnPoints 인덱스 추적을 위한 리스트
+    private List<int> usedSpawnPoints = new List<int>();
 
     private void Awake()
     {
@@ -70,32 +72,31 @@ public class EnemyManager : MonoBehaviour
     void Update()
     {
         currentTime += Time.deltaTime;
-        // 생성 시간이 돼서
+        
+        // 생성 시간 경과
         if (currentTime > createTime)
         {
-            // 오브젝트풀에 에너미가 있다면
-            if (enemyObjectPool.Count > 0)
-            {
-                // 몬스터가 생성되지 않은 spawnPoints 인덱스 저장 리스트
-                List<int> availablespawnPoints = new List<int>();
-                
-                
-                
-                
-                // 오브젝트풀에서 enemy를 가져다 사용
-                GameObject enemy = enemyObjectPool[0];
-                // 오브젝트풀에서 에너미 제거
-                enemyObjectPool.Remove(enemy);
-                // 랜덤으로 위치 선택
-                int index = Random.Range(0, spawnPoints.Length);
-                // 에너미 위치
-                enemy.transform.position = spawnPoints[index].position;
-                // 에너미 활성화
-                enemy.SetActive(true);
-            }
-            
+            SpawnMonster();
             createTime = Random.Range(minTime, maxTime);
             currentTime = 0;
+        }
+    }
+
+    void SpawnMonster()
+    {
+        // 오브젝트풀에 에너미가 있다면
+        if (enemyObjectPool.Count > 0)
+        {
+            // 오브젝트풀에서 enemy를 가져다 사용
+            GameObject enemy = enemyObjectPool[0];
+            // 오브젝트풀에서 에너미 제거
+            enemyObjectPool.Remove(enemy);
+            // 랜덤으로 위치 선택
+            int index = Random.Range(0, spawnPoints.Length);
+            // 에너미 위치
+            enemy.transform.position = spawnPoints[index].position;
+            // 에너미 활성화
+            enemy.SetActive(true);
         }
     }
 }
