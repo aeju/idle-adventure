@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour
+public class EnemyManager : Singleton<EnemyManager>
 {
-    public static EnemyManager Instance { get; private set; }
+    // public static EnemyManager Instance { get; private set; }
     private float currentTime; // 경과 시간 추적
     public GameObject enemyFactory;
 
@@ -27,25 +27,12 @@ public class EnemyManager : MonoBehaviour
     public Transform[] spawnPoints;
 
     // 사용된 spawnPoints 인덱스 추적을 위한 리스트
-    private List<int> usedSpawnPoints;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
+    private List<int> usedSpawnPoints  = new List<int>();
+    
     void Start()
     {
         CreateMonsterPool();
-        usedSpawnPoints = new List<int>();
+        //usedSpawnPoints = new List<int>();
     }
 
     // 오브젝트 풀 생성
