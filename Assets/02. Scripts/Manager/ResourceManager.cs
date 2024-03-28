@@ -29,7 +29,9 @@ public class ResourceManager : MonoBehaviour
     public void AddCoin(int coin)
     {
         // 버프에 따른 코인 계산을 항상 적용 (기본 coinMultiplier = 1)
-        int finalCoin = Mathf.FloorToInt(coin * BuffManager.Instance.CoinMultiplier);
+        float adjustedCoin = coin * BuffManager.Instance.CoinMultiplier;
+        // 정수로 변환하기 전, 반올림
+        int finalCoin = Mathf.FloorToInt(adjustedCoin);
         
         // 추가로 획득한 코인을 추가
         current_Coin += finalCoin;
