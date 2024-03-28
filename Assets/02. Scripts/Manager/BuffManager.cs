@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // 버프 적용 중 : 다른 버프 X
-public class BuffManager : MonoBehaviour
+public class BuffManager : Singleton<BuffManager>
 {
-    public static BuffManager Instance { get; private set; }
-
     public GameObject BuffActiveIcon;
 
     public float CoinMultiplier { get; set; } = 1; // 코인 획득량에 적용할 배수
@@ -18,19 +16,6 @@ public class BuffManager : MonoBehaviour
     // 버프 활성화 / 비활성화 이벤트
     public event Action<Buff> OnBuffActivated;
     public event Action<Buff> OnBuffDeactivated;
-    
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     void Start()
     {

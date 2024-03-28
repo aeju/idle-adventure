@@ -32,7 +32,6 @@ public class EnemyManager : Singleton<EnemyManager>
     void Start()
     {
         CreateMonsterPool();
-        //usedSpawnPoints = new List<int>();
     }
 
     // 오브젝트 풀 생성

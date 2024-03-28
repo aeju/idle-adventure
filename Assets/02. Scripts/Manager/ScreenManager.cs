@@ -6,10 +6,8 @@ using UnityEngine.UI;
 
 // On: 정해진 시간 동안 입력 x, Idle Mode Btn
 // Off: 조이스틱 입력 최댓값
-public class ScreenManager : MonoBehaviour
+public class ScreenManager : Singleton<ScreenManager>
 {
-    public static ScreenManager Instance { get; private set; }
-    
     public float idleTime = 30.0f; // 방치 시간 : 30초 
     private float currentTime;
     
@@ -17,20 +15,6 @@ public class ScreenManager : MonoBehaviour
     public CountTime countTime;
     
     private bool isIdleModeActive = false;
-    
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // Optional: Keep the instance alive across scenes
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-    }
     
     private void Start()
     {

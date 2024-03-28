@@ -20,9 +20,6 @@ public class RewardAdManager : MonoBehaviour
     RewardedAd rewardedAd;
     AdRequest adRequest;
     
-    // 버프 활성화 이벤트
-    // public static event Action OnBuffActivated;
-    
     void Start()
     {
         isAdWatched = false;
