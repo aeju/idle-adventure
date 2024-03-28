@@ -31,8 +31,15 @@ public class UserInfoManager : MonoBehaviour
     
     public void AddExperience(int exp)
     {
-        currentExp += exp;
+        // 버프에 따른 경험치 계산을 항상 적용 (기본 = 1)
+        float adjustedExp = exp * BuffManager.Instance.ExpMultiplier;
+        // 정수로 변환하기 전, 반올림
+        int finalExp = Mathf.RoundToInt(adjustedExp);
+        
+        currentExp += finalExp;
         CheckLevelUp(); 
+        Debug.Log("Exp: " + exp);
+        Debug.Log("BuffExp: " + finalExp);
     }
 
     private void CheckLevelUp()
@@ -45,7 +52,7 @@ public class UserInfoManager : MonoBehaviour
         }
     }
 
-    // 필요 -> 레벨업 축하 팝업
+    // 필요 -> 레벨업 축하 팝업 (추가 로직 필요)
     private void LevelUp()
     {
         Debug.Log($"level : {currentLevel}.");

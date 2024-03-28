@@ -55,7 +55,6 @@ public class CoinBuff : Buff
     // 버프 비활성화 
     protected override void Deactivate()
     {
-        //BuffManager.Instance.BuffIconOff();
         BuffManager.Instance.CoinMultiplier -= IncreasePercentage / 100.0f;
     }
 }

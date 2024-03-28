@@ -37,12 +37,12 @@ public class BuffManager : MonoBehaviour
         BuffIconOff();
     }
     
-    public void BuffIconOn()
+    void BuffIconOn()
     {
         BuffActiveIcon.SetActive(true);
     }
     
-    public void BuffIconOff()
+    void BuffIconOff()
     {
         BuffActiveIcon.SetActive(false);
     }
@@ -56,7 +56,6 @@ public class BuffManager : MonoBehaviour
             BuffIconOn();
             OnBuffActivated?.Invoke(buff);
             
-            // 추가 
             StartCoroutine(DeactivateAfterDuration(buff, durationMinute));
         }
     }
@@ -76,25 +75,13 @@ public class BuffManager : MonoBehaviour
             {
                 case BuffType.Coin:
                     CoinMultiplier -= buff.IncreasePercentage / 100.0f;
-                    Debug.Log("3. buff: BuffManager.Instance.CoinMultiplier" + BuffManager.Instance.CoinMultiplier);
+                    Debug.Log("3. buff end: CoinMultiplier" + CoinMultiplier);
                     break;
                 case BuffType.Exp:
                     ExpMultiplier -= buff.IncreasePercentage / 100.0f;
+                    Debug.Log("3. buff end: ExpMultiplier" + ExpMultiplier);
                     break;
             }
         }
     }
-    
-    /*
-    // 버프를 비활성화하는 메서드
-    public void DeactivateBuff(Buff buff)
-    {
-        if (IsBuffActive) // 활성화된 상태
-        {
-            IsBuffActive = false;
-            BuffIconOff();
-            OnBuffDeactivated?.Invoke(buff);
-        }
-    }
-    */
 }

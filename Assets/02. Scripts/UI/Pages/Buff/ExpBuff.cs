@@ -46,14 +46,12 @@ public class ExpBuff : Buff
     // 버프 활성화 (경험치 획득량 증가)
     protected override void OnActivate()
     {
-        BuffManager.Instance.BuffIconOn();
-        //BuffManager.Instance.CoinMultiplier += IncreasePercentage / 100.0f;
+        BuffManager.Instance.ExpMultiplier += IncreasePercentage / 100.0f;
     }
 
     // 버프 비활성화 
     protected override void Deactivate()
     {
-        BuffManager.Instance.BuffIconOff();
-        //BuffManager.Instance.CoinMultiplier -= IncreasePercentage / 100.0f;
+        BuffManager.Instance.ExpMultiplier -= IncreasePercentage / 100.0f;
     }
 }
