@@ -61,7 +61,7 @@ public partial class EnemyFSM : MonoBehaviour
     private SkeletonMecanim skeletonMecanim;
     
     [SerializeField] GameObject dropItem;
-
+    
     void Start()
     {
         m_State = EnemyState.Idle; // 최초의 에너미 상태 : Idle
@@ -319,9 +319,13 @@ public partial class EnemyFSM : MonoBehaviour
         // 캐릭터 컨트롤러 컴포넌트를 비활성화
         cc.enabled = false;
         
-        // 2초 동안 기다린 후, 자기 자신을 제거 (나중에 손 봐야함!)
+        // 2초 동안 기다린 후, 자기 자신을 제거 
         yield return new WaitForSeconds(2f);
-        Destroy(gameObject);
+        
+        //Destroy(gameObject);
+        gameObject.SetActive(false);
+        // 리스트에 에너미 삽입
+        EnemyManager.Instance.enemyObjectPool.Add(gameObject);
     }
     
     void HPSliderUpdate(Slider hpSlider, int currentHP, int maxHP)
