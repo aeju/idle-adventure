@@ -15,20 +15,12 @@ public class CoinBuff : Buff
     [SerializeField] private TextMeshProUGUI durationText;
     [SerializeField] private TextMeshProUGUI percentText;
     [SerializeField] private Image buffIconImage;
-    //[SerializeField] private Button buffbtn; // 기존 버프 활성화 버튼 
     
     private void Start()
     {
         if (BuffManager.Instance != null)
         {
             UpdateUI();
-            
-            /*
-            buffbtn.OnClickAsObservable().Subscribe(_ =>
-            {
-                Activate();
-            }).AddTo(this);
-            */
         }
         else
         {
