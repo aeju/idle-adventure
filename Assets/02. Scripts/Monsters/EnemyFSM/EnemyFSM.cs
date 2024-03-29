@@ -37,7 +37,7 @@ public partial class EnemyFSM : MonoBehaviour
     // 공격 가능 범위
     [SerializeField] float attackDistance = 2f;
     // 배회 가능 최대 거리
-    [SerializeField] private float wanderDistance = 3f;
+    [SerializeField] float wanderDistance = 3f;
     
     // 캐릭터 컨트롤러 컴포넌트
     private CharacterController cc;
@@ -57,6 +57,10 @@ public partial class EnemyFSM : MonoBehaviour
     private Vector3 originPos;
     // 이동 가능 범위
     [SerializeField] float moveDistance = 20f;
+    
+    // 배회 시간과 다음 이동 목적지를 위한 변수
+    [SerializeField] private float wanderTime = 5f; // 배회 상태를 유지할 시간
+    private Vector3 wanderPosition; // 다음 이동 목적지
     
     [SerializeField] Slider hpSlider;
     
@@ -134,15 +138,17 @@ public partial class EnemyFSM : MonoBehaviour
         {
             flipX = originPos.x > transform.position.x; 
         }
+        else if (m_State == EnemyState.Wander)
+        {
+            flipX = wanderPosition.x > transform.position.x;
+        }
         else if (target != null)
         {
             flipX = target.transform.position.x > transform.position.x;
         }
-        else if (m_State == EnemyState.Chase || m_State == EnemyState.Wander)
+        else 
         {
-            //flipX = skeletonMecanim.Skeleton.ScaleX > 0;
-            // 이동 중이라면, 목적지에 따라 방향 결정
-            flipX = wanderPosition.x > transform.position.x;
+            flipX = skeletonMecanim.Skeleton.ScaleX > 0;
         }
         
         skeletonMecanim.Skeleton.ScaleX = flipX ? 1 : -1; // true = 오른쪽, false = 왼쪽
@@ -158,22 +164,16 @@ public partial class EnemyFSM : MonoBehaviour
             m_State = EnemyState.Chase;
             print("상태 전환: Idle -> Move");
             
-            // 이동 애니메이션으로 전환
-            anim.SetTrigger("IdleToMove");
         }
         else // Wander
         {
             m_State = EnemyState.Wander;
             print("상태 전환: Idle -> Wander");
-            
-            // 이동 애니메이션으로 전환
-            anim.SetTrigger("IdleToMove");
         }
+        
+        // 이동 애니메이션으로 전환
+        anim.SetTrigger("IdleToMove");
     }
-    
-    // 배회 시간과 다음 이동 목적지를 위한 변수
-    [SerializeField] private float wanderTime = 5f; // 배회 상태를 유지할 시간
-    private Vector3 wanderPosition; // 다음 이동 목적지
     
     // 1) 추격 범위 안에 들어오지 않았을 때: 배회
     // 2) 추격 범위 안에 들어오면: 상태 전환(추격)
