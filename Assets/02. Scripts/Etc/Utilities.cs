@@ -14,7 +14,13 @@ public static class Utilities
     {
         if (hpSlider != null)
         {
-            hpSlider.value = (float)currentHP / (float)maxHP;
+            hpSlider.value = (float)currentHP / maxHP;
+            Debug.Log($"HP Updated: {currentHP} / {maxHP}");
+        }
+
+        else
+        {
+            Debug.LogError("HP Slider not assigned");
         }
     }
     

@@ -21,7 +21,7 @@ public class MonsterStats : MonoBehaviour
     public string monsterName;
     public int exp;
 
-    public void Start()
+    public void Awake()
     {
         if (monsterStats != null)
         {

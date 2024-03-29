@@ -48,6 +48,7 @@ public partial class EnemyFSM : MonoBehaviour
     // 일정한 시간 간격으로 공격 -> 누적 시간, 공격 딜레이 시간
     private float currentTime = 0; // 누적 시간
     private float attackDelay = 1f; // 공격 딜레이 시간
+    [SerializeField] private float wanderDelay = 3f; // 배회 방향 바꾸는 시간 딜레이 
     [SerializeField] private float dieDelay = 1.5f; // 죽음 딜레이 시간
     
     public bool flipX;
@@ -65,12 +66,14 @@ public partial class EnemyFSM : MonoBehaviour
     
     [SerializeField] GameObject dropItem;
     
-    void Start()
-    {
-        m_State = EnemyState.Idle; // 최초의 에너미 상태 : Idle
-        target = FindObjectOfType<PlayerController>();
+    // HP 이벤트
+    // public event 
 
-        // 캐릭터 컨트롤러 컴포넌트 받아오기
+    void Awake()
+    {
+        target = FindObjectOfType<PlayerController>();
+        
+        // 몬스터 - 캐릭터 컨트롤러 컴포넌트 받아오기
         cc = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
         skeletonMecanim = GetComponent<SkeletonMecanim>();
@@ -78,11 +81,15 @@ public partial class EnemyFSM : MonoBehaviour
         userInfo = UserInfoManager.Instance;
         resourceInfo = ResourceManager.Instance;
         
-        originPos = transform.position; // 자신의 초기 위치 저장
+        monsterStats.currentHP = monsterStats.maxHP;  // HP 최대치로 초기화
+    }
 
-        monsterStats.currentHP = monsterStats.maxHP;  // 현재 체력 = 최대 체력으로 초기화
-        
-        HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
+    void OnEnable()
+    {
+        m_State = EnemyState.Idle; // 최초의 에너미 상태 : Idle
+        originPos = transform.position; // 자신의 초기 위치 저장
+        HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP); // HP 바 업데이트
+        currentTime = 0; // 타이머 리셋
     }
 
     void Update()
@@ -382,17 +389,15 @@ public partial class EnemyFSM : MonoBehaviour
     {
         ItemDrop();
         HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
-
-        // 캐릭터 컨트롤러 컴포넌트를 비활성화
-        cc.enabled = false;
         
-        // 딜레이 시간 동안 기다린 후, 자기 자신을 제거 
-        yield return new WaitForSeconds(dieDelay);
+        monsterStats.currentHP = monsterStats.maxHP; // hp 초기화
+        cc.enabled = false; // 캐릭터 컨트롤러 비활성화
         
-        //Destroy(gameObject);
+        yield return new WaitForSeconds(dieDelay); // 사망 후 일정 시간 대기
+        
         gameObject.SetActive(false);
-        // 리스트에 에너미 삽입
-        EnemyManager.Instance.enemyObjectPool.Add(gameObject);
+        cc.enabled = true;
+        EnemyManager.Instance.enemyObjectPool.Add(gameObject); // 오브젝트 풀로 반환
     }
     
     void HPSliderUpdate(Slider hpSlider, int currentHP, int maxHP)
