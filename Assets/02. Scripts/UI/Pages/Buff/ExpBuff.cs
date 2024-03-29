@@ -5,29 +5,21 @@ using UnityEngine.UI;
 using UniRx;
 using TMPro;
 
+[RequireComponent(typeof(RewardAdManager))]
 public class ExpBuff : Buff
 {
-    // 지속시간 1분, 획득량 증가율 20%
+    // 지속시간 2분, 획득량 증가율 30%
     [SerializeField] private TextMeshProUGUI buffNameText;
     [SerializeField] private TextMeshProUGUI buffEffectText;
     [SerializeField] private TextMeshProUGUI durationText;
     [SerializeField] private TextMeshProUGUI percentText;
     [SerializeField] private Image buffIconImage;
     
-    [SerializeField] private Button buffbtn; // 테스트용 버프 활성화 버튼 
-    
     void Start()
     {
         if (BuffManager.Instance != null)
         {
             UpdateUI();
-            
-            /*
-            buffbtn.OnClickAsObservable().Subscribe(_ =>
-            {
-                Activate();
-            }).AddTo(this);
-            */
         }
         else
         {

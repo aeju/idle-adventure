@@ -15,20 +15,12 @@ public class CoinBuff : Buff
     [SerializeField] private TextMeshProUGUI durationText;
     [SerializeField] private TextMeshProUGUI percentText;
     [SerializeField] private Image buffIconImage;
-    //[SerializeField] private Button buffbtn; // 기존 버프 활성화 버튼 
     
     private void Start()
     {
         if (BuffManager.Instance != null)
         {
             UpdateUI();
-            
-            /*
-            buffbtn.OnClickAsObservable().Subscribe(_ =>
-            {
-                Activate();
-            }).AddTo(this);
-            */
         }
         else
         {
@@ -47,9 +39,7 @@ public class CoinBuff : Buff
     // 버프 활성화 (코인 획득량 증가)
     protected override void OnActivate()
     {
-        Debug.Log("1. buff: BuffManager.Instance.CoinMultiplier" + BuffManager.Instance.CoinMultiplier);
         BuffManager.Instance.CoinMultiplier += IncreasePercentage / 100.0f;
-        Debug.Log("2. buff: BuffManager.Instance.CoinMultiplier" + BuffManager.Instance.CoinMultiplier);
     }
 
     // 버프 비활성화 
