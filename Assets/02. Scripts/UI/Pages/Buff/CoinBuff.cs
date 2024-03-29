@@ -39,9 +39,7 @@ public class CoinBuff : Buff
     // 버프 활성화 (코인 획득량 증가)
     protected override void OnActivate()
     {
-        Debug.Log("1. buff: BuffManager.Instance.CoinMultiplier" + BuffManager.Instance.CoinMultiplier);
         BuffManager.Instance.CoinMultiplier += IncreasePercentage / 100.0f;
-        Debug.Log("2. buff: BuffManager.Instance.CoinMultiplier" + BuffManager.Instance.CoinMultiplier);
     }
 
     // 버프 비활성화 
