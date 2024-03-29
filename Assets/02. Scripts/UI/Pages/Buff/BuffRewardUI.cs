@@ -40,8 +40,7 @@ public class BuffRewardUI : MonoBehaviour
             BuffOn();
         }
     }
-
-
+    
     void BuffOn()
     {
         if (buff != null)

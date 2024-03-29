@@ -25,25 +25,13 @@ public abstract class Buff : MonoBehaviour
     {
         Debug.Log($"Buff activated at: {Time.time} seconds");
         OnActivate();
-        BuffManager.Instance.ActivateBuff(this, durationMinute); // 중앙 관리를 위해 BuffManager의 메서드 호출
-        StartCoroutine(DeactivateAfterDuration());
+        
+        // BuffManager를 통해 코루틴 호출 (지속 시간)
+        BuffManager.Instance.ActivateBuff(this, durationMinute); 
     }
-    
-    // 버프 비활성화 (추상 메소드)
-    protected abstract void Deactivate();
 
     // 버프 활성화 (추상 메소드)
     protected abstract void OnActivate();
 
     protected abstract void UpdateUI();
-
-    // 지정된 시간(duration) 후에 버프를 비활성화
-    private IEnumerator DeactivateAfterDuration()
-    {
-        float seconds = Utilities.MinutesToSeconds(durationMinute);
-        yield return new WaitForSeconds(seconds);
-        Deactivate();
-        
-        Debug.Log($"Buff deactivated at: {Time.time} seconds");
-    }
 }
