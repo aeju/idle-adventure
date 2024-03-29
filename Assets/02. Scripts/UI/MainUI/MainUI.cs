@@ -77,6 +77,41 @@ public class MainUI : MonoBehaviour
         {
             CloseAllPages(); // 무슨 창이든 닫기게
         }).AddTo(this);
+        
+        // 버프 활성화에 대한 구독
+        BuffManager.Instance.OnBuffActivated += ClosePagesOnBuffActivate;
+    }
+    
+    void OnDestroy()
+    {
+        // 버프 활성화 구독 취소
+        if (BuffManager.Instance != null)
+        {
+            BuffManager.Instance.OnBuffActivated -= ClosePagesOnBuffActivate;
+        }
+    }
+    
+    // 버프 활성화 시 실행되는 메서드
+    private void ClosePagesOnBuffActivate(Buff buff)
+    {
+        // 버프 종류에 따라 특정 페이지 닫기
+        switch (buff.buffType)
+        {
+            case BuffType.Coin:
+                // 코인 버프 활성화 시 Contents_Page 닫기
+                if (currentOpenPage == Contents_Page)
+                {
+                    CloseAllPages();
+                }
+                break;
+            case BuffType.Exp:
+                // 경험치 버프 활성화 시 Mission_Page 닫기
+                if (currentOpenPage == Mission_Page)
+                {
+                    CloseAllPages();
+                }
+                break;
+        }
     }
     
     /*
