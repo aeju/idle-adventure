@@ -40,10 +40,4 @@ public class ExpBuff : Buff
     {
         BuffManager.Instance.ExpMultiplier += IncreasePercentage / 100.0f;
     }
-
-    // 버프 비활성화 
-    protected override void Deactivate()
-    {
-        BuffManager.Instance.ExpMultiplier -= IncreasePercentage / 100.0f;
-    }
 }
