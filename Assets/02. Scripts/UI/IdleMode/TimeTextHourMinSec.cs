@@ -6,13 +6,13 @@ using TMPro;
 // HH:mm:ss (절전 모드)
 public class TimeTextHourMinSec : MonoBehaviour
 {
-    public TextMeshProUGUI timeTextHourMinSec;
+    [SerializeField] private TextMeshProUGUI timeTextHourMinSec;
 
     void Update()
     {
         if (timeTextHourMinSec != null)
         {
-            timeTextHourMinSec.text = TimeManager.GetCurrentTimeKST().ToString("HH:mm:ss");
+            timeTextHourMinSec.text = Utilities.GetCurrentTimeKST().ToString("HH:mm:ss");
         }
     }
 }

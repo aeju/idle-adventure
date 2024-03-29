@@ -4,7 +4,6 @@ using Spine.Unity;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 // 필요 1: Idle상태 -> 주변 배회
 // 필요 2: damaged 애니메이션
@@ -21,7 +20,8 @@ public partial class EnemyFSM : MonoBehaviour
     enum EnemyState
     {
         Idle,
-        Move,
+        Wander,
+        Chase,
         Attack,
         Return,
         Damaged,
@@ -36,6 +36,8 @@ public partial class EnemyFSM : MonoBehaviour
     [SerializeField] float findDistance = 8f;
     // 공격 가능 범위
     [SerializeField] float attackDistance = 2f;
+    // 배회 가능 최대 거리
+    [SerializeField] float wanderDistance = 3f;
     
     // 캐릭터 컨트롤러 컴포넌트
     private CharacterController cc;
@@ -45,7 +47,9 @@ public partial class EnemyFSM : MonoBehaviour
 
     // 일정한 시간 간격으로 공격 -> 누적 시간, 공격 딜레이 시간
     private float currentTime = 0; // 누적 시간
-    private float attackDelay = 2f; // 공격 딜레이 시간
+    private float attackDelay = 1f; // 공격 딜레이 시간
+    [SerializeField] private float wanderDelay = 3f; // 배회 방향 바꾸는 시간 딜레이 
+    [SerializeField] private float dieDelay = 1.5f; // 죽음 딜레이 시간
     
     public bool flipX;
     
@@ -54,6 +58,10 @@ public partial class EnemyFSM : MonoBehaviour
     // 이동 가능 범위
     [SerializeField] float moveDistance = 20f;
     
+    // 배회 시간과 다음 이동 목적지를 위한 변수
+    [SerializeField] private float wanderTime = 5f; // 배회 상태를 유지할 시간
+    private Vector3 wanderPosition; // 다음 이동 목적지
+    
     [SerializeField] Slider hpSlider;
     
     // 애니메이션 
@@ -61,13 +69,12 @@ public partial class EnemyFSM : MonoBehaviour
     private SkeletonMecanim skeletonMecanim;
     
     [SerializeField] GameObject dropItem;
-    
-    void Start()
-    {
-        m_State = EnemyState.Idle; // 최초의 에너미 상태 : Idle
-        target = FindObjectOfType<PlayerController>();
 
-        // 캐릭터 컨트롤러 컴포넌트 받아오기
+    void Awake()
+    {
+        target = FindObjectOfType<PlayerController>();
+        
+        // 몬스터 - 캐릭터 컨트롤러 컴포넌트 받아오기
         cc = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
         skeletonMecanim = GetComponent<SkeletonMecanim>();
@@ -75,11 +82,28 @@ public partial class EnemyFSM : MonoBehaviour
         userInfo = UserInfoManager.Instance;
         resourceInfo = ResourceManager.Instance;
         
-        originPos = transform.position; // 자신의 초기 위치 저장
+        monsterStats.CurrentHP = monsterStats.MaxHP;  // HP 최대치로 초기화
+    }
 
-        monsterStats.currentHP = monsterStats.maxHP;  // 현재 체력 = 최대 체력으로 초기화
+    void OnEnable()
+    {
+        m_State = EnemyState.Idle; // 최초의 에너미 상태 : Idle
+        originPos = transform.position; // 자신의 초기 위치 저장
+        monsterStats.OnHPChanged += HandleHPChange; // HP 변경 이벤트 구독
         
-        HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
+        Utilities.HPSliderUpdate(hpSlider, monsterStats.CurrentHP, monsterStats.MaxHP); // HP 바 업데이트
+        currentTime = 0; // 타이머 리셋
+    }
+
+    void OnDisable()
+    {
+        monsterStats.OnHPChanged -= HandleHPChange; // HP 변경 이벤트 구독 해제
+    }
+
+    void HandleHPChange(int currentHP, int maxHP)
+    {
+        Debug.Log($"[EnemyFSM] Handling HP Change. New HP: {currentHP}/{maxHP}");
+        Utilities.HPSliderUpdate(hpSlider, currentHP, maxHP);
     }
 
     void Update()
@@ -96,8 +120,11 @@ public partial class EnemyFSM : MonoBehaviour
             case EnemyState.Idle:
                 Idle();
                 break;
-            case EnemyState.Move:
-                Move();
+            case EnemyState.Wander:
+                Wander();
+                break;
+            case EnemyState.Chase:
+                Chase();
                 break;
             case EnemyState.Attack:
                 Attack();
@@ -121,6 +148,10 @@ public partial class EnemyFSM : MonoBehaviour
         {
             flipX = originPos.x > transform.position.x; 
         }
+        else if (m_State == EnemyState.Wander)
+        {
+            flipX = wanderPosition.x > transform.position.x;
+        }
         else if (target != null)
         {
             flipX = target.transform.position.x > transform.position.x;
@@ -133,22 +164,75 @@ public partial class EnemyFSM : MonoBehaviour
         skeletonMecanim.Skeleton.ScaleX = flipX ? 1 : -1; // true = 오른쪽, false = 왼쪽
     }
 
+    // 1) 플레이어 거리가 가까우면: Chase
+    // 2) 플레이어가 멀리 있으면: Wander
     void Idle()
     {
-        // 만일, 플레이어와의 거리가 액션 시작 범위 이내라면 Move 상태로 전환
+        // 만일, 플레이어와의 거리가 액션 시작 범위 이내라면 Chase 상태로 전환
         if (Vector3.Distance(transform.position, target.transform.position) < findDistance)
         {
-            m_State = EnemyState.Move;
-            print("상태 전환: Idle -> Move");
+            m_State = EnemyState.Chase;
+            print("상태 전환: Idle -> Chase");
+            
+        }
+        else // Wander
+        {
+            m_State = EnemyState.Wander;
+            print("상태 전환: Idle -> Wander");
+        }
+        
+        // 이동 애니메이션으로 전환
+        anim.SetTrigger("IdleToMove");
+    }
+    
+    // 1) 추격 범위 안에 들어오지 않았을 때: 배회
+    // 2) 추격 범위 안에 들어오면: 상태 전환(추격)
+    void Wander()
+    {
+        if (Vector3.Distance(transform.position, target.transform.position) < findDistance)
+        {
+            m_State = EnemyState.Chase;
+            print("상태 전환: Wander -> Chase");
             
             // 이동 애니메이션으로 전환
-            anim.SetTrigger("IdleToMove");
+            // anim.SetTrigger("IdleToMove");
         }
+
+        else
+        {
+            // 타이머가 경과하면 새로운 배회 위치를 결정
+            if (currentTime <= 0f)
+            {
+                GetNewWanderDestination();
+                currentTime = wanderTime;
+            }
+    
+            // 현재 위치에서 목적지까지의 방향을 계산하고, 그 방향으로 이동
+            Vector3 dir = (wanderPosition - transform.position).normalized;
+            cc.Move(dir * monsterStats.Movement_Speed * Time.deltaTime);
+
+            // 오브젝트가 목적지에 도달하면 타이머를 리셋하여 새로운 위치를 결정할 준비
+            if (Vector3.Distance(transform.position, wanderPosition) < 0.5f)
+            {
+                currentTime = 0;
+            }
+        }
+    }
+    
+    private void GetNewWanderDestination()
+    {
+        // 원점을 기준으로 x축 방향으로 랜덤한 위치 결정
+        float randomX = originPos.x + Random.Range(-wanderDistance, wanderDistance);
+        // y축과 z축은 현재 위치를 유지
+        float y = transform.position.y;
+        float z = transform.position.z;
+        // 새로운 배회 목적지 설정
+        wanderPosition = new Vector3(randomX, y, z);
     }
 
     // 1) 공격 범위 안에 들어오지 않았을 때: 이동
     // 2) 공격 범위 안에 들어왔을 때: 상태 전환(공격)
-    void Move()
+    void Chase()
     {
         // 만일 현재 위치가 초기 위치에서 이동 가능 범위를 넘어간다면 (이동 가능 거리 체크)
         if (Vector3.Distance(transform.position, originPos) > moveDistance)
@@ -163,7 +247,7 @@ public partial class EnemyFSM : MonoBehaviour
         {
             // 이동 방향 설정
             Vector3 dir = (target.transform.position - transform.position).normalized;
-            cc.Move(dir * monsterStats.movement_Speed * Time.deltaTime); // 이동
+            cc.Move(dir * monsterStats.Movement_Speed * Time.deltaTime); // 이동
         }
         
         // 그렇지 않다면, 현재 상태를 공격으로 전환
@@ -205,7 +289,7 @@ public partial class EnemyFSM : MonoBehaviour
         // 공격 중이라도, 플레이어가 공격 범위를 넘어가면 이동 상태로 변환 (경과 시간 초기화!)
         else
         {
-            m_State = EnemyState.Move;
+            m_State = EnemyState.Chase;
             print("상태 전환: Attack -> Move");
             currentTime = 0;
             
@@ -219,7 +303,7 @@ public partial class EnemyFSM : MonoBehaviour
         if (target != null)
         {
             target.DamagedPlayer();
-            target.ReceiveDamage(CombatCalculator.CalculateAttackDamage(monsterStats.attack, target.playerStats.defense, monsterStats.attack_multiplier, monsterStats.critical_multiplier));
+            target.ReceiveDamage(CombatCalculator.CalculateAttackDamage(monsterStats.Attack, target.playerStats.defense, monsterStats.Attack_multiplier, monsterStats.Critical_multiplier));
             
             // 플레이어가 반대 방향 보고 있으면, 뒤집기 
             float playerToMonsterDistance = transform.position.x - target.transform.position.x;
@@ -233,7 +317,7 @@ public partial class EnemyFSM : MonoBehaviour
         if (Vector3.Distance(transform.position, originPos) > 0.1f)
         {
             Vector3 dir = (originPos - transform.position).normalized;
-            cc.Move(dir * monsterStats.movement_Speed * Time.deltaTime);
+            cc.Move(dir * monsterStats.Movement_Speed * Time.deltaTime);
         }
         // 그렇지 않다면, 자신의 위치를 초기 위치로 조정 + 현재 상태를 대기로 전환
         else
@@ -258,12 +342,13 @@ public partial class EnemyFSM : MonoBehaviour
         }
         
         // 플레이어의 공격력만큼 에너미의 체력 감소
-        monsterStats.currentHP -= hitPower;
+        monsterStats.CurrentHP -= hitPower; // CurrentHP 프로퍼티를 통해 HP 감소
+        
         // 데미지 텍스트 생성
         CreateDamageText(hitPower);
         
         // 에너미의 체력이 0보다 크면 피격 상태로 전환
-        if (monsterStats.currentHP > 0)
+        if (monsterStats.CurrentHP > 0)
         {
             m_State = EnemyState.Damaged;
             print("상태 전환: Any state -> Damaged");
@@ -287,7 +372,6 @@ public partial class EnemyFSM : MonoBehaviour
     
     void Damaged()
     {
-        HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
         StartCoroutine(DamageProcess()); // 피격 상태를 처리하기 위한 코루틴
     }
 
@@ -298,7 +382,7 @@ public partial class EnemyFSM : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         
         // 현재 상태를 이동 상태로 전환
-        m_State = EnemyState.Move;
+        m_State = EnemyState.Chase;
         print("상태 전환: Damaged -> Move");
     }
 
@@ -314,22 +398,19 @@ public partial class EnemyFSM : MonoBehaviour
     IEnumerator DieProcess()
     {
         ItemDrop();
-        HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
-
-        // 캐릭터 컨트롤러 컴포넌트를 비활성화
-        cc.enabled = false;
-        
-        // 2초 동안 기다린 후, 자기 자신을 제거 
-        yield return new WaitForSeconds(2f);
-        
-        //Destroy(gameObject);
-        gameObject.SetActive(false);
-        // 리스트에 에너미 삽입
-        EnemyManager.Instance.enemyObjectPool.Add(gameObject);
+        hpSlider.gameObject.SetActive(false);
+        cc.enabled = false; // 캐릭터 컨트롤러 비활성화
+        yield return new WaitForSeconds(dieDelay); // 사망 후 일정 시간 대기
     }
-    
-    void HPSliderUpdate(Slider hpSlider, int currentHP, int maxHP)
+
+    // 죽음 이벤트에 호출될 메서드 (애니메이션 이벤트)
+    public void DeactivateEnemy()
     {
-        Utilities.HPSliderUpdate(hpSlider, monsterStats.currentHP, monsterStats.maxHP);
+        // 죽음 애니메이션이 끝나는 시점에, 몬스터 비활성화
+        gameObject.SetActive(false);
+        monsterStats.CurrentHP = monsterStats.MaxHP; // hp 초기화
+        hpSlider.gameObject.SetActive(true);
+        cc.enabled = true;
+        EnemyManager.Instance.enemyObjectPool.Add(gameObject); // 오브젝트 풀로 반환
     }
 }
