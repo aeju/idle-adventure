@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+
+using System;
 using UnityEngine;
 
 public class MonsterStats : MonoBehaviour
@@ -8,20 +7,35 @@ public class MonsterStats : MonoBehaviour
     public MonsterStat monsterStats;
 
     // 스탯
-    public int maxHP; // 생명력
-    public int currentHP;
-    public int attack; // 공격력 
-    public int defense; // 방어력
-    public int movement_Speed; // 이동속도
+    public int MaxHP { get; private set; } // 생명력
+    public int _currentHP;
+
+    public int CurrentHP
+    {
+        get => _currentHP;
+        set
+        {
+            if (_currentHP != value)
+            { 
+                _currentHP = value;
+                OnHPChanged?.Invoke(_currentHP, MaxHP); // HP 변경 시 이벤트 발생 
+            }
+        }
+    }
+    public int Attack { get; private set; } // 공격력 
+    public int Defense { get; private set; } // 방어력
+    public int Movement_Speed { get; private set; } // 이동속도
     
-    public float attack_multiplier; 
-    public float critical_multiplier;
+    public float Attack_multiplier { get; private set; } 
+    public float Critical_multiplier { get; private set; }
 
-    public int coin;
-    public string monsterName;
-    public int exp;
+    public int Coin { get; private set; }
+    public string MonsterName { get; private set; }
+    public int Exp { get; private set; }
+    
+    public event Action<int, int> OnHPChanged;
 
-    public void Start()
+    public void Awake()
     {
         if (monsterStats != null)
         {
@@ -35,17 +49,17 @@ public class MonsterStats : MonoBehaviour
 
     public void AssignStats()
     {
-        maxHP = monsterStats.MaxHP;
-        currentHP = maxHP;
-        attack = monsterStats.Attack; 
-        defense = monsterStats.Defense; 
-        movement_Speed = monsterStats.Movement_Speed;
+        MaxHP = monsterStats.MaxHP;
+        CurrentHP = MaxHP;
+        Attack = monsterStats.Attack; 
+        Defense = monsterStats.Defense; 
+        Movement_Speed = monsterStats.Movement_Speed;
 
-        attack_multiplier = monsterStats.Attack_Multiplier;
-        critical_multiplier = monsterStats.Critical_Multiplier;
+        Attack_multiplier = monsterStats.Attack_Multiplier;
+        Critical_multiplier = monsterStats.Critical_Multiplier;
         
-        coin = monsterStats.Coin;
-        exp = monsterStats.Exp;
-        monsterName = monsterStats.Name;
+        Coin = monsterStats.Coin;
+        Exp = monsterStats.Exp;
+        MonsterName = monsterStats.Name;
     }
 }

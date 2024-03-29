@@ -4,30 +4,15 @@ using UnityEngine;
 using System;
 
 // BatteryManager : 배터리 상태 변화 -> BatteryStatus, BatteryText : 구독  
-public class BatteryManager : MonoBehaviour
+public class BatteryManager : Singleton<BatteryManager>
 {
-    public static BatteryManager Instance { get; private set; }
-
     // 배터리 상태가 변경될 때, 호출될 이벤트
     public event Action<int, UnityEngine.BatteryStatus> OnBatteryStatusChanged;
 
     // 마지막 저장된 배터리 퍼센트, 상태 
     private int lastBatteryPercentage = -1;
     private UnityEngine.BatteryStatus lastBatteryStatus = UnityEngine.BatteryStatus.Unknown;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
+    
     private void Update()
     {
         CheckBatteryStatus();

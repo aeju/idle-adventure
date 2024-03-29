@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
+// 프로젝트 전반에서 재사용할 수 있는 범용적인 메서드
 public static class Utilities
 {
     /// <summary>
@@ -12,7 +12,13 @@ public static class Utilities
     {
         if (hpSlider != null)
         {
-            hpSlider.value = (float)currentHP / (float)maxHP;
+            hpSlider.value = (float)currentHP / maxHP;
+            Debug.Log($"HP Updated: {currentHP} / {maxHP}");
+        }
+
+        else
+        {
+            Debug.LogError("HP Slider not assigned");
         }
     }
     
@@ -70,5 +76,21 @@ public static class Utilities
     public static float MinutesToSeconds(float minutes)
     {
         return minutes * 60f;
+    }
+    
+    /// <summary>
+    /// 현재 UTC 시간을 반환
+    /// </summary>
+    public static DateTime GetCurrentTimeUTC() // 현재 UTC 시간 반환 
+    {
+        return DateTime.UtcNow;
+    }
+    
+    /// <summary>
+    /// 현재 한국 표준시(KST)를 반환 (KST : UTC + 9)
+    /// </summary>
+    public static DateTime GetCurrentTimeKST() // 현재 한국 표준시 반환 
+    {
+        return DateTime.UtcNow.AddHours(9); // UTC + 9 = KST
     }
 }
