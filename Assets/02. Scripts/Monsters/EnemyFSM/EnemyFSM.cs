@@ -172,7 +172,7 @@ public partial class EnemyFSM : MonoBehaviour
         if (Vector3.Distance(transform.position, target.transform.position) < findDistance)
         {
             m_State = EnemyState.Chase;
-            print("상태 전환: Idle -> Move");
+            print("상태 전환: Idle -> Chase");
             
         }
         else // Wander
@@ -192,10 +192,10 @@ public partial class EnemyFSM : MonoBehaviour
         if (Vector3.Distance(transform.position, target.transform.position) < findDistance)
         {
             m_State = EnemyState.Chase;
-            print("상태 전환: Idle -> Move");
+            print("상태 전환: Wander -> Chase");
             
             // 이동 애니메이션으로 전환
-            anim.SetTrigger("IdleToMove");
+            // anim.SetTrigger("IdleToMove");
         }
 
         else
