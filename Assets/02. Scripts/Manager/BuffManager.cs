@@ -56,15 +56,22 @@ public class BuffManager : MonoBehaviour
             BuffIconOn();
             OnBuffActivated?.Invoke(buff);
             
-            StartCoroutine(DeactivateAfterDuration(buff, durationMinute));
+            StartCoroutine(DeactivateAfterDuration(buff, durationMinute)); // 코루틴 시작
         }
     }
     
+    // 버프 비활성화 관리 코루틴
     private IEnumerator DeactivateAfterDuration(Buff buff, float durationMinute)
     {
-        float seconds = durationMinute * 60;
+        float seconds = Utilities.MinutesToSeconds(durationMinute);
         yield return new WaitForSeconds(seconds);
 
+        DeactivateBuff(buff);
+    }
+    
+    // 버프 비활성화 메서드
+    void DeactivateBuff(Buff buff)
+    {
         if (IsBuffActive) // 활성화된 상태
         {
             IsBuffActive = false;
