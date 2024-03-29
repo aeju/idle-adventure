@@ -41,12 +41,12 @@ public partial class EnemyFSM : MonoBehaviour
     {
         if (userInfo != null)
         {
-            userInfo.AddExperience(monsterStats.exp);
+            userInfo.AddExperience(monsterStats.Exp);
         }
 
         if (resourceInfo != null)
         {
-            resourceInfo.AddCoin(monsterStats.coin);
+            resourceInfo.AddCoin(monsterStats.Coin);
         }
     }
 }
