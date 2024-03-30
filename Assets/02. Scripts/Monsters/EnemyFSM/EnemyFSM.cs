@@ -40,6 +40,7 @@ public partial class EnemyFSM : MonoBehaviour
 
     // 배회 가능 최대 거리
     [SerializeField] float wanderDistance = 3f;
+    [SerializeField] float wanderOffset = 0.5f;
 
     // 캐릭터 컨트롤러 컴포넌트
     private CharacterController cc;
@@ -151,12 +152,10 @@ public partial class EnemyFSM : MonoBehaviour
         {
             flipX = originPos.x > transform.position.x;
         }
-        /*
         else if (m_State == EnemyState.Wander)
         {
             flipX = wanderDestination.x > transform.position.x;
         }
-         */
         else if (target != null)
         {
             flipX = target.transform.position.x > transform.position.x;
@@ -243,15 +242,19 @@ public partial class EnemyFSM : MonoBehaviour
 
     private void GetNewWanderDestination()
     {
-        // 원점을 기준으로 x축 방향으로 랜덤한 위치 결정
-        float randomX = originPos.x + Random.Range(-wanderDistance, wanderDistance);
-        float randomZ = originPos.x + Random.Range(-wanderDistance, wanderDistance);
+        // Offset 값 랜덤하게 결정
+        float offsetRandomX = Random.Range(-wanderOffset, wanderOffset);
+        float offsetRandomZ = Random.Range(-wanderOffset, wanderOffset);
+        
+        
+        // 원점을 기준으로 x, z 방향으로 랜덤한 위치 결정
+        float randomX = originPos.x + Random.Range(-wanderDistance, wanderDistance) + offsetRandomX;
+        float randomZ = originPos.x + Random.Range(-wanderDistance, wanderDistance) + offsetRandomZ;
+        
         // y축과 z축은 현재 위치를 유지
         float y = transform.position.y;
-        //float z = transform.position.z;
         
         wanderDestination = new Vector3(randomX, y, randomZ); // 새로운 배회 목적지 설정
-        FlipTowardsPlayer(); // 새로운 목적지로 설정 후 방향 업데이트 
     }
 
     // 1) 공격 범위 안에 들어오지 않았을 때: 이동
