@@ -239,13 +239,12 @@ public partial class EnemyFSM : MonoBehaviour
             }
         }
     }
-
+    
     private void GetNewWanderDestination()
     {
         // Offset 값 랜덤하게 결정
         float offsetRandomX = Random.Range(-wanderOffset, wanderOffset);
         float offsetRandomZ = Random.Range(-wanderOffset, wanderOffset);
-        
         
         // 원점을 기준으로 x, z 방향으로 랜덤한 위치 결정
         float randomX = originPos.x + Random.Range(-wanderDistance, wanderDistance) + offsetRandomX;
@@ -253,8 +252,21 @@ public partial class EnemyFSM : MonoBehaviour
         
         // y축과 z축은 현재 위치를 유지
         float y = transform.position.y;
+        float z = transform.position.y;
         
-        wanderDestination = new Vector3(randomX, y, randomZ); // 새로운 배회 목적지 설정
+        wanderDestination = new Vector3(randomX, y, z); // 새로운 배회 목적지 설정
+    }
+    
+    void OnDrawGizmosSelected()
+    {
+        if (wanderDistance != 0)
+        {
+            Gizmos.color = Color.yellow; // 배회 범위
+            Gizmos.DrawWireSphere(originPos, wanderDistance); // 원점 위치, 배회 가능 최대 거리 반지름 원
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(originPos, 0.5f); // 몬스터의 초기 위치
+        }
     }
 
     // 1) 공격 범위 안에 들어오지 않았을 때: 이동
