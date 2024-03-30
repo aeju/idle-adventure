@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
-    // public static EnemyManager Instance { get; private set; }
     private float currentTime; // 경과 시간 추적
     public GameObject enemyFactory;
 
