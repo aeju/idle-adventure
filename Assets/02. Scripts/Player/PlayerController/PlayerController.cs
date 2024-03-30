@@ -72,9 +72,9 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         isAlive = true;
         flipX = false;
         DeactivateEffects();
-        HPSliderUpdate(hpSlider, playerStats.currentHP, playerStats.maxHP);
         monsterLayerMask = LayerMask.GetMask("Enemy");
         StartCoroutine(DetectNearestMonsterCoroutine());
+        playerStats.OnPlayerHPChanged += HandlePlayerHpChange; // 체력에 대한 이벤트 구독
         
         isSkillOnCooldown = false;
         lastSkillTime = -skillCooldown;
@@ -120,13 +120,12 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     // EnemyFSM에서 공격할 때, 호출 (->_damageState)
     public void ReceiveDamage(int damage)
     {
-        if (isAlive && playerStats.currentHP > 0)
+        if (isAlive && playerStats.CurrentHP > 0)
         {
-            playerStats.currentHP -= damage;
+            playerStats.CurrentHP -= damage;
             CreateDamageText(damage);
-            HPSliderUpdate(hpSlider, playerStats.currentHP, playerStats.maxHP);
 
-            if (playerStats.currentHP <= 0)
+            if (playerStats.CurrentHP <= 0)
             {
                 DiePlayer();
             }
@@ -167,9 +166,10 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         }
     }
 
-    void HPSliderUpdate(Slider hpSlider, int currentHP, int maxHP)
+    void HandlePlayerHpChange(int currentHP, int maxHP)
     {
-        Utilities.HPSliderUpdate(hpSlider, playerStats.currentHP, playerStats.maxHP);
+        Debug.Log($"[Player] Handling HP Change. New HP: {currentHP}/{maxHP}");
+        Utilities.HPSliderUpdate(hpSlider, playerStats.CurrentHP, playerStats.maxHP);
     }
     
     void CreateDamageText(int hitPower)

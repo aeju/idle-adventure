@@ -92,7 +92,7 @@ public partial class EnemyFSM : MonoBehaviour
     {
         m_State = EnemyState.Idle; // 최초의 에너미 상태 : Idle
         originPos = transform.position; // 자신의 초기 위치 저장
-        monsterStats.OnHPChanged += HandleHPChange; // HP 변경 이벤트 구독
+        monsterStats.OnEnemyHPChanged += HandleEnemyHpChange; // HP 변경 이벤트 구독
 
         Utilities.HPSliderUpdate(hpSlider, monsterStats.CurrentHP, monsterStats.MaxHP); // HP 바 업데이트
         currentTime = 0; // 타이머 리셋
@@ -100,10 +100,10 @@ public partial class EnemyFSM : MonoBehaviour
 
     void OnDisable()
     {
-        monsterStats.OnHPChanged -= HandleHPChange; // HP 변경 이벤트 구독 해제
+        monsterStats.OnEnemyHPChanged -= HandleEnemyHpChange; // HP 변경 이벤트 구독 해제
     }
 
-    void HandleHPChange(int currentHP, int maxHP)
+    void HandleEnemyHpChange(int currentHP, int maxHP)
     {
         Debug.Log($"[EnemyFSM] Handling HP Change. New HP: {currentHP}/{maxHP}");
         Utilities.HPSliderUpdate(hpSlider, currentHP, maxHP);
@@ -311,13 +311,13 @@ public partial class EnemyFSM : MonoBehaviour
         if (Vector3.Distance(transform.position, target.transform.position) < attackDistance)
         {
             // 플레이어 hp > 0일 때만, (생존 상태)
-            if (target.playerStats.currentHP > 0)
+            if (target.playerStats._currentHP > 0)
             {
                 // 일정한 시간마다 플레이어를 공격
                 currentTime += Time.deltaTime; // 경과 시간 누적
                 if (currentTime > attackDelay) // 경과 시간 > 공격 딜레이 시간
                 {
-                    print("공격, PlayerHP: " + target.GetComponent<PlayerController>().playerStats.currentHP);
+                    print("공격, PlayerHP: " + target.GetComponent<PlayerController>().playerStats._currentHP);
                     currentTime = 0; // 경과 시간 초기화
                     anim.SetTrigger("StartAttack"); // 공격 애니메이션 플레이
                 }

@@ -18,7 +18,7 @@ public class MonsterStats : MonoBehaviour
             if (_currentHP != value)
             { 
                 _currentHP = value;
-                OnHPChanged?.Invoke(_currentHP, MaxHP); // HP 변경 시 이벤트 발생 
+                OnEnemyHPChanged?.Invoke(_currentHP, MaxHP); // HP 변경 시 이벤트 발생 
             }
         }
     }
@@ -33,7 +33,7 @@ public class MonsterStats : MonoBehaviour
     public string MonsterName { get; private set; }
     public int Exp { get; private set; }
     
-    public event Action<int, int> OnHPChanged;
+    public event Action<int, int> OnEnemyHPChanged;
 
     public void Awake()
     {
