@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +10,23 @@ public class PlayerStats : MonoBehaviour
 
     private PlayerController _playerController;
     
-    public int currentHP;  // 현재 체력
+    public int _currentHP;  // 현재 체력
+    
+    // HP 변경 시 호출되는 이벤트
+    public event Action<int, int> OnPlayerHPChanged;
+    
+    public int CurrentHP // currentHP 프로퍼티 
+    {
+        get => _currentHP;
+        set
+        {
+            if (_currentHP != value)
+            {
+                _currentHP = value;
+                OnPlayerHPChanged?.Invoke(_currentHP, maxHP); // HP 변경 시 이벤트 발생 
+            }
+        }
+    }
     
     public int maxHP { get; set; } // 생명력 
     public int attack { get; set; } // 공격력 
@@ -29,6 +45,7 @@ public class PlayerStats : MonoBehaviour
     public float skill_Multiplier { get; private set; } // 스킬 공격 퍼센트
 
     public int combatPower; // 전투력
+    
     
     public void Awake()
     {
@@ -49,7 +66,7 @@ public class PlayerStats : MonoBehaviour
     public void AssignStats()
     {
         maxHP = playerStat.MaxHP;
-        currentHP = maxHP; // HP 초기화
+        _currentHP = maxHP; // HP 초기화
         attack = playerStat.Attack;
         defense = playerStat.Defense;
         movement_Speed = playerStat.Movement_Speed;
