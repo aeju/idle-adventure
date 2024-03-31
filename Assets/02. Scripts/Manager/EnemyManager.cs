@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
+    // 쿼드트리 매니저
+    private QuadtreeManager quadtreeManager;
+    
     private float currentTime; // 경과 시간 추적
     public GameObject enemyFactory;
 
@@ -31,6 +34,12 @@ public class EnemyManager : Singleton<EnemyManager>
     void Start()
     {
         CreateMonsterPool();
+
+        if (!quadtreeManager)
+        {
+            Debug.LogError("quadtreeManager null");
+            quadtreeManager = FindObjectOfType<QuadtreeManager>();
+        }
     }
 
     // 오브젝트 풀 생성
@@ -79,6 +88,14 @@ public class EnemyManager : Singleton<EnemyManager>
                 enemyObjectPool.Remove(enemy); // 오브젝트 풀에서 에너미 제거
                 enemy.transform.position = spawnPoints[index].position; // 에너미 위치 설정
                 enemy.SetActive(true); // 에너미 활성화
+                
+                /*
+                // 새로 생성된 몬스터 위치 -> Quadtree에 삽입
+                if (quadtreeManager != null)
+                {
+                    Debug.Log("[quadtree]insert" + enemy.transform.position);
+                }
+                */
                 
                 // 사용한 인덱스 기록
                 usedSpawnPoints.Add(index);
