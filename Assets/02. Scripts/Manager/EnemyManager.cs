@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyManager : Singleton<EnemyManager>
 {
     // 쿼드트리 매니저
-    private QuadtreeManager quadtreeManager;
+    //private QuadtreeManager quadtreeManager;
     
     private float currentTime; // 경과 시간 추적
     public GameObject enemyFactory;
@@ -35,11 +35,13 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         CreateMonsterPool();
 
+        /*
         if (!quadtreeManager)
         {
             Debug.LogError("quadtreeManager null");
             quadtreeManager = FindObjectOfType<QuadtreeManager>();
         }
+        */
     }
 
     // 오브젝트 풀 생성
