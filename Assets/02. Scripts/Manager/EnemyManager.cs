@@ -2,11 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public struct ClusterInfo
+{
+    //public Vector3 clusterCenter; // 클러스터 중심 위치
+    public Transform clusterCenter; // 클러스터 중심 위치
+    public float clusterRadius; // 클러스터 반경
+    public GameObject monsterPrefab; // 이 클러스터에서 사용할 몬스터 프리팹
+}
+
 public class EnemyManager : Singleton<EnemyManager>
 {
-    // 쿼드트리 매니저
-    //private QuadtreeManager quadtreeManager;
-    
     private float currentTime; // 경과 시간 추적
     public GameObject enemyFactory;
 
@@ -21,27 +27,23 @@ public class EnemyManager : Singleton<EnemyManager>
     
     // 최대 몬스터 수 (오브젝트 풀 크기)
     public int maxMonsters = 10;
-
+    
     // 오브젝트 풀 배열 (생성된 적 보관)
     public List<GameObject> enemyObjectPool;
 
     // 적이 생성될 위치 (SpawnPoint들)
-    public Transform[] spawnPoints;
+     public Transform[] spawnPoints;
 
     // 사용된 spawnPoints 인덱스 추적을 위한 리스트
     private List<int> usedSpawnPoints  = new List<int>();
     
+    // 클러스터 소환
+     public ClusterInfo[] clusters; // 클러스터 정보 배열
+     
+    
     void Start()
     {
         CreateMonsterPool();
-
-        /*
-        if (!quadtreeManager)
-        {
-            Debug.LogError("quadtreeManager null");
-            quadtreeManager = FindObjectOfType<QuadtreeManager>();
-        }
-        */
     }
 
     // 오브젝트 풀 생성
@@ -91,13 +93,7 @@ public class EnemyManager : Singleton<EnemyManager>
                 enemy.transform.position = spawnPoints[index].position; // 에너미 위치 설정
                 enemy.SetActive(true); // 에너미 활성화
                 
-                /*
-                // 새로 생성된 몬스터 위치 -> Quadtree에 삽입
-                if (quadtreeManager != null)
-                {
-                    Debug.Log("[quadtree]insert" + enemy.transform.position);
-                }
-                */
+                QuadtreeManager.Instance.InsertEnemy(enemy.transform.position);
                 
                 // 사용한 인덱스 기록
                 usedSpawnPoints.Add(index);
