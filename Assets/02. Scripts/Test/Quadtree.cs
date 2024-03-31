@@ -72,20 +72,25 @@ public class Quadtree : MonoBehaviour
     void Subdivide()
     {
         var x = boundary.centerX;
-        var y = boundary.centerY;
+        //var y = boundary.centerY;
+        var z = boundary.centerZ;
         var w = boundary.width;
         var h = boundary.height;
 
-        var ne = new Rectangle(x + w / 2, y + h / 2, w / 2, h / 2);
+        //var ne = new Rectangle(x + w / 2, y + h / 2, w / 2, h / 2);
+        var ne = new Rectangle(x + w / 2, z + h / 2, w / 2, h / 2);
         northEast = new Quadtree(ne, capacity);
 
-        var nw = new Rectangle(x - w / 2, y + h / 2, w / 2, h / 2);
+        //var nw = new Rectangle(x - w / 2, y + h / 2, w / 2, h / 2);
+        var nw = new Rectangle(x - w / 2, z + h / 2, w / 2, h / 2);
         northWest = new Quadtree(nw, capacity);
         
-        var se = new Rectangle(x + w / 2, y - h / 2, w / 2, h / 2);
+        //var se = new Rectangle(x + w / 2, y - h / 2, w / 2, h / 2);
+        var se = new Rectangle(x + w / 2, z - h / 2, w / 2, h / 2);
         southEast = new Quadtree(se, capacity);
         
-        var sw = new Rectangle(x - w / 2, y - h / 2, w / 2, h / 2);
+        //var sw = new Rectangle(x - w / 2, y - h / 2, w / 2, h / 2);
+        var sw = new Rectangle(x - w / 2, z - h / 2, w / 2, h / 2);
         southWest = new Quadtree(sw, capacity);
 
         divided = true;
@@ -97,13 +102,18 @@ public class Quadtree : MonoBehaviour
         // 경계선 그리기
         for (float x = 0; x < boundary.width * 2; x++)
         {
-            tex.SetPixel((int)(boundary.centerX + x - boundary.width), (int)(boundary.centerY - boundary.height - 1), Color.red);
-            tex.SetPixel((int)(boundary.centerX + x - boundary.width), (int)(boundary.centerY + boundary.height), Color.green);
+            //tex.SetPixel((int)(boundary.centerX + x - boundary.width), (int)(boundary.centerY - boundary.height - 1), Color.red);
+            tex.SetPixel((int)(boundary.centerX + x - boundary.width), (int)(boundary.centerZ - boundary.height - 1), Color.red);
+            //tex.SetPixel((int)(boundary.centerX + x - boundary.width), (int)(boundary.centerY + boundary.height), Color.green);
+            tex.SetPixel((int)(boundary.centerX + x - boundary.width), (int)(boundary.centerZ + boundary.height), Color.green);
         }
-        for (float y = 0; y < boundary.height * 2; y++)
+        //for (float y = 0; y < boundary.height * 2; y++)
+        for (float z = 0; z < boundary.height * 2; z++)
         {
-            tex.SetPixel((int)(boundary.centerX - boundary.width - 1), (int)(boundary.centerY + y - boundary.height), Color.blue);
-            tex.SetPixel((int)(boundary.centerX + boundary.width), (int)(boundary.centerY + y - boundary.height), Color.gray);
+            //tex.SetPixel((int)(boundary.centerX - boundary.width - 1), (int)(boundary.centerY + y - boundary.height), Color.blue);
+            tex.SetPixel((int)(boundary.centerX - boundary.width - 1), (int)(boundary.centerZ + z - boundary.height), Color.blue);
+            //tex.SetPixel((int)(boundary.centerX + boundary.width), (int)(boundary.centerY + y - boundary.height), Color.gray);
+            tex.SetPixel((int)(boundary.centerX + boundary.width), (int)(boundary.centerZ + z - boundary.height), Color.gray);
         }
 
         // 재귀적으로 자식 보이기
@@ -118,7 +128,8 @@ public class Quadtree : MonoBehaviour
         // 실제 포인트 그리기
         for (int i = 0, length = points.Count; i < length; i++)
         {
-            tex.SetPixel((int)points[i].x, (int)points[i].y, Color.white);
+            //tex.SetPixel((int)points[i].x, (int)points[i].y, Color.white);
+            tex.SetPixel((int)points[i].x, (int)points[i].z, Color.white);
         }
     }
 }

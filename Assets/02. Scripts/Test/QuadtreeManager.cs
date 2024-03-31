@@ -10,6 +10,7 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
     Quadtree quadTree;
 
     public int capacity = 1;
+    public int totalArea = 100;
 
     Color32[] resetColorArray;
     Color32 resetColor = new Color32(0, 0, 0, 255);
