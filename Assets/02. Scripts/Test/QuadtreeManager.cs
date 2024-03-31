@@ -7,33 +7,36 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
 {
     Texture2D tex;
     public Renderer targetRenderer;
-    Quadtree quadTree;
+    private Quadtree quadTree = null;
 
-    public int capacity = 1;
-    public int totalArea = 100;
+    public int capacity = 0;
+   //public int totalArea = 100;
 
+    // Quadtree 경계 설정 속성
+    public float boundaryCenterX = 0f;
+    public float boundaryCenterZ = 0f;
+    public float boundaryWidth = 100f;
+    public float boundaryHeight = 100f;
+    
     Color32[] resetColorArray;
     Color32 resetColor = new Color32(0, 0, 0, 255);
-
+    
     void Start()
     {
-        int resolution = 256;
-        
-        tex = new Texture2D(resolution, resolution, TextureFormat.RGB24, false);
+        //tex = new Texture2D(totalArea, totalArea, TextureFormat.RGB24, false);
+        tex = new Texture2D((int)boundaryWidth, (int)boundaryHeight, TextureFormat.RGB24, false);
         tex.filterMode = FilterMode.Point;
 
         // texture 초기화
         resetColorArray = tex.GetPixels32();
         ClearTexture(tex);
         tex.Apply(false);
-
-        int size = resolution / 2;
-
-        Rectangle boundary = new Rectangle(size, size, size, size);
-
+        
+        // Rectangle 객체 = 쿼드트리 경계
+        Rectangle boundary = new Rectangle(boundaryCenterX, boundaryCenterZ, boundaryWidth, boundaryHeight);
         quadTree = new Quadtree(boundary, capacity);
-
-        // 시각화
+        
+        // 시각화를 위해 텍스처를 targetRenderer에 할당
         targetRenderer.material.mainTexture = tex;
     }
 
@@ -67,37 +70,35 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
         }
         tex.SetPixels32(resetColorArray);
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+
+        // Gizmo로 지형 위에 눕혀진 박스, DrawWireCube(중심점, 너비/높이/깊이)
+        //Gizmos.DrawWireCube(new Vector3(0, 0, 0), new Vector3(totalArea, 0.1f, totalArea));
+        Gizmos.DrawWireCube(new Vector3(boundaryCenterX, 0, boundaryCenterZ), new Vector3(boundaryWidth, 0.1f, boundaryHeight));
+    }
+    
+    public void InsertEnemy(Vector3 position)
+    {
+        Debug.Log($"Trying to insert enemy at: {position}"); // 적 생성 위치 로그
+        // Vector3 위치를 Point로 변환
+        Point point = new Point(position.x, position.z); 
+        
+        // 쿼드트리에 포인트 삽입
+        if (!quadTree.Insert(point))
+        {
+            Debug.LogError($"Point {point.x}, {point.z} is outside the Quadtree boundary.");
+        }
+    }
     
     /*
-    public Vector2 totalArea = new Vector3(100f, 100f);
-
-    public Quadtree quadtree = null;
-
-    private void Awake()
-    {
-        /*
         // 쿼드 트리가 없다면, 새로 만듦
         if (quadtree == null)
         {
             quadtree = new Quadtree(totalArea);
         }
-    }
-    */
-    
-    /*
-    // 몬스터가 생성될 때 호출 (위치를 quadtree에 삽입)
-    public void InsertMonster(GameObject monster)
-    {
-        quadtree.Insert(monster);
-    }
-    
-    
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.cyan;
-        
-        // 지형 위에 눕혀진 박스 DrawWireCube(중심점, 너비/높이/깊이)
-        Gizmos.DrawWireCube(Vector3.zero, new Vector3(totalArea.x, 0.1f, totalArea.y));
-    }
+
     */
 }
