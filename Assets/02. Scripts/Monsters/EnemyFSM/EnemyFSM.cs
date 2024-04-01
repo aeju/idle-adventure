@@ -448,6 +448,7 @@ public partial class EnemyFSM : MonoBehaviour
         monsterStats.CurrentHP = monsterStats.MaxHP; // hp 초기화
         hpSlider.gameObject.SetActive(true);
         cc.enabled = true;
-        EnemyManager.Instance.enemyObjectPool.Add(gameObject); // 오브젝트 풀로 반환
+        //EnemyManager.Instance.enemyObjectPool.Add(gameObject); // 오브젝트 풀로 반환
+        EnemyManager.Instance.ReturnEnemyToPool(gameObject); // 오브젝트 풀로 반환
     }
 }
