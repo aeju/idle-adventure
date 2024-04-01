@@ -10963,13 +10963,18 @@ MonoBehaviour:
   createTime: 1
   minTime: 0.5
   maxTime: 1.5
-  maxMonsters: 4
-  enemyObjectPool: []
+  maxMonsters: 2
+  enemyObjectPool:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   spawnPoints:
   - {fileID: 1312993301}
   - {fileID: 266687743}
   - {fileID: 535804481}
   - {fileID: 1140009460}
+  clusters: []
 --- !u!1 &474776087
 GameObject:
   m_ObjectHideFlags: 0

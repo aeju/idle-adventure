@@ -10,21 +10,19 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
     private Quadtree quadTree = null;
 
     public int capacity = 0;
-   //public int totalArea = 100;
 
     // Quadtree 경계 설정 속성
     public float boundaryCenterX = 0f;
     public float boundaryCenterZ = 0f;
     public float boundaryWidth = 100f;
-    public float boundaryHeight = 100f;
+    public float boundaryLength = 100f;
     
     Color32[] resetColorArray;
     Color32 resetColor = new Color32(0, 0, 0, 255);
     
     void Start()
     {
-        //tex = new Texture2D(totalArea, totalArea, TextureFormat.RGB24, false);
-        tex = new Texture2D((int)boundaryWidth, (int)boundaryHeight, TextureFormat.RGB24, false);
+        tex = new Texture2D((int)boundaryWidth, (int)boundaryLength, TextureFormat.RGB24, false);
         tex.filterMode = FilterMode.Point;
 
         // texture 초기화
@@ -33,7 +31,7 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
         tex.Apply(false);
         
         // Rectangle 객체 = 쿼드트리 경계
-        Rectangle boundary = new Rectangle(boundaryCenterX, boundaryCenterZ, boundaryWidth, boundaryHeight);
+        Rectangle boundary = new Rectangle(boundaryCenterX, boundaryCenterZ, boundaryWidth, boundaryLength);
         quadTree = new Quadtree(boundary, capacity);
         
         // 시각화를 위해 텍스처를 targetRenderer에 할당
@@ -76,8 +74,7 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
         Gizmos.color = Color.cyan;
 
         // Gizmo로 지형 위에 눕혀진 박스, DrawWireCube(중심점, 너비/높이/깊이)
-        //Gizmos.DrawWireCube(new Vector3(0, 0, 0), new Vector3(totalArea, 0.1f, totalArea));
-        Gizmos.DrawWireCube(new Vector3(boundaryCenterX, 0, boundaryCenterZ), new Vector3(boundaryWidth, 0.1f, boundaryHeight));
+        Gizmos.DrawWireCube(new Vector3(boundaryCenterX, 0, boundaryCenterZ), new Vector3(boundaryWidth, 0.1f, boundaryLength));
     }
     
     public void InsertEnemy(Vector3 position)
