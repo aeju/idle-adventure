@@ -98,11 +98,6 @@ public partial class EnemyFSM : MonoBehaviour
         currentTime = 0; // 타이머 리셋
     }
 
-    void OnDisable()
-    {
-        monsterStats.OnEnemyHPChanged -= HandleEnemyHpChange; // HP 변경 이벤트 구독 해제
-    }
-
     void HandleEnemyHpChange(int currentHP, int maxHP)
     {
         Debug.Log($"[EnemyFSM] Handling HP Change. New HP: {currentHP}/{maxHP}");
@@ -449,6 +444,7 @@ public partial class EnemyFSM : MonoBehaviour
     {
         // 죽음 애니메이션이 끝나는 시점에, 몬스터 비활성화
         gameObject.SetActive(false);
+        monsterStats.OnEnemyHPChanged -= HandleEnemyHpChange; // HP 변경 이벤트 구독 해제
         monsterStats.CurrentHP = monsterStats.MaxHP; // hp 초기화
         hpSlider.gameObject.SetActive(true);
         cc.enabled = true;
