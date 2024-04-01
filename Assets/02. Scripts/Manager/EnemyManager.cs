@@ -16,28 +16,18 @@ public struct ClusterInfo
 public class EnemyManager : Singleton<EnemyManager>
 {
     public ClusterInfo[] clusters; // 클러스터 정보 배열
-    
-    // 오브젝트 풀 배열 (생성된 적 보관)
-    public List<GameObject> enemyObjectPool;
+    public List<GameObject> enemyObjectPool; // 오브젝트 풀 배열 (생성된 적 보관)
     
     private float currentTime; // 경과 시간 추적
     
     // 다음 적 생성까지의 시간
     public float createTime = 1;
     
-    // 적 생성 최소 대기 시간
-    public float minTime = 0.5f;
-
-    // 적 생성 최대 대기 시간
-    public float maxTime = 1.5f;
-    
-    // 오브젝트 풀 크기
-    private int maxMonsters;
-    
+    public float minTime = 0.5f; // 적 생성 최소 대기 시간
+    public float maxTime = 1.5f; // 적 생성 최대 대기 시간
     
     void Start()
     {
-        CalculateMaxMonsters(); // 오브젝트 풀 크기 계산
         CreateMonsterPool(); // 오브젝트 풀 생성
     }
 
@@ -55,28 +45,17 @@ public class EnemyManager : Singleton<EnemyManager>
         }
     }
     
-    // 오브젝트 풀 크기 계산
-    void CalculateMaxMonsters()
-    {
-        maxMonsters = 0;
-        foreach (var cluster in clusters)
-        {
-            maxMonsters += (cluster.maxMonster + cluster.monsterOffset); // 기본값 + off최댓값으로 풀 생성
-        }
-    }
-    
     // 오브젝트 풀 생성
     void CreateMonsterPool()
     {
         enemyObjectPool = new List<GameObject>();
-
-        foreach (var cluster in clusters)
+        foreach (ClusterInfo cluster in clusters)
         {
-            for (int i = 0; i < maxMonsters; i++)
+            for (int i = 0; i < cluster.maxMonster + cluster.monsterOffset; i++)
             {
                 GameObject enemy = Instantiate(cluster.monsterPrefab);
-                enemy.name = $"Monster_{i + 1:00}"; // 몬스터 이름 지정 (Monster_01 ... )
                 enemy.SetActive(false); // 초기 상태는 비활성화
+                enemy.name = $"Monster_{i + 1:00}"; // 몬스터 이름 지정 (Monster_01 ... )
                 enemyObjectPool.Add(enemy); // 오브젝트 풀에 몬스터 추가
             }
         }
@@ -84,10 +63,10 @@ public class EnemyManager : Singleton<EnemyManager>
 
     void SpawnMonstersByCluster()
     {
-        foreach (var cluster in clusters)
+        foreach (ClusterInfo cluster in clusters)
         {
             int monstersToSpawn = Random.Range(cluster.maxMonster - cluster.monsterOffset, cluster.maxMonster + cluster.monsterOffset + 1);
-            for (int i = 0; i < monstersToSpawn; i++)
+            for (int i = 0; i < monstersToSpawn && enemyObjectPool.Count > 0; i++)
             {
                 GameObject enemy = GetEnemyFromPool();
                 if (enemy != null) // 오브젝트 풀에 사용 가능한 에너미가 있다면
@@ -100,7 +79,7 @@ public class EnemyManager : Singleton<EnemyManager>
         }
     }
     
-    // 오브젝트 풀에서 사용 가능한 몬스터를 반환하는 함수, 프리팹을 매개변수로 받도록 
+    // 오브젝트 풀에서 사용 가능한 몬스터를 반환
     GameObject GetEnemyFromPool()
     {
         foreach (GameObject enemy in enemyObjectPool)
@@ -112,6 +91,7 @@ public class EnemyManager : Singleton<EnemyManager>
         }
         return null; // 사용 가능한 적이 없으면 null 반환
     }
+    
 
     // 클러스터 반경 내에서 중복되지 않는 랜덤 위치를 생성
     Vector3 GenerateSpawnPosition(Vector3 center, float radius)
