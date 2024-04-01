@@ -11025,13 +11025,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a9ef02d081764498a283718912937f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyFactory: {fileID: 7106887405609920340, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
-  createTime: 1
-  minTime: 0.5
-  maxTime: 1.5
-  maxMonsters: 0
-  enemyObjectPool: []
-  spawnPoints: []
   clusters:
   - clusterCenter: {fileID: 46070122}
     clusterRadius: 10
@@ -11041,18 +11034,22 @@ MonoBehaviour:
   - clusterCenter: {fileID: 1242500528}
     clusterRadius: 20
     monsterPrefab: {fileID: 89244861614901818, guid: 4b547d40eb1c4443ebb1ec1c046ea9d9, type: 3}
-    maxMonster: 10
+    maxMonster: 4
     monsterOffset: 5
   - clusterCenter: {fileID: 1543885686}
     clusterRadius: 30
     monsterPrefab: {fileID: 7412863796431518017, guid: b8a168f13fd3f4d50b14c52e5268fffb, type: 3}
-    maxMonster: 5
+    maxMonster: 6
     monsterOffset: 5
   - clusterCenter: {fileID: 1173351479}
     clusterRadius: 40
     monsterPrefab: {fileID: 4815065833336844147, guid: d5ed7f6e643d2493790707608a8f8ce1, type: 3}
-    maxMonster: 20
+    maxMonster: 8
     monsterOffset: 5
+  enemyObjectPool: []
+  createTime: 1
+  minTime: 0.5
+  maxTime: 1.5
 --- !u!1 &474776087
 GameObject:
   m_ObjectHideFlags: 0

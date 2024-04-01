@@ -39,7 +39,6 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         CalculateMaxMonsters(); // 오브젝트 풀 크기 계산
         CreateMonsterPool(); // 오브젝트 풀 생성
-        SpawnMonstersByCluster(); // 클러스터별 초기 몬스터 배치
     }
 
     void Update()
@@ -50,7 +49,6 @@ public class EnemyManager : Singleton<EnemyManager>
         // 지정된 시간이 지나면 적 생성
         if (currentTime > createTime)
         {
-            //SpawnMonster();
             SpawnMonstersByCluster();
             createTime = Random.Range(minTime, maxTime); // 다음 생성 시간 랜덤 설정
             currentTime = 0; // 시간 초기화
@@ -74,7 +72,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
         foreach (var cluster in clusters)
         {
-            for (int i = 0; i < cluster.maxMonster + cluster.monsterOffset; i++)
+            for (int i = 0; i < maxMonsters; i++)
             {
                 GameObject enemy = Instantiate(cluster.monsterPrefab);
                 enemy.name = $"Monster_{i + 1:00}"; // 몬스터 이름 지정 (Monster_01 ... )
@@ -91,7 +89,7 @@ public class EnemyManager : Singleton<EnemyManager>
             int monstersToSpawn = Random.Range(cluster.maxMonster - cluster.monsterOffset, cluster.maxMonster + cluster.monsterOffset + 1);
             for (int i = 0; i < monstersToSpawn; i++)
             {
-                GameObject enemy = GetEnemyFromPool(cluster.monsterPrefab);
+                GameObject enemy = GetEnemyFromPool();
                 if (enemy != null) // 오브젝트 풀에 사용 가능한 에너미가 있다면
                 {
                     Vector3 spawnPosition = GenerateSpawnPosition(cluster.clusterCenter.position, cluster.clusterRadius);
@@ -103,22 +101,16 @@ public class EnemyManager : Singleton<EnemyManager>
     }
     
     // 오브젝트 풀에서 사용 가능한 몬스터를 반환하는 함수, 프리팹을 매개변수로 받도록 
-    GameObject GetEnemyFromPool(GameObject prefab)
+    GameObject GetEnemyFromPool()
     {
         foreach (GameObject enemy in enemyObjectPool)
         {
-            if (!enemy.activeSelf && enemy.name.StartsWith(prefab.name)) // 프리팹 이름으로 비교
+            if (!enemy.activeSelf) // 비활성화 상태인 적을 찾음
             {
                 return enemy;
             }
         }
-        
-        // 풀에 적합한 몬스터가 없는 경우, 새로 생성
-        GameObject newEnemy = Instantiate(prefab);
-        newEnemy.SetActive(false);
-        newEnemy.name = prefab.name + "_" + enemyObjectPool.Count;
-        enemyObjectPool.Add(newEnemy);
-        return newEnemy;
+        return null; // 사용 가능한 적이 없으면 null 반환
     }
 
     // 클러스터 반경 내에서 중복되지 않는 랜덤 위치를 생성
