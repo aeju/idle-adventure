@@ -3,64 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
+// (25 +- 5 마리 * 4 클러스터)
 public struct ClusterInfo
 {
-    //public Vector3 clusterCenter; // 클러스터 중심 위치
     public Transform clusterCenter; // 클러스터 중심 위치
     public float clusterRadius; // 클러스터 반경
-    public GameObject monsterPrefab; // 이 클러스터에서 사용할 몬스터 프리팹
+    public GameObject monsterPrefab; // 클러스터에서 사용할 몬스터 프리팹
+    public int maxMonster; // 클러스트 당 최대 몬스터 수 
+    public int monsterOffset;
 }
 
 public class EnemyManager : Singleton<EnemyManager>
 {
+    public ClusterInfo[] clusters; // 클러스터 정보 배열
+    
+    // 오브젝트 풀 배열 (생성된 적 보관)
+    public List<GameObject> enemyObjectPool;
+    
     private float currentTime; // 경과 시간 추적
-    public GameObject enemyFactory;
-
+    
     // 다음 적 생성까지의 시간
     public float createTime = 1;
-
+    
     // 적 생성 최소 대기 시간
     public float minTime = 0.5f;
 
     // 적 생성 최대 대기 시간
     public float maxTime = 1.5f;
     
-    // 최대 몬스터 수 (오브젝트 풀 크기)
-    public int maxMonsters = 10;
+    // 오브젝트 풀 크기
+    private int maxMonsters;
     
-    // 오브젝트 풀 배열 (생성된 적 보관)
-    public List<GameObject> enemyObjectPool;
-
-    // 적이 생성될 위치 (SpawnPoint들)
-     public Transform[] spawnPoints;
-
-    // 사용된 spawnPoints 인덱스 추적을 위한 리스트
-    private List<int> usedSpawnPoints  = new List<int>();
-    
-    // 클러스터 소환
-     public ClusterInfo[] clusters; // 클러스터 정보 배열
-     
     
     void Start()
     {
-        CreateMonsterPool();
-    }
-
-    // 오브젝트 풀 생성
-    void CreateMonsterPool()
-    {
-        enemyObjectPool = new List<GameObject>();
-
-        // 오브젝트 풀에 넣을 에너미 개수만큼 반복해서
-        for (int i = 0; i < maxMonsters; i++)
-        {
-            // 몬스터 프리팹을 인스턴스화하여 생성 (에너미 공장에서 에너미 생성)
-            GameObject enemy = Instantiate(enemyFactory);
-            enemy.name = $"Monster_{i + 1:00}"; // 몬스터 이름 지정 (Monster_01 ... )
-            enemy.SetActive(false); // 초기 상태 : 비활성화
-            
-            enemyObjectPool.Add(enemy); // 오브젝트 풀에 몬스터 추가
-        }
+        CalculateMaxMonsters(); // 오브젝트 풀 크기 계산
+        CreateMonsterPool(); // 오브젝트 풀 생성
+        SpawnMonstersByCluster(); // 클러스터별 초기 몬스터 배치
     }
 
     void Update()
@@ -71,71 +50,103 @@ public class EnemyManager : Singleton<EnemyManager>
         // 지정된 시간이 지나면 적 생성
         if (currentTime > createTime)
         {
-            SpawnMonster();
+            //SpawnMonster();
+            SpawnMonstersByCluster();
             createTime = Random.Range(minTime, maxTime); // 다음 생성 시간 랜덤 설정
             currentTime = 0; // 시간 초기화
         }
     }
-
-    // 적 생성 함수
-    void SpawnMonster()
+    
+    // 오브젝트 풀 크기 계산
+    void CalculateMaxMonsters()
     {
-        GameObject enemy = GetEnemyFromPool();
-        if (enemy != null) // 오브젝트 풀에 사용 가능한 에너미가 있다면
+        maxMonsters = 0;
+        foreach (var cluster in clusters)
         {
-            // 사용 가능한 spawnPoint 인덱스 가져오기
-            int index = GetRandomSpawnPoint();
-            
-            // 유효한 인덱스가 있다면
-            if (index != -1)
+            maxMonsters += (cluster.maxMonster + cluster.monsterOffset); // 기본값 + off최댓값으로 풀 생성
+        }
+    }
+    
+    // 오브젝트 풀 생성
+    void CreateMonsterPool()
+    {
+        enemyObjectPool = new List<GameObject>();
+
+        foreach (var cluster in clusters)
+        {
+            for (int i = 0; i < cluster.maxMonster + cluster.monsterOffset; i++)
             {
-                enemy.transform.position = spawnPoints[index].position; // 에너미 위치 설정
-                enemy.SetActive(true); // 에너미 활성화 
-                usedSpawnPoints.Add(index); // 사용한 인덱스 기록
-                
-                QuadtreeManager.Instance.InsertEnemy(enemy.transform.position); 
+                GameObject enemy = Instantiate(cluster.monsterPrefab);
+                enemy.name = $"Monster_{i + 1:00}"; // 몬스터 이름 지정 (Monster_01 ... )
+                enemy.SetActive(false); // 초기 상태는 비활성화
+                enemyObjectPool.Add(enemy); // 오브젝트 풀에 몬스터 추가
             }
         }
     }
 
-    // 오브젝트 풀에서 사용 가능한 적을 반환 (적 생성 로직, 관리 로직 분리)
-    GameObject GetEnemyFromPool()
+    void SpawnMonstersByCluster()
+    {
+        foreach (var cluster in clusters)
+        {
+            int monstersToSpawn = Random.Range(cluster.maxMonster - cluster.monsterOffset, cluster.maxMonster + cluster.monsterOffset + 1);
+            for (int i = 0; i < monstersToSpawn; i++)
+            {
+                GameObject enemy = GetEnemyFromPool(cluster.monsterPrefab);
+                if (enemy != null) // 오브젝트 풀에 사용 가능한 에너미가 있다면
+                {
+                    Vector3 spawnPosition = GenerateSpawnPosition(cluster.clusterCenter.position, cluster.clusterRadius);
+                    enemy.transform.position = spawnPosition;
+                    enemy.SetActive(true);
+                }
+            }
+        }
+    }
+    
+    // 오브젝트 풀에서 사용 가능한 몬스터를 반환하는 함수, 프리팹을 매개변수로 받도록 
+    GameObject GetEnemyFromPool(GameObject prefab)
     {
         foreach (GameObject enemy in enemyObjectPool)
         {
-            if (!enemy.activeSelf) // 비활성화 상태인 적을 찾음
+            if (!enemy.activeSelf && enemy.name.StartsWith(prefab.name)) // 프리팹 이름으로 비교
             {
                 return enemy;
             }
         }
-
-        return null; // 사용 가능한 적이 없으면 null 반환
+        
+        // 풀에 적합한 몬스터가 없는 경우, 새로 생성
+        GameObject newEnemy = Instantiate(prefab);
+        newEnemy.SetActive(false);
+        newEnemy.name = prefab.name + "_" + enemyObjectPool.Count;
+        enemyObjectPool.Add(newEnemy);
+        return newEnemy;
     }
 
-    // 사용 가능한 spawnPoint 인덱스 반환 함수
-    int GetRandomSpawnPoint()
+    // 클러스터 반경 내에서 중복되지 않는 랜덤 위치를 생성
+    Vector3 GenerateSpawnPosition(Vector3 center, float radius)
     {
-        List<int> availableSpawnPoints = new List<int>();
-        for (int i = 0; i < spawnPoints.Length; i++)
+        Vector3 spawnPosition;
+        do
         {
-            if (!usedSpawnPoints.Contains(i))
+            float randomAngle = Random.Range(0, 360) * Mathf.Deg2Rad;
+            float randomRadius = Random.Range(0, radius);
+            spawnPosition = new Vector3(center.x + Mathf.Cos(randomAngle) * randomRadius, 0, center.z + Mathf.Sin(randomAngle) * randomRadius);
+        }
+        while (IsPositionOccupied(spawnPosition));
+
+        return spawnPosition;
+    }
+
+    // 주어진 위치가 이미 사용되었는지 확인
+    bool IsPositionOccupied(Vector3 position)
+    {
+        foreach (var enemy in enemyObjectPool)
+        {
+            if (enemy.activeSelf && Vector3.Distance(enemy.transform.position, position) < 1.0f) // 간단한 충돌 검사
             {
-                availableSpawnPoints.Add(i); // 아직 사용되지 않은 spawnPoint 인덱스 추가
+                return true;
             }
         }
-
-        if (availableSpawnPoints.Count > 0)
-        {
-            // 사용 가능한 spawnPoint 중 하나를 랜덤하게 선택
-            int randomIndex = Random.Range(0, availableSpawnPoints.Count);
-            return availableSpawnPoints[randomIndex];
-        }
-        else
-        {
-            // 모든 spawnPoints가 사용되었다면, 리스트 초기화하고 다시 시작
-            usedSpawnPoints.Clear();
-            return GetRandomSpawnPoint();
-        }
+        return false;
     }
     
     // 적 인스턴스를 오브젝트 풀로 반환
