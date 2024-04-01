@@ -80,25 +80,36 @@ public class EnemyManager : Singleton<EnemyManager>
     // 적 생성 함수
     void SpawnMonster()
     {
-        if (enemyObjectPool.Count > 0) // 오브젝트 풀에 사용 가능한 에너미가 있다면
+        GameObject enemy = GetEnemyFromPool();
+        if (enemy != null) // 오브젝트 풀에 사용 가능한 에너미가 있다면
         {
             // 사용 가능한 spawnPoint 인덱스 가져오기
             int index = GetRandomSpawnPoint();
             
-            // 유효한 인덱스가 있다면 
+            // 유효한 인덱스가 있다면
             if (index != -1)
             {
-                GameObject enemy = enemyObjectPool[0]; // 오브젝트 풀에서 enemy를 가져다 사용
-                enemyObjectPool.Remove(enemy); // 오브젝트 풀에서 에너미 제거
                 enemy.transform.position = spawnPoints[index].position; // 에너미 위치 설정
-                enemy.SetActive(true); // 에너미 활성화
+                enemy.SetActive(true); // 에너미 활성화 
+                usedSpawnPoints.Add(index); // 사용한 인덱스 기록
                 
-                QuadtreeManager.Instance.InsertEnemy(enemy.transform.position);
-                
-                // 사용한 인덱스 기록
-                usedSpawnPoints.Add(index);
+                QuadtreeManager.Instance.InsertEnemy(enemy.transform.position); 
             }
         }
+    }
+
+    // 오브젝트 풀에서 사용 가능한 적을 반환 (적 생성 로직, 관리 로직 분리)
+    GameObject GetEnemyFromPool()
+    {
+        foreach (GameObject enemy in enemyObjectPool)
+        {
+            if (!enemy.activeSelf) // 비활성화 상태인 적을 찾음
+            {
+                return enemy;
+            }
+        }
+
+        return null; // 사용 가능한 적이 없으면 null 반환
     }
 
     // 사용 가능한 spawnPoint 인덱스 반환 함수
