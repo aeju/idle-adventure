@@ -137,4 +137,14 @@ public class EnemyManager : Singleton<EnemyManager>
             return GetRandomSpawnPoint();
         }
     }
+    
+    // 적 인스턴스를 오브젝트 풀로 반환
+    public void ReturnEnemyToPool(GameObject enemy)
+    {
+        if (!enemyObjectPool.Contains(enemy))
+        {
+            enemy.SetActive(false); // 적 인스턴스를 비활성화
+            enemyObjectPool.Add(enemy); // 오브젝트 풀에 적 인스턴스 추가
+        }
+    }
 }
