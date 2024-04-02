@@ -92,8 +92,12 @@ public class EnemyManager : Singleton<EnemyManager>
                 enemyObjectPool.Remove(enemy); // 오브젝트 풀에서 에너미 제거
                 enemy.transform.position = spawnPoints[index].position; // 에너미 위치 설정
                 enemy.SetActive(true); // 에너미 활성화
+
+                if (QuadtreeManager.Instance != null)
+                {
+                    QuadtreeManager.Instance.InsertEnemy(enemy.transform.position);
+                }
                 
-                QuadtreeManager.Instance.InsertEnemy(enemy.transform.position);
                 
                 // 사용한 인덱스 기록
                 usedSpawnPoints.Add(index);
