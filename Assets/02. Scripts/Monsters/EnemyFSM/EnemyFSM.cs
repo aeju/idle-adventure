@@ -76,6 +76,7 @@ public partial class EnemyFSM : MonoBehaviour
     void Awake()
     {
         target = FindObjectOfType<PlayerController>();
+        print("player : " + target.transform.position);
 
         // 몬스터 - 캐릭터 컨트롤러 컴포넌트 받아오기
         cc = GetComponent<CharacterController>();
