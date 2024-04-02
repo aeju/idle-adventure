@@ -130,4 +130,23 @@ public class EnemyManager : Singleton<EnemyManager>
             enemyObjectPool.Add(enemy); // 오브젝트 풀에 적 인스턴스 추가
         }
     }
+    
+    void OnDrawGizmos()
+    {
+        if (clusters == null) 
+            return;
+
+        foreach (ClusterInfo cluster in clusters)
+        {
+            // 클러스터 중심 - 작은 구체
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(cluster.clusterCenter.position, 2f);
+            
+            // 클러스터 반경
+            Gizmos.color = Color.blue;
+            //Gizmos.DrawWireSphere(cluster.clusterCenter.position, cluster.clusterRadius);
+            Vector3 cubeSize = new Vector3(cluster.clusterRadius * 2, 0.5f, cluster.clusterRadius * 2);
+            Gizmos.DrawWireCube(cluster.clusterCenter.position, cubeSize);
+        }
+    }
 }
