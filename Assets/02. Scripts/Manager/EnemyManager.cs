@@ -2,19 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
 [System.Serializable]
 public struct ClusterInfo
 {
-    //public Vector3 clusterCenter; // 클러스터 중심 위치
     public Transform clusterCenter; // 클러스터 중심 위치
     public float clusterRadius; // 클러스터 반경
     public GameObject monsterPrefab; // 이 클러스터에서 사용할 몬스터 프리팹
 }
+*/
 
 public class EnemyManager : Singleton<EnemyManager>
 {
+    //public ClusterInfo[] clusters; // 클러스터 정보 배열
+    
     private float currentTime; // 경과 시간 추적
-    public GameObject enemyFactory;
+    public GameObject monsterPrefab;
 
     // 다음 적 생성까지의 시간
     public float createTime = 1;
@@ -26,41 +29,49 @@ public class EnemyManager : Singleton<EnemyManager>
     public float maxTime = 1.5f;
     
     // 최대 몬스터 수 (오브젝트 풀 크기)
-    public int maxMonsters = 10;
+    public int maxMonsters = 3;
+    public int monsterOffset = 2;
     
     // 오브젝트 풀 배열 (생성된 적 보관)
     public List<GameObject> enemyObjectPool;
 
     // 적이 생성될 위치 (SpawnPoint들)
-     public Transform[] spawnPoints;
+    public Transform[] spawnPoints;
 
     // 사용된 spawnPoints 인덱스 추적을 위한 리스트
     private List<int> usedSpawnPoints  = new List<int>();
     
-    // 클러스터 소환
-     public ClusterInfo[] clusters; // 클러스터 정보 배열
-     
     
     void Start()
     {
         CreateMonsterPool();
     }
 
+    
+    
     // 오브젝트 풀 생성
     void CreateMonsterPool()
     {
+        CalculateMaxMonsters(); // 몬스터 수 지정값 안에서 랜덤
+        
         enemyObjectPool = new List<GameObject>();
-
+        
         // 오브젝트 풀에 넣을 에너미 개수만큼 반복해서
         for (int i = 0; i < maxMonsters; i++)
         {
-            // 몬스터 프리팹을 인스턴스화하여 생성 (에너미 공장에서 에너미 생성)
-            GameObject enemy = Instantiate(enemyFactory);
+            GameObject enemy = Instantiate(monsterPrefab); // 몬스터 프리팹을 인스턴스화하여 생성 
             enemy.name = $"Monster_{i + 1:00}"; // 몬스터 이름 지정 (Monster_01 ... )
             enemy.SetActive(false); // 초기 상태 : 비활성화
             
             enemyObjectPool.Add(enemy); // 오브젝트 풀에 몬스터 추가
         }
+    }
+    
+    void CalculateMaxMonsters()
+    {
+        int minMonster = maxMonsters - monsterOffset;
+        int maxMonster = maxMonsters + monsterOffset;
+        maxMonsters = Random.Range(minMonster, maxMonster + 1);
     }
 
     void Update()
@@ -92,8 +103,11 @@ public class EnemyManager : Singleton<EnemyManager>
                 enemy.transform.position = spawnPoints[index].position; // 에너미 위치 설정
                 enemy.SetActive(true); // 에너미 활성화 
                 usedSpawnPoints.Add(index); // 사용한 인덱스 기록
-                
-                QuadtreeManager.Instance.InsertEnemy(enemy.transform.position); 
+
+                if (QuadtreeManager.Instance != null)
+                {
+                    QuadtreeManager.Instance.InsertEnemy(enemy.transform.position); 
+                }
             }
         }
     }
