@@ -42,13 +42,20 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     public bool flipX;
 
     public Transform ponpo;
+    public Rigidbody rigid;
 
     // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
     void Start()
     {
         ponpo = transform.GetChild(0);
         anim = ponpo.GetComponent<Animator>();
-        joystick = FindObjectOfType<FullScreenJoystick>();
+        //rigid = ponpo.GetComponent<Rigidbody>();
+        rigid = GetComponent<Rigidbody>();
+
+        if (!joystick)
+        {
+            joystick = FindObjectOfType<FullScreenJoystick>();
+        }
         
         // 상태 객체: 인스턴스화 필요 (일반 클래스 인스턴스로 생성)
         _idleState = new PlayerIdleState(); 
