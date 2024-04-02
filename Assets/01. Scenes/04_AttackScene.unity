@@ -12601,10 +12601,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterPrefab: {fileID: 7106887405609920340, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
-  createTime: 1
-  minTime: 0.5
-  maxTime: 1.5
-  maxMonsters: 2
+  createTime: 0
+  minTime: 5
+  maxTime: 10
+  basicMonsters: 3
   monsterOffset: 1
   enemyObjectPool: []
   spawnPoints:
