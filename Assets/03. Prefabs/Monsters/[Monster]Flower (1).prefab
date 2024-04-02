@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 1045929636077619274}
   - component: {fileID: 4517039246359427285}
   m_Layer: 8
-  m_Name: '[Monster]Flower (14)'
+  m_Name: '[Monster]Flower (1)'
   m_TagString: monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -209,7 +209,10 @@ MonoBehaviour:
   hudDamageText: {fileID: 7825407166849429008, guid: b94564b4556864b92be1b804a6449fe9, type: 3}
   findDistance: 8
   attackDistance: 2
+  wanderDistance: 3
+  wanderOffset: 0.5
   target: {fileID: 0}
+  wanderDelay: 2
   dieDelay: 1
   flipX: 0
   moveDistance: 20
@@ -254,16 +257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterStats: {fileID: 11400000, guid: 0526c017172d3401c9571b77816b0246, type: 2}
-  maxHP: 0
-  currentHP: 0
-  attack: 0
-  defense: 0
-  movement_Speed: 0
-  attack_multiplier: 0
-  critical_multiplier: 0
-  coin: 0
-  monsterName: 
-  exp: 0
+  _currentHP: 0
 --- !u!1001 &2200414630965212441
 PrefabInstance:
   m_ObjectHideFlags: 0
