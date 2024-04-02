@@ -43,12 +43,14 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
 
     public Transform ponpo;
 
+    public Rigidbody rigid;
+
     // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
     void Start()
     {
         ponpo = transform.GetChild(0);
         anim = ponpo.GetComponent<Animator>();
-        joystick = FindObjectOfType<FullScreenJoystick>();
+        rigid = GetComponentInParent<Rigidbody>();
         
         // 상태 객체: 인스턴스화 필요 (일반 클래스 인스턴스로 생성)
         _idleState = new PlayerIdleState(); 
@@ -63,6 +65,11 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         _playerStateContext = new PlayerStateContext(this);
         _playerStateContext.Transition(_idleState);
 
+        if (joystick == null)
+        {
+            joystick = FindObjectOfType<FullScreenJoystick>();
+        }
+        
         PlayerInit();
     }
 

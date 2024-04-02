@@ -27,9 +27,13 @@ public class PlayerMoveState : IPlayerState
         float verticalInput = joystickInput.y + Input.GetAxisRaw("Vertical");
         Vector3 combinedInput = new Vector3(horizontalInput, 0, verticalInput);
         
-        Vector3 moveVelocity = combinedInput.normalized * _playerController.playerStats.movement_Speed * Time.deltaTime;
-        _playerController.transform.position += moveVelocity;
+        //Vector3 moveVelocity = combinedInput.normalized * _playerController.playerStats.movement_Speed * Time.deltaTime;
+        //_playerController.transform.position += moveVelocity;
 
+        Vector3 moveVelocity = combinedInput.normalized * _playerController.playerStats.movement_Speed * Time.deltaTime; // 이동할 벡터(속도) 계산
+        Vector3 newPosition = _playerController.rigid.position + moveVelocity; // Rigidbody의 현재 위치 + 계산된 이동 벡터 = 새 위치
+        _playerController.rigid.MovePosition(newPosition); // Rigidbody를 사용하여 위치를 업데이트
+        
         // 애니메이션
         bool isMoving = combinedInput != Vector3.zero;
         _playerController.anim.SetBool("isMove", isMoving);
