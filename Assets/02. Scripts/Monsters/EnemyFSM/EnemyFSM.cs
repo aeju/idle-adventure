@@ -349,13 +349,13 @@ public partial class EnemyFSM : MonoBehaviour
 
     void Return()
     {
-        // 만일 초기 위치에서 거리가 0.1f이상이라면, 초기 위치 쪽으로 이동
-        if (Vector3.Distance(transform.position, originPos) >= 0.1f)
+        // 만일 초기 위치에서 거리가 0.3f이상이라면, 초기 위치 쪽으로 이동
+        if (Vector3.Distance(transform.position, originPos) >= 0.3f)
         {
             Vector3 dir = (originPos - transform.position).normalized;
             cc.Move(dir * monsterStats.Movement_Speed * Time.deltaTime);
         }
-        // 그렇지 않다면, 자신의 위치를 초기 위치로 조정 + 현재 상태를 대기로 전환
+        // 초기 위치에서 0.3f 이내로 들어오면, 자신의 위치를 초기 위치로 조정 + 현재 상태를 대기로 전환
         else
         {
             transform.position = originPos;
