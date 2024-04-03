@@ -238,23 +238,22 @@ public partial class EnemyFSM : MonoBehaviour
     
     private void GetNewWanderDestination()
     {
+        
         // Offset 값 랜덤하게 결정
-        float offsetRandomX = Random.Range(-wanderOffset, wanderOffset);
-        float offsetRandomZ = Random.Range(-wanderOffset, wanderOffset);
+        float randomOffset = Random.Range(-wanderOffset, wanderOffset);
         
         // 원점을 기준으로 x, z 방향으로 랜덤한 위치 결정
-        float randomX = originPos.x + Random.Range(-wanderDistance, wanderDistance) + offsetRandomX;
-        //float randomX = originPos.x + wanderDistance + offsetRandomX;
-        //float randomZ = originPos.x + Random.Range(-wanderDistance, wanderDistance) + offsetRandomZ;
+        float randomX = originPos.x + Random.Range(-wanderDistance, wanderDistance) + randomOffset;
+        // float randomZ = originPos.x + Random.Range(-wanderDistance, wanderDistance) + randomOffset;
         
-        // y축과 z축은 현재 위치를 유지
+        // 현재 위치 축 유지할 경우
         float y = transform.position.y;
-        float z = transform.position.y;
+        float z = transform.position.z;
         
         wanderDestination = new Vector3(randomX, y, z); // 새로운 배회 목적지 설정
     }
     
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
         if (wanderDistance != 0)
         {
