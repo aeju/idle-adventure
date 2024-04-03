@@ -176,14 +176,14 @@ public partial class EnemyFSM : MonoBehaviour
         else // Wander
         {
             m_State = EnemyState.Wander;
+            GetNewWanderDestination();
             print($"[{gameObject.name}] 상태 전환: Idle -> Wander");
         }
 
         // 이동 애니메이션으로 전환
         anim.SetTrigger( "IdleToMove");
     }
-
-    private float wanderTimer = 0f; // 배회 상태에서 대기하는 타이머
+    
     private bool wanderWaiting = false; // 대기 상태인지 여부
 
     // 1) 추격 범위 안에 들어오지 않았을 때: 배회
@@ -204,15 +204,18 @@ public partial class EnemyFSM : MonoBehaviour
         {
             if (!wanderWaiting) // 이동 상태 
             {
-                // 목적지로 이동
-                Vector3 dir = (wanderDestination - transform.position).normalized;
-                cc.Move(dir * monsterStats.Movement_Speed * Time.deltaTime);
+                if (Vector3.Distance(transform.position, wanderDestination) >= 0.3f)
+                {
+                    // 목적지로 이동
+                    Vector3 dir = (wanderDestination - transform.position).normalized;
+                    cc.Move(dir * monsterStats.Movement_Speed * Time.deltaTime);
+                }
                 
                 // 목적지에 도달 -> 대기 상태로 변경
-                if (Vector3.Distance(transform.position, wanderDestination) <= 0.5f)
+                //if (Vector3.Distance(transform.position, wanderDestination) <= 0.5f)
+                else
                 {
                     wanderWaiting = true; 
-                    //wanderTimer = wanderDelay; // 대기 타이머 설정
                     currentTime = 0; // 대기 타이머 설정
                     GetNewWanderDestination(); // 새 목적지 설정
                     anim.SetTrigger("MoveToIdle"); // 대기 애니메이션 
@@ -222,12 +225,10 @@ public partial class EnemyFSM : MonoBehaviour
             else // 대기 상태
             {
                 currentTime += Time.deltaTime;   
-                //wanderTimer -= Time.deltaTime; // 대기 타이머 감소
-                //if (wanderTimer <= 0)
+
                 if (currentTime >= wanderDelay)
                 {
                     wanderWaiting = false; // 대기 시간 종료 후, 다시 이동 상태로 전환
-                    //wanderTimer = wanderDelay; // 타이머 재설정
                     currentTime = 0; // 타이머 초기화
                     anim.SetTrigger("IdleToMove"); // 이동 애니메이션 
                 }
@@ -243,7 +244,8 @@ public partial class EnemyFSM : MonoBehaviour
         
         // 원점을 기준으로 x, z 방향으로 랜덤한 위치 결정
         float randomX = originPos.x + Random.Range(-wanderDistance, wanderDistance) + offsetRandomX;
-        float randomZ = originPos.x + Random.Range(-wanderDistance, wanderDistance) + offsetRandomZ;
+        //float randomX = originPos.x + wanderDistance + offsetRandomX;
+        //float randomZ = originPos.x + Random.Range(-wanderDistance, wanderDistance) + offsetRandomZ;
         
         // y축과 z축은 현재 위치를 유지
         float y = transform.position.y;
