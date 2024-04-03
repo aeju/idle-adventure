@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
+
 [System.Serializable]
 public struct ClusterInfo
 {
@@ -10,18 +10,18 @@ public struct ClusterInfo
     public float clusterRadius; // 클러스터 반경
     public GameObject monsterPrefab; // 이 클러스터에서 사용할 몬스터 프리팹
 }
-*/
+
 
 public class EnemyManager : Singleton<EnemyManager>
 {
-    //public ClusterInfo[] clusters; // 클러스터 정보 배열
+    public ClusterInfo[] clusters; // 클러스터 정보 배열
     
     private float currentTime; // 경과 시간 추적
     public GameObject monsterPrefab;
 
     private bool isFirstSpawn = true; // 첫 소환을 위한 플래그
     // 다음 적 생성까지의 시간
-    public float createTime = 1;
+    public float createTime;
     // 적 생성 최소 대기 시간
     public float minTime = 0.5f;
     // 적 생성 최대 대기 시간
