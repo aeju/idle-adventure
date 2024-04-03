@@ -19,6 +19,8 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
     
     Color32[] resetColorArray;
     Color32 resetColor = new Color32(0, 0, 0, 255);
+
+    public int maxDepth = 4; // 최대 깊이 설정
     
     void Start()
     {
@@ -32,7 +34,8 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
         
         // Rectangle 객체 = 쿼드트리 경계
         Rectangle boundary = new Rectangle(boundaryCenterX, boundaryCenterZ, boundaryWidth, boundaryLength);
-        quadTree = new Quadtree(boundary, capacity);
+        //quadTree = new Quadtree(boundary, capacity);
+        quadTree = new Quadtree(boundary, capacity, maxDepth);
         
         // 시각화를 위해 텍스처를 targetRenderer에 할당
         targetRenderer.material.mainTexture = tex;

@@ -17,10 +17,16 @@ public class Quadtree : MonoBehaviour
     private Quadtree southEast;
     private Quadtree southWest;
     
-    public Quadtree(Rectangle _boundary, int _capacity)
+    // 노드 분할 깊이 제한
+    public int maxDepth;
+    private int currentDepth; // 현재 노드의 깊이 
+    
+    public Quadtree(Rectangle _boundary, int _capacity, int _maxDepth, int _currentDepth = 0)
     {
         boundary = _boundary;
         capacity = _capacity;
+        maxDepth = _maxDepth;
+        currentDepth = _currentDepth;
         points = new List<Point>();
         divided = false;
     }
@@ -76,6 +82,12 @@ public class Quadtree : MonoBehaviour
     // 노드 사분
     void Subdivide()
     {
+        if(currentDepth >= maxDepth) // 깊이 제한 확인
+        {
+            Debug.Log($"최대 깊이 도달: currentDepth = {currentDepth}. No further subdivision.");
+            return; // 최대 깊이에 도달했으면 더 이상 분할하지 않음
+        }
+        
         var x = boundary.centerX;
         var z = boundary.centerZ;
         var w = boundary.width;
@@ -83,17 +95,24 @@ public class Quadtree : MonoBehaviour
         
         Debug.Log($"Subdividing Quadtree. Center: ({x}, {z}), Width: {w}, Height: {l}");
         
+        
         var ne = new Rectangle(x + w / 2, z + l / 2, w / 2, l / 2);
-        northEast = new Quadtree(ne, capacity);
+        
+        // 하위 노드 생성 시 깊이를 하나 증가시키고 최대 깊이를 전달
+        //northEast = new Quadtree(ne, capacity);
+        northEast = new Quadtree(ne, capacity, maxDepth, currentDepth + 1);
         
         var nw = new Rectangle(x - w / 2, z + l / 2, w / 2, l / 2);
-        northWest = new Quadtree(nw, capacity);
+        //northWest = new Quadtree(nw, capacity);
+        northWest = new Quadtree(nw, capacity, maxDepth, currentDepth + 1);
         
         var se = new Rectangle(x + w / 2, z - l / 2, w / 2, l / 2);
-        southEast = new Quadtree(se, capacity);
+        //southEast = new Quadtree(se, capacity);
+        southEast = new Quadtree(se, capacity, maxDepth, currentDepth + 1);
         
         var sw = new Rectangle(x - w / 2, z - l / 2, w / 2, l / 2);
-        southWest = new Quadtree(sw, capacity);
+        //southWest = new Quadtree(sw, capacity);
+        southWest = new Quadtree(sw, capacity, maxDepth, currentDepth + 1);
 
         divided = true;
     }
