@@ -70,7 +70,6 @@ public class EnemyManager : Singleton<EnemyManager>
         currentTime += Time.deltaTime;
 
         // 처음 : 곧바로 / 그 후 : 지정된 시간이 지나면 적 생성
-        //if (currentTime > createTime)
         if (isFirstSpawn || currentTime > createTime)
         {
             SpawnMonster();
