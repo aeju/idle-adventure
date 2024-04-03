@@ -32,7 +32,6 @@ public class Quadtree : MonoBehaviour
     }
 
     // 점 삽입
-    //public bool Insert(GameObject objPoint)
     public bool Insert(Point point)
     {
         if (boundary.Contains(point) == false)
@@ -99,22 +98,48 @@ public class Quadtree : MonoBehaviour
         var ne = new Rectangle(x + w / 2, z + l / 2, w / 2, l / 2);
         
         // 하위 노드 생성 시 깊이를 하나 증가시키고 최대 깊이를 전달
-        //northEast = new Quadtree(ne, capacity);
         northEast = new Quadtree(ne, capacity, maxDepth, currentDepth + 1);
         
         var nw = new Rectangle(x - w / 2, z + l / 2, w / 2, l / 2);
-        //northWest = new Quadtree(nw, capacity);
         northWest = new Quadtree(nw, capacity, maxDepth, currentDepth + 1);
         
         var se = new Rectangle(x + w / 2, z - l / 2, w / 2, l / 2);
-        //southEast = new Quadtree(se, capacity);
         southEast = new Quadtree(se, capacity, maxDepth, currentDepth + 1);
         
         var sw = new Rectangle(x - w / 2, z - l / 2, w / 2, l / 2);
-        //southWest = new Quadtree(sw, capacity);
         southWest = new Quadtree(sw, capacity, maxDepth, currentDepth + 1);
 
         divided = true;
+    }
+    
+    // 영역 조회 : 특정 영역(range)에 포함된 점들을 찾아 foundPoints 리스트에 추가
+    public void Query(Rectangle range, List<Point> foundPoints)
+    {
+        // 현재 노드의 경계가 조회 범위와 겹치지 않으면, 더 이상 검사할 필요 x
+        if (!boundary.Intersects(range))
+        {
+            return;
+        }
+        else
+        {
+            // 현재 노드에 저장된 모든 점들을 순회합니다.
+            foreach (var point in points)
+            {
+                // 점이 조회 범위 내에 있는지 확인합니다.
+                if (range.Contains(point))
+                {
+                    foundPoints.Add(point);
+                }
+            }
+            // 만약 현재 노드가 분할되었다면, 각 하위 노드에 대해서도 같은 조회를 재귀적으로 수행합니다.
+            if (divided)
+            {
+                northEast.Query(range, foundPoints);
+                northWest.Query(range, foundPoints);
+                southEast.Query(range, foundPoints);
+                southWest.Query(range, foundPoints);
+            }
+        }
     }
 
     // 구조 시각화

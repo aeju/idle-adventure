@@ -44,12 +44,13 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     public Transform ponpo;
     public Rigidbody rigid;
 
+    public Transform attackTest;
+    
     // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
     void Start()
     {
         ponpo = transform.GetChild(0);
         anim = ponpo.GetComponent<Animator>();
-        //rigid = ponpo.GetComponent<Rigidbody>();
         rigid = GetComponent<Rigidbody>();
 
         if (!joystick)
@@ -71,7 +72,46 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         _playerStateContext.Transition(_idleState);
 
         PlayerInit();
+        //DetectMonster();
     }
+
+    /*
+    // 가장 가까운 몬스터로 이동
+    void DetectMonster()
+    {
+        // 플레이어 위치를 기준으로 조회 범위 설정 (예시: 5유닛 반경)
+        Rectangle searchArea = new Rectangle(transform.position.x, transform.position.z, 5, 5);
+
+        // QuadtreeManager의 QueryEnemy 메소드를 사용하여 주변 몬스터 검색
+        List<Point> foundMonsters = QuadtreeManager.Instance.QueryEnemy(searchArea);
+    
+        // 검색된 몬스터들 중 가장 가까운 몬스터를 찾기
+        GameObject closestMonster = null;
+        float closestDistance = Mathf.Infinity;
+
+        
+        foreach (Point monsterPoint in foundMonsters)
+        {
+            // 몬스터 포인트의 위치로 몬스터 GameObject 찾기 (예시: 몬스터 리스트나 딕셔너리 등을 이용)
+            GameObject monster = FindMonsterGameObject(monsterPoint);
+
+            float distance = Vector3.Distance(transform.position, monster.transform.position);
+            if (distance < closestDistance)
+            {
+                closestMonster = monster;
+                closestDistance = distance;
+            }
+        }
+
+        // 가장 가까운 몬스터를 타겟으로 설정
+        if (closestMonster != null)
+        {
+            nearestMonster = closestMonster;
+            Debug.Log($"Closest Monster: {nearestMonster.name}");
+        }
+    }
+    */
+    
 
     void PlayerInit()
     {
@@ -80,7 +120,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         flipX = false;
         DeactivateEffects();
         monsterLayerMask = LayerMask.GetMask("Enemy");
-        StartCoroutine(DetectNearestMonsterCoroutine());
+        //StartCoroutine(DetectNearestMonsterCoroutine());
         playerStats.OnPlayerHPChanged += HandlePlayerHpChange; // 체력에 대한 이벤트 구독
         
         isSkillOnCooldown = false;
@@ -123,6 +163,16 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         if (!isAlive) return;
         _playerStateContext.Transition(_dieState);
     }
+
+    /*
+    void Update()
+    {
+        Debug.DrawRay(transform.position, attackTest.position, Color.blue, 0.8f);
+        // 말고 spherecast해야함! 
+    }
+    */
+
+
     
     // EnemyFSM에서 공격할 때, 호출 (->_damageState)
     public void ReceiveDamage(int damage)
@@ -144,6 +194,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         }
     }
 
+    /*
     // 체크 시간 : 3초
     public IEnumerator DetectNearestMonsterCoroutine()
     {
@@ -172,10 +223,10 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             }
         }
     }
+    */
 
     void HandlePlayerHpChange(int currentHP, int maxHP)
     {
-        Debug.Log($"[Player] Handling HP Change. New HP: {currentHP}/{maxHP}");
         Utilities.HPSliderUpdate(hpSlider, playerStats.CurrentHP, playerStats.maxHP);
     }
     
@@ -185,16 +236,8 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         {
             // flipX을 기준으로 위치 계산
             float offsetDirection = flipX ? -1.0f : 1.0f;
-            //Vector3 damagePosition = transform.position + new Vector3(1.0f, 2.0f, 0);
             Vector3 damagePosition = transform.position + new Vector3(offsetDirection * 1.0f, 2.0f, 0);
             GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform.root); // 자식으로 생성
-            
-            //GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
-            
-            /*
-            Vector3 damageScale = new Vector3(offsetDirection * 1.0f, 1.0f, 1.0f);
-            damageText.transform.localScale = damageScale;
-            */
             
             damageText.GetComponent<DamageText>().damage = hitPower;
         }

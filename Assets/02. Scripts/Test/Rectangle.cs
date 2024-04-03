@@ -16,7 +16,7 @@ public class Rectangle
         length = l;
     }
 
-    // 특정 포인트가 사각형 영역 내에 포함되는지 판단
+    // 특정 포인트가 사각형 영역 내에 포함되는지 판단 (Quadtree - Insert에서 사용)
     public bool Contains(Point point)
     {
         bool contains = (point.x > centerX - width 
@@ -24,5 +24,14 @@ public class Rectangle
                          && point.z > centerZ - length 
                          && point.z < centerZ + length);
         return contains;
+    }
+    
+    // 영역이 다른 영역과 겹치는지 판단 (Quadtree - Query에서 사용) 
+    public bool Intersects(Rectangle range)
+    {
+        return !(centerX + width < range.centerX - range.width ||
+                 centerX - width > range.centerX + range.width ||
+                 centerZ + length < range.centerZ - range.length ||
+                 centerZ - length > range.centerZ + range.length);
     }
 }

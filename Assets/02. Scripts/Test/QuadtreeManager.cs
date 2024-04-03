@@ -34,8 +34,12 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
         
         // Rectangle 객체 = 쿼드트리 경계
         Rectangle boundary = new Rectangle(boundaryCenterX, boundaryCenterZ, boundaryWidth, boundaryLength);
-        //quadTree = new Quadtree(boundary, capacity);
-        quadTree = new Quadtree(boundary, capacity, maxDepth);
+        
+        // 쿼드 트리가 없다면, 새로 만듦
+        if (quadTree == null)
+        {
+            quadTree = new Quadtree(boundary, capacity, maxDepth);
+        }
         
         // 시각화를 위해 텍스처를 targetRenderer에 할당
         targetRenderer.material.mainTexture = tex;
@@ -92,13 +96,11 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
             Debug.LogError($"Point {point.x}, {point.z} is outside the Quadtree boundary.");
         }
     }
-    
-    /*
-        // 쿼드 트리가 없다면, 새로 만듦
-        if (quadtree == null)
-        {
-            quadtree = new Quadtree(totalArea);
-        }
 
-    */
+    public List<Point> QueryEnemy(Rectangle range)
+    {
+        List<Point> foundPoints = new List<Point>();
+        quadTree.Query(range, foundPoints);
+        return foundPoints;
+    }
 }
