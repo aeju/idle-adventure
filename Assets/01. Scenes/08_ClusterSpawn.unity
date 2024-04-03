@@ -1188,7 +1188,7 @@ Transform:
   m_GameObject: {fileID: 46070121}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -18.6, y: 0, z: 21.4}
+  m_LocalPosition: {x: -31.3, y: 0, z: 31.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12572,7 +12572,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &471774864
 Transform:
   m_ObjectHideFlags: 0
@@ -12600,19 +12600,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a9ef02d081764498a283718912937f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clusters: []
-  monsterPrefab: {fileID: 7106887405609920340, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+  clusters:
+  - clusterName: "1\uAD6C\uC5ED"
+    clusterCenter: {fileID: 46070122}
+    clusterRadius: 15
+    monsterPrefab: {fileID: 7106887405609920340, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+    basicMonsters: 5
+    actualMonstersCount: 0
+  - clusterName: "2\uAD6C\uC5ED"
+    clusterCenter: {fileID: 1242500528}
+    clusterRadius: 20
+    monsterPrefab: {fileID: 715355014988856995, guid: 05470b2e202924ff0b16aa2b80aee44d, type: 3}
+    basicMonsters: 8
+    actualMonstersCount: 0
+  - clusterName: "3\uAD6C\uC5ED"
+    clusterCenter: {fileID: 1543885686}
+    clusterRadius: 25
+    monsterPrefab: {fileID: 1373061386381388818, guid: 3d203bbe55dea4e57b50b524e1175dac, type: 3}
+    basicMonsters: 10
+    actualMonstersCount: 0
+  - clusterName: "4\uAD6C\uC5ED "
+    clusterCenter: {fileID: 1173351479}
+    clusterRadius: 10
+    monsterPrefab: {fileID: 7106887405609920340, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+    basicMonsters: 8
+    actualMonstersCount: 0
   createTime: 0
   minTime: 5
   maxTime: 10
-  basicMonsters: 3
-  monsterOffset: 1
-  enemyObjectPool: []
-  spawnPoints:
-  - {fileID: 46070122}
-  - {fileID: 1242500528}
-  - {fileID: 1543885686}
-  - {fileID: 1173351479}
 --- !u!1 &474776087
 GameObject:
   m_ObjectHideFlags: 0
@@ -27179,7 +27194,7 @@ Transform:
   m_GameObject: {fileID: 1173351478}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 31.9, y: 0, z: -18.5}
+  m_LocalPosition: {x: 37.4, y: 0, z: -36.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -29907,7 +29922,7 @@ Transform:
   m_GameObject: {fileID: 1242500527}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 31.7, y: 0, z: 31.8}
+  m_LocalPosition: {x: 28.3, y: 0, z: 25.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -36460,7 +36475,7 @@ Transform:
   m_GameObject: {fileID: 1543885685}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -25.3, y: 0, z: -37}
+  m_LocalPosition: {x: -22, y: 0, z: -22.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -38201,7 +38216,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1606003551
 Transform:
   m_ObjectHideFlags: 0

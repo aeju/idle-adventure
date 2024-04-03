@@ -4,11 +4,15 @@ using UnityEngine;
 
 
 [System.Serializable]
-public struct ClusterInfo
+public class ClusterInfo
 {
+    public string clusterName; // 클러스터 이름
     public Transform clusterCenter; // 클러스터 중심 위치
     public float clusterRadius; // 클러스터 반경
     public GameObject monsterPrefab; // 이 클러스터에서 사용할 몬스터 프리팹
+    public int basicMonsters; // 기본 몬스터 수 (실제 생성 : 기본 몬스터 수 - 10% ~ 기본 몬스터 수 + 10%)
+    
+    [HideInInspector] public int actualMonstersCount; // 생성된 몬스터 수 
 }
 
 
@@ -17,51 +21,18 @@ public class EnemyManager : Singleton<EnemyManager>
     public ClusterInfo[] clusters; // 클러스터 정보 배열
     
     private float currentTime; // 경과 시간 추적
-    public GameObject monsterPrefab;
 
     private bool isFirstSpawn = true; // 첫 소환을 위한 플래그
-    // 다음 적 생성까지의 시간
-    public float createTime;
-    // 적 생성 최소 대기 시간
-    public float minTime = 0.5f;
-    // 적 생성 최대 대기 시간
-    public float maxTime = 1.5f;
     
-    // 최대 몬스터 수 (오브젝트 풀 크기)
-    private int maxMonsters = 3;
-    public int basicMonsters = 3;
-    public int monsterOffset = 2;
+    [SerializeField] private float createTime; // 다음 적 생성까지의 시간
+    [SerializeField] private float minTime = 0.5f; // 적 생성 최소 대기 시간
+    [SerializeField] private float maxTime = 1.5f; // 적 생성 최대 대기 시간
     
-    public List<GameObject> enemyObjectPool = new List<GameObject>(); // 오브젝트 풀 배열 (생성된 적 보관)
-    
-    public Transform[] spawnPoints; // 적이 생성될 위치 (SpawnPoint들)
-
-    // 사용된 spawnPoints 인덱스 추적을 위한 리스트
-    private List<int> usedSpawnPoints  = new List<int>();
-    
+    List<GameObject> enemyObjectPool = new List<GameObject>(); // 오브젝트 풀 배열 (생성된 적 보관)
     
     void Start()
     {
-        CreateMonsterPool();
-        SpawnMonster(); // 게임 시작 시 바로 몬스터 생성
-    }
-    
-    // 오브젝트 풀 생성
-    void CreateMonsterPool()
-    { 
-        // 몬스터 수 지정값 안에서 랜덤
-        int minMonster = basicMonsters - monsterOffset;
-        int maxMonster = basicMonsters + monsterOffset;
-        maxMonsters = Random.Range(minMonster, maxMonster + 1);
-        
-        for (int i = 0; i < maxMonsters; i++) // 오브젝트 풀에 넣을 에너미 개수만큼 반복해서
-        {
-            GameObject enemy = Instantiate(monsterPrefab); // 몬스터 프리팹을 인스턴스화하여 생성 
-            enemy.name = $"{monsterPrefab.name}_{i + 1:00}"; // 몬스터 이름 지정 (프리팹 이름_01 ... )
-            enemy.SetActive(false); // 초기 상태 : 비활성화
-            
-            enemyObjectPool.Add(enemy); // 오브젝트 풀에 몬스터 추가
-        }
+        CreateMonsterPoolByCluster();
     }
     
     void Update()
@@ -72,37 +43,89 @@ public class EnemyManager : Singleton<EnemyManager>
         // 처음 : 곧바로 / 그 후 : 지정된 시간이 지나면 적 생성
         if (isFirstSpawn || currentTime > createTime)
         {
-            SpawnMonster();
+            SpawnMonstersByCluster();
             createTime = Random.Range(minTime, maxTime); // 다음 생성 시간 랜덤 설정
             currentTime = 0; // 시간 초기화
             isFirstSpawn = false; // 첫 소환 후 플래그를 false로 설정
         }
     }
+    
+    void CreateMonsterPoolByCluster()
+    {
+        foreach (ClusterInfo cluster in clusters)
+        {
+            // 몬스터 수 지정값 안에서 랜덤
+            int minMonsters = Mathf.RoundToInt(cluster.basicMonsters - (cluster.basicMonsters * 0.1f));
+            int maxMonsters = Mathf.RoundToInt(cluster.basicMonsters + (cluster.basicMonsters * 0.1f));
+            int randomMonsters = Random.Range(minMonsters, maxMonsters + 1);
+
+            cluster.actualMonstersCount = randomMonsters; // 실제 생성된 몬스터 수 저장
+
+            // 클러스터별 부모 오브젝트 생성
+            GameObject clusterParent = new GameObject($"Cluster_{cluster.clusterName}");
+
+            for (int i = 0; i < randomMonsters; i++)
+            {
+                GameObject enemy = Instantiate(cluster.monsterPrefab);
+                enemy.SetActive(false); // 초기 상태 : 비활성화
+                enemy.name = $"{cluster.monsterPrefab.name}_{i + 1:00}"; // 몬스터 이름 지정 (프리팹 이름_01 ... )
+                enemy.transform.SetParent(clusterParent.transform); // 부모 설정
+                enemyObjectPool.Add(enemy); // 오브젝트 풀에 몬스터 추가
+            }
+        }
+    }
+    
+    // 클러스터 반경 내에서 중복되지 않는 랜덤 위치를 생성
+    Vector3 GenerateSpawnPosition(Vector3 center, float radius)
+    {
+        Vector3 spawnPosition;
+        do
+        {
+            float randomAngle = Random.Range(0, 360) * Mathf.Deg2Rad;
+            float randomRadius = Random.Range(0, radius);
+            spawnPosition = new Vector3(center.x + Mathf.Cos(randomAngle) * randomRadius, 0, center.z + Mathf.Sin(randomAngle) * randomRadius);
+        }
+        while (IsPositionOccupied(spawnPosition));
+
+        return spawnPosition;
+    }
+
+    // 주어진 위치가 이미 사용되었는지 확인
+    bool IsPositionOccupied(Vector3 position)
+    {
+        foreach (var enemy in enemyObjectPool)
+        {
+            if (enemy.activeSelf && Vector3.Distance(enemy.transform.position, position) < 1.0f) // 간단한 충돌 검사
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     // 적 생성 함수
-    void SpawnMonster()
+    void SpawnMonstersByCluster()
     {
-        GameObject enemy = GetEnemyFromPool();
-        if (enemy != null) // 오브젝트 풀에 사용 가능한 에너미가 있다면
+        foreach (ClusterInfo cluster in clusters)
         {
-            // 사용 가능한 spawnPoint 인덱스 가져오기
-            int index = GetRandomSpawnPoint();
-            
-            // 유효한 인덱스가 있다면
-            if (index != -1)
+            for (int i = 0; i < cluster.actualMonstersCount; i++)
             {
-                enemy.transform.position = spawnPoints[index].position; // 에너미 위치 설정
-                enemy.SetActive(true); // 에너미 활성화 
-                usedSpawnPoints.Add(index); // 사용한 인덱스 기록
-
-                if (QuadtreeManager.Instance != null)
+                GameObject enemy = GetEnemyFromPool();
+                if (enemy != null) // 오브젝트 풀에 사용 가능한 에너미가 있다면
                 {
-                    QuadtreeManager.Instance.InsertEnemy(enemy.transform.position); 
+                    Vector3 spawnPosition = GenerateSpawnPosition(cluster.clusterCenter.position, cluster.clusterRadius);
+                    enemy.transform.position = spawnPosition;
+                    enemy.SetActive(true); // 에너미 활성화 
+                    
+                    if (QuadtreeManager.Instance != null) // 위치 저장 
+                    {
+                        QuadtreeManager.Instance.InsertEnemy(enemy.transform.position); 
+                    }
                 }
             }
         }
     }
-
+    
     // 오브젝트 풀에서 사용 가능한 적을 반환 (적 생성 로직, 관리 로직 분리)
     GameObject GetEnemyFromPool()
     {
@@ -117,32 +140,6 @@ public class EnemyManager : Singleton<EnemyManager>
         return null; // 사용 가능한 적이 없으면 null 반환
     }
 
-    // 사용 가능한 spawnPoint 인덱스 반환 함수
-    int GetRandomSpawnPoint()
-    {
-        List<int> availableSpawnPoints = new List<int>();
-        for (int i = 0; i < spawnPoints.Length; i++)
-        {
-            if (!usedSpawnPoints.Contains(i))
-            {
-                availableSpawnPoints.Add(i); // 아직 사용되지 않은 spawnPoint 인덱스 추가
-            }
-        }
-
-        if (availableSpawnPoints.Count > 0)
-        {
-            // 사용 가능한 spawnPoint 중 하나를 랜덤하게 선택
-            int randomIndex = Random.Range(0, availableSpawnPoints.Count);
-            return availableSpawnPoints[randomIndex];
-        }
-        else
-        {
-            // 모든 spawnPoints가 사용되었다면, 리스트 초기화하고 다시 시작
-            usedSpawnPoints.Clear();
-            return GetRandomSpawnPoint();
-        }
-    }
-    
     // 적 인스턴스를 오브젝트 풀로 반환
     public void ReturnEnemyToPool(GameObject enemy)
     {
@@ -150,6 +147,24 @@ public class EnemyManager : Singleton<EnemyManager>
         {
             enemy.SetActive(false); // 적 인스턴스를 비활성화
             enemyObjectPool.Add(enemy); // 오브젝트 풀에 적 인스턴스 추가
+        }
+    }
+    
+    void OnDrawGizmos()
+    {
+        if (clusters == null) 
+            return;
+
+        foreach (ClusterInfo cluster in clusters)
+        {
+            // 클러스터 중심 - 작은 구체
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(cluster.clusterCenter.position, 2f);
+            
+            // 클러스터 반경
+            Gizmos.color = Color.blue;
+            Vector3 cubeSize = new Vector3(cluster.clusterRadius * 2, 0.5f, cluster.clusterRadius * 2);
+            Gizmos.DrawWireCube(cluster.clusterCenter.position, cubeSize);
         }
     }
 }
