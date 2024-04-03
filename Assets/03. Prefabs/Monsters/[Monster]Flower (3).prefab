@@ -176,7 +176,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 64
+  m_Constraints: 100
   m_CollisionDetection: 0
 --- !u!114 &6500309560259658474
 MonoBehaviour:
@@ -208,7 +208,7 @@ MonoBehaviour:
   resourceInfo: {fileID: 0}
   hudDamageText: {fileID: 7825407166849429008, guid: b94564b4556864b92be1b804a6449fe9, type: 3}
   findDistance: 8
-  attackDistance: 2
+  attackDistance: 2.5
   wanderDistance: 3
   wanderOffset: 0.5
   target: {fileID: 0}
@@ -238,7 +238,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 6.56
-  m_Radius: 2.62609
+  m_Radius: 1
   m_SlopeLimit: 45
   m_StepOffset: 0.1
   m_SkinWidth: 0.08

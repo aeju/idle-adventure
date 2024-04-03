@@ -171,19 +171,19 @@ public partial class EnemyFSM : MonoBehaviour
         if (Vector3.Distance(transform.position, target.transform.position) < findDistance)
         {
             m_State = EnemyState.Chase;
-            print("상태 전환: Idle -> Chase");
+            print($"[{gameObject.name}] 상태 전환: Idle -> Chase");
         }
         else // Wander
         {
             m_State = EnemyState.Wander;
-            print("상태 전환: Idle -> Wander");
+            GetNewWanderDestination();
+            print($"[{gameObject.name}] 상태 전환: Idle -> Wander");
         }
 
         // 이동 애니메이션으로 전환
-        anim.SetTrigger("IdleToMove");
+        anim.SetTrigger( "IdleToMove");
     }
-
-    private float wanderTimer = 0f; // 배회 상태에서 대기하는 타이머
+    
     private bool wanderWaiting = false; // 대기 상태인지 여부
 
     // 1) 추격 범위 안에 들어오지 않았을 때: 배회
@@ -194,7 +194,7 @@ public partial class EnemyFSM : MonoBehaviour
         if (Vector3.Distance(transform.position, target.transform.position) < findDistance)
         {
             m_State = EnemyState.Chase;
-            print("상태 전환: Wander -> Chase");
+            print($"[{gameObject.name}] 상태 전환: Wander -> Chase");
             currentTime = 0;
             return;
         }
@@ -204,15 +204,18 @@ public partial class EnemyFSM : MonoBehaviour
         {
             if (!wanderWaiting) // 이동 상태 
             {
-                // 목적지로 이동
-                Vector3 dir = (wanderDestination - transform.position).normalized;
-                cc.Move(dir * monsterStats.Movement_Speed * Time.deltaTime);
+                if (Vector3.Distance(transform.position, wanderDestination) >= 0.3f)
+                {
+                    // 목적지로 이동
+                    Vector3 dir = (wanderDestination - transform.position).normalized;
+                    cc.Move(dir * monsterStats.Movement_Speed * Time.deltaTime);
+                }
                 
                 // 목적지에 도달 -> 대기 상태로 변경
-                if (Vector3.Distance(transform.position, wanderDestination) <= 0.5f)
+                //if (Vector3.Distance(transform.position, wanderDestination) <= 0.5f)
+                else
                 {
                     wanderWaiting = true; 
-                    //wanderTimer = wanderDelay; // 대기 타이머 설정
                     currentTime = 0; // 대기 타이머 설정
                     GetNewWanderDestination(); // 새 목적지 설정
                     anim.SetTrigger("MoveToIdle"); // 대기 애니메이션 
@@ -222,12 +225,10 @@ public partial class EnemyFSM : MonoBehaviour
             else // 대기 상태
             {
                 currentTime += Time.deltaTime;   
-                //wanderTimer -= Time.deltaTime; // 대기 타이머 감소
-                //if (wanderTimer <= 0)
+
                 if (currentTime >= wanderDelay)
                 {
                     wanderWaiting = false; // 대기 시간 종료 후, 다시 이동 상태로 전환
-                    //wanderTimer = wanderDelay; // 타이머 재설정
                     currentTime = 0; // 타이머 초기화
                     anim.SetTrigger("IdleToMove"); // 이동 애니메이션 
                 }
@@ -243,7 +244,8 @@ public partial class EnemyFSM : MonoBehaviour
         
         // 원점을 기준으로 x, z 방향으로 랜덤한 위치 결정
         float randomX = originPos.x + Random.Range(-wanderDistance, wanderDistance) + offsetRandomX;
-        float randomZ = originPos.x + Random.Range(-wanderDistance, wanderDistance) + offsetRandomZ;
+        //float randomX = originPos.x + wanderDistance + offsetRandomX;
+        //float randomZ = originPos.x + Random.Range(-wanderDistance, wanderDistance) + offsetRandomZ;
         
         // y축과 z축은 현재 위치를 유지
         float y = transform.position.y;
@@ -273,7 +275,7 @@ public partial class EnemyFSM : MonoBehaviour
         {
             // 현재 상태: 복귀(Return)으로 전환
             m_State = EnemyState.Return;
-            print("상태 전환: Move -> Return");
+            print($"[{gameObject.name}] 상태 전환: Move -> Return");
         }
 
         // 만일, 플레이어와의 거리가 공격 범위 밖이라면, 플레이어를 향해 이동
@@ -288,7 +290,7 @@ public partial class EnemyFSM : MonoBehaviour
         else
         {
             m_State = EnemyState.Attack;
-            print("상태 전환: Move -> Attack");
+            print($"[{gameObject.name}] 상태 전환: Move -> Attack");
 
             // 누적 시간을 공격 딜레이 시간만큼 미리 진행시켜 놓기 (공격 상태로 전환됐을 때 기다렸다가 공격 시작하는 문제)
             currentTime = attackDelay;
@@ -300,6 +302,7 @@ public partial class EnemyFSM : MonoBehaviour
 
     // 1) 플레이어가 공격 범위 안에 있을 때: 공격
     // 2) 플레이어가 공격 범위 밖에 있을 때: 상태 전환(이동)
+    // attackDelay 진입 후, 잘 안 빠져나감
     void Attack()
     {
         // 만일, 플레이어가 공격 범위 이내에 있다면 플레이어를 공격
@@ -312,7 +315,7 @@ public partial class EnemyFSM : MonoBehaviour
                 currentTime += Time.deltaTime; // 경과 시간 누적
                 if (currentTime > attackDelay) // 경과 시간 > 공격 딜레이 시간
                 {
-                    print("공격, PlayerHP: " + target.GetComponent<PlayerController>().playerStats._currentHP);
+                    print($"[{gameObject.name}] 공격, PlayerHP: " + target.GetComponent<PlayerController>().playerStats._currentHP);
                     currentTime = 0; // 경과 시간 초기화
                     anim.SetTrigger("StartAttack"); // 공격 애니메이션 플레이
                 }
@@ -324,7 +327,7 @@ public partial class EnemyFSM : MonoBehaviour
         else
         {
             m_State = EnemyState.Chase;
-            print("상태 전환: Attack -> Move");
+            print($"[{gameObject.name}] 상태 전환: Attack -> Move");
             currentTime = 0;
 
             anim.SetTrigger("AttackToMove");
@@ -348,18 +351,18 @@ public partial class EnemyFSM : MonoBehaviour
 
     void Return()
     {
-        // 만일 초기 위치에서 거리가 0.1f이상이라면, 초기 위치 쪽으로 이동
-        if (Vector3.Distance(transform.position, originPos) > 0.1f)
+        // 만일 초기 위치에서 거리가 0.3f이상이라면, 초기 위치 쪽으로 이동
+        if (Vector3.Distance(transform.position, originPos) >= 0.3f)
         {
             Vector3 dir = (originPos - transform.position).normalized;
             cc.Move(dir * monsterStats.Movement_Speed * Time.deltaTime);
         }
-        // 그렇지 않다면, 자신의 위치를 초기 위치로 조정 + 현재 상태를 대기로 전환
+        // 초기 위치에서 0.3f 이내로 들어오면, 자신의 위치를 초기 위치로 조정 + 현재 상태를 대기로 전환
         else
         {
             transform.position = originPos;
             m_State = EnemyState.Idle;
-            print("상태 전환: Return -> Idle");
+            print($"[{gameObject.name}] 상태 전환: Return -> Idle");
 
             anim.SetTrigger("MoveToIdle");
         }
@@ -386,7 +389,7 @@ public partial class EnemyFSM : MonoBehaviour
         if (monsterStats.CurrentHP > 0)
         {
             m_State = EnemyState.Damaged;
-            print("상태 전환: Any state -> Damaged");
+            print($"[{gameObject.name}] 상태 전환: Any state -> Damaged");
 
             anim.SetTrigger("Damaged"); // 피격 애니메이션 플레이 
 
@@ -398,7 +401,7 @@ public partial class EnemyFSM : MonoBehaviour
         else
         {
             m_State = EnemyState.Die;
-            print("상태 전환: Any state -> Die");
+            print($"[{gameObject.name}] 상태 전환: Any state -> Die");
 
             // 죽음 애니메이션을 플레이
             anim.SetTrigger("Die");
@@ -419,7 +422,7 @@ public partial class EnemyFSM : MonoBehaviour
 
         // 현재 상태를 이동 상태로 전환
         m_State = EnemyState.Chase;
-        print("상태 전환: Damaged -> Move");
+        print($"[{gameObject.name}] 상태 전환: Damaged -> Move");
     }
 
     void Die()
@@ -448,7 +451,7 @@ public partial class EnemyFSM : MonoBehaviour
         monsterStats.CurrentHP = monsterStats.MaxHP; // hp 초기화
         hpSlider.gameObject.SetActive(true);
         cc.enabled = true;
-        //EnemyManager.Instance.enemyObjectPool.Add(gameObject); // 오브젝트 풀로 반환
+
         EnemyManager.Instance.ReturnEnemyToPool(gameObject); // 오브젝트 풀로 반환
     }
 }
