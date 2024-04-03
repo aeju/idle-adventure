@@ -106,11 +106,13 @@ public partial class EnemyFSM : MonoBehaviour
 
     void Update()
     {
+        /*
         if (target == null)
         {
             m_State = EnemyState.Idle;
             return;
         }
+        */
 
         // 현재 상태를 체크, 해당 상태별로 정해진 기능 수행
         switch (m_State)
@@ -168,12 +170,12 @@ public partial class EnemyFSM : MonoBehaviour
     void Idle()
     {
         // 만일, 플레이어와의 거리가 액션 시작 범위 이내라면 Chase 상태로 전환
-        if (Vector3.Distance(transform.position, target.transform.position) < findDistance)
+        if (target != null && Vector3.Distance(transform.position, target.transform.position) < findDistance)
         {
             m_State = EnemyState.Chase;
             print($"[{gameObject.name}] 상태 전환: Idle -> Chase");
         }
-        else // Wander
+        else // Wander (플레이어가 없거나, 멀리 있으면)
         {
             m_State = EnemyState.Wander;
             GetNewWanderDestination();
@@ -191,7 +193,7 @@ public partial class EnemyFSM : MonoBehaviour
     void Wander()
     {
         // 2) 추격으로 상태 전환
-        if (Vector3.Distance(transform.position, target.transform.position) < findDistance)
+        if (target != null && Vector3.Distance(transform.position, target.transform.position) < findDistance)
         {
             m_State = EnemyState.Chase;
             print($"[{gameObject.name}] 상태 전환: Wander -> Chase");
