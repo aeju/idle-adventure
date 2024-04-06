@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,31 +7,63 @@ using UnityEngine;
 public partial class PlayerController : MonoBehaviour
 {
     [SerializeField] private float attackDistance;
-    [SerializeField] private float skillRadius;
-    [SerializeField] private Transform attackPosition;
+    [SerializeField] private float attackMaximumMonsters; // 최대 공격 가능한 몬스터 수 
+    [SerializeField] private float attackRadius; 
+    [SerializeField] private Transform attackPosition; // 공격 위치 
+    
+    [SerializeField] private float skillRadius; 
+    
+    
     [SerializeField] private Transform skillPosition;
         
-    public void DetectAttackEnemy()
+    public void DetectAndAttack()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackDistance, attackPosition.position,  monsterLayerMask);
-        
-        float minDistance = Mathf.Infinity;
+        // 공격 위치에서 지정된 반경 내에 있는 모든 콜라이더 검출
+        Collider[] hitColliders = Physics.OverlapSphere(attackPosition.position, attackRadius, monsterLayerMask);
 
-        foreach (Collider collider in hitColliders)
+        // 검출된 몬스터들을 거리에 따라 정렬
+        List<Collider> sortedMonsters = hitColliders // 거리 계산x, 거리 비교o -> sqrMagnitude
+            .OrderBy(collider => (collider.transform.position - attackPosition.position).sqrMagnitude)
+            .ToList();
+
+        // 가장 가까운 몬스터부터 최대 공격 가능한 몬스터 수만큼 공격
+        for (int i = 0; i < Mathf.Min(attackMaximumMonsters, sortedMonsters.Count); i++)
         {
-            float distance = Vector3.Distance(transform.position, collider.transform.position);
-            if (distance < minDistance)
+            EnemyFSM enemyFsm = sortedMonsters[i].GetComponent<EnemyFSM>();
+            if (enemyFsm != null)
             {
-                minDistance = distance;
-                nearestMonster = collider.gameObject;
+                int attackDamage = CombatCalculator.CalculateAttackDamage(playerStats.attack, 
+                    enemyFsm.monsterStats.Defense, playerStats.attack_Multiplier, playerStats.critical_Multiplier);
+                enemyFsm.HitEnemy(attackDamage); // 일반공격 
             }
         }
     }
     
+    // 기본 공격 (attack02)
+    public void PlayerAttackAnim()
+    {
+        CreateAttackEffect();
+        DetectAndAttack();
+
+        /*
+        EnemyFSM enemyFsm = nearestMonster.GetComponent<EnemyFSM>();
+        if (enemyFsm != null)
+        {
+            int attackDamage = CombatCalculator.CalculateAttackDamage(playerStats.attack, enemyFsm.monsterStats.Defense, playerStats.attack_Multiplier, playerStats.critical_Multiplier);
+            enemyFsm.HitEnemy(attackDamage); // 일반공격 
+            Debug.Log("3. HitEnemy");
+        }
+        else
+        {
+            return;
+        }
+        */
+    }
+    
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Physics.SphereCast(transform.position, attackTest.position,)
+        //Gizmos.color = Color.red;
+        //Physics.SphereCast(transform.position, attackTest.position,)
     }
     
     /*
@@ -88,23 +121,7 @@ public partial class PlayerController : MonoBehaviour
     */
 
 
-    // 기본 공격 (attack02)
-    public void PlayerAttackAnim()
-    {
-        EnemyFSM enemyFsm = nearestMonster.GetComponent<EnemyFSM>();
-        CreateAttackEffect();
-
-        if (enemyFsm != null)
-        {
-            int attackDamage = CombatCalculator.CalculateAttackDamage(playerStats.attack, enemyFsm.monsterStats.Defense, playerStats.attack_Multiplier, playerStats.critical_Multiplier);
-            enemyFsm.HitEnemy(attackDamage); // 일반공격 
-            Debug.Log("3. HitEnemy");
-        }
-        else
-        {
-            return;
-        }
-    }
+   
     
     // 스킬 공격 (attack01)
     public void PlayerSkillAnim()
