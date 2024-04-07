@@ -100,7 +100,6 @@ public partial class EnemyFSM : MonoBehaviour
 
     void HandleEnemyHpChange(int currentHP, int maxHP)
     {
-        Debug.Log($"[EnemyFSM] Handling HP Change. New HP: {currentHP}/{maxHP}");
         Utilities.HPSliderUpdate(hpSlider, currentHP, maxHP);
     }
 
