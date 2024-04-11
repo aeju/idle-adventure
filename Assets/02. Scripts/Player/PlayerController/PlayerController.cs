@@ -79,6 +79,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         PlayerInit();
     }
 
+    /*
     void Update()
     {
         timeSinceLastTargetUpdate += Time.deltaTime;
@@ -91,6 +92,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             timeSinceLastTargetUpdate = 0f;
         }
     }
+    
     
     // targetMonster
     private void MoveTowardsNearestEnemy()
@@ -141,6 +143,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             anim.SetBool("isMove", false);
         }
     }
+    */
 
     void PlayerInit()
     {
