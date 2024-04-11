@@ -7,12 +7,20 @@ using TMPro;
 public class TimeTextHourMin : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI timeTextHourMin;
-
+    private float timeSinceLastUpdate = 0f; // 마지막 업데이트 이후 경과 시간
+    
     void Update()
     {
-        if (timeTextHourMin != null)
+        timeSinceLastUpdate += Time.deltaTime;
+        
+        // 1초마다 시간을 업데이트
+        if (timeSinceLastUpdate >= 1f)
         {
-            timeTextHourMin.text = Utilities.GetCurrentTimeKST().ToString("HH:mm");
+            if (timeTextHourMin != null)
+            {
+                timeTextHourMin.text = Utilities.GetCurrentTimeKST().ToString("HH:mm");
+            }
+            timeSinceLastUpdate = 0f;  // 마지막 업데이트 시간을 재설정
         }
     }
 }
