@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,13 +43,14 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
 
     public Transform ponpo;
     public Rigidbody rigid;
+    
+    [SerializeField] private float detectionRadius = 5f; // 탐지 반경 설정
 
     // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
     void Start()
     {
         ponpo = transform.GetChild(0);
         anim = ponpo.GetComponent<Animator>();
-        //rigid = ponpo.GetComponent<Rigidbody>();
         rigid = GetComponent<Rigidbody>();
 
         if (!joystick)
@@ -57,19 +58,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             joystick = FindObjectOfType<FullScreenJoystick>();
         }
         
-        // 상태 객체: 인스턴스화 필요 (일반 클래스 인스턴스로 생성)
-        _idleState = new PlayerIdleState(); 
-        _moveState = new PlayerMoveState();
-        _autoState = new PlayerAutoState();
-        _attackState = new PlayerAttackState();
-        _skillState = new PlayerSkillState();
-        _damagedState = new PlayerDamagedState();
-        _dieState = new PlayerDieState();
-
-        // 상태 관리자 인스턴스 생성 및 초기 상태로 전환
-        _playerStateContext = new PlayerStateContext(this);
-        _playerStateContext.Transition(_idleState);
-
+        InitializeStates(); // State 패턴 초기 설정
         PlayerInit();
     }
 
@@ -86,6 +75,23 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         isSkillOnCooldown = false;
         lastSkillTime = -skillCooldown;
         lastHitTime = -hitCooldown;
+    }
+    
+    // 상태 객체와 상태 관리자 인스턴스를 초기화
+    private void InitializeStates()
+    {
+        // 상태 객체: 인스턴스화 필요 (일반 클래스 인스턴스로 생성)
+        _idleState = new PlayerIdleState(); 
+        _moveState = new PlayerMoveState();
+        _autoState = new PlayerAutoState();
+        _attackState = new PlayerAttackState();
+        _skillState = new PlayerSkillState();
+        _damagedState = new PlayerDamagedState();
+        _dieState = new PlayerDieState();
+
+        // 상태 관리자 인스턴스 생성 및 초기 상태로 전환
+        _playerStateContext = new PlayerStateContext(this);
+        _playerStateContext.Transition(_idleState);
     }
 
     public void IdlePlayer()
@@ -185,16 +191,8 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         {
             // flipX을 기준으로 위치 계산
             float offsetDirection = flipX ? -1.0f : 1.0f;
-            //Vector3 damagePosition = transform.position + new Vector3(1.0f, 2.0f, 0);
             Vector3 damagePosition = transform.position + new Vector3(offsetDirection * 1.0f, 2.0f, 0);
             GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform.root); // 자식으로 생성
-            
-            //GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
-            
-            /*
-            Vector3 damageScale = new Vector3(offsetDirection * 1.0f, 1.0f, 1.0f);
-            damageText.transform.localScale = damageScale;
-            */
             
             damageText.GetComponent<DamageText>().damage = hitPower;
         }
@@ -213,5 +211,53 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             // flipX 상태 업데이트
             flipX = !flipX;
         }
+    }
+    
+    // 문제 : 10마리 탐지 주기 
+    void Update()
+    {
+        List<GameObject> monsters = monstersInRange();
+        if (monsters.Count > 0)
+        {
+            Debug.Log($"Detected {monsters.Count} monsters in range:");
+            
+            foreach (GameObject monster in monsters)
+            {
+                Debug.Log($"Detected List: {monster.name}");
+            }
+        }
+    }
+    
+    // 일단은 Update에서 -> 추후, 이동 완료 플래그(isReached) 후 실행!  
+    // 지정된 범위 내에서 모든 몬스터를 찾아 리스트로 반환하는 메서드
+    public List<GameObject> monstersInRange()
+    {
+        List<GameObject> monstersInRange = new List<GameObject>();
+
+        // 현재 위치에서 detectionRadius 내의 모든 콜라이더를 검색
+        Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius, monsterLayerMask);
+
+        // 검색된 콜라이더에서 게임 오브젝트 추출
+        foreach (Collider collider in colliders)
+        {
+            if (collider.gameObject != this.gameObject) // 플레이어 자신은 제외
+            {
+                monstersInRange.Add(collider.gameObject);
+            }
+        }
+        
+        // 거리에 따라 몬스터 리스트를 정렬
+        monstersInRange.Sort((a, b) => 
+            (transform.position - a.transform.position).sqrMagnitude
+            .CompareTo((transform.position - b.transform.position).sqrMagnitude));
+
+        // 최대 10마리의 몬스터만 반환
+        return monstersInRange.Take(10).ToList();
+    }
+    
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius); // 현재 위치를 중심으로 하는 와이어 프레임 구를 그림
     }
 }
