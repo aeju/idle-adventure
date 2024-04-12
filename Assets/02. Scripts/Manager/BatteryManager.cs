@@ -12,10 +12,19 @@ public class BatteryManager : Singleton<BatteryManager>
     // 마지막 저장된 배터리 퍼센트, 상태 
     private int lastBatteryPercentage = -1;
     private UnityEngine.BatteryStatus lastBatteryStatus = UnityEngine.BatteryStatus.Unknown;
+
+    [SerializeField] private float checkTime = 1f; // 배터리 상태 확인 주기 (1초)
+    private float currentTime;
     
     private void Update()
     {
-        CheckBatteryStatus();
+        currentTime += Time.deltaTime;
+
+        if (currentTime >= checkTime)
+        {
+            CheckBatteryStatus();
+            currentTime = 0; // 시간 초기화
+        }
     }
 
     // 배터리 상태 확인 
