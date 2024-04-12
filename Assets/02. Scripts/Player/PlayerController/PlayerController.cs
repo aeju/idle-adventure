@@ -49,7 +49,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     {
         ponpo = transform.GetChild(0);
         anim = ponpo.GetComponent<Animator>();
-        //rigid = ponpo.GetComponent<Rigidbody>();
         rigid = GetComponent<Rigidbody>();
 
         if (!joystick)
@@ -57,19 +56,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             joystick = FindObjectOfType<FullScreenJoystick>();
         }
         
-        // 상태 객체: 인스턴스화 필요 (일반 클래스 인스턴스로 생성)
-        _idleState = new PlayerIdleState(); 
-        _moveState = new PlayerMoveState();
-        _autoState = new PlayerAutoState();
-        _attackState = new PlayerAttackState();
-        _skillState = new PlayerSkillState();
-        _damagedState = new PlayerDamagedState();
-        _dieState = new PlayerDieState();
-
-        // 상태 관리자 인스턴스 생성 및 초기 상태로 전환
-        _playerStateContext = new PlayerStateContext(this);
-        _playerStateContext.Transition(_idleState);
-
+        InitializeStates(); // State 패턴 초기 설정
         PlayerInit();
     }
 
@@ -86,6 +73,23 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         isSkillOnCooldown = false;
         lastSkillTime = -skillCooldown;
         lastHitTime = -hitCooldown;
+    }
+    
+    // 상태 객체와 상태 관리자 인스턴스를 초기화
+    private void InitializeStates()
+    {
+        // 상태 객체: 인스턴스화 필요 (일반 클래스 인스턴스로 생성)
+        _idleState = new PlayerIdleState(); 
+        _moveState = new PlayerMoveState();
+        _autoState = new PlayerAutoState();
+        _attackState = new PlayerAttackState();
+        _skillState = new PlayerSkillState();
+        _damagedState = new PlayerDamagedState();
+        _dieState = new PlayerDieState();
+
+        // 상태 관리자 인스턴스 생성 및 초기 상태로 전환
+        _playerStateContext = new PlayerStateContext(this);
+        _playerStateContext.Transition(_idleState);
     }
 
     public void IdlePlayer()
@@ -185,16 +189,8 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         {
             // flipX을 기준으로 위치 계산
             float offsetDirection = flipX ? -1.0f : 1.0f;
-            //Vector3 damagePosition = transform.position + new Vector3(1.0f, 2.0f, 0);
             Vector3 damagePosition = transform.position + new Vector3(offsetDirection * 1.0f, 2.0f, 0);
             GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform.root); // 자식으로 생성
-            
-            //GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
-            
-            /*
-            Vector3 damageScale = new Vector3(offsetDirection * 1.0f, 1.0f, 1.0f);
-            damageText.transform.localScale = damageScale;
-            */
             
             damageText.GetComponent<DamageText>().damage = hitPower;
         }
