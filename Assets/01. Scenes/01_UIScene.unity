@@ -5111,6 +5111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00ff70b29116844d4ad8bfd53455b452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  checkTime: 1
 --- !u!4 &194172361
 Transform:
   m_ObjectHideFlags: 0
@@ -24852,7 +24853,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1203427658}
-  - component: {fileID: 1203427660}
   - component: {fileID: 1203427659}
   m_Layer: 5
   m_Name: Auto Image
@@ -24926,21 +24926,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1203427660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1203427657}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1db9719b3da154e0b8a49c4b662f1814, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerController: {fileID: 1742644648}
-  AutoOn: {fileID: 0}
-  AutoOff: {fileID: 0}
 --- !u!1 &1212709031
 GameObject:
   m_ObjectHideFlags: 0

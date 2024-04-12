@@ -13,8 +13,22 @@ public class BatteryStatus : BatteryStatusTemplate
     [SerializeField] private Sprite[] batterySprites; 
     [SerializeField] private Sprite chargingSprite; 
     
+    void Start()
+    {
+        UpdateInitialImage();
+    }
+    
+    private void UpdateInitialImage()
+    {
+        int currentPercentage = (int)(SystemInfo.batteryLevel * 100);
+        UnityEngine.BatteryStatus currentStatus = SystemInfo.batteryStatus;
+        HandleBatteryChanged(currentPercentage, currentStatus);
+    }
+    
     protected override void HandleBatteryChanged(int batteryPercentage, UnityEngine.BatteryStatus batteryStatus)
     {
+        
+        
         // 배터리 상태 Unknown : 이미지 비활성화 
         if (batteryStatus == UnityEngine.BatteryStatus.Unknown) 
         {

@@ -7,6 +7,18 @@ using TMPro;
 public class BatteryText : BatteryStatusTemplate
 {
     [SerializeField] private TextMeshProUGUI batteryText;
+
+    void Start()
+    {
+        UpdateInitialText();
+    }
+    
+    private void UpdateInitialText()
+    {
+        int currentPercentage = (int)(SystemInfo.batteryLevel * 100);
+        UnityEngine.BatteryStatus currentStatus = SystemInfo.batteryStatus;
+        HandleBatteryChanged(currentPercentage, currentStatus);
+    }
     
     protected override void HandleBatteryChanged(int batteryPercentage, UnityEngine.BatteryStatus batteryStatus)
     {
