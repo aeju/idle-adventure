@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-// 업데이트 : 배터리값 변화가 있을 때만 
-// 마지막 배터리 %, 현재 배터리 % 비교 필요 
-public class BatteryText : MonoBehaviour
+// 배터리 상태 변화에 따라 텍스트 업데이트
+public class BatteryText : BatteryStatusTemplate
 {
     [SerializeField] private TextMeshProUGUI batteryText;
 
-    // BatteryManager 이벤트에 메서드 등록
-    private void OnEnable()
+    void Start()
     {
-        BatteryManager.Instance.OnBatteryStatusChanged += UpdateBatteryText;
+        UpdateInitialText();
     }
-
-    private void OnDisable()
+    
+    private void UpdateInitialText()
     {
-        BatteryManager.Instance.OnBatteryStatusChanged -= UpdateBatteryText;
+        int currentPercentage = (int)(SystemInfo.batteryLevel * 100);
+        UnityEngine.BatteryStatus currentStatus = SystemInfo.batteryStatus;
+        HandleBatteryChanged(currentPercentage, currentStatus);
     }
-
-    private void UpdateBatteryText(int batteryPercentage, UnityEngine.BatteryStatus batteryStatus)
+    
+    protected override void HandleBatteryChanged(int batteryPercentage, UnityEngine.BatteryStatus batteryStatus)
     {
         if (batteryStatus == UnityEngine.BatteryStatus.Unknown)
         {
@@ -28,7 +28,7 @@ public class BatteryText : MonoBehaviour
         }
         else
         {
-            batteryText.text = batteryPercentage + "%";
+            batteryText.text = $"{batteryPercentage}%";
         }
     }
 }
