@@ -1,6 +1,6 @@
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,19 +37,14 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     public LayerMask monsterLayerMask; // 레이어 마스크 
     public GameObject nearestMonster;
     
-    // 이동 몬스터 
-    public GameObject targetMonster;
-    private float timeSinceLastTargetUpdate = 0f; // 타겟 몬스터가 마지막으로 업데이트된 이후 시간
-    private float targetUpdateCooldown = 10f; // 타겟 몬스터 업데이트 쿨다운 시간 (10초)
-    
     public GameObject hudDamageText;
 
     public bool flipX;
 
     public Transform ponpo;
     public Rigidbody rigid;
-
-    public float searchRadius = 50f;
+    
+    [SerializeField] private float detectionRadius = 5f; // 탐지 반경 설정
 
     // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
     void Start()
@@ -60,90 +55,12 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
 
         if (!joystick)
         {
-            joystick = FindObjectOfType<FullScreenJoystick>();
+            Debug.LogError("No joystick");
         }
         
-        // 상태 객체: 인스턴스화 필요 (일반 클래스 인스턴스로 생성)
-        _idleState = new PlayerIdleState(); 
-        _moveState = new PlayerMoveState();
-        _autoState = new PlayerAutoState();
-        _attackState = new PlayerAttackState();
-        _skillState = new PlayerSkillState();
-        _damagedState = new PlayerDamagedState();
-        _dieState = new PlayerDieState();
-
-        // 상태 관리자 인스턴스 생성 및 초기 상태로 전환
-        _playerStateContext = new PlayerStateContext(this);
-        _playerStateContext.Transition(_idleState);
-
+        InitializeStates(); // State 패턴 초기 설정
         PlayerInit();
     }
-
-    /*
-    void Update()
-    {
-        timeSinceLastTargetUpdate += Time.deltaTime;
-        
-        // 10초가 지났을 경우, 또는 targetMonster가 null일 경우에만 타겟을 업데이트
-        if (timeSinceLastTargetUpdate >= targetUpdateCooldown || targetMonster == null)
-        {
-            MoveTowardsNearestEnemy();
-            // 타겟이 업데이트되면 타이머를 리셋
-            timeSinceLastTargetUpdate = 0f;
-        }
-    }
-    
-    
-    // targetMonster
-    private void MoveTowardsNearestEnemy()
-    {
-        List<Point> nearbyEnemies = QuadtreeManager.Instance.QueryNearbyEnemies(transform.position, searchRadius);
-        
-        if (nearbyEnemies.Count > 0)
-        {
-            // 플레이어와 가장 가까운 몬스터 찾기
-            Point targetMonster = nearbyEnemies
-                .OrderBy(enemy => Vector3.Distance(transform.position, new Vector3(enemy.x, 0, enemy.z)))
-                .FirstOrDefault();
-        
-            // 해당 몬스터로 향해 이동
-            if (targetMonster != null)
-            {
-                // 디버그 로그로 몬스터의 프리팹 이름 출력
-                Debug.Log($"[targetMonster] Moving towards target monster: {targetMonster.x}, {targetMonster.z}");
-                
-                Vector3 targetPosition = new Vector3(targetMonster.x, transform.position.y, targetMonster.z);
-                float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
-                
-                if (distanceToTarget <= 0.2f)
-                {
-                    // 이동을 멈춤
-                    anim.SetBool("isMove", false);
-                }
-                else
-                {
-                    // 목표 몬스터와의 거리가 공격 범위를 초과할 경우
-                    Vector3 moveDirection = (targetPosition - transform.position).normalized * playerStats.movement_Speed;
-                    Vector3 newPosition = transform.position + moveDirection * Time.deltaTime; // 현재 위치에서 목표 위치로 이동하기 위한 새 위치 계산
-                    rigid.MovePosition(newPosition); // 이동
-
-                    // 이동 중 방향 전환 처리
-                    FlipPlayer(moveDirection.x);
-
-                    // 이동 애니메이션 활성화
-                    anim.SetBool("isMove", true);
-                }
-                
-                // 몬스터 오브젝트 할당
-                DetectAndAttackNearestMonster();
-            }
-        }
-        else // 몬스터가 검색 반경 내에 없을 경우 이동 중지 애니메이션
-        {
-            anim.SetBool("isMove", false);
-        }
-    }
-    */
 
     void PlayerInit()
     {
@@ -158,6 +75,23 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         isSkillOnCooldown = false;
         lastSkillTime = -skillCooldown;
         lastHitTime = -hitCooldown;
+    }
+    
+    // 상태 객체와 상태 관리자 인스턴스를 초기화
+    private void InitializeStates()
+    {
+        // 상태 객체: 인스턴스화 필요 (일반 클래스 인스턴스로 생성)
+        _idleState = new PlayerIdleState(); 
+        _moveState = new PlayerMoveState();
+        _autoState = new PlayerAutoState();
+        _attackState = new PlayerAttackState();
+        _skillState = new PlayerSkillState();
+        _damagedState = new PlayerDamagedState();
+        _dieState = new PlayerDieState();
+
+        // 상태 관리자 인스턴스 생성 및 초기 상태로 전환
+        _playerStateContext = new PlayerStateContext(this);
+        _playerStateContext.Transition(_idleState);
     }
 
     public void IdlePlayer()
@@ -228,18 +162,15 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     
     void DetectAndAttackNearestMonster()
     {
-        float detectionRadius = 5f; // 몬스터 탐지 반경
-        
-        // 주어진 반경 내에 있는 모든 콜라이더 -몬스터 레이어에 속하는- 를 배열로 반환
+        float detectionRadius = 5f; 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, monsterLayerMask);
 
-        nearestMonster = null; // 가장 가까운 몬스터 
-        float minDistance = Mathf.Infinity; // 초반 : 무한대로 설정
+        nearestMonster = null;
+        float minDistance = Mathf.Infinity;
 
         foreach (Collider collider in hitColliders)
         {
-            // 플레이어와 몬스터 사이 거리 계산, 현재까지 발견된 가장 짧은 거리보다 짧은지 확인
-            float distance = Vector3.Distance(transform.position, collider.transform.position);  
+            float distance = Vector3.Distance(transform.position, collider.transform.position);
             if (distance < minDistance)
             {
                 minDistance = distance;
@@ -260,33 +191,107 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         {
             // flipX을 기준으로 위치 계산
             float offsetDirection = flipX ? -1.0f : 1.0f;
-            //Vector3 damagePosition = transform.position + new Vector3(1.0f, 2.0f, 0);
             Vector3 damagePosition = transform.position + new Vector3(offsetDirection * 1.0f, 2.0f, 0);
             GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform.root); // 자식으로 생성
-
+            
             damageText.GetComponent<DamageText>().damage = hitPower;
         }
     }
     
+    // FlipX 기준으로 스프라이트 방향 전환
     public void FlipPlayer(float horizontalInput)
     {
-        // FlipX 기준으로 스프라이트 방향 전환
         if (horizontalInput < 0 && flipX || horizontalInput > 0 && !flipX)
         {
-            // ponpo의 localScale x 값을 반전시켜 방향 전환
-            Vector3 theScale = ponpo.localScale;
-            theScale.x *= -1;
+            Vector3 theScale = ponpo.localScale; 
+            theScale.x *= -1; // ponpo의 localScale x 값을 반전시켜 방향 전환
             ponpo.localScale = theScale;
-
-            // flipX 상태 업데이트
-            flipX = !flipX;
+            
+            flipX = !flipX; // flipX 상태 업데이트
         }
     }
     
+    // 문제 : 10마리 탐지 주기 -> 이동이 멈췄을 때로 제한
+    void Update()
+    {
+        /*
+        List<GameObject> skillmonsters = monstersInRange();
+        if (skillmonsters.Count > 0)
+        {
+            Debug.Log($"Detected {skillmonsters.Count} monsters in range:");
+            
+            foreach (GameObject monster in skillmonsters)
+            {
+                Debug.Log($"Detected List: {monster.name}");
+            }
+        }
+        */
+        
+        List<GameObject> attackmonsters = monstersInRange();
+        if (attackmonsters.Count > 0)
+        {
+            Debug.Log($"Detected {attackmonsters.Count} monsters in range:");
+            
+            foreach (GameObject monster in attackmonsters)
+            {
+                Debug.Log($"Detected List: {monster.name}");
+            }
+        }
+    }
+    
+    // 일단은 Update에서 -> 추후, 이동 완료 플래그(isReached) 후 실행!  
+    // 지정된 범위 내에서 모든 몬스터를 찾아 리스트로 반환하는 메서드
+    public List<GameObject> monstersInRange()
+    {
+        List<GameObject> skillMonsters = new List<GameObject>();
+
+        // 현재 위치에서 detectionRadius 내의 모든 콜라이더를 검색
+        Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius, monsterLayerMask);
+        
+        // 거리에 따라 몬스터 리스트를 정렬 (sqrtMagnitude : 두 오브젝트 단순 거리 비교)
+        skillMonsters = colliders
+            .Select(collider => collider.gameObject) // 검색된 콜라이더에서 게임 오브젝트 추출
+            .Where(gameObject => gameObject != this.gameObject) // 플레이어 자신은 제외
+            .OrderBy(gameObject => (transform.position - gameObject.transform.position).sqrMagnitude) // 거리에 따라 정렬
+            .Take(10) // 최대 10마리의 몬스터만 반환
+            .ToList();
+        
+        return skillMonsters;
+    }
+    
+    // 플레이어가 바라보는 앞 방향으로만 몬스터를 탐지하는 메서드
+    public List<GameObject> GetMonstersInFront()
+    {
+        List<GameObject> attackMonsters = new List<GameObject>();
+        
+        // 플레이어의 바라보는 방향 계산
+        Vector3 forward = flipX ? transform.right : -transform.right;
+        Vector3 center = transform.position + forward * (detectionRadius / 2);
+        
+        Collider[] colliders = Physics.OverlapSphere(center, detectionRadius / 2, monsterLayerMask);
+        
+        attackMonsters = colliders
+            .Select(collider => collider.gameObject)
+            .Where(gameObject => gameObject != this.gameObject) // 플레이어 자신은 제외
+            .OrderBy(gameObject => (transform.position - gameObject.transform.position).sqrMagnitude) // 거리에 따라 정렬
+            .Take(5) // 최대 5마리까지
+            .ToList();
+
+        return attackMonsters;
+    }
+
+    
     void OnDrawGizmos()
     {
-        // 플레이어 위치를 중심으로 하는 queryArea 시각화
-        Gizmos.color = Color.cyan; // 기즈모 색상 설정
-        Gizmos.DrawWireSphere(transform.position, searchRadius); // 반경을 사용하여 와이어 프레임 구체 그리기
+        // skill 범위
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius); // 현재 위치를 중심으로 하는 구
+
+        // attack 범위
+        Gizmos.color = Color.magenta;
+        
+        Vector3 forward = flipX ? transform.right : -transform.right;
+        Vector3 center = transform.position + forward * (detectionRadius / 2);
+        Gizmos.DrawWireSphere(center, detectionRadius / 2);
     }
 }
