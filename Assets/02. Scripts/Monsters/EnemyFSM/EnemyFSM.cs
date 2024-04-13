@@ -343,8 +343,8 @@ public partial class EnemyFSM : MonoBehaviour
                 monsterStats.Attack_multiplier, monsterStats.Critical_multiplier));
 
             // 플레이어가 반대 방향 보고 있으면, 뒤집기 
-            float playerToMonsterDistance = transform.position.x - target.transform.position.x;
-            target.FlipPlayer(playerToMonsterDistance);
+            // float playerToMonsterDistance = transform.position.x - target.transform.position.x;
+            // target.FlipPlayer(playerToMonsterDistance);
         }
     }
 
