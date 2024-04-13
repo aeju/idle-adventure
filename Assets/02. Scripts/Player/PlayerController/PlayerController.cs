@@ -40,6 +40,10 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     public GameObject hudDamageText;
 
     public bool flipX;
+    
+    private bool canFlip = true; // flip 쿨다운
+    [SerializeField] private float flipCooldown = 1f; // 쿨다운 시간
+    private float flipTimer = 0f; 
 
     public Transform ponpo;
     public Rigidbody rigid;
@@ -55,7 +59,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
 
         if (!joystick)
         {
-            joystick = FindObjectOfType<FullScreenJoystick>();
+            Debug.LogError("No joystick");
         }
         
         InitializeStates(); // State 패턴 초기 설정
@@ -198,18 +202,17 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         }
     }
     
+    // FlipX 기준으로 스프라이트 방향 전환
     public void FlipPlayer(float horizontalInput)
     {
-        // FlipX 기준으로 스프라이트 방향 전환
-        if (horizontalInput < 0 && flipX || horizontalInput > 0 && !flipX)
+        if (canFlip && (horizontalInput < 0 && flipX || horizontalInput > 0 && !flipX))
         {
-            // ponpo의 localScale x 값을 반전시켜 방향 전환
-            Vector3 theScale = ponpo.localScale;
+            Vector3 theScale = ponpo.localScale; // ponpo의 localScale x 값을 반전시켜 방향 전환
             theScale.x *= -1;
             ponpo.localScale = theScale;
-
-            // flipX 상태 업데이트
-            flipX = !flipX;
+            
+            flipX = !flipX; // flipX 상태 업데이트
+            canFlip = false; // cooldown이 끝날 때까지 filpX 불가능
         }
     }
     
@@ -224,6 +227,16 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             foreach (GameObject monster in monsters)
             {
                 Debug.Log($"Detected List: {monster.name}");
+            }
+        }
+        
+        if (!canFlip) // flip cooldown 체크
+        {
+            flipTimer += Time.deltaTime; 
+            if (flipTimer >= flipCooldown)
+            {
+                canFlip = true; // canFlip
+                flipTimer = 0f; // 타이머 리셋
             }
         }
     }
