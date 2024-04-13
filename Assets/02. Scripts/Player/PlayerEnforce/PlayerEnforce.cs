@@ -152,7 +152,12 @@ public class PlayerEnforce : EnforceSubject
     void Start()
     {
         InitUpgradeOptions(attackUpgrade, amount => playerStats.attack += amount);
-        InitUpgradeOptions(maxHPUpgrade, amount => playerStats.maxHP += amount);
+        InitUpgradeOptions(maxHPUpgrade, amount =>
+        {
+            playerStats.maxHP += amount; // 최대 HP 증가
+            playerStats.CurrentHP = playerStats.maxHP; // 현재 HP를 최대 HP로 회복
+        });
+        
         InitUpgradeOptions(defenseUpgrade, amount => playerStats.defense += amount);
         
         // ResourceManager의 코인 변경을 구독하여 모든 UpgradeOption의 UI 업데이트
