@@ -211,15 +211,28 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         }
     }
     
-    // 문제 : 10마리 탐지 주기 
+    // 문제 : 10마리 탐지 주기 -> 이동이 멈췄을 때로 제한
     void Update()
     {
-        List<GameObject> monsters = monstersInRange();
-        if (monsters.Count > 0)
+        /*
+        List<GameObject> skillmonsters = monstersInRange();
+        if (skillmonsters.Count > 0)
         {
-            Debug.Log($"Detected {monsters.Count} monsters in range:");
+            Debug.Log($"Detected {skillmonsters.Count} monsters in range:");
             
-            foreach (GameObject monster in monsters)
+            foreach (GameObject monster in skillmonsters)
+            {
+                Debug.Log($"Detected List: {monster.name}");
+            }
+        }
+        */
+        
+        List<GameObject> attackmonsters = monstersInRange();
+        if (attackmonsters.Count > 0)
+        {
+            Debug.Log($"Detected {attackmonsters.Count} monsters in range:");
+            
+            foreach (GameObject monster in attackmonsters)
             {
                 Debug.Log($"Detected List: {monster.name}");
             }
@@ -230,32 +243,55 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     // 지정된 범위 내에서 모든 몬스터를 찾아 리스트로 반환하는 메서드
     public List<GameObject> monstersInRange()
     {
-        List<GameObject> monstersInRange = new List<GameObject>();
+        List<GameObject> skillMonsters = new List<GameObject>();
 
         // 현재 위치에서 detectionRadius 내의 모든 콜라이더를 검색
         Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius, monsterLayerMask);
-
-        // 검색된 콜라이더에서 게임 오브젝트 추출
-        foreach (Collider collider in colliders)
-        {
-            if (collider.gameObject != this.gameObject) // 플레이어 자신은 제외
-            {
-                monstersInRange.Add(collider.gameObject);
-            }
-        }
         
         // 거리에 따라 몬스터 리스트를 정렬 (sqrtMagnitude : 두 오브젝트 단순 거리 비교)
-        monstersInRange.Sort((monsterA, monsterB) => 
-            (transform.position - monsterA.transform.position).sqrMagnitude
-            .CompareTo((transform.position - monsterB.transform.position).sqrMagnitude));
-
-        // 최대 10마리의 몬스터만 반환
-        return monstersInRange.Take(10).ToList();
+        skillMonsters = colliders
+            .Select(collider => collider.gameObject) // 검색된 콜라이더에서 게임 오브젝트 추출
+            .Where(gameObject => gameObject != this.gameObject) // 플레이어 자신은 제외
+            .OrderBy(gameObject => (transform.position - gameObject.transform.position).sqrMagnitude) // 거리에 따라 정렬
+            .Take(10) // 최대 10마리의 몬스터만 반환
+            .ToList();
+        
+        return skillMonsters;
     }
+    
+    // 플레이어가 바라보는 앞 방향으로만 몬스터를 탐지하는 메서드
+    public List<GameObject> GetMonstersInFront()
+    {
+        List<GameObject> attackMonsters = new List<GameObject>();
+        
+        // 플레이어의 바라보는 방향 계산
+        Vector3 forward = flipX ? transform.right : -transform.right;
+        Vector3 center = transform.position + forward * (detectionRadius / 2);
+        
+        Collider[] colliders = Physics.OverlapSphere(center, detectionRadius / 2, monsterLayerMask);
+        
+        attackMonsters = colliders
+            .Select(collider => collider.gameObject)
+            .Where(gameObject => gameObject != this.gameObject) // 플레이어 자신은 제외
+            .OrderBy(gameObject => (transform.position - gameObject.transform.position).sqrMagnitude) // 거리에 따라 정렬
+            .Take(5) // 최대 5마리까지
+            .ToList();
+
+        return attackMonsters;
+    }
+
     
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
+        // skill 범위
+        Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, detectionRadius); // 현재 위치를 중심으로 하는 구
+
+        // attack 범위
+        Gizmos.color = Color.magenta;
+        
+        Vector3 forward = flipX ? transform.right : -transform.right;
+        Vector3 center = transform.position + forward * (detectionRadius / 2);
+        Gizmos.DrawWireSphere(center, detectionRadius / 2);
     }
 }
