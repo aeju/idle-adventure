@@ -244,7 +244,7 @@ Transform:
   m_GameObject: {fileID: 1208326253419339407}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.46, y: 0.67, z: 5.5}
+  m_LocalPosition: {x: 0.46, y: 0.67, z: 0.3}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -5705,7 +5705,6 @@ MonoBehaviour:
   flipX: 0
   ponpo: {fileID: 5882211039773707944}
   rigid: {fileID: 0}
-  detectionRadius: 5
   attackEffect: {fileID: 8844795098257222111}
   skillEffect: {fileID: 1208326253419339407}
   duration: 1.5
@@ -11907,7 +11906,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -962228097
-  m_SortingLayer: 5
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
