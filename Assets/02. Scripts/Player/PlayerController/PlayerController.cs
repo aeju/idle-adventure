@@ -244,10 +244,10 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             }
         }
         
-        // 거리에 따라 몬스터 리스트를 정렬
-        monstersInRange.Sort((a, b) => 
-            (transform.position - a.transform.position).sqrMagnitude
-            .CompareTo((transform.position - b.transform.position).sqrMagnitude));
+        // 거리에 따라 몬스터 리스트를 정렬 (sqrtMagnitude : 두 오브젝트 단순 거리 비교)
+        monstersInRange.Sort((monsterA, monsterB) => 
+            (transform.position - monsterA.transform.position).sqrMagnitude
+            .CompareTo((transform.position - monsterB.transform.position).sqrMagnitude));
 
         // 최대 10마리의 몬스터만 반환
         return monstersInRange.Take(10).ToList();
@@ -256,6 +256,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius); // 현재 위치를 중심으로 하는 와이어 프레임 구를 그림
+        Gizmos.DrawWireSphere(transform.position, detectionRadius); // 현재 위치를 중심으로 하는 구
     }
 }
