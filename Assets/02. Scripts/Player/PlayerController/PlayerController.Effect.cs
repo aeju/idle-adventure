@@ -4,12 +4,10 @@ using UnityEngine;
 
 public partial class PlayerController : MonoBehaviour
 {
-    // 공격 이펙트
+    [Header("# 공격 이펙트")]
     public GameObject attackEffect;
     public GameObject skillEffect;
-    
-    // 이펙트 비활성화 시간
-    public float duration = 1.5f;
+    public float effectDuration = 1.5f; // 이펙트 비활성화 시간
     
     /// <summary>
     /// 제일 처음, 공격 이펙트를 꺼주고 시작
@@ -43,12 +41,12 @@ public partial class PlayerController : MonoBehaviour
     // 기본 공격(z) 이펙트
     private void CreateAttackEffect()
     {
-        ActivateEffect(attackEffect, duration); 
+        ActivateEffect(attackEffect, effectDuration); 
     }
 
     // 스킬 공격(x) 이펙트
     private void CreateSkillEffect()
     {
-        ActivateEffect(skillEffect, duration); 
+        ActivateEffect(skillEffect, effectDuration); 
     }
 }

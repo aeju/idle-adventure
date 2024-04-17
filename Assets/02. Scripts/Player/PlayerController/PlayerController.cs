@@ -22,9 +22,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     // 애니메이션
     public Animator anim;
     
-    // 상태 (생존)
-    public bool isAlive = true;
-
     // 조이스틱
     public FullScreenJoystick joystick;
     
@@ -37,13 +34,15 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     public GameObject nearestMonster;
     
     public GameObject hudDamageText;
-
-    public bool flipX;
-
+    
     public Transform ponpo;
     public Rigidbody rigid;
     
     [SerializeField] private float detectionRadius = 5f; // 탐지 반경 설정
+    
+    [Header("# 플레이어 상태")]
+    public bool isAlive = true; // 생존
+    public bool flipX; // 좌우반전 
 
     // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
     void Start()
