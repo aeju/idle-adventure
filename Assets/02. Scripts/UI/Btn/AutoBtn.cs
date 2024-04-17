@@ -24,7 +24,7 @@ public class AutoBtn : MonoBehaviour
         AutoBtn.OnClickAsObservable().Subscribe(_ =>
         {
             Rotation(); // 클릭하면 Rotation 실행
-            playerController.AutoModeActive = !playerController.AutoModeActive;;
+            playerController.autoModeActive = !playerController.autoModeActive;;
         }).AddTo(this);
         
         // 초기 상태 : Off 활성화

@@ -10140,6 +10140,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8619398739618448729, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619398739618448729, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619398739618448729, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8736290802151869401, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
       propertyPath: joystick
       value: 
@@ -16163,7 +16175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1db9719b3da154e0b8a49c4b662f1814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 1742644648}
+  playerController: {fileID: 1369119137}
   AutoOn: {fileID: 439604430}
   AutoOff: {fileID: 1701116547}
 --- !u!1 &632161622
@@ -58137,30 +58149,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d065af6b7694e477887976e6b5501f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AutoModeActive: 0
   playerStats: {fileID: 7678598303636048540}
   anim: {fileID: 8076262864639533307}
-  isAlive: 1
   joystick: {fileID: 255732651}
   hpSlider: {fileID: 7702271978392042962}
   cooldownSlider: {fileID: 4450341361607978079}
-  monsterLayerMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  nearestMonster: {fileID: 0}
   hudDamageText: {fileID: 7825407166849429008, guid: b94564b4556864b92be1b804a6449fe9, type: 3}
-  flipX: 0
   ponpo: {fileID: 7744617299223429319}
   rigid: {fileID: 0}
   detectionRadius: 5
+  isAlive: 1
+  flipX: 0
+  autoModeActive: 0
   attackEffect: {fileID: 4164964765841667936}
   skillEffect: {fileID: 3352217934933207117}
-  duration: 1.5
+  effectDuration: 1.5
   skillCooldown: 3
   lastSkillTime: -5
   isSkillOnCooldown: 0
   hitCooldown: 2
   lastHitTime: 0
+  _attackMonsters: []
+  _skillMonsters: []
+  monsterLayerMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  attackMonsterMaxCount: 5
+  skillMonsterMaxCount: 10
 --- !u!1 &4060303126183445495
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,7 +19,7 @@ public class PlayerStateController : MonoBehaviour
     {
         if (_playerController.isAlive)
         {
-            if (_playerController.AutoModeActive)
+            if (_playerController.autoModeActive)
             {
                 _playerController.AutoPlayer();
             }

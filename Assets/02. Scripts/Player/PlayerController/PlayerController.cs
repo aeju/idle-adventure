@@ -39,7 +39,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     [Header("# 플레이어 상태")]
     public bool isAlive = true; // 생존
     public bool flipX; // 좌우반전 
-    public bool AutoModeActive; // 자동 공격
+    public bool autoModeActive; // 자동 공격
 
     // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
     void Start()
