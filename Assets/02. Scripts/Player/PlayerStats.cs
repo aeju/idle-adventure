@@ -82,9 +82,9 @@ public class PlayerStats : MonoBehaviour
 
     public void AttackAnim()
     {
-        if (_playerController != null)
+        if (_playerController != null && _playerController._attackMonsters.Count > 0)
         {
-            _playerController.PlayerAttackAnim();
+            _playerController.PlayerAttackAnim(_playerController._attackMonsters);
         }
     }
 

@@ -174,18 +174,4 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             flipX = !flipX; // flipX 상태 업데이트
         }
     }
-    
-    void OnDrawGizmos()
-    {
-        // skill 범위
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius); // 현재 위치를 중심으로 하는 구
-
-        // attack 범위
-        Gizmos.color = Color.magenta;
-        
-        Vector3 forward = flipX ? transform.right : -transform.right;
-        Vector3 center = transform.position + forward * (detectionRadius / 2);
-        Gizmos.DrawWireSphere(center, detectionRadius / 2);
-    }
 }

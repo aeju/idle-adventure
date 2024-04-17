@@ -5,9 +5,9 @@ using UnityEngine;
 public partial class PlayerController : MonoBehaviour
 {
     [Header("# 공격 이펙트")]
-    public GameObject attackEffect;
-    public GameObject skillEffect;
-    public float effectDuration = 1.5f; // 이펙트 비활성화 시간
+    [SerializeField] private GameObject attackEffect;
+    [SerializeField] private GameObject skillEffect;
+    [SerializeField] private float effectDuration = 1.5f; // 이펙트 비활성화 시간
     
     /// <summary>
     /// 제일 처음, 공격 이펙트를 꺼주고 시작

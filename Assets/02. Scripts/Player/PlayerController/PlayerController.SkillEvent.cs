@@ -18,16 +18,12 @@ public partial class PlayerController : MonoBehaviour
     [SerializeField] public int skillMonsterMaxCount = 10;
     
     // 기본 공격 (attack02)
-    public void PlayerAttackAnim()
+    //public void PlayerAttackAnim()
+    public void PlayerAttackAnim(List<GameObject> attackMonsters)
     {
-        var attackMonsters = GetMonstersInFront(attackMonsterMaxCount);
-        
-        // 몬스터가 존재하는 경우, 공격 로직 수행
-        if (attackMonsters.Count > 0)
-        {
-            HitMonsters(attackMonsters, AttackType.Attack);
-            CreateAttackEffect();
-        }
+        HitMonsters(attackMonsters, AttackType.Attack);
+        CreateAttackEffect();
+        _attackMonsters = null; // 몬스터 목록 사용 후 초기화 
     }
     
     // 스킬 공격 (attack01)
@@ -105,5 +101,19 @@ public partial class PlayerController : MonoBehaviour
             .OrderBy(gameObject => (transform.position - gameObject.transform.position).sqrMagnitude)
             .Take(maxCount)
             .ToList();
+    }
+    
+    void OnDrawGizmos()
+    {
+        // skill 범위
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius); // 현재 위치를 중심으로 하는 구
+
+        // attack 범위
+        Gizmos.color = Color.magenta;
+        
+        Vector3 forward = flipX ? transform.right : -transform.right;
+        Vector3 center = transform.position + forward * (detectionRadius / 2);
+        Gizmos.DrawWireSphere(center, detectionRadius / 2);
     }
 }
