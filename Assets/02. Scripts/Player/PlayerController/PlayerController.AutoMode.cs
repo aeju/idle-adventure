@@ -20,6 +20,9 @@ public partial class PlayerController : MonoBehaviour
                 // 스킬 공격 or 거리 확인 및 이동
                 if (CheckDistance(skillMonsters))
                 {
+                    GameObject nearestMonster = skillMonsters.OrderBy(m => (m.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
+                    FlipTowardsNearestMonster(nearestMonster);
+                    
                     PlayerSkill(skillMonsters);
                 }
                 else
@@ -34,8 +37,10 @@ public partial class PlayerController : MonoBehaviour
                 // 기본 공격 or 거리 확인 및 이동
                 if (CheckDistance(attackMonsters))
                 {
+                    GameObject nearestMonster = attackMonsters.OrderBy(m => (m.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
+                    FlipTowardsNearestMonster(nearestMonster);
+                    
                     PlayerAttack(attackMonsters);
-                    Debug.Log("[AutoMode]Using Basic Attack");
                 }
             }
             else
@@ -43,6 +48,16 @@ public partial class PlayerController : MonoBehaviour
                 Debug.Log("[AutoMode]No monsters within range");
                 return;
             }
+        }
+    }
+    
+    private void FlipTowardsNearestMonster(GameObject nearestMonster)
+    {
+        if (nearestMonster != null)
+        {
+            // 몬스터의 위치를 기반으로 방향을 결정하고 뒤집기
+            float direction = Mathf.Sign(nearestMonster.transform.position.x - transform.position.x);
+            FlipPlayer(direction);
         }
     }
     
@@ -59,7 +74,7 @@ public partial class PlayerController : MonoBehaviour
         float distance = Vector3.Distance(transform.position, nearestMonster.transform.position);
         Debug.Log($"[CheckDistance] Nearest Monster Distance: {distance}");
         
-        if (distance > 2f)
+        if (distance > detectionRadius / 2)
         {
             // 목표까지 이동
             MoveTowardsTarget(nearestMonster.transform.position);
