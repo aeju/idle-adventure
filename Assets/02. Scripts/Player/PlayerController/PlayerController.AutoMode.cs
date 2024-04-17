@@ -19,7 +19,7 @@ public partial class PlayerController : MonoBehaviour
             
             if (!isSkillOnCooldown)
             {
-                PlayerSkill();
+                //PlayerSkill();
                 Debug.Log("skill " + isSkillOnCooldown);
             }
             

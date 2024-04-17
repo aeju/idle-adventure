@@ -17,7 +17,6 @@ public partial class PlayerController : MonoBehaviour
     [SerializeField] public int attackMonsterMaxCount = 5;
     [SerializeField] public int skillMonsterMaxCount = 10;
     
-    
     // 기본 공격 (attack02)
     public void PlayerAttackAnim()
     {
@@ -32,15 +31,11 @@ public partial class PlayerController : MonoBehaviour
     }
     
     // 스킬 공격 (attack01)
-    public void PlayerSkillAnim()
+    public void PlayerSkillAnim(List<GameObject> skillMonsters)
     {
-        var skillMonsters = GetmonstersInRange(skillMonsterMaxCount);
-
-        if (skillMonsters.Count > 0)
-        {
-            HitMonsters(skillMonsters,  AttackType.Skill);
-            CreateSkillEffect(); 
-        }
+        HitMonsters(skillMonsters, AttackType.Skill);
+        CreateSkillEffect();
+        _skillMonsters = null; // 몬스터 목록 사용 후 초기화 
     }
 
     // 지정된 몬스터들 공격
@@ -81,10 +76,6 @@ public partial class PlayerController : MonoBehaviour
                     playerStats.skill_Multiplier);
             }
             enemyFsm.HitEnemy(attackDamage);
-        }
-        else
-        {
-            Debug.LogError("No enemyFSM");
         }
     }
     

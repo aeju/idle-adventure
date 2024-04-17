@@ -16,7 +16,7 @@ public partial class PlayerController : MonoBehaviour
     // 자동공격 시간 간격
     public float hitCooldown = 2f;
     public float lastHitTime;
-
+    
     // 일반 공격 (z)
     public void PlayerAttack()
     {
@@ -27,12 +27,15 @@ public partial class PlayerController : MonoBehaviour
         }
     }
 
+    public List<GameObject> _skillMonsters; // 스킬 적용 몬스터 목록 저장
+    
     // 치명타 공격 (x, 쿨타임 o)
-    public void PlayerSkill()
+    public void PlayerSkill(List<GameObject> monsters)
     {
         if (!isSkillOnCooldown && Time.time >= lastHitTime + hitCooldown) // 쿨다운 false = 스킬 실행 o
         {
-            anim.SetTrigger("SkillTrigger");
+            _skillMonsters = monsters; // 스킬 적용 몬스터 목록 저장
+            anim.SetTrigger("SkillTrigger"); // 애니메이션 트리거
             StartCoroutine(SkillCoroutine());
             lastHitTime = Time.time; // 공격 쿨타임 업데이트
         }
