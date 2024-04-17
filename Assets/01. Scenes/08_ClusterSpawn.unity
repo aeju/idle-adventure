@@ -10080,6 +10080,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 3225459575509619670, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: _playerController
+      value: 
+      objectReference: {fileID: 1369119137}
     - target: {fileID: 3341853853491011724, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
       propertyPath: m_Name
       value: New Ponpo (1)
@@ -10136,6 +10140,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8736290802151869401, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: joystick
+      value: 
+      objectReference: {fileID: 255732651}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -33469,6 +33477,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1368335363}
   m_CullTransparentMesh: 1
+--- !u!114 &1369119137 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8736290802151869401, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+  m_PrefabInstance: {fileID: 345647447}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d065af6b7694e477887976e6b5501f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1373851273
 GameObject:
   m_ObjectHideFlags: 0
@@ -58896,6 +58915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5a3cbb0d4f4843108a137e6938ae3f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerController: {fileID: 0}
 --- !u!4 &6628361274814602109
 Transform:
   m_ObjectHideFlags: 0

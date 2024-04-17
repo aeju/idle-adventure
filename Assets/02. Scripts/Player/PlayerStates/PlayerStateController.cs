@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class PlayerStateController : MonoBehaviour
 {
-    private PlayerController _playerController;
+    [SerializeField] private PlayerController _playerController;
 
     void Start()
     {
-        _playerController = FindObjectOfType<PlayerController>();
+        if (_playerController == null)
+        {
+            Debug.LogError("No PlayerController");
+        }
     }
 
     // 상태 전환
@@ -33,7 +36,7 @@ public class PlayerStateController : MonoBehaviour
                     _playerController.SkillPlayer();
                 }
 #endif
-                 // idle, move 판단
+                 // idle, move 판단 (이동 입력 유무)
                  JudgeMovement(); 
             }
         }
