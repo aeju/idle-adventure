@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+public enum AttackType
+{
+    Attack,
+    Skill
+}
+
 // attack, skill 애니메이션 이벤트 
 public partial class PlayerController : MonoBehaviour
 {
@@ -14,22 +20,30 @@ public partial class PlayerController : MonoBehaviour
     // 기본 공격 (attack02)
     public void PlayerAttackAnim()
     {
-        // 내 위치 앞쪽의 몬스터들을 받아오기 (최대 5마리)
+        var attackMonsters = GetMonstersInFront(attackMonsterMaxCount);
         
-        HitMonsters(GetMonstersInFront(attackMonsterMaxCount), "attack");
-        CreateAttackEffect();
+        // 몬스터가 존재하는 경우, 공격 로직 수행
+        if (attackMonsters.Count > 0)
+        {
+            HitMonsters(attackMonsters, AttackType.Attack);
+            CreateAttackEffect();
+        }
     }
     
     // 스킬 공격 (attack01)
     public void PlayerSkillAnim()
     {
-        HitMonsters(GetmonstersInRange(skillMonsterMaxCount), "skill");
-        // 몬스터가 있을 때만 
-        CreateSkillEffect(); // 이펙트 생성
+        var skillMonsters = GetmonstersInRange(skillMonsterMaxCount);
+
+        if (skillMonsters.Count > 0)
+        {
+            HitMonsters(skillMonsters,  AttackType.Skill);
+            CreateSkillEffect(); 
+        }
     }
 
     // 지정된 몬스터들 공격
-    private void HitMonsters(List<GameObject> monsters, string attackType)
+    private void HitMonsters(List<GameObject> monsters, AttackType attackType)
     {
         if (monsters.Count == 0) return;
 
@@ -40,17 +54,36 @@ public partial class PlayerController : MonoBehaviour
     }
     
     // 개별 몬스터 공격
-    private void HitMonster(GameObject monster, string attackType)
+    private void HitMonster(GameObject monster, AttackType attackType)
     {
         EnemyFSM enemyFsm = monster.GetComponent<EnemyFSM>();
+        
         if (enemyFsm != null)
         {
-            int attackDamage = attackType == "attack" 
-                ? CombatCalculator.CalculateAttackDamage(playerStats.attack, enemyFsm.monsterStats.Defense, 
-                    playerStats.attack_Multiplier, playerStats.critical_Multiplier)
-                : CombatCalculator.CalculateSkillDamage(playerStats.attack, enemyFsm.monsterStats.Defense, 
+            int attackDamage = 0;
+            
+            // 공격 타입에 따라 적에게 적용할 공격력 계산
+            if (attackType == AttackType.Attack)
+            {
+                attackDamage = CombatCalculator.CalculateAttackDamage(
+                    playerStats.attack, 
+                    enemyFsm.monsterStats.Defense, 
+                    playerStats.attack_Multiplier, 
+                    playerStats.critical_Multiplier);
+            }
+            
+            else // AttackType.Skill
+            {
+                attackDamage = CombatCalculator.CalculateSkillDamage(
+                    playerStats.attack, 
+                    enemyFsm.monsterStats.Defense, 
                     playerStats.skill_Multiplier);
+            }
             enemyFsm.HitEnemy(attackDamage);
+        }
+        else
+        {
+            Debug.LogError("No enemyFSM");
         }
     }
     
