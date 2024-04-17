@@ -7,6 +7,7 @@ public partial class PlayerController : MonoBehaviour
 {
     public bool AutoModeActive;
     public float autoAttackRange = 0.1f; // 자동 공격 범위
+    public float searchRadius = 50f;
     
     // 자동 공격부터 구현!
     public void AutoModeOn()
