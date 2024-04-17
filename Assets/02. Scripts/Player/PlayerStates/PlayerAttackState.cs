@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerAttackState : IPlayerState
 {
     private PlayerController _playerController;
     
-    private List<GameObject> attackMonsters; // 어택 적용 몬스터 목록 저장
+    private List<GameObject> attackMonsters; // 기본 공격 몬스터 목록 저장
 
     public void Enter(PlayerController playerController)
     {

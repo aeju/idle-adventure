@@ -18,7 +18,6 @@ public partial class PlayerController : MonoBehaviour
     [SerializeField] public int skillMonsterMaxCount = 10;
     
     // 기본 공격 (attack02)
-    //public void PlayerAttackAnim()
     public void PlayerAttackAnim(List<GameObject> attackMonsters)
     {
         HitMonsters(attackMonsters, AttackType.Attack);
@@ -85,7 +84,7 @@ public partial class PlayerController : MonoBehaviour
         return SearchMonsters(searchCenter, detectionRadius / 2, attackMonsterMaxCount);
     }
     
-    // 스킬 - 방향 상관x 모든 몬스터 탐지
+    // 스킬 공격 - 방향 상관x 모든 몬스터 탐지
     public List<GameObject> GetmonstersInRange(int skillMonsterMaxCount)
     {
         return SearchMonsters(transform.position, detectionRadius, skillMonsterMaxCount);

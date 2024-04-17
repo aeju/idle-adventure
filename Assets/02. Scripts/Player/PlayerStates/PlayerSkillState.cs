@@ -6,7 +6,7 @@ public class PlayerSkillState : IPlayerState
 {
     private PlayerController _playerController;
 
-    private List<GameObject> skillMonsters; // 스킬 적용 몬스터 목록 저장
+    private List<GameObject> skillMonsters; // 스킬 공격 몬스터 목록 저장
     
     public void Enter(PlayerController playerController)
     {

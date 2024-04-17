@@ -21,7 +21,6 @@ public partial class PlayerController : MonoBehaviour
     public List<GameObject> _skillMonsters; // 스킬 적용 몬스터 목록 저장
     
     // 일반 공격 (z)
-    //public void PlayerAttack()
     public void PlayerAttack(List<GameObject> monsters)
     {
         if (Time.time >= lastHitTime + hitCooldown)

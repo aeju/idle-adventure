@@ -4,7 +4,7 @@ using UnityEngine;
 
 public partial class PlayerController : MonoBehaviour
 {
-    public bool AutoModeActive;
+    
 
     // 자동 공격부터 구현!
     public void AutoModeOn()
@@ -25,7 +25,7 @@ public partial class PlayerController : MonoBehaviour
             
             else
             {
-                PlayerAttack();
+                //PlayerAttack();
                 Debug.Log("attack" + isSkillOnCooldown);
             }
         }
