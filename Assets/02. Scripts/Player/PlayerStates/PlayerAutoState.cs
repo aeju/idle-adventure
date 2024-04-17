@@ -12,11 +12,7 @@ public class PlayerAutoState : IPlayerState
         if (!_playerController)
             _playerController = playerController;
 
-        if (_playerController.nearestMonster != null)
-        {
-            _playerController.AutoModeOn();
-            
-        }
+        _playerController.AutoModeOn();
     }
     
     public void Handle(PlayerController playerController)
