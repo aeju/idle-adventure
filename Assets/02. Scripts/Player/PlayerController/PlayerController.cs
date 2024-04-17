@@ -28,10 +28,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     // 슬라이더
     public Slider hpSlider;
     public Slider cooldownSlider;
-
-    // 가장 가까운 몬스터 탐지
-    public LayerMask monsterLayerMask; // 레이어 마스크 
-    public GameObject nearestMonster;
     
     public GameObject hudDamageText;
     
@@ -67,7 +63,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         flipX = false;
         DeactivateEffects();
         monsterLayerMask = LayerMask.GetMask("Enemy");
-        StartCoroutine(DetectNearestMonsterCoroutine());
         playerStats.OnPlayerHPChanged += HandlePlayerHpChange; // 체력에 대한 이벤트 구독
         
         isSkillOnCooldown = false;
@@ -148,35 +143,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         }
     }
 
-    // 체크 시간 : 3초
-    public IEnumerator DetectNearestMonsterCoroutine()
-    {
-        while (true)
-        {
-            DetectAndAttackNearestMonster();
-            yield return new WaitForSeconds(3f);
-        }
-    }
-    
-    void DetectAndAttackNearestMonster()
-    {
-        float detectionRadius = 5f; 
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, monsterLayerMask);
-
-        nearestMonster = null;
-        float minDistance = Mathf.Infinity;
-
-        foreach (Collider collider in hitColliders)
-        {
-            float distance = Vector3.Distance(transform.position, collider.transform.position);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                nearestMonster = collider.gameObject;
-            }
-        }
-    }
-
     void HandlePlayerHpChange(int currentHP, int maxHP)
     {
         Debug.Log($"[Player] Handling HP Change. New HP: {currentHP}/{maxHP}");
@@ -208,9 +174,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             flipX = !flipX; // flipX 상태 업데이트
         }
     }
-    
-    
-
     
     void OnDrawGizmos()
     {

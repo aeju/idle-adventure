@@ -12,7 +12,8 @@ public partial class PlayerController : MonoBehaviour
         // 1. 거리 측정 + 이동 (작업 중)
 
         // 2. 자동 공격 (우선순위: skill > attack) 
-        if (nearestMonster != null && Time.time >= lastHitTime + hitCooldown)
+        //if (nearestMonster != null && Time.time >= lastHitTime + hitCooldown)
+        if (Time.time >= lastHitTime + hitCooldown)
         {
             Debug.Log(isSkillOnCooldown);
             

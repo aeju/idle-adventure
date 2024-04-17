@@ -11,10 +11,13 @@ public class PlayerAttackState : IPlayerState
     {
         _playerController = playerController;
 
+        _playerController.PlayerAttack();
+        /*
         if (_playerController.nearestMonster != null)
         {
-            _playerController.PlayerAttack();
+            
         }
+        */
     }
     
     public void Handle(PlayerController playerController)

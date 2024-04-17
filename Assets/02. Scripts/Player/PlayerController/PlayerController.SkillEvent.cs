@@ -13,8 +13,9 @@ public enum AttackType
 public partial class PlayerController : MonoBehaviour
 {
     [Header("# 최대 공격 가능 몬스터 수")]
-    [SerializeField] private int attackMonsterMaxCount = 5;
-    [SerializeField] private int skillMonsterMaxCount = 10;
+    [SerializeField] private LayerMask monsterLayerMask; // 레이어 마스크 
+    [SerializeField] public int attackMonsterMaxCount = 5;
+    [SerializeField] public int skillMonsterMaxCount = 10;
     
     
     // 기본 공격 (attack02)
