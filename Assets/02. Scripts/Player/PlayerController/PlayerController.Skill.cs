@@ -31,7 +31,7 @@ public partial class PlayerController : MonoBehaviour
         }
     }
     
-    // 치명타 공격 (x, 쿨타임 o)
+    // 스킬 공격 (x, 쿨타임 o)
     public void PlayerSkill(List<GameObject> monsters)
     {
         if (!isSkillOnCooldown && Time.time >= lastHitTime + hitCooldown) // 쿨다운 false = 스킬 실행 o

@@ -39,12 +39,12 @@ public partial class EnemyFSM : MonoBehaviour
 
     void EarnRewards()
     {
-        if (userInfo != null)
+        if (userInfo != null) // 경험치
         {
             userInfo.AddExperience(monsterStats.Exp);
         }
 
-        if (resourceInfo != null)
+        if (resourceInfo != null) // 코인
         {
             resourceInfo.AddCoin(monsterStats.Coin);
         }

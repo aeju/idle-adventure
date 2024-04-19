@@ -74,6 +74,18 @@ public partial class PlayerController : MonoBehaviour
         }
     }
     
+    // 몬스터 검색/정렬 공통 메서드
+    private List<GameObject> SearchMonsters(Vector3 searchCenter, float searchRadius, int maxCount)
+    {
+        Collider[] colliders = Physics.OverlapSphere(searchCenter, searchRadius, monsterLayerMask);
+        return colliders
+            .Select(collider => collider.gameObject)
+            .Where(gameObject => gameObject != this.gameObject)
+            .OrderBy(gameObject => (transform.position - gameObject.transform.position).sqrMagnitude)
+            .Take(maxCount)
+            .ToList();
+    }
+    
     // 기본 공격 - 바라보는 앞 방향에 있는 몬스터 탐지
     public List<GameObject> GetMonstersInFront(int attackMonsterMaxCount)
     {
@@ -88,18 +100,6 @@ public partial class PlayerController : MonoBehaviour
     public List<GameObject> GetmonstersInRange(int skillMonsterMaxCount)
     {
         return SearchMonsters(transform.position, detectionRadius, skillMonsterMaxCount);
-    }
-    
-    // 몬스터 검색/정렬 공통 메서드
-    private List<GameObject> SearchMonsters(Vector3 searchCenter, float searchRadius, int maxCount)
-    {
-        Collider[] colliders = Physics.OverlapSphere(searchCenter, searchRadius, monsterLayerMask);
-        return colliders
-            .Select(collider => collider.gameObject)
-            .Where(gameObject => gameObject != this.gameObject)
-            .OrderBy(gameObject => (transform.position - gameObject.transform.position).sqrMagnitude)
-            .Take(maxCount)
-            .ToList();
     }
     
     void OnDrawGizmos()

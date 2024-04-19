@@ -20,7 +20,9 @@ public partial class PlayerController : MonoBehaviour
                 // 스킬 공격 or 거리 확인 및 이동
                 if (CheckDistance(skillMonsters))
                 {
-                    GameObject nearestMonster = skillMonsters.OrderBy(m => (m.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
+                    GameObject nearestMonster = skillMonsters
+                        .OrderBy(m => (m.transform.position - transform.position).sqrMagnitude)
+                        .FirstOrDefault();
                     FlipTowardsNearestMonster(nearestMonster);
                     
                     PlayerSkill(skillMonsters);
@@ -37,7 +39,9 @@ public partial class PlayerController : MonoBehaviour
                 // 기본 공격 or 거리 확인 및 이동
                 if (CheckDistance(attackMonsters))
                 {
-                    GameObject nearestMonster = attackMonsters.OrderBy(m => (m.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
+                    GameObject nearestMonster = attackMonsters
+                        .OrderBy(m => (m.transform.position - transform.position).sqrMagnitude)
+                        .FirstOrDefault();
                     FlipTowardsNearestMonster(nearestMonster);
                     
                     PlayerAttack(attackMonsters);
@@ -64,7 +68,9 @@ public partial class PlayerController : MonoBehaviour
     private bool CheckDistance(List<GameObject> monsters)
     {
         // 가장 가까운 몬스터와의 거리 측정
-        GameObject nearestMonster = monsters.OrderBy(m => (m.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
+        GameObject nearestMonster = monsters
+            .OrderBy(m => (m.transform.position - transform.position).sqrMagnitude)
+            .FirstOrDefault();
         if (nearestMonster == null)
         {
             Debug.Log("[AutoMode] No nearest monster found");

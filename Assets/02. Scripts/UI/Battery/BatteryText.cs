@@ -24,7 +24,7 @@ public class BatteryText : BatteryStatusTemplate
     {
         if (batteryStatus == UnityEngine.BatteryStatus.Unknown)
         {
-            batteryText.text = "배터리 상태 알 수 없음";
+            batteryText.text = "?%";
         }
         else
         {
