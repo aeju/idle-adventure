@@ -1188,7 +1188,7 @@ Transform:
   m_GameObject: {fileID: 46070121}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -18.6, y: 0, z: 21.4}
+  m_LocalPosition: {x: -31.3, y: 0, z: 31.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6033,6 +6033,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00ff70b29116844d4ad8bfd53455b452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  checkTime: 1
 --- !u!4 &194172361
 Transform:
   m_ObjectHideFlags: 0
@@ -10075,6 +10076,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1208326253419339407, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3225459575509619670, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: _playerController
+      value: 
+      objectReference: {fileID: 1369119137}
     - target: {fileID: 3341853853491011724, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
       propertyPath: m_Name
       value: New Ponpo (1)
@@ -10086,6 +10095,10 @@ PrefabInstance:
     - target: {fileID: 4144921854113628868, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383622953918370365, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5245785057138084971, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10127,6 +10140,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8619398739618448729, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619398739618448729, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619398739618448729, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736290802151869401, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: joystick
+      value: 
+      objectReference: {fileID: 255732651}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12600,23 +12629,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a9ef02d081764498a283718912937f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterPrefab: {fileID: 7106887405609920340, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+  clusters:
+  - clusterName: "1\uAD6C\uC5ED"
+    clusterCenter: {fileID: 46070122}
+    clusterRadius: 15
+    monsterPrefab: {fileID: 7106887405609920340, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+    basicMonsters: 5
+    actualMonstersCount: 0
+  - clusterName: "2\uAD6C\uC5ED"
+    clusterCenter: {fileID: 1242500528}
+    clusterRadius: 20
+    monsterPrefab: {fileID: 715355014988856995, guid: 05470b2e202924ff0b16aa2b80aee44d, type: 3}
+    basicMonsters: 8
+    actualMonstersCount: 0
+  - clusterName: "3\uAD6C\uC5ED"
+    clusterCenter: {fileID: 1543885686}
+    clusterRadius: 25
+    monsterPrefab: {fileID: 1373061386381388818, guid: 3d203bbe55dea4e57b50b524e1175dac, type: 3}
+    basicMonsters: 100
+    actualMonstersCount: 0
+  - clusterName: "4\uAD6C\uC5ED "
+    clusterCenter: {fileID: 1173351479}
+    clusterRadius: 10
+    monsterPrefab: {fileID: 7106887405609920340, guid: 65bcf0d60d9e14698a9a8fdf0dac2a8b, type: 3}
+    basicMonsters: 8
+    actualMonstersCount: 0
   createTime: 0
   minTime: 5
   maxTime: 10
-  basicMonsters: 3
-  monsterOffset: 1
-  enemyObjectPool: []
-  spawnPoints:
-  - {fileID: 1312993301}
-  - {fileID: 266687743}
-  - {fileID: 535804481}
-  - {fileID: 1140009460}
-  - {fileID: 1091927208}
-  - {fileID: 694919723}
-  - {fileID: 680328013}
-  - {fileID: 1081837302}
-  - {fileID: 624539134}
 --- !u!1 &474776087
 GameObject:
   m_ObjectHideFlags: 0
@@ -16135,7 +16175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1db9719b3da154e0b8a49c4b662f1814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 1742644648}
+  playerController: {fileID: 1369119137}
   AutoOn: {fileID: 439604430}
   AutoOff: {fileID: 1701116547}
 --- !u!1 &632161622
@@ -27183,7 +27223,7 @@ Transform:
   m_GameObject: {fileID: 1173351478}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 31.9, y: 0, z: -18.5}
+  m_LocalPosition: {x: 37.4, y: 0, z: -36.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -29608,7 +29648,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4bbc8e26fce140e0854d664374d7589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeTextHourMinSec: {fileID: 1238960286}
+  timeText: {fileID: 0}
 --- !u!114 &1238960286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29911,7 +29951,7 @@ Transform:
   m_GameObject: {fileID: 1242500527}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 31.7, y: 0, z: 31.8}
+  m_LocalPosition: {x: 28.3, y: 0, z: 25.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -33449,6 +33489,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1368335363}
   m_CullTransparentMesh: 1
+--- !u!114 &1369119137 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8736290802151869401, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+  m_PrefabInstance: {fileID: 345647447}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d065af6b7694e477887976e6b5501f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1373851273
 GameObject:
   m_ObjectHideFlags: 0
@@ -36464,7 +36515,7 @@ Transform:
   m_GameObject: {fileID: 1543885685}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -25.3, y: 0, z: -37}
+  m_LocalPosition: {x: -22, y: 0, z: -18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -38205,7 +38256,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1606003551
 Transform:
   m_ObjectHideFlags: 0
@@ -39918,7 +39969,7 @@ Transform:
   m_GameObject: {fileID: 1687259524}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -91.7}
+  m_LocalPosition: {x: 0, y: 0, z: -96.3}
   m_LocalScale: {x: 250, y: 3.9407, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -58098,29 +58149,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d065af6b7694e477887976e6b5501f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AutoModeActive: 0
   playerStats: {fileID: 7678598303636048540}
   anim: {fileID: 8076262864639533307}
-  isAlive: 1
   joystick: {fileID: 255732651}
   hpSlider: {fileID: 7702271978392042962}
   cooldownSlider: {fileID: 4450341361607978079}
-  monsterLayerMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  nearestMonster: {fileID: 0}
   hudDamageText: {fileID: 7825407166849429008, guid: b94564b4556864b92be1b804a6449fe9, type: 3}
-  flipX: 0
   ponpo: {fileID: 7744617299223429319}
   rigid: {fileID: 0}
+  detectionRadius: 5
+  isAlive: 1
+  flipX: 0
+  autoModeActive: 0
   attackEffect: {fileID: 4164964765841667936}
   skillEffect: {fileID: 3352217934933207117}
-  duration: 1.5
+  effectDuration: 1.5
   skillCooldown: 3
   lastSkillTime: -5
   isSkillOnCooldown: 0
   hitCooldown: 2
   lastHitTime: 0
+  _attackMonsters: []
+  _skillMonsters: []
+  monsterLayerMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  attackMonsterMaxCount: 5
+  skillMonsterMaxCount: 10
 --- !u!1 &4060303126183445495
 GameObject:
   m_ObjectHideFlags: 0
@@ -58193,7 +58248,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -962228097
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -58875,6 +58930,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5a3cbb0d4f4843108a137e6938ae3f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerController: {fileID: 0}
 --- !u!4 &6628361274814602109
 Transform:
   m_ObjectHideFlags: 0
