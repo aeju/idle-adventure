@@ -33,30 +33,6 @@ public class DamageText : MonoBehaviour
         damagetext.text = damage.ToString();
         
         SetDamageTextProperties();
-        
-        /*
-        enemyFSM = GetComponentInParent<EnemyFSM>(); // 부모객체에서 EnemyFSM 컴포넌트 가져오기
-        if (enemyFSM != null)
-        {
-            textColor = Color.red;
-            damagetext.color = textColor;
-            damagetext.fontSize = 15;
-            
-            
-            AnimateDamageTextBasedOnDirection(enemyFSM.flipX);
-        }
-
-        playerController = GetComponentInParent<PlayerController>();
-        if (playerController != null)
-        {
-            textColor = Color.blue;
-            damagetext.color = textColor; 
-            damagetext.fontSize = 7.5f;
-            
-            // 몬스터의 방향에 따라 애니메이션 방향 결정
-            AnimateDamageTextBasedOnDirection(playerController.flipX);
-        }
-        */
     }
     
     private void SetDamageTextProperties()
@@ -68,11 +44,12 @@ public class DamageText : MonoBehaviour
 
         if (enemyFSM != null)
         {
-            attributes = new TextAttributes(Color.red, 15f);
+            attributes = new TextAttributes(Color.red, 14f);
             AnimateDamageText(enemyFSM.flipX); 
         }
         else if (playerController != null)
         {
+            // Player - scale : 2 * 2라서 
             attributes = new TextAttributes(Color.blue, 7.5f);
             AnimateDamageText(playerController.flipX);
         }
@@ -82,7 +59,14 @@ public class DamageText : MonoBehaviour
         damagetext.fontSize = attributes.FontSize;
     }
     
-    // 몬스터의 flipX 상태에 따라 데미지 텍스트 애니메이션 방향 결정
+    public void InitializeDamageText(bool isFlipX)
+    {
+        TextMeshPro textMesh = GetComponent<TextMeshPro>();
+        textMesh.text = damage.ToString(); // damage 변수 값을 문자열로 변환 
+        AnimateDamageText(isFlipX); // 데미지 텍스트 애니메이션 
+    }
+    
+    // flipX 상태에 따라 데미지 텍스트 애니메이션 방향 결정
     // 오른쪽 : (-1, 0.5, 0) -> (-2, -0.5, 0)
     // 왼쪽 : (1, 0.5, 0) -> (2, -0.5, 0)
     public void AnimateDamageText(bool isFacingRight)

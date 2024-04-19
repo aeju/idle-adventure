@@ -93,4 +93,21 @@ public static class Utilities
     {
         return DateTime.UtcNow.AddHours(9); // UTC + 9 = KST
     }
+
+    public static void CreateDamageText(GameObject prefab, Transform parent, int damage, Vector3 position, bool isFlipX)
+    {
+        if (prefab == null)
+        {
+            Debug.LogError("Damage text prefab is null");
+            return;
+        }
+        
+        GameObject damageText = GameObject.Instantiate(prefab, position, Quaternion.identity, parent);
+        DamageText damageTextComp = damageText.GetComponent<DamageText>();
+        if (damageTextComp != null)
+        {
+            damageTextComp.damage = damage;
+            damageTextComp.InitializeDamageText(isFlipX);
+        }
+    }
 }

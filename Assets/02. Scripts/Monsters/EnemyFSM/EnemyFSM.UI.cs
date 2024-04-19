@@ -12,8 +12,11 @@ public partial class EnemyFSM : MonoBehaviour
             // flipX을 기준으로 위치 계산
             float offsetDirection = flipX ? -1.0f : 1.0f;
             Vector3 damagePosition = transform.position + new Vector3(offsetDirection * 1.0f, 2.0f, 0);
-            GameObject damageText = Instantiate(hudDamageText, damagePosition, Quaternion.identity, transform); // 자식으로 생성
-            damageText.GetComponent<DamageText>().damage = hitPower;
+            Utilities.CreateDamageText(hudDamageText, transform, hitPower, damagePosition, flipX);
+        }
+        else
+        {
+            Debug.LogError("HUD Damage Text prefab is not assigned");
         }
     }
 
@@ -34,7 +37,7 @@ public partial class EnemyFSM : MonoBehaviour
         Tween moveTween = item.transform.DOMove(playerPosition, duration).SetEase(Ease.InOutQuad);
         yield return moveTween.WaitForCompletion();
         Destroy(item);
-        EarnRewards();
+        EarnRewards(); // 경험치, 코인 반영 
     }
 
     void EarnRewards()
