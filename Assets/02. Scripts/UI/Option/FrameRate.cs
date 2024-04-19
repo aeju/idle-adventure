@@ -8,9 +8,9 @@ using UnityEngine.UI;
 // 프레임 : 30, 45, 60
 public class FrameRate : MonoBehaviour
 {
-    public Toggle toggle30;
-    public Toggle toggle45;
-    public Toggle toggle60;
+    [SerializeField] private Toggle toggle30;
+    [SerializeField] private Toggle toggle45;
+    [SerializeField] private Toggle toggle60;
 
     // 상단바 - fps 디스플레이 변경 이벤트
     public static event Action<int> OnFrameRateChanged;
