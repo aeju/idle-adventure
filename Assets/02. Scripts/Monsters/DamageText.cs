@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
@@ -7,7 +5,7 @@ using DG.Tweening;
 public struct TextAttributes
 {
     public Color TextColor;
-    public float FontSize;
+    public readonly float FontSize;
 
     public TextAttributes(Color textColor, float fontSize)
     {
@@ -47,13 +45,11 @@ public class DamageText : MonoBehaviour
             attributes = new TextAttributes(Color.red, 14f);
             AnimateDamageText(enemyFSM.flipX); 
         }
-        else if (playerController != null)
+        else if (playerController != null) // Player : scale = 2 라서  
         {
-            // Player - scale : 2 * 2라서 
             attributes = new TextAttributes(Color.blue, 7.5f);
             AnimateDamageText(playerController.flipX);
         }
-        
         // 속성 적용
         damagetext.color = attributes.TextColor;
         damagetext.fontSize = attributes.FontSize;

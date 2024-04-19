@@ -103,11 +103,11 @@ public static class Utilities
         }
         
         GameObject damageText = GameObject.Instantiate(prefab, position, Quaternion.identity, parent);
-        DamageText damageTextComp = damageText.GetComponent<DamageText>();
-        if (damageTextComp != null)
+        DamageText damageTextInstance = damageText.GetComponent<DamageText>();
+        if (damageTextInstance != null)
         {
-            damageTextComp.damage = damage;
-            damageTextComp.InitializeDamageText(isFlipX);
+            damageTextInstance.damage = damage;
+            damageTextInstance.InitializeDamageText(isFlipX);
         }
     }
 }

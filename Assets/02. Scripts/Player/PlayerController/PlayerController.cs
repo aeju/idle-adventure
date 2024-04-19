@@ -150,14 +150,14 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         Utilities.HPSliderUpdate(hpSlider, playerStats.CurrentHP, playerStats.maxHP);
     }
     
-    void CreateDamageText(int hitPower)
+    void CreateDamageText(int enemyHitPower)
     {
         if (hudDamageText != null) // 데미지 텍스트 
         {
             // flipX을 기준으로 위치 계산
             float offsetDirection = flipX ? -1.0f : 1.0f;
             Vector3 damagePosition = transform.position + new Vector3(offsetDirection * 1.0f, 2.0f, 0);
-            Utilities.CreateDamageText(hudDamageText, transform.root, hitPower, damagePosition, flipX); // 자식으로 생성
+            Utilities.CreateDamageText(hudDamageText, transform.root, enemyHitPower, damagePosition, flipX); // 자식으로 생성
         }
         else
         {

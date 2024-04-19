@@ -5,14 +5,14 @@ using DG.Tweening;
 
 public partial class EnemyFSM : MonoBehaviour
 {
-    void CreateDamageText(int hitPower)
+    void CreateDamageText(int playerHitPower)
     {
         if (hudDamageText != null) // 데미지 텍스트 
         {
             // flipX을 기준으로 위치 계산
             float offsetDirection = flipX ? -1.0f : 1.0f;
             Vector3 damagePosition = transform.position + new Vector3(offsetDirection * 1.0f, 2.0f, 0);
-            Utilities.CreateDamageText(hudDamageText, transform, hitPower, damagePosition, flipX);
+            Utilities.CreateDamageText(hudDamageText, transform, playerHitPower, damagePosition, flipX);
         }
         else
         {
