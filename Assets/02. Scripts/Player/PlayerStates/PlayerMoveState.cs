@@ -11,6 +11,7 @@ public class PlayerMoveState : IPlayerState
     {
         if (!_playerController)
             _playerController = playerController;
+        _playerController.isMoving = true;
     }
     
     public void Handle(PlayerController playerController)
@@ -45,5 +46,6 @@ public class PlayerMoveState : IPlayerState
     public void Exit(PlayerController playerController)
     {
         _playerController.anim.SetBool("isMove", false);
+        _playerController.isMoving = false;
     }
 }

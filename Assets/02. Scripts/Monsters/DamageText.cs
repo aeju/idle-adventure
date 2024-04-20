@@ -48,7 +48,7 @@ public class DamageText : MonoBehaviour
         else if (playerController != null) // Player : scale = 2 라서  
         {
             attributes = new TextAttributes(Color.blue, 7.5f);
-            AnimateDamageText(playerController.flipX);
+            AnimateDamageText(playerController.isFlipX);
         }
         // 속성 적용
         damagetext.color = attributes.TextColor;

@@ -26,18 +26,17 @@ public class PlayerStateController : MonoBehaviour
             else 
             {
 #if UNITY_EDITOR // 컴퓨터에서의 키보드 입력 처리                
-                if (Input.GetKeyDown(KeyCode.Z))
+                if (Input.GetKeyDown(KeyCode.Z) && _playerController.isMoving == false)
                 {
                     _playerController.AttackPlayer();
                 }
-                else if (Input.GetKeyDown(KeyCode.X) 
-                         && !_playerController.isSkillOnCooldown)
+                else if (Input.GetKeyDown(KeyCode.X) && !_playerController.isSkillOnCooldown 
+                                                     && _playerController.isMoving == false)
                 {
                     _playerController.SkillPlayer();
                 }
 #endif
-                 // idle, move 판단 (이동 입력 유무)
-                 JudgeMovement(); 
+                 JudgeMovement(); // idle, move 판단 (이동 입력 유무)
             }
         }
     }

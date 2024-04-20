@@ -90,7 +90,7 @@ public partial class PlayerController : MonoBehaviour
     public List<GameObject> GetMonstersInFront(int attackMonsterMaxCount)
     {
         // 플레이어의 바라보는 방향 계산
-        Vector3 forward = flipX ? transform.right : -transform.right;
+        Vector3 forward = isFlipX ? transform.right : -transform.right;
         Vector3 searchCenter = transform.position + forward * (detectionRadius / 2);
 
         return SearchMonsters(searchCenter, detectionRadius / 2, attackMonsterMaxCount);
@@ -111,7 +111,7 @@ public partial class PlayerController : MonoBehaviour
         // attack 범위
         Gizmos.color = Color.magenta;
         
-        Vector3 forward = flipX ? transform.right : -transform.right;
+        Vector3 forward = isFlipX ? transform.right : -transform.right;
         Vector3 center = transform.position + forward * (detectionRadius / 2);
         Gizmos.DrawWireSphere(center, detectionRadius / 2);
     }
