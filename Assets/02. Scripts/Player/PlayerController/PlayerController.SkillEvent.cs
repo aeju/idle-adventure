@@ -22,7 +22,8 @@ public partial class PlayerController : MonoBehaviour
     {
         HitMonsters(attackMonsters, AttackType.Attack);
         CreateAttackEffect();
-        _attackMonsters = null; // 몬스터 목록 사용 후 초기화 
+        _attackMonsters = null; // 몬스터 목록 사용 후 초기화
+        //isFighting = false;
     }
     
     // 스킬 공격 (attack01)
@@ -31,6 +32,7 @@ public partial class PlayerController : MonoBehaviour
         HitMonsters(skillMonsters, AttackType.Skill);
         CreateSkillEffect();
         _skillMonsters = null; // 몬스터 목록 사용 후 초기화 
+        //isFighting = false;
     }
 
     // 지정된 몬스터들 공격
@@ -90,7 +92,7 @@ public partial class PlayerController : MonoBehaviour
     public List<GameObject> GetMonstersInFront(int attackMonsterMaxCount)
     {
         // 플레이어의 바라보는 방향 계산
-        Vector3 forward = flipX ? transform.right : -transform.right;
+        Vector3 forward = isFlipX ? transform.right : -transform.right;
         Vector3 searchCenter = transform.position + forward * (detectionRadius / 2);
 
         return SearchMonsters(searchCenter, detectionRadius / 2, attackMonsterMaxCount);
@@ -111,7 +113,7 @@ public partial class PlayerController : MonoBehaviour
         // attack 범위
         Gizmos.color = Color.magenta;
         
-        Vector3 forward = flipX ? transform.right : -transform.right;
+        Vector3 forward = isFlipX ? transform.right : -transform.right;
         Vector3 center = transform.position + forward * (detectionRadius / 2);
         Gizmos.DrawWireSphere(center, detectionRadius / 2);
     }

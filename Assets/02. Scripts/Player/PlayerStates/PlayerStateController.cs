@@ -26,18 +26,17 @@ public class PlayerStateController : MonoBehaviour
             else 
             {
 #if UNITY_EDITOR // 컴퓨터에서의 키보드 입력 처리                
-                if (Input.GetKeyDown(KeyCode.Z))
+                if (Input.GetKeyDown(KeyCode.Z) && _playerController.isMoving == false)
                 {
                     _playerController.AttackPlayer();
                 }
-                else if (Input.GetKeyDown(KeyCode.X) 
-                         && !_playerController.isSkillOnCooldown)
+                else if (Input.GetKeyDown(KeyCode.X) && !_playerController.isSkillOnCooldown 
+                                                     && _playerController.isMoving == false)
                 {
                     _playerController.SkillPlayer();
                 }
 #endif
-                 // idle, move 판단 (이동 입력 유무)
-                 JudgeMovement(); 
+                 JudgeMovement(); // idle, move 판단 (이동 입력 유무)
             }
         }
     }
@@ -55,8 +54,8 @@ public class PlayerStateController : MonoBehaviour
             Vector2 joystickInput = _playerController.joystick.GetInputDirection();
             combinedInput = new Vector3(joystickInput.x, 0, joystickInput.y); // 조이스틱 입력값
         }
-
 #endif
+        
         // 키보드 : 유니티 에디터
 #if UNITY_EDITOR
         if (!isJoystickActive)

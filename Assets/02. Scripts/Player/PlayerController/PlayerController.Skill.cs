@@ -14,8 +14,8 @@ public partial class PlayerController : MonoBehaviour
 
     [Header("# 스킬 시간 간격")]
     // 자동공격 시간 간격
-    [SerializeField] private float hitCooldown = 2f;
-    [SerializeField] private float lastHitTime;
+    [SerializeField] public float hitCooldown = 2f;
+    [SerializeField] public float lastHitTime;
     
     public List<GameObject> _attackMonsters; // 어택 적용 몬스터 목록 저장
     public List<GameObject> _skillMonsters; // 스킬 적용 몬스터 목록 저장
@@ -25,6 +25,7 @@ public partial class PlayerController : MonoBehaviour
     {
         if (Time.time >= lastHitTime + hitCooldown)
         {
+            isFighting = true; // 상태 변환, 상태 끄기 : 스킬 이펙트 끄는 코루틴
             _attackMonsters = monsters; // 어택 적용 몬스터 목록 저장
             anim.SetTrigger("AttackTrigger");
             lastHitTime = Time.time; // 공격 쿨타임 업데이트
@@ -36,6 +37,7 @@ public partial class PlayerController : MonoBehaviour
     {
         if (!isSkillOnCooldown && Time.time >= lastHitTime + hitCooldown) // 쿨다운 false = 스킬 실행 o
         {
+            isFighting = true; // 상태 변환, 상태 끄기 : 애니메이션 이벤트에서 
             _skillMonsters = monsters; // 스킬 적용 몬스터 목록 저장
             anim.SetTrigger("SkillTrigger"); // 애니메이션 트리거
             StartCoroutine(SkillCoroutine());

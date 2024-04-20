@@ -29,18 +29,24 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     public Slider hpSlider;
     public Slider cooldownSlider;
     
-    public GameObject hudDamageText;
+    [SerializeField] private GameObject hudDamageText;
     
-    public Transform ponpo;
+    [SerializeField] private Transform ponpo;
     public Rigidbody rigid;
     
-    [SerializeField] private float detectionRadius = 5f; // 탐지 반경 설정
+    // 탐지 시간 : 1초 
+    [Header("# 몬스터 탐지 ")] 
+    public float detectPeriod = 1f; // idle상태, 검색 주기 
+    public float detectionRadius = 5f; // 탐지 반경 설정
     
     [Header("# 플레이어 상태")]
     public bool isAlive = true; // 생존
-    public bool flipX; // 좌우반전 
-    public bool autoModeActive; // 자동 공격
-
+    public bool isFlipX; // 좌우반전 
+    public bool isMoving = false;
+    public bool isFighting = false;
+    public bool isMonsterDetected = false;
+    public bool autoModeActive = false; // 자동 이동
+    
     // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
     void Start()
     {
@@ -61,7 +67,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     {
         // 초기 1회 필요 
         isAlive = true;
-        flipX = false;
+        isFlipX = false;
         DeactivateEffects();
         monsterLayerMask = LayerMask.GetMask("Enemy");
         playerStats.OnPlayerHPChanged += HandlePlayerHpChange; // 체력에 대한 이벤트 구독
@@ -155,9 +161,9 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         if (hudDamageText != null) // 데미지 텍스트 
         {
             // flipX을 기준으로 위치 계산
-            float offsetDirection = flipX ? -1.0f : 1.0f;
+            float offsetDirection = isFlipX ? -1.0f : 1.0f;
             Vector3 damagePosition = transform.position + new Vector3(offsetDirection * 1.0f, 2.0f, 0);
-            Utilities.CreateDamageText(hudDamageText, transform.root, enemyHitPower, damagePosition, flipX); // 자식으로 생성
+            Utilities.CreateDamageText(hudDamageText, transform.root, enemyHitPower, damagePosition, isFlipX); // 자식으로 생성
         }
         else
         {
@@ -168,13 +174,13 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     // FlipX 기준으로 스프라이트 방향 전환
     public void FlipPlayer(float horizontalInput)
     {
-        if (horizontalInput < 0 && flipX || horizontalInput > 0 && !flipX)
+        if (horizontalInput < 0 && isFlipX || horizontalInput > 0 && !isFlipX)
         {
             Vector3 theScale = ponpo.localScale; 
             theScale.x *= -1; // ponpo의 localScale x 값을 반전시켜 방향 전환
             ponpo.localScale = theScale;
             
-            flipX = !flipX; // flipX 상태 업데이트
+            isFlipX = !isFlipX; // flipX 상태 업데이트
         }
     }
 }
