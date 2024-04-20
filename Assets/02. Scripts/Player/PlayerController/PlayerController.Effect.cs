@@ -4,12 +4,10 @@ using UnityEngine;
 
 public partial class PlayerController : MonoBehaviour
 {
-    // 공격 이펙트
-    public GameObject attackEffect;
-    public GameObject skillEffect;
-    
-    // 이펙트 비활성화 시간
-    public float duration = 1.5f;
+    [Header("# 공격 이펙트")]
+    [SerializeField] private GameObject attackEffect;
+    [SerializeField] private GameObject skillEffect;
+    [SerializeField] private float effectDuration = 1.5f; // 이펙트 비활성화 시간
     
     /// <summary>
     /// 제일 처음, 공격 이펙트를 꺼주고 시작
@@ -33,7 +31,10 @@ public partial class PlayerController : MonoBehaviour
     // 지정된 시간이 지난 후 스킬 이펙트를 비활성화하는 코루틴
     private IEnumerator DeactivateEffect(GameObject effect, float delay)
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(delay/2);
+        isFighting = false; // 전투 상태 해제 
+        
+        yield return new WaitForSeconds(delay/2);
         if (effect != null)
         {
             effect.SetActive(false);
@@ -43,12 +44,12 @@ public partial class PlayerController : MonoBehaviour
     // 기본 공격(z) 이펙트
     private void CreateAttackEffect()
     {
-        ActivateEffect(attackEffect, duration); 
+        ActivateEffect(attackEffect, effectDuration); 
     }
 
     // 스킬 공격(x) 이펙트
     private void CreateSkillEffect()
     {
-        ActivateEffect(skillEffect, duration); 
+        ActivateEffect(skillEffect, effectDuration); 
     }
 }

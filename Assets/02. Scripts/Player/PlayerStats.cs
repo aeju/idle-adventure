@@ -61,9 +61,7 @@ public class PlayerStats : MonoBehaviour
         _playerController = GetComponentInParent<PlayerController>();
     }
     
-    
-
-    public void AssignStats()
+    private void AssignStats()
     {
         maxHP = playerStat.MaxHP;
         _currentHP = maxHP; // HP 초기화
@@ -84,17 +82,17 @@ public class PlayerStats : MonoBehaviour
 
     public void AttackAnim()
     {
-        if (_playerController != null)
+        if (_playerController != null && _playerController._attackMonsters.Count > 0)
         {
-            _playerController.PlayerAttackAnim();
+            _playerController.PlayerAttackAnim(_playerController._attackMonsters);
         }
     }
 
     public void SkillAnim()
     {
-        if (_playerController != null)
+        if (_playerController != null && _playerController._skillMonsters.Count > 0)
         {
-            _playerController.PlayerSkillAnim();
+            _playerController.PlayerSkillAnim(_playerController._skillMonsters);
         }
     }
     
