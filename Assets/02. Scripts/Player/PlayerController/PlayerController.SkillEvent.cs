@@ -22,7 +22,8 @@ public partial class PlayerController : MonoBehaviour
     {
         HitMonsters(attackMonsters, AttackType.Attack);
         CreateAttackEffect();
-        _attackMonsters = null; // 몬스터 목록 사용 후 초기화 
+        _attackMonsters = null; // 몬스터 목록 사용 후 초기화
+        //isFighting = false;
     }
     
     // 스킬 공격 (attack01)
@@ -31,6 +32,7 @@ public partial class PlayerController : MonoBehaviour
         HitMonsters(skillMonsters, AttackType.Skill);
         CreateSkillEffect();
         _skillMonsters = null; // 몬스터 목록 사용 후 초기화 
+        //isFighting = false;
     }
 
     // 지정된 몬스터들 공격

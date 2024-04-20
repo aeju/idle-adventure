@@ -31,7 +31,10 @@ public partial class PlayerController : MonoBehaviour
     // 지정된 시간이 지난 후 스킬 이펙트를 비활성화하는 코루틴
     private IEnumerator DeactivateEffect(GameObject effect, float delay)
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(delay/2);
+        isFighting = false; // 전투 상태 해제 
+        
+        yield return new WaitForSeconds(delay/2);
         if (effect != null)
         {
             effect.SetActive(false);

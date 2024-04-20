@@ -16,7 +16,10 @@ public class PlayerMoveState : IPlayerState
     
     public void Handle(PlayerController playerController)
     {
-        PlayerMove();
+        if (!_playerController.isFighting)
+        {
+            PlayerMove();
+        }
     }
 
     private void PlayerMove()

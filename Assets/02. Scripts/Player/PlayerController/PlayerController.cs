@@ -42,7 +42,8 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     [Header("# 플레이어 상태")]
     public bool isAlive = true; // 생존
     public bool isFlipX; // 좌우반전 
-    public bool isMoving = false; 
+    public bool isMoving = false;
+    public bool isFighting = false;
     public bool isMonsterDetected = false;
     public bool autoModeActive = false; // 자동 이동
     

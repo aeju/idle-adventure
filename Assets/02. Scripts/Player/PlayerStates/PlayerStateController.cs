@@ -54,8 +54,8 @@ public class PlayerStateController : MonoBehaviour
             Vector2 joystickInput = _playerController.joystick.GetInputDirection();
             combinedInput = new Vector3(joystickInput.x, 0, joystickInput.y); // 조이스틱 입력값
         }
-
 #endif
+        
         // 키보드 : 유니티 에디터
 #if UNITY_EDITOR
         if (!isJoystickActive)
