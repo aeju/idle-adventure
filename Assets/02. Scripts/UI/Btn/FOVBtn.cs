@@ -9,12 +9,10 @@ using UniRx;
 // UI : 카메라 상태가 선택되면, 해당하는 동그라미 On GameObject 켜주기
 public class FOVBtn : MonoBehaviour
 {
-    [SerializeField] private int currentFOV;
-    
     [SerializeField] private Camera playerCam;
     [SerializeField] private Button fovBtn;
 
-    [SerializeField] private int currentFovState = 0; 
+    private int currentFovState = 0; 
     private readonly int[] fovStates = { 35, 45, 25 };
     
     // [UI]
@@ -26,33 +24,39 @@ public class FOVBtn : MonoBehaviour
 
     [SerializeField] private GameObject thirdOn;
     [SerializeField] private GameObject thirdOff;
-
     
-
+    [SerializeField] private float currentFOV; // 현재 시야각
+    [SerializeField] private float fovChangeSpeed = 5f; // FOV 변화 속도 조절
+    
     void Start()
     {
         fovBtn.OnClickAsObservable().Subscribe(_ =>
         {
-            ChangeFOV();
+            ChangeFOV(); // currentFOV 변경
         }).AddTo(this);
-
-        playerCam.fieldOfView = fovStates[currentFovState]; // playerCam fov 초기값 설정
-        currentFOV = fovStates[currentFovState]; // 인스펙터창 확인용
-
-        UpdateUI(currentFovState); // fov 상태 확인 UI 업데이트 
+        
+        // 초기 시야각 설정
+        currentFOV = fovStates[currentFovState]; 
+        playerCam.fieldOfView = currentFOV; 
+        
+        UpdateUI(currentFovState); // UI 초기화
+    }
+    
+    void Update()
+    {
+        // currentFOV가 변하면
+        if (Mathf.Abs(playerCam.fieldOfView - currentFOV) > 0.1f)
+        {
+            playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, currentFOV, fovChangeSpeed * Time.deltaTime);
+        }
     }
 
     private void ChangeFOV()
     {
-        currentFovState++;
-        if (currentFovState >= fovStates.Length)
-        {
-            currentFovState = 0; // currentFovState 초기화 
-        }
-        playerCam.fieldOfView = fovStates[currentFovState];
+        currentFovState = (currentFovState + 1) % fovStates.Length; // 다음 FOV로 전환
         currentFOV = fovStates[currentFovState];
         
-        UpdateUI(currentFovState);
+        UpdateUI(currentFovState); // UI 업데이트
     }
 
     private void UpdateUI(int fovState)
