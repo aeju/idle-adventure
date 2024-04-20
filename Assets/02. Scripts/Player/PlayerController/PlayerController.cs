@@ -34,13 +34,17 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     [SerializeField] private Transform ponpo;
     public Rigidbody rigid;
     
-    [SerializeField] private float detectionRadius = 5f; // 탐지 반경 설정
+    // 탐지 시간 : 1초 
+    [Header("# 몬스터 탐지 ")] 
+    public float detectPeriod = 1f; // idle상태, 검색 주기 
+    public float detectionRadius = 5f; // 탐지 반경 설정
     
     [Header("# 플레이어 상태")]
     public bool isAlive = true; // 생존
     public bool isFlipX; // 좌우반전 
-    public bool isMoving = false;
-    public bool autoModeActive = false; // 자동 공격
+    public bool isMoving = false; 
+    public bool isMonsterDetected = false;
+    public bool autoModeActive = false; // 자동 이동
     
     // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
     void Start()

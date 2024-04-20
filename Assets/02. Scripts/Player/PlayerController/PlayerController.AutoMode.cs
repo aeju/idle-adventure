@@ -5,8 +5,26 @@ using UnityEngine;
 
 public partial class PlayerController : MonoBehaviour
 {
-    // 우선 사용 : Skill
+    // 자동 이동! (자동 공격 : 기본 상태에서도 o) 
     public void AutoModeOn()
+    {
+        
+    }
+
+    public IEnumerator DetectMonstersPeriodically()
+    {
+        AutoDetect();
+        yield return new WaitForSeconds(detectPeriod);
+    }
+
+    public void AutoDetect()
+    {
+        // 스킬 몬스터 목록 (더 넓음)
+        List<GameObject> aroundMonsters = GetmonstersInRange(skillMonsterMaxCount);
+        isMonsterDetected = true;
+    }
+    
+    public void AutoAttack()
     {
         if (Time.time >= lastHitTime + hitCooldown)
         {
@@ -16,6 +34,8 @@ public partial class PlayerController : MonoBehaviour
             // 스킬 쿨타임이 아니고, 스킬 사용 가능한 몬스터가 있다면
             if (!isSkillOnCooldown && skillMonsters.Count > 0)
             {
+                isMonsterDetected = true; 
+                
                 Debug.Log("[AutoMode]1. Skill");
                 // 스킬 공격 or 거리 확인 및 이동
                 if (CheckDistance(skillMonsters))
@@ -26,6 +46,7 @@ public partial class PlayerController : MonoBehaviour
                     FlipTowardsNearestMonster(nearestMonster);
                     
                     PlayerSkill(skillMonsters);
+                    isMonsterDetected = false; 
                 }
                 else
                 {
@@ -45,6 +66,7 @@ public partial class PlayerController : MonoBehaviour
                     FlipTowardsNearestMonster(nearestMonster);
                     
                     PlayerAttack(attackMonsters);
+                    isMonsterDetected = false; 
                 }
             }
             else
@@ -94,6 +116,7 @@ public partial class PlayerController : MonoBehaviour
     {
         Vector3 direction = (targetPosition - transform.position).normalized;
         rigid.MovePosition(transform.position + direction * playerStats.movement_Speed * Time.deltaTime);
+        anim.SetBool("isMove", true); // 애니메이션 변경
         FlipPlayer(direction.x); // 방향에 따라 플레이어 방향 전환
         Invoke("AutoModeOn", 0.1f); // 자동 모드 다시 실행 (=몬스터 다시 검색)
     }

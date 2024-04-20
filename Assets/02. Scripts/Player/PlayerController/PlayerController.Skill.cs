@@ -14,8 +14,8 @@ public partial class PlayerController : MonoBehaviour
 
     [Header("# 스킬 시간 간격")]
     // 자동공격 시간 간격
-    [SerializeField] private float hitCooldown = 2f;
-    [SerializeField] private float lastHitTime;
+    [SerializeField] public float hitCooldown = 2f;
+    [SerializeField] public float lastHitTime;
     
     public List<GameObject> _attackMonsters; // 어택 적용 몬스터 목록 저장
     public List<GameObject> _skillMonsters; // 스킬 적용 몬스터 목록 저장
