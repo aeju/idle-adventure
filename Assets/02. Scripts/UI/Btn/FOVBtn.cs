@@ -20,15 +20,9 @@ public class FOVBtn : MonoBehaviour
     [SerializeField] private float nextFOV; // 다음 시야각
     
     
-    [Header("# UI")]
-    [SerializeField] private GameObject firstOn;
-    [SerializeField] private GameObject firstOff;
-
-    [SerializeField] private GameObject secondOn;
-    [SerializeField] private GameObject secondOff;
-
-    [SerializeField] private GameObject thirdOn;
-    [SerializeField] private GameObject thirdOff;
+    [Header("# UI (2 - 3 - 1)")]
+    [SerializeField] private GameObject[] onIndicators; // On 상태 (흰색)
+    [SerializeField] private GameObject[] offIndicators; // Off 상태 (회색)
     
     void Start()
     {
@@ -72,30 +66,10 @@ public class FOVBtn : MonoBehaviour
 
     private void UpdateUI(int fovState)
     {
-        // On 이미지 전부 꺼주기 
-        firstOn.SetActive(false);
-        secondOn.SetActive(false);
-        thirdOn.SetActive(false); 
-
-        // ui : 2 -> 3 -> 1
-        switch (fovState)
+        for (int i = 0; i < onIndicators.Length; i++)
         {
-            case 0:
-                secondOn.SetActive(true); // 중간On 켜주기
-                firstOff.SetActive(true); // 나머지는 Off 켜주기
-                thirdOff.SetActive(true);
-                break;
-            case 1:
-                thirdOn.SetActive(true); // 3번째 On 켜주기
-                firstOff.SetActive(true);
-                secondOff.SetActive(true);
-                break;
-            case 2:
-                firstOn.SetActive(true); // 1번째 On 켜주기
-                secondOff.SetActive(true);
-                thirdOff.SetActive(true);
-                break;
-            
+            onIndicators[i].SetActive(i == fovState); // on : 현재 상태만 활성화
+            offIndicators[i].SetActive(i != fovState); // off : 현재 상태 제외 활성화
         }
     }
 }
