@@ -1,20 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerAttackState : IPlayerState
 {
     private PlayerController _playerController;
+    
+    private List<GameObject> attackMonsters; // 기본 공격 몬스터 목록 저장
 
     public void Enter(PlayerController playerController)
     {
         _playerController = playerController;
-
-        if (_playerController.nearestMonster != null)
+        
+        // 몬스터 탐지
+        attackMonsters = _playerController.GetMonstersInFront(_playerController.attackMonsterMaxCount);
+        // 몬스터가 범위 내에 있을 때만 상태 변환
+        if (attackMonsters.Count > 0)
         {
-            _playerController.PlayerAttack();
+            _playerController.PlayerAttack(attackMonsters);
         }
+        else
+            return;
     }
     
     public void Handle(PlayerController playerController)
@@ -24,6 +30,6 @@ public class PlayerAttackState : IPlayerState
 
     public void Exit(PlayerController playerController)
     {
-        
+        attackMonsters = null; 
     }
 }

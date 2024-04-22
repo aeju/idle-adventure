@@ -5,8 +5,8 @@ using UnityEngine.EventSystems;
 
 public class FixedJoyStick : MonoBehaviour,IDragHandler, IPointerDownHandler, IPointerUpHandler
 {
-    public Vector2 joystickInput;
-    public RectTransform handle;
+    [SerializeField] private Vector2 joystickInput;
+    [SerializeField] private RectTransform handle;
     private RectTransform joystickRectTransform;
 
     private void Start()

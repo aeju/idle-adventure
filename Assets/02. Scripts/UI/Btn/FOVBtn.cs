@@ -9,77 +9,67 @@ using UniRx;
 // UI : 카메라 상태가 선택되면, 해당하는 동그라미 On GameObject 켜주기
 public class FOVBtn : MonoBehaviour
 {
-    [SerializeField] private int currentFOV;
-    
     [SerializeField] private Camera playerCam;
     [SerializeField] private Button fovBtn;
-
-    [SerializeField] private int currentFovState = 0; 
+    
+    private int currentFovState = 0; 
     private readonly int[] fovStates = { 35, 45, 25 };
     
-    // [UI]
-    [SerializeField] private GameObject firstOn;
-    [SerializeField] private GameObject firstOff;
-
-    [SerializeField] private GameObject secondOn;
-    [SerializeField] private GameObject secondOff;
-
-    [SerializeField] private GameObject thirdOn;
-    [SerializeField] private GameObject thirdOff;
-
+    [SerializeField] private float fovChangeSpeed = 5f; // FOV 변화 속도 조절
+    [SerializeField] private float currentFOV; // 현재 시야각
+    [SerializeField] private float nextFOV; // 다음 시야각
     
-
+    
+    [Header("# UI (2 - 3 - 1)")]
+    [SerializeField] private GameObject[] onIndicators; // On 상태 (흰색)
+    [SerializeField] private GameObject[] offIndicators; // Off 상태 (회색)
+    
     void Start()
     {
         fovBtn.OnClickAsObservable().Subscribe(_ =>
         {
-            ChangeFOV();
+            ChangeFOV(); // currentFOV = nextFOV로 변경
         }).AddTo(this);
-
-        playerCam.fieldOfView = fovStates[currentFovState]; // playerCam fov 초기값 설정
-        currentFOV = fovStates[currentFovState]; // 인스펙터창 확인용
-
-        UpdateUI(currentFovState); // fov 상태 확인 UI 업데이트 
+        
+        // 초기 시야각 설정
+        currentFOV = fovStates[currentFovState]; 
+        playerCam.fieldOfView = currentFOV; 
+        
+        // 다음 시야각 (fovStates[currentFovState + 1])
+        nextFOV = GetNextFOV(); 
+        
+        UpdateUI(currentFovState); // UI 초기화
+    }
+    
+    void Update()
+    {
+        // currentFOV가 변하면
+        if (Mathf.Abs(playerCam.fieldOfView - currentFOV) > 0.1f)
+        {
+            playerCam.fieldOfView = Mathf.Lerp(playerCam.fieldOfView, currentFOV, fovChangeSpeed * Time.deltaTime);
+        }
     }
 
     private void ChangeFOV()
     {
-        currentFovState++;
-        if (currentFovState >= fovStates.Length)
-        {
-            currentFovState = 0; // currentFovState 초기화 
-        }
-        playerCam.fieldOfView = fovStates[currentFovState];
-        currentFOV = fovStates[currentFovState];
+        currentFOV = nextFOV; // 현재 시야각을 다음 시야각으로 업데이트
+        currentFovState = (currentFovState + 1) % fovStates.Length; // 다음 FOV로 전환
+        nextFOV = GetNextFOV(); // 다음 시야각 미리 계산 
         
-        UpdateUI(currentFovState);
+        UpdateUI(currentFovState); // UI 업데이트
+    }
+    
+    private float GetNextFOV()
+    {
+        return fovStates[(currentFovState + 1) % fovStates.Length]; // 다음 FOV 계산
     }
 
     private void UpdateUI(int fovState)
     {
-        // On 이미지 전부 꺼주기 
-        firstOn.SetActive(false);
-        secondOn.SetActive(false);
-        thirdOn.SetActive(false); 
-
-        // ui : 2 -> 3 -> 1
-        switch (fovState)
+        for (int i = 0; i < onIndicators.Length; i++)
         {
-            case 0:
-                secondOn.SetActive(true); // 중간On 켜주기
-                firstOff.SetActive(true); // 나머지는 Off 켜주기
-                thirdOff.SetActive(true);
-                break;
-            case 1:
-                thirdOn.SetActive(true); // 3번째 On 켜주기
-                firstOff.SetActive(true);
-                secondOff.SetActive(true);
-                break;
-            case 2:
-                firstOn.SetActive(true); // 1번째 On 켜주기
-                secondOff.SetActive(true);
-                thirdOff.SetActive(true);
-                break;
+            onIndicators[i].SetActive(i == fovState); // on : 현재 상태만 활성화
+            offIndicators[i].SetActive(i != fovState); // off : 현재 상태 제외 활성화
         }
     }
 }
