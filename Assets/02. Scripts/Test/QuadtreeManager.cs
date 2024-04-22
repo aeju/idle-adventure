@@ -36,7 +36,7 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
         ClearTexture(tex);
         tex.Apply(false);
         
-        // Rectangle 객체 = 쿼드트리 경계
+            // Rectangle 객체 = 쿼드트리 경계
         Rectangle boundary = new Rectangle(boundaryCenterX, boundaryCenterZ, boundaryWidth, boundaryLength);
 
         // 쿼드 트리가 없다면, 새로 만듦

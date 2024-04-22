@@ -5954,6 +5954,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00ff70b29116844d4ad8bfd53455b452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  checkTime: 1
 --- !u!4 &194172361
 Transform:
   m_ObjectHideFlags: 0
@@ -15516,6 +15517,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1336026304982722795, guid: 135d1a09f2c7543e6a98cb8da7ec3a8e, type: 3}
   m_PrefabInstance: {fileID: 614969313}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &615005657 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8736290802151869401, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+  m_PrefabInstance: {fileID: 5919368119025330839}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d065af6b7694e477887976e6b5501f60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &617771638
 GameObject:
   m_ObjectHideFlags: 0
@@ -22792,7 +22804,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f1cf63de4a10b4d4c8a8009743de1bd1, type: 2}
+  - {fileID: 2100000, guid: eab4e2b2348914c59bd0f1a34e03ba70, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -30847,7 +30859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4bbc8e26fce140e0854d664374d7589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeTextHourMinSec: {fileID: 1238960286}
+  timeText: {fileID: 0}
 --- !u!114 &1238960286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43784,16 +43796,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8079b6f9f05934cfd840b5058023482a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentFOV: 0
   playerCam: {fileID: 1488331283}
   fovBtn: {fileID: 1816318822}
-  currentFovState: 0
-  firstOn: {fileID: 76665592}
-  firstOff: {fileID: 1432240492}
-  secondOn: {fileID: 1664505099}
-  secondOff: {fileID: 1602851277}
-  thirdOn: {fileID: 1486652411}
-  thirdOff: {fileID: 12239385}
+  fovChangeSpeed: 5
+  currentFOV: 0
+  nextFOV: 0
+  onIndicators: []
+  offIndicators: []
 --- !u!1 &1819007396
 GameObject:
   m_ObjectHideFlags: 0
@@ -51471,6 +51480,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3225459575509619670, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: _playerController
+      value: 
+      objectReference: {fileID: 615005657}
     - target: {fileID: 3341853853491011724, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
       propertyPath: m_Name
       value: New Ponpo
