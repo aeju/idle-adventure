@@ -6,7 +6,7 @@ using TMPro;
 // FrameRate 이벤트 구독, 변경할 때만 업데이트
 public class FPSText : MonoBehaviour
 {
-    public TextMeshProUGUI frameRateText;
+    [SerializeField] private TextMeshProUGUI frameRateText;
 
     void Start()
     {
