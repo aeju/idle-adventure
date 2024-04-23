@@ -45,6 +45,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     public bool isMoving = false;
     public bool isFighting = false;
     public bool isMonsterDetected = false;
+    public bool isArrived = false;
     public bool autoModeActive = false; // 자동 이동
     
     // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리

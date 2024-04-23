@@ -23,7 +23,7 @@ public class PlayerStateController : MonoBehaviour
             {
                 _playerController.AutoPlayer();
             }
-            else 
+            else  // AutoModeActive 아닐 때
             {
 #if UNITY_EDITOR // 컴퓨터에서의 키보드 입력 처리                
                 if (Input.GetKeyDown(KeyCode.Z) && _playerController.isMoving == false)
