@@ -51,6 +51,7 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
 
     void Update()
     {
+        /*
         // 마우스 클릭 위치에 점 추가
         if (Input.GetMouseButtonDown(0))
         {
@@ -68,6 +69,7 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
                 tex.Apply(false);
             }
         }
+        */
     }
 
 
@@ -81,16 +83,26 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
     }
     
     // 몬스터 위치 정보 : Point 객체로 변환하여 쿼드트리에 삽입
-    public void InsertEnemy(Vector3 position)
+    public void InsertEnemy(Vector3 position, string monsterName)
     {
         Debug.Log($"Trying to insert enemy at: {position}"); // 적 생성 위치 로그
         // Vector3 위치를 Point로 변환
-        Point point = new Point(position.x, position.z); 
+        Point point = new Point(position.x, position.z, monsterName); 
         
         // 쿼드트리에 포인트 삽입
         if (!quadTree.Insert(point))
         {
             Debug.LogError($"Point {point.x}, {point.z} is outside the Quadtree boundary.");
+        }
+    }
+
+    // 몬스터 위치 삭제 : 쿼드트리에서 제거 
+    public void RemoveEnemy(string monsterName)
+    {
+        // 쿼드트리에서 포인트 삭제 시도
+        if (!quadTree.Remove(monsterName))
+        {
+            Debug.LogError($"Failed to remove enemy with ID: {monsterName}");
         }
     }
     

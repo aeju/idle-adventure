@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -74,6 +74,30 @@ public class Quadtree : MonoBehaviour
         }
         
         // error
+        return false;
+    }
+
+    // 쿼드트리에서 포인트 찾아 삭제하는 로직
+    public bool Remove(string monsterName)
+    {
+        // 현재 노드에서 식별자에 해당하는 포인트를 찾음
+        Point pointToRemove = points.FirstOrDefault(p => p.monsterName == monsterName);
+        if (pointToRemove != null)
+        {
+            points.Remove(pointToRemove);
+            Debug.Log($"Removed point {pointToRemove.x}, {pointToRemove.z} with ID {monsterName}.");
+            return true;
+        }
+
+        // 현재 노드에서 찾지 못했다면, 분할된 노드들을 검사
+        if (divided)
+        {
+            return northEast.Remove(monsterName) || northWest.Remove(monsterName) ||
+                   southEast.Remove(monsterName) || southWest.Remove(monsterName);
+        }
+
+        // 포인트를 찾지 못한 경우
+        Debug.Log($"Failed to find point with ID {monsterName}.");
         return false;
     }
 
