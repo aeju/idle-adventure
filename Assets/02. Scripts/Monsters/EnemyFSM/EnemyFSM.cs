@@ -239,13 +239,11 @@ public partial class EnemyFSM : MonoBehaviour
     
     private void GetNewWanderDestination()
     {
-        
         // Offset 값 랜덤하게 결정
         float randomOffset = Random.Range(-wanderOffset, wanderOffset);
         
         // 원점을 기준으로 x, z 방향으로 랜덤한 위치 결정
         float randomX = originPos.x + Random.Range(-wanderDistance, wanderDistance) + randomOffset;
-        // float randomZ = originPos.x + Random.Range(-wanderDistance, wanderDistance) + randomOffset;
         
         // 현재 위치 축 유지할 경우
         float y = transform.position.y;
@@ -342,10 +340,6 @@ public partial class EnemyFSM : MonoBehaviour
             target.DamagedPlayer();
             target.ReceiveDamage(CombatCalculator.CalculateAttackDamage(monsterStats.Attack, target.playerStats.defense,
                 monsterStats.Attack_multiplier, monsterStats.Critical_multiplier));
-
-            // 플레이어가 반대 방향 보고 있으면, 뒤집기 
-            // float playerToMonsterDistance = transform.position.x - target.transform.position.x;
-            // target.FlipPlayer(playerToMonsterDistance);
         }
     }
 
@@ -445,13 +439,11 @@ public partial class EnemyFSM : MonoBehaviour
     // 죽음 이벤트에 호출될 메서드 (애니메이션 이벤트)
     public void DeactivateEnemy()
     {
-        // 죽음 애니메이션이 끝나는 시점에, 몬스터 비활성화
-        gameObject.SetActive(false);
+        EnemyManager.Instance.ReturnEnemyToPool(gameObject); // 오브젝트 풀로 반환
+        
         monsterStats.OnEnemyHPChanged -= HandleEnemyHpChange; // HP 변경 이벤트 구독 해제
         monsterStats.CurrentHP = monsterStats.MaxHP; // hp 초기화
         hpSlider.gameObject.SetActive(true);
         cc.enabled = true;
-
-        EnemyManager.Instance.ReturnEnemyToPool(gameObject); // 오브젝트 풀로 반환
     }
 }

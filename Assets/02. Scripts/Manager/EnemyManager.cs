@@ -117,9 +117,10 @@ public class EnemyManager : Singleton<EnemyManager>
                     enemy.transform.position = spawnPosition;
                     enemy.SetActive(true); // 에너미 활성화 
                     
-                    if (QuadtreeManager.Instance != null) // 위치 저장 
+                    if (QuadtreeManager.Instance != null) // 위치 저장 + 이름 저장
                     {
-                        QuadtreeManager.Instance.InsertEnemy(enemy.transform.position); 
+                        //QuadtreeManager.Instance.InsertEnemy(enemy.transform.position); 
+                        QuadtreeManager.Instance.InsertEnemy(enemy.transform.position, enemy.name); 
                     }
                 }
             }
@@ -143,11 +144,22 @@ public class EnemyManager : Singleton<EnemyManager>
     // 적 인스턴스를 오브젝트 풀로 반환
     public void ReturnEnemyToPool(GameObject enemy)
     {
-        if (!enemyObjectPool.Contains(enemy))
+        if (enemyObjectPool.Contains(enemy))
         {
+            Debug.Log($"Checking enemy in pool: {enemy.name}, Active: {enemy.activeSelf}");
+
+            Debug.Log("Removing enemy from pool...");
             enemy.SetActive(false); // 적 인스턴스를 비활성화
             enemyObjectPool.Add(enemy); // 오브젝트 풀에 적 인스턴스 추가
+            
+            if (QuadtreeManager.Instance != null)
+            {
+                QuadtreeManager.Instance.RemoveEnemy(enemy.name);
+                Debug.Log("Removing enemy from Quadtree...");
+            }
         }
+        
+       
     }
     
     void OnDrawGizmos()
