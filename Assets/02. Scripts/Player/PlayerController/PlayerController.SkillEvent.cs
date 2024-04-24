@@ -105,7 +105,7 @@ public partial class PlayerController : MonoBehaviour
     void OnDrawGizmos()
     {
         // skill 범위
-        Gizmos.color = Color.green;
+        Gizmos.color = Color.gray;
         Gizmos.DrawWireSphere(transform.position, detectionRadius); // 현재 위치를 중심으로 하는 구
 
         // attack 범위

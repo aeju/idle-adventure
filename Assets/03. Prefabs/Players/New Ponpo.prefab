@@ -5654,6 +5654,7 @@ GameObject:
   - component: {fileID: 8736290802151869401}
   - component: {fileID: 4843729199197089978}
   - component: {fileID: 6989851670362808635}
+  - component: {fileID: 8471397619157895146}
   m_Layer: 0
   m_Name: New Ponpo
   m_TagString: player
@@ -5690,30 +5691,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d065af6b7694e477887976e6b5501f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AutoModeActive: 0
+  autoAttackRange: 0.2
+  terrainRadius: 100
   playerStats: {fileID: 8259264762746492066}
   anim: {fileID: 235999508689107545}
-  isAlive: 1
   joystick: {fileID: 0}
   hpSlider: {fileID: 112147675157893637}
   cooldownSlider: {fileID: 7986019099169197957}
-  monsterLayerMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  nearestMonster: {fileID: 0}
   hudDamageText: {fileID: 7825407166849429008, guid: b94564b4556864b92be1b804a6449fe9, type: 3}
-  flipX: 0
   ponpo: {fileID: 5882211039773707944}
   rigid: {fileID: 0}
+  detectPeriod: 1
   detectionRadius: 5
+  isAlive: 1
+  isFlipX: 0
+  isMoving: 0
+  isFighting: 0
+  isMonsterDetected: 0
+  isArrived: 0
+  autoModeActive: 0
   attackEffect: {fileID: 8844795098257222111}
   skillEffect: {fileID: 1208326253419339407}
-  duration: 1.5
+  effectDuration: 1.5
   skillCooldown: 3
   lastSkillTime: -5
   isSkillOnCooldown: 0
   hitCooldown: 2
   lastHitTime: 0
+  _attackMonsters: []
+  _skillMonsters: []
+  monsterLayerMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  attackMonsterMaxCount: 5
+  skillMonsterMaxCount: 10
 --- !u!54 &4843729199197089978
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5756,12 +5767,35 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0.48, z: 0}
+  m_Radius: 2.2
+  m_Center: {x: 0, y: 1.56, z: 0}
+--- !u!136 &8471397619157895146
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3341853853491011724}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.7
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0.02, y: 0.87, z: 0}
 --- !u!1 &3459294767234529150
 GameObject:
   m_ObjectHideFlags: 0
@@ -5932,6 +5966,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5a3cbb0d4f4843108a137e6938ae3f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerController: {fileID: 0}
 --- !u!114 &8259264762746492066
 MonoBehaviour:
   m_ObjectHideFlags: 0

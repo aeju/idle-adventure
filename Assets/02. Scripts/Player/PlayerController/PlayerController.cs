@@ -33,6 +33,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     
     [SerializeField] private Transform ponpo;
     public Rigidbody rigid;
+    private SphereCollider detectionCollider;
     
     // 탐지 시간 : 1초 
     [Header("# 몬스터 탐지 ")] 
@@ -54,6 +55,9 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         ponpo = transform.GetChild(0);
         anim = ponpo.GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
+        
+        detectionCollider = GetComponent<SphereCollider>();
+        detectionCollider.isTrigger = true;
 
         if (!joystick)
         {
@@ -172,6 +176,8 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         }
     }
     
+    public float flipCooldown = 0.5f; // 뒤집기 쿨다운 시간 (0.5초)
+    public float lastFlipTime = 0; // 마지막 뒤집기 시간
     // FlipX 기준으로 스프라이트 방향 전환
     public void FlipPlayer(float horizontalInput)
     {
@@ -182,6 +188,12 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             ponpo.localScale = theScale;
             
             isFlipX = !isFlipX; // flipX 상태 업데이트
+            lastFlipTime = Time.time; // 마지막 뒤집기 시간 업데이트
+        }
+        // 현재 시간이 마지막 뒤집기 시간 + 쿨다운보다 크거나 같은지 확인
+        //if (Time.time >= lastFlipTime + flipCooldown)
+        {
+            
         }
     }
 }

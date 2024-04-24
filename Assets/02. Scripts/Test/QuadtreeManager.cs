@@ -36,7 +36,7 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
         ClearTexture(tex);
         tex.Apply(false);
         
-            // Rectangle 객체 = 쿼드트리 경계
+        // Rectangle 객체 = 쿼드트리 경계
         Rectangle boundary = new Rectangle(boundaryCenterX, boundaryCenterZ, boundaryWidth, boundaryLength);
 
         // 쿼드 트리가 없다면, 새로 만듦
@@ -97,13 +97,19 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
     }
 
     // 몬스터 위치 삭제 : 쿼드트리에서 제거 
-    public void RemoveEnemy(string monsterName)
+    //public void RemoveEnemy(string monsterName)
+    public bool RemoveEnemy(string monsterName)
     {
+        Debug.Log($"Trying to remove enemy name: {monsterName}");
+        bool removed = quadTree.Remove(monsterName);
+        
         // 쿼드트리에서 포인트 삭제 시도
-        if (!quadTree.Remove(monsterName))
+        //if (!quadTree.Remove(monsterName))
+        if (!removed)
         {
             Debug.LogError($"Failed to remove enemy with ID: {monsterName}");
         }
+        return removed;
     }
     
     public List<Point> QueryEnemy(Rectangle range)
@@ -120,6 +126,25 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
         List<Point> foundPoints = new List<Point>();
         quadTree.Query(queryArea, foundPoints);
         return foundPoints;
+    }
+    
+    // 몬스터 위치 갱신
+    public void UpdateMonsterPosition(string monsterName, Vector3 newPosition) 
+    {
+        // quadTree에 monster이름에 해당하는 값이 존재한다면, 지우기
+        if (quadTree.Exists(monsterName))
+        {
+            // 오래된 값을 삭제하고
+            if (RemoveEnemy(monsterName))
+            {
+                // 새로운 위치값으로 갱신
+                InsertEnemy(newPosition, monsterName);
+            }
+        }
+        else // 없다면 
+        {
+            InsertEnemy(newPosition, monsterName);
+        }
     }
     
     private void OnDrawGizmos()

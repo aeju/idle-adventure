@@ -172,6 +172,24 @@ public class Quadtree : MonoBehaviour
             Debug.Log($"[Query] 3. Query completed. Total points found in range: {foundCountAfter - foundCountBefore}");
         }
     }
+    
+    public bool Exists(string monsterName)
+    {
+        if (points.Any(p => p.monsterName == monsterName))
+        {
+            return true;
+        }
+        
+        if (divided)
+        {
+            return northEast.Exists(monsterName) ||
+                   northWest.Exists(monsterName) ||
+                   southEast.Exists(monsterName) ||
+                   southWest.Exists(monsterName);
+        }
+
+        return false;
+    }
 
     // 구조 시각화
     public void Show(Texture2D tex)
