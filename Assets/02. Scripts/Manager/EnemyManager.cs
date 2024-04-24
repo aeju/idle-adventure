@@ -158,8 +158,6 @@ public class EnemyManager : Singleton<EnemyManager>
                 Debug.Log("Removing enemy from Quadtree...");
             }
         }
-        
-       
     }
     
     void OnDrawGizmos()

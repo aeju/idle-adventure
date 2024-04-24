@@ -10,9 +10,6 @@ public class PlayerAutoState : IPlayerState
     {
         if (!_playerController)
             _playerController = playerController;
-        // _playerController.AutoModeOn();
-        
-        //_playerController.autoModeActive = true;
     }
     
     public void Handle(PlayerController playerController)
@@ -22,12 +19,11 @@ public class PlayerAutoState : IPlayerState
         {
             Debug.Log("[AutoMove]0-1.실행");
             _playerController.StartCoroutine(_playerController.AutoModeDetectMonstersPeriodically());
-            //_playerController.MoveTowardsNearestEnemy();
         }
     }
 
     public void Exit(PlayerController playerController)
     {
-        //_playerController.autoModeActive = false;
+        
     }
 }
