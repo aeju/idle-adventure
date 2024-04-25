@@ -5,6 +5,7 @@ using UnityEngine;
 public class ScreenManager : Singleton<ScreenManager>
 {
     [SerializeField] private float idleTime = 30.0f; // 방치 시간 : 30초 
+    [SerializeField] private int idleFPS = 10; // 절전모드 FPS : 10 
     [SerializeField] private float currentTime;
     
     [SerializeField] private Canvas idleModeCanvas; // idle Mode 표시 Canvas
@@ -50,6 +51,7 @@ public class ScreenManager : Singleton<ScreenManager>
         {
             idleModeCanvas.enabled = true;
             Screen.sleepTimeout = SleepTimeout.NeverSleep; // 화면 꺼짐 방지 
+            ReduceFPS(); // FPS 낮추기
             countTime.IdleModeOn();
         }
     }
@@ -60,6 +62,7 @@ public class ScreenManager : Singleton<ScreenManager>
         {
             idleModeCanvas.enabled = false;
             Screen.sleepTimeout = SleepTimeout.SystemSetting; // 화면 꺼짐 방지 해제 (기기 설정 따르도록)
+            ResetFPS(); // FPS 되돌리기
             countTime.IdleModeOff();
         }
     }
@@ -67,5 +70,26 @@ public class ScreenManager : Singleton<ScreenManager>
     public void ResetIdleModeTimer()
     {
         currentTime = 0;
+    }
+
+    // 절전 모드 O : FPS 낮추기
+    private void ReduceFPS()
+    {
+        Application.targetFrameRate = idleFPS; 
+    }
+
+    // 절전 모드 X : FPS 되돌리기
+    private void ResetFPS()
+    {
+        // 저장된 FPS 값이 없다면, 기본 FPS를 60으로 설정
+        int defaultFrameRate = 60;
+        
+        if (OptionManager.Instance == null)
+            return;
+        
+        // OptionManager, FrameRateKey에 해당하는 값을 불러옴
+        int originFPS = OptionManager.Instance.GetInt(OptionManager.FrameRateKey, defaultFrameRate);
+        // 불러온 FPS 값으로 설정
+        Application.targetFrameRate = originFPS;
     }
 }
