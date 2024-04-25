@@ -1,20 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 // On: 정해진 시간 동안 입력 x, Idle Mode Btn
-// Off: 조이스틱 입력 최댓값
+// Off: 잠금해제 버튼
 public class ScreenManager : Singleton<ScreenManager>
 {
-    public float idleTime = 30.0f; // 방치 시간 : 30초 
-    private float currentTime;
+    [SerializeField] private float idleTime = 30.0f; // 방치 시간 : 30초 
+    [SerializeField] private float currentTime;
     
-    public Canvas idleModeCanvas; // idle Mode(검은 화면) 표시 Canvas
-    public CountTime countTime;
+    [SerializeField] private Canvas idleModeCanvas; // idle Mode 표시 Canvas
+    [SerializeField] private CountTime countTime;
     
-    private bool isIdleModeActive = false;
+    [SerializeField] private bool isIdleModeActive = false;
     
     private void Start()
     {
@@ -24,7 +20,6 @@ public class ScreenManager : Singleton<ScreenManager>
 
     private void Update()
     {
-
         if (!isIdleModeActive)
         {
             // 입력값이 있으면, 절전모드 타이머 초기화
@@ -33,7 +28,7 @@ public class ScreenManager : Singleton<ScreenManager>
                 ResetIdleModeTimer();
             }
 
-            else
+            else 
             {
                 currentTime += Time.deltaTime; // 입력이 없을 경우 타이머 증가
 
@@ -54,6 +49,7 @@ public class ScreenManager : Singleton<ScreenManager>
         if (!idleModeCanvas.enabled)
         {
             idleModeCanvas.enabled = true;
+            Screen.sleepTimeout = SleepTimeout.NeverSleep; // 화면 꺼짐 방지 
             countTime.IdleModeOn();
         }
     }
@@ -63,6 +59,7 @@ public class ScreenManager : Singleton<ScreenManager>
         if (idleModeCanvas.enabled)
         {
             idleModeCanvas.enabled = false;
+            Screen.sleepTimeout = SleepTimeout.SystemSetting; // 화면 꺼짐 방지 해제 (기기 설정 따르도록)
             countTime.IdleModeOff();
         }
     }
