@@ -6,7 +6,7 @@ using UnityEngine;
 // 고친 것 
 public partial class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float autoAttackRange = 0.2f; // 자동 공격 범위
+    [SerializeField] private float autoAttackRange = 2f; // 자동 공격 범위
     [SerializeField] private float terrainRadius = 100f;
     private HashSet<GameObject> monstersInRange = new HashSet<GameObject>();
 
@@ -24,7 +24,6 @@ public partial class PlayerController : MonoBehaviour
     
     public void AutoMoveTowardsNearestEnemy()
     {
-        Debug.Log("[AutoMove]1. 실행");
         isMoving = true;
         List<Point> nearbyEnemies = QuadtreeManager.Instance.QueryNearbyEnemies(transform.position, terrainRadius);
 
@@ -53,15 +52,21 @@ public partial class PlayerController : MonoBehaviour
         }
     }
     
+    public float flipCooldown = 0.5f; // 뒤집기 쿨다운 시간 (0.5초)
+    public float lastFlipTime = 0; // 마지막 뒤집기 시간
     private void FlipTowardsNearestMonster(float targetX)
     {
+        // 현재 시간이 마지막 뒤집기 시간 + 쿨다운보다 크거나 같은지 확인
+        //if (Time.time < lastFlipTime + flipCooldown)
+            //return; // 쿨다운 중이면 실행 취소
+        
         if ((targetX > transform.position.x && !isFlipX) || (targetX < transform.position.x && isFlipX))
         {
             FlipPlayer(targetX);
+            //lastFlipTime = Time.time; // 마지막 뒤집기 시간 업데이트
         }
     }
     
-    //private void MoveToTarget(Vector3 targetPosition)
     private void MoveToTarget(Vector3 initialTargetPosition)
     {
         GameObject nearestMonster = GetNearestMonsterInTriggerRange();

@@ -119,7 +119,6 @@ public class EnemyManager : Singleton<EnemyManager>
                     
                     if (QuadtreeManager.Instance != null) // 위치 저장 + 이름 저장
                     {
-                        //QuadtreeManager.Instance.InsertEnemy(enemy.transform.position); 
                         QuadtreeManager.Instance.InsertEnemy(enemy.transform.position, enemy.name); 
                     }
                 }
