@@ -27,6 +27,8 @@ public class BatteryStatus : BatteryStatusTemplate
     
     protected override void HandleBatteryChanged(int batteryPercentage, UnityEngine.BatteryStatus batteryStatus)
     {
+        
+        
         // 배터리 상태 Unknown : 이미지 비활성화 
         if (batteryStatus == UnityEngine.BatteryStatus.Unknown) 
         {

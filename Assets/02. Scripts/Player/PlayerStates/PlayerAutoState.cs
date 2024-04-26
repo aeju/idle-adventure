@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Debug = System.Diagnostics.Debug;
 
 public class PlayerAutoState : IPlayerState
 {
@@ -11,13 +10,16 @@ public class PlayerAutoState : IPlayerState
     {
         if (!_playerController)
             _playerController = playerController;
-
-        _playerController.AutoModeOn();
     }
     
     public void Handle(PlayerController playerController)
     {
-        
+        Debug.Log("[AutoMove]0. Handle");
+        if (!_playerController.isFighting)
+        {
+            Debug.Log("[AutoMove]0-1.실행");
+            _playerController.StartCoroutine(_playerController.AutoModeDetectMonstersPeriodically());
+        }
     }
 
     public void Exit(PlayerController playerController)
