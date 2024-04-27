@@ -36310,8 +36310,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idleTime: 10
+  idleFPS: 10
+  currentTime: 0
   idleModeCanvas: {fileID: 1291628645}
   countTime: {fileID: 38462431}
+  isIdleModeActive: 0
 --- !u!4 &1534929849
 Transform:
   m_ObjectHideFlags: 0
@@ -51615,6 +51618,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8471397619157895146, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619398739618448729, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619398739618448729, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619398739618448729, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8736290802151869401, guid: d78e00788980640e88a14c655cdb00e1, type: 3}

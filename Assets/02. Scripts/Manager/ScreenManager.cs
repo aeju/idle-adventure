@@ -1,4 +1,13 @@
+using System;
 using UnityEngine;
+using TMPro;
+
+[Serializable]
+public class IdleModeUI : MonoBehaviour
+{
+    private TextMeshProUGUI idleMonsterCountText;
+    private TextMeshProUGUI idleExpText; 
+}
 
 // On: 정해진 시간 동안 입력 x, Idle Mode Btn
 // Off: 잠금해제 버튼
