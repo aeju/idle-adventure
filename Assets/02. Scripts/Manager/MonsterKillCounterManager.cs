@@ -16,6 +16,8 @@ public class MonsterKillCounterManager : Singleton<MonsterKillCounterManager>
     [SerializeField] private TextMeshProUGUI timeCountText;
     [SerializeField] private Button resetBtn; 
     
+    private const string TimerId = "GamePlayTimer";
+    
     // 게임 진행, 몬스터 처치 수
     public int TotalMonsterCounter { get; private set; }
 
@@ -27,6 +29,8 @@ public class MonsterKillCounterManager : Singleton<MonsterKillCounterManager>
         EnemyFSM.OnEnemyDeath += IncreaseTotalMonsterCounter; // 죽음 이벤트 구독
         
         TotalMonsterCounter = 0; // 몬스터 카운터 초기화
+        TimeManager.Instance.ResetTimer(TimerId); // 시간 초기화
+        
         UpdateMonsterCounterUI(); // 몬스터 마릿수 UI 업데이트 
         UpdateTimeUI(); // 시간 UI 업데이트
         
@@ -43,6 +47,7 @@ public class MonsterKillCounterManager : Singleton<MonsterKillCounterManager>
     
     void Update()
     {
+        TimeManager.Instance.UpdateTimer(TimerId, Time.deltaTime);
         UpdateTimeUI(); // 매 프레임 시간 UI 업데이트
     }
 
@@ -59,14 +64,16 @@ public class MonsterKillCounterManager : Singleton<MonsterKillCounterManager>
 
     private void UpdateTimeUI()
     {
-        timeCountText.text = FormatTime(TimeManager.Instance.TimeElapsed); 
-        Debug.Log("Time Update");
+        //timeCountText.text = FormatTime(TimeManager.Instance.TimeElapsed); 
+        timeCountText.text = FormatTime(TimeManager.Instance.GetTime(TimerId));
+        Debug.Log("Update Time");
     }
     
     void ResetTimeAndCount()
     {
         TotalMonsterCounter = 0; // 몬스터 카운터를 0으로 초기화
-        TimeManager.Instance.ResetTime();
+        //TimeManager.Instance.ResetTime();
+        TimeManager.Instance.ResetTimer(TimerId);
         UpdateMonsterCounterUI(); 
     }
     

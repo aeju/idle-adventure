@@ -1,17 +1,31 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class TimeManager : Singleton<TimeManager>
 {
-    public float TimeElapsed { get; private set; }
+    private Dictionary<string, float> timers = new Dictionary<string, float>();
     
-    void Update()
+    //public float TimeElapsed { get; private set; }
+    
+    public void UpdateTimer(string timerId, float deltaTime)
     {
-        TimeElapsed += Time.deltaTime;
-        Debug.Log("Time Update2");
+        if (!timers.ContainsKey(timerId))
+        {
+            timers[timerId] = 0;
+        }
+        timers[timerId] += deltaTime;
     }
-    
-    public void ResetTime()
+
+    public float GetTime(string timerId)
     {
-        TimeElapsed = 0;
+        return timers.ContainsKey(timerId) ? timers[timerId] : 0;
+    }
+
+    public void ResetTimer(string timerId)
+    {
+        if (timers.ContainsKey(timerId))
+        {
+            timers[timerId] = 0;
+        }
     }
 }

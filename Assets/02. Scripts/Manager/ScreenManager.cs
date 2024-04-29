@@ -2,13 +2,6 @@ using System;
 using UnityEngine;
 using TMPro;
 
-[Serializable]
-public class IdleModeUI : MonoBehaviour
-{
-    private TextMeshProUGUI idleMonsterCountText;
-    private TextMeshProUGUI idleExpText; 
-}
-
 // On: 정해진 시간 동안 입력 x, Idle Mode Btn
 // Off: 잠금해제 버튼
 public class ScreenManager : Singleton<ScreenManager>
@@ -21,10 +14,12 @@ public class ScreenManager : Singleton<ScreenManager>
     
     [SerializeField] private bool isIdleModeActive = false;
     
+    private const string TimerId = "IdleModeTimer";  // 타이머 ID
+    
     private void Start()
     {
         idleModeCanvas.enabled = false;
-        TimeManager.Instance.ResetTime();
+        TimeManager.Instance.ResetTimer(TimerId);
     }
 
     private void Update()
@@ -34,13 +29,13 @@ public class ScreenManager : Singleton<ScreenManager>
             // 입력값이 있으면, 절전모드 타이머 초기화
             if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1))
             {
-                TimeManager.Instance.ResetTime();
+                TimeManager.Instance.ResetTimer(TimerId);
             }
 
             else 
             {
                 // 입력이 없을 경우 타이머 증가 + 지정된 방치 시간이 초과되면 검은 화면을 활성화
-                if (TimeManager.Instance.TimeElapsed >= idleTime && !idleModeCanvas.enabled)
+                if (TimeManager.Instance.GetTime(TimerId) >= idleTime && !idleModeCanvas.enabled)
                 {
                     Debug.Log("Idle Mode Screen On");
                     idleModeCanvas.enabled = true; // idle Mode 잠금화면 활성화
@@ -56,6 +51,7 @@ public class ScreenManager : Singleton<ScreenManager>
         if (!idleModeCanvas.enabled)
         {
             idleModeCanvas.enabled = true;
+            TimeManager.Instance.ResetTimer(TimerId); // 타이머 초기화
             Screen.sleepTimeout = SleepTimeout.NeverSleep; // 화면 꺼짐 방지 
             ReduceFPS(); // FPS 낮추기
             _idleModeCountTime.IdleModeOn();

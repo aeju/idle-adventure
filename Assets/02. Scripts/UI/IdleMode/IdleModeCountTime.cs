@@ -9,9 +9,12 @@ public class IdleModeCountTime : MonoBehaviour
     [SerializeField] private bool isBlackScreenActive;
 
     [SerializeField] private TextMeshProUGUI idleModeTime_text;
+    
+    private const string TimerId = "IdleModeTimer"; 
 
     void Start()
     {
+        TimeManager.Instance.ResetTimer(TimerId);
         UpdateTimeDisplay();
     }
     
@@ -23,19 +26,20 @@ public class IdleModeCountTime : MonoBehaviour
         }
         else if (isBlackScreenActive)
         {
+            TimeManager.Instance.UpdateTimer(TimerId, Time.deltaTime);
             UpdateTimeDisplay();
         }
     }
     
     private void UpdateTimeDisplay()
     {
-        idleModeTime_text.text = FormatTime(TimeManager.Instance.TimeElapsed);
+        idleModeTime_text.text = FormatTime(TimeManager.Instance.GetTime(TimerId));
     }
     
     public void IdleModeOn()
     {
         isBlackScreenActive = true;
-        TimeManager.Instance.ResetTime();
+        TimeManager.Instance.ResetTimer(TimerId);
     }
 
     public void IdleModeOff()
