@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Spine.Unity;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +15,8 @@ public partial class EnemyFSM : MonoBehaviour
     [SerializeField] private ResourceManager resourceInfo;
 
     [SerializeField] private GameObject hudDamageText;
+    
+    public static event Action OnEnemyDeath; // 죽음 이벤트 -> 몬스터 처치 마릿수 카운트
 
     // 에너미 상태 상수
     enum EnemyState
@@ -240,10 +242,10 @@ public partial class EnemyFSM : MonoBehaviour
     private void GetNewWanderDestination()
     {
         // Offset 값 랜덤하게 결정
-        float randomOffset = Random.Range(-wanderOffset, wanderOffset);
+        float randomOffset = UnityEngine.Random.Range(-wanderOffset, wanderOffset);
         
         // 원점을 기준으로 x, z 방향으로 랜덤한 위치 결정
-        float randomX = originPos.x + Random.Range(-wanderDistance, wanderDistance) + randomOffset;
+        float randomX = originPos.x + UnityEngine.Random.Range(-wanderDistance, wanderDistance) + randomOffset;
         
         // 현재 위치 축 유지할 경우
         float y = transform.position.y;
@@ -426,6 +428,7 @@ public partial class EnemyFSM : MonoBehaviour
 
         // 죽음 상태를 처리하기 위한 코루틴 
         StartCoroutine(DieProcess());
+        OnEnemyDeath?.Invoke(); // 죽음 이벤트 (마릿수 ++)
     }
 
     IEnumerator DieProcess()
