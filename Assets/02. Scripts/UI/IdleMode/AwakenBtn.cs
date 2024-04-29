@@ -7,7 +7,7 @@ using UniRx;
 public class AwakenBtn : MonoBehaviour
 {
     private Button awakenBtn;
-    
+
     void Start()
     {
         awakenBtn = GetComponent<Button>();
@@ -22,7 +22,6 @@ public class AwakenBtn : MonoBehaviour
             .Subscribe(_ =>
             {
                 ScreenManager.Instance?.DeactivateIdleModeCanvas();
-                ScreenManager.Instance?.ResetIdleModeTimer();
             })
             .AddTo(this);
     }
