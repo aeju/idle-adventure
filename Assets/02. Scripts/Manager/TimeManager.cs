@@ -1,11 +1,8 @@
-using UnityEngine;
 using System.Collections.Generic;
 
 public class TimeManager : Singleton<TimeManager>
 {
     private Dictionary<string, float> timers = new Dictionary<string, float>();
-    
-    //public float TimeElapsed { get; private set; }
     
     public void UpdateTimer(string timerId, float deltaTime)
     {

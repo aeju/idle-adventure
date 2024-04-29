@@ -64,15 +64,12 @@ public class MonsterKillCounterManager : Singleton<MonsterKillCounterManager>
 
     private void UpdateTimeUI()
     {
-        //timeCountText.text = FormatTime(TimeManager.Instance.TimeElapsed); 
         timeCountText.text = FormatTime(TimeManager.Instance.GetTime(TimerId));
-        Debug.Log("Update Time");
     }
     
     void ResetTimeAndCount()
     {
         TotalMonsterCounter = 0; // 몬스터 카운터를 0으로 초기화
-        //TimeManager.Instance.ResetTime();
         TimeManager.Instance.ResetTimer(TimerId);
         UpdateMonsterCounterUI(); 
     }

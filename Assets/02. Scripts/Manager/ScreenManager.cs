@@ -19,7 +19,6 @@ public class ScreenManager : Singleton<ScreenManager>
     private void Start()
     {
         idleModeCanvas.enabled = false;
-        TimeManager.Instance.ResetTimer(TimerId);
     }
 
     private void Update()
@@ -29,7 +28,7 @@ public class ScreenManager : Singleton<ScreenManager>
             // 입력값이 있으면, 절전모드 타이머 초기화
             if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1))
             {
-                TimeManager.Instance.ResetTimer(TimerId);
+                DeactivateIdleModeCanvas();
             }
 
             else 
@@ -37,11 +36,13 @@ public class ScreenManager : Singleton<ScreenManager>
                 // 입력이 없을 경우 타이머 증가 + 지정된 방치 시간이 초과되면 검은 화면을 활성화
                 if (TimeManager.Instance.GetTime(TimerId) >= idleTime && !idleModeCanvas.enabled)
                 {
-                    Debug.Log("Idle Mode Screen On");
-                    idleModeCanvas.enabled = true; // idle Mode 잠금화면 활성화
-                    _idleModeCountTime.IdleModeOn();
+                    ActivateIdleModeScreen();
                 }
             }
+        }
+        else // 절전모드 활성화 (타이머 시작)
+        {
+            TimeManager.Instance.UpdateTimer(TimerId, Time.deltaTime);
         }
     }
     
@@ -51,10 +52,9 @@ public class ScreenManager : Singleton<ScreenManager>
         if (!idleModeCanvas.enabled)
         {
             idleModeCanvas.enabled = true;
-            TimeManager.Instance.ResetTimer(TimerId); // 타이머 초기화
+            isIdleModeActive = true;
             Screen.sleepTimeout = SleepTimeout.NeverSleep; // 화면 꺼짐 방지 
             ReduceFPS(); // FPS 낮추기
-            _idleModeCountTime.IdleModeOn();
         }
     }
     
@@ -63,9 +63,10 @@ public class ScreenManager : Singleton<ScreenManager>
         if (idleModeCanvas.enabled)
         {
             idleModeCanvas.enabled = false;
+            isIdleModeActive = false;
             Screen.sleepTimeout = SleepTimeout.SystemSetting; // 화면 꺼짐 방지 해제 (기기 설정 따르도록)
+            TimeManager.Instance.ResetTimer(TimerId); // 타이머 리셋
             ResetFPS(); // FPS 되돌리기
-            _idleModeCountTime.IdleModeOff();
         }
     }
 

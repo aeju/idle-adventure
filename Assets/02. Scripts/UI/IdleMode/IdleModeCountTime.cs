@@ -5,16 +5,12 @@ using TMPro;
 
 public class IdleModeCountTime : MonoBehaviour
 {
-    [SerializeField] private float blackScreenTime;
-    [SerializeField] private bool isBlackScreenActive;
-
     [SerializeField] private TextMeshProUGUI idleModeTime_text;
     
     private const string TimerId = "IdleModeTimer"; 
 
     void Start()
     {
-        TimeManager.Instance.ResetTimer(TimerId);
         UpdateTimeDisplay();
     }
     
@@ -24,9 +20,8 @@ public class IdleModeCountTime : MonoBehaviour
         {
             Debug.LogError("Failed to find TextMeshProUGUI component");
         }
-        else if (isBlackScreenActive)
+        else 
         {
-            TimeManager.Instance.UpdateTimer(TimerId, Time.deltaTime);
             UpdateTimeDisplay();
         }
     }
@@ -34,17 +29,6 @@ public class IdleModeCountTime : MonoBehaviour
     private void UpdateTimeDisplay()
     {
         idleModeTime_text.text = FormatTime(TimeManager.Instance.GetTime(TimerId));
-    }
-    
-    public void IdleModeOn()
-    {
-        isBlackScreenActive = true;
-        TimeManager.Instance.ResetTimer(TimerId);
-    }
-
-    public void IdleModeOff()
-    {
-        isBlackScreenActive = false;
     }
 
     // 시간 형식 : 60분 이하 -> @@분, 60분 이상 -> @시간 @분
