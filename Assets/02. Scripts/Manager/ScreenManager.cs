@@ -14,6 +14,8 @@ public class ScreenManager : Singleton<ScreenManager>
     
     [SerializeField] private bool isIdleModeActive = false;
     
+    public bool IsIdleModeActive { get { return isIdleModeActive; } }
+    
     private const string TimerId = "IdleModeTimer";  // 타이머 ID
     
     private void Start()
@@ -66,6 +68,7 @@ public class ScreenManager : Singleton<ScreenManager>
             isIdleModeActive = false;
             Screen.sleepTimeout = SleepTimeout.SystemSetting; // 화면 꺼짐 방지 해제 (기기 설정 따르도록)
             TimeManager.Instance.ResetTimer(TimerId); // 타이머 리셋
+            MonsterKillCounterManager.Instance.ResetIdleMonsterCounter(); // 몬스터 카운터 초기화
             ResetFPS(); // FPS 되돌리기
         }
     }
