@@ -53,6 +53,7 @@ public class MonsterKillCounterManager : Singleton<MonsterKillCounterManager>
     
     void ResetTime()
     {
-        
+        TotalMonsterCounter = 0; // 몬스터 카운터를 0으로 초기화
+        UpdateMonsterCounterUI(); 
     }
 }
