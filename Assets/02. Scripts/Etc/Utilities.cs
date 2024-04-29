@@ -93,6 +93,36 @@ public static class Utilities
     {
         return DateTime.UtcNow.AddHours(9); // UTC + 9 = KST
     }
+    
+    /// <summary>
+    /// 시간을 HH:mm 형식으로 포맷하여 반환 (60분 이상 : 시간 표시)
+    /// </summary>
+    public static string FormatTimeHHMM(float time)
+    {
+        int hours = Mathf.FloorToInt(time / 3600);
+        int minutes = Mathf.FloorToInt((time % 3600) / 60);
+
+        if (hours > 0)
+        {
+            return $"{hours}시간 {minutes}분";
+        }
+        else
+        {
+            return $"{minutes}분";
+        }
+    }
+    
+    /// <summary>
+    // /// 시간을 HH:mm:ss 형식으로 포맷하여 반환
+    // /// </summary>
+    public static string FormatTimeHHMMSS(float time)
+    { 
+        int hours = Mathf.FloorToInt(time / 3600);
+        int minutes = Mathf.FloorToInt((time % 3600) / 60);
+        int seconds = Mathf.FloorToInt(time % 60);
+
+        return string.Format("{0:D2}:{1:D2}:{2:D2}", hours, minutes, seconds);
+    }
 
     public static void CreateDamageText(GameObject prefab, Transform parent, int damage, Vector3 position, bool isFlipX)
     {

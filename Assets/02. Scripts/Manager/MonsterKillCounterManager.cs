@@ -64,7 +64,7 @@ public class MonsterKillCounterManager : Singleton<MonsterKillCounterManager>
 
     private void UpdateTimeUI()
     {
-        timeCountText.text = FormatTime(TimeManager.Instance.GetTime(TimerId));
+        timeCountText.text = Utilities.FormatTimeHHMMSS(TimeManager.Instance.GetTime(TimerId));
     }
     
     void ResetTimeAndCount()
@@ -72,15 +72,5 @@ public class MonsterKillCounterManager : Singleton<MonsterKillCounterManager>
         TotalMonsterCounter = 0; // 몬스터 카운터를 0으로 초기화
         TimeManager.Instance.ResetTimer(TimerId);
         UpdateMonsterCounterUI(); 
-    }
-    
-    // HH:mm:ss
-    private string FormatTime(float time)
-    { 
-        int hours = Mathf.FloorToInt(time / 3600);
-        int minutes = Mathf.FloorToInt((time % 3600) / 60);
-        int seconds = Mathf.FloorToInt(time % 60);
-
-        return string.Format("{0:D2}:{1:D2}:{2:D2}", hours, minutes, seconds);
     }
 }
