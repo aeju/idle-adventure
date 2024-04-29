@@ -7,6 +7,7 @@ public class TimeManager : Singleton<TimeManager>
     void Update()
     {
         TimeElapsed += Time.deltaTime;
+        Debug.Log("Time Update2");
     }
     
     public void ResetTime()
