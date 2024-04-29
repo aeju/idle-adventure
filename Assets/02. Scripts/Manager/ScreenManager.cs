@@ -15,7 +15,6 @@ public class ScreenManager : Singleton<ScreenManager>
 {
     [SerializeField] private float idleTime = 30.0f; // 방치 시간 : 30초 
     [SerializeField] private int idleFPS = 10; // 절전모드 FPS : 10 
-    [SerializeField] private float currentTime;
     
     [SerializeField] private Canvas idleModeCanvas; // idle Mode 표시 Canvas
     [SerializeField] private IdleModeCountTime _idleModeCountTime;
@@ -25,7 +24,7 @@ public class ScreenManager : Singleton<ScreenManager>
     private void Start()
     {
         idleModeCanvas.enabled = false;
-        ResetIdleModeTimer(); // 타이머 초기화
+        TimeManager.Instance.ResetTime();
     }
 
     private void Update()
@@ -35,15 +34,13 @@ public class ScreenManager : Singleton<ScreenManager>
             // 입력값이 있으면, 절전모드 타이머 초기화
             if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1))
             {
-                ResetIdleModeTimer();
+                TimeManager.Instance.ResetTime();
             }
 
             else 
             {
-                currentTime += Time.deltaTime; // 입력이 없을 경우 타이머 증가
-
-                // 지정된 방치 시간이 초과되면 검은 화면을 활성화
-                if (currentTime >= idleTime && !idleModeCanvas.enabled)
+                // 입력이 없을 경우 타이머 증가 + 지정된 방치 시간이 초과되면 검은 화면을 활성화
+                if (TimeManager.Instance.TimeElapsed >= idleTime && !idleModeCanvas.enabled)
                 {
                     Debug.Log("Idle Mode Screen On");
                     idleModeCanvas.enabled = true; // idle Mode 잠금화면 활성화
@@ -74,11 +71,6 @@ public class ScreenManager : Singleton<ScreenManager>
             ResetFPS(); // FPS 되돌리기
             _idleModeCountTime.IdleModeOff();
         }
-    }
-    
-    public void ResetIdleModeTimer()
-    {
-        currentTime = 0;
     }
 
     // 절전 모드 O : FPS 낮추기

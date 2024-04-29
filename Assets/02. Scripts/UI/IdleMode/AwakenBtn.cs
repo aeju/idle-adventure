@@ -22,7 +22,7 @@ public class AwakenBtn : MonoBehaviour
             .Subscribe(_ =>
             {
                 ScreenManager.Instance?.DeactivateIdleModeCanvas();
-                ScreenManager.Instance?.ResetIdleModeTimer();
+                TimeManager.Instance?.ResetTime();
             })
             .AddTo(this);
     }
