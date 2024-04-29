@@ -33,6 +33,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     
     [SerializeField] private Transform ponpo;
     public Rigidbody rigid;
+    private SphereCollider detectionCollider;
     
     // 탐지 시간 : 1초 
     [Header("# 몬스터 탐지 ")] 
@@ -45,6 +46,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     public bool isMoving = false;
     public bool isFighting = false;
     public bool isMonsterDetected = false;
+    public bool isArrived = false;
     public bool autoModeActive = false; // 자동 이동
     
     // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
@@ -53,6 +55,9 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         ponpo = transform.GetChild(0);
         anim = ponpo.GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
+        
+        detectionCollider = GetComponent<SphereCollider>();
+        detectionCollider.isTrigger = true;
 
         if (!joystick)
         {
@@ -171,6 +176,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         }
     }
     
+    
     // FlipX 기준으로 스프라이트 방향 전환
     public void FlipPlayer(float horizontalInput)
     {
@@ -181,6 +187,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             ponpo.localScale = theScale;
             
             isFlipX = !isFlipX; // flipX 상태 업데이트
+            
         }
     }
 }

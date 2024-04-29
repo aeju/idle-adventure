@@ -17,8 +17,9 @@ public class PlayerIdleState : IPlayerState
     
     public void Handle(PlayerController playerController)
     {
-        // isMonsterDetected가 false일 때 탐지 로직 실행
-        if (!_playerController.isMonsterDetected)
+        // isMonsterDetected가 false일 때 + automove상태가 아닐 때, 탐지 로직 실행 
+        //if (!_playerController.isMonsterDetected)
+        if (!_playerController.isMonsterDetected && !_playerController.autoModeActive)
         {
             _playerController.StartCoroutine(_playerController.DetectMonstersPeriodically());
         }

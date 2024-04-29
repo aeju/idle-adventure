@@ -100,17 +100,18 @@ public partial class EnemyFSM : MonoBehaviour
 
     void HandleEnemyHpChange(int currentHP, int maxHP)
     {
-        Debug.Log($"[EnemyFSM] Handling HP Change. New HP: {currentHP}/{maxHP}");
         Utilities.HPSliderUpdate(hpSlider, currentHP, maxHP);
     }
 
     void Update()
     {
+        /*
         if (target == null)
         {
             m_State = EnemyState.Idle;
             return;
         }
+        */
 
         // 현재 상태를 체크, 해당 상태별로 정해진 기능 수행
         switch (m_State)
@@ -168,12 +169,12 @@ public partial class EnemyFSM : MonoBehaviour
     void Idle()
     {
         // 만일, 플레이어와의 거리가 액션 시작 범위 이내라면 Chase 상태로 전환
-        if (Vector3.Distance(transform.position, target.transform.position) < findDistance)
+        if (target != null && Vector3.Distance(transform.position, target.transform.position) < findDistance)
         {
             m_State = EnemyState.Chase;
             print($"[{gameObject.name}] 상태 전환: Idle -> Chase");
         }
-        else // Wander
+        else // Wander (플레이어가 없거나, 멀리 있으면)
         {
             m_State = EnemyState.Wander;
             GetNewWanderDestination();
@@ -191,7 +192,7 @@ public partial class EnemyFSM : MonoBehaviour
     void Wander()
     {
         // 2) 추격으로 상태 전환
-        if (Vector3.Distance(transform.position, target.transform.position) < findDistance)
+        if (target != null && Vector3.Distance(transform.position, target.transform.position) < findDistance)
         {
             m_State = EnemyState.Chase;
             print($"[{gameObject.name}] 상태 전환: Wander -> Chase");
@@ -238,13 +239,11 @@ public partial class EnemyFSM : MonoBehaviour
     
     private void GetNewWanderDestination()
     {
-        
         // Offset 값 랜덤하게 결정
         float randomOffset = Random.Range(-wanderOffset, wanderOffset);
         
         // 원점을 기준으로 x, z 방향으로 랜덤한 위치 결정
         float randomX = originPos.x + Random.Range(-wanderDistance, wanderDistance) + randomOffset;
-        // float randomZ = originPos.x + Random.Range(-wanderDistance, wanderDistance) + randomOffset;
         
         // 현재 위치 축 유지할 경우
         float y = transform.position.y;
@@ -341,10 +340,6 @@ public partial class EnemyFSM : MonoBehaviour
             target.DamagedPlayer();
             target.ReceiveDamage(CombatCalculator.CalculateAttackDamage(monsterStats.Attack, target.playerStats.defense,
                 monsterStats.Attack_multiplier, monsterStats.Critical_multiplier));
-
-            // 플레이어가 반대 방향 보고 있으면, 뒤집기 
-            // float playerToMonsterDistance = transform.position.x - target.transform.position.x;
-            // target.FlipPlayer(playerToMonsterDistance);
         }
     }
 
@@ -444,13 +439,11 @@ public partial class EnemyFSM : MonoBehaviour
     // 죽음 이벤트에 호출될 메서드 (애니메이션 이벤트)
     public void DeactivateEnemy()
     {
-        // 죽음 애니메이션이 끝나는 시점에, 몬스터 비활성화
-        gameObject.SetActive(false);
+        EnemyManager.Instance.ReturnEnemyToPool(gameObject); // 오브젝트 풀로 반환
+        
         monsterStats.OnEnemyHPChanged -= HandleEnemyHpChange; // HP 변경 이벤트 구독 해제
         monsterStats.CurrentHP = monsterStats.MaxHP; // hp 초기화
         hpSlider.gameObject.SetActive(true);
         cc.enabled = true;
-
-        EnemyManager.Instance.ReturnEnemyToPool(gameObject); // 오브젝트 풀로 반환
     }
 }
