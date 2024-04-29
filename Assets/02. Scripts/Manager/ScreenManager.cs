@@ -18,7 +18,7 @@ public class ScreenManager : Singleton<ScreenManager>
     [SerializeField] private float currentTime;
     
     [SerializeField] private Canvas idleModeCanvas; // idle Mode 표시 Canvas
-    [SerializeField] private CountTime countTime;
+    [SerializeField] private IdleModeCountTime _idleModeCountTime;
     
     [SerializeField] private bool isIdleModeActive = false;
     
@@ -47,7 +47,7 @@ public class ScreenManager : Singleton<ScreenManager>
                 {
                     Debug.Log("Idle Mode Screen On");
                     idleModeCanvas.enabled = true; // idle Mode 잠금화면 활성화
-                    countTime.IdleModeOn();
+                    _idleModeCountTime.IdleModeOn();
                 }
             }
         }
@@ -61,7 +61,7 @@ public class ScreenManager : Singleton<ScreenManager>
             idleModeCanvas.enabled = true;
             Screen.sleepTimeout = SleepTimeout.NeverSleep; // 화면 꺼짐 방지 
             ReduceFPS(); // FPS 낮추기
-            countTime.IdleModeOn();
+            _idleModeCountTime.IdleModeOn();
         }
     }
     
@@ -72,7 +72,7 @@ public class ScreenManager : Singleton<ScreenManager>
             idleModeCanvas.enabled = false;
             Screen.sleepTimeout = SleepTimeout.SystemSetting; // 화면 꺼짐 방지 해제 (기기 설정 따르도록)
             ResetFPS(); // FPS 되돌리기
-            countTime.IdleModeOff();
+            _idleModeCountTime.IdleModeOff();
         }
     }
     

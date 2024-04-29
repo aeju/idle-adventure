@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-// black screen이 활성화 -> 시간 측정
-public class CountTime : MonoBehaviour
+public class IdleModeCountTime : MonoBehaviour
 {
-    public float blackScreenTime;
-    public bool isBlackScreenActive;
+    [SerializeField] private float blackScreenTime;
+    [SerializeField] private bool isBlackScreenActive;
 
-    public TextMeshProUGUI idleModeTime_text;
+    [SerializeField] private TextMeshProUGUI idleModeTime_text;
 
+    void Start()
+    {
+        UpdateTimeDisplay();
+    }
+    
     void Update()
     {
         if (idleModeTime_text == null)
@@ -19,15 +23,19 @@ public class CountTime : MonoBehaviour
         }
         else if (isBlackScreenActive)
         {
-            blackScreenTime += Time.deltaTime; // blackScreenTime 시간 증가
-            idleModeTime_text.text = FormatTime(blackScreenTime);
+            UpdateTimeDisplay();
         }
+    }
+    
+    private void UpdateTimeDisplay()
+    {
+        idleModeTime_text.text = FormatTime(TimeManager.Instance.TimeElapsed);
     }
     
     public void IdleModeOn()
     {
         isBlackScreenActive = true;
-        blackScreenTime = 0; // 타이머 초기화 
+        TimeManager.Instance.ResetTime();
     }
 
     public void IdleModeOff()
