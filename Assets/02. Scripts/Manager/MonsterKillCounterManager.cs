@@ -11,18 +11,25 @@ using UniRx;
 // (이후, 절전모드일 때 몬스터 카운트)
 public class MonsterKillCounterManager : Singleton<MonsterKillCounterManager>
 {
-    [SerializeField] private TextMeshProUGUI totalMonsterCounterText;
-    
-    [SerializeField] private TextMeshProUGUI IdleModeMonsterCounterText;
-    
+    [SerializeField] private TextMeshProUGUI totalMonsterCounterText; // 패널 표시
+    [SerializeField] private TextMeshProUGUI IdleModeMonsterCounterText; // 절전 모드 표시
     [SerializeField] private TextMeshProUGUI timeCountText;
+    
     [SerializeField] private Button resetBtn; 
+    [SerializeField] private Button monsterCountBtn;
+
+    [SerializeField] private GameObject monsterCountPanel;
     
     private const string TimerId = "GamePlayTimer";
     
     // 몬스터 처치 수
     public int TotalMonsterCounter { get; private set; } // 게임 진행
     public int IdleModeMonsterCounter { get; private set; } // 절전 모드
+
+    void Awake()
+    {
+        monsterCountPanel.SetActive(false);
+    }
     
     void Start()
     {
@@ -39,6 +46,13 @@ public class MonsterKillCounterManager : Singleton<MonsterKillCounterManager>
         resetBtn.OnClickAsObservable().Subscribe(_ =>
         {
             ResetTimeAndCount(); 
+        }).AddTo(this);
+        
+        monsterCountBtn.OnClickAsObservable().Subscribe(_ =>
+        {
+            // 켜지지 않은 상태에서 누르면, 패널이 켜지고 
+            // 켜진 상태에서 누르면, 패널이 꺼짐
+            ToggleMonsterCountPanel();
         }).AddTo(this);
     }
     
@@ -94,5 +108,11 @@ public class MonsterKillCounterManager : Singleton<MonsterKillCounterManager>
     {
         IdleModeMonsterCounter = 0;
         UpdateIdleMonsterCounterUI();
+    }
+
+    void ToggleMonsterCountPanel()
+    {
+        bool isActive = monsterCountPanel.activeSelf;
+        monsterCountPanel.SetActive(!isActive);
     }
 }
