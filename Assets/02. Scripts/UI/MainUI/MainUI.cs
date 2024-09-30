@@ -6,6 +6,8 @@ using UniRx;
 
 public class MainUI : MonoBehaviour
 {
+    [SerializeField] private GameObject page_tabs;
+    
     [SerializeField] private GameObject X_btn_off;
     [SerializeField] private GameObject X_btn_on;
     [SerializeField] private Button X_btn;
@@ -29,6 +31,15 @@ public class MainUI : MonoBehaviour
     private List<GameObject> pages; // X버튼 누를 때! 
     
     private Dictionary<Button, GameObject> buttonPage; // 버튼-페이지 딕셔너리
+
+    private void Awake()
+    {
+        // 컨텐츠 페이지들이 비활성화라면,
+        if (!page_tabs.activeSelf)
+        {
+            page_tabs.SetActive(true);
+        }
+    }
     
     // 페이지 닫기 : X버튼 / ABB키
     private void Start()

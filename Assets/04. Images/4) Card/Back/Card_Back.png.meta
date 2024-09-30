@@ -106,11 +106,37 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_0
+      name: Card_Back
       rect:
         serializedVersion: 2
         x: 21
@@ -118,7 +144,7 @@ TextureImporter:
         width: 99
         height: 159
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -131,15 +157,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_1
+      name: 4th_
       rect:
         serializedVersion: 2
-        x: 140
+        x: 141
         y: 186
         width: 98
         height: 155
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -152,7 +178,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_2
+      name: 1st
       rect:
         serializedVersion: 2
         x: 258
@@ -160,7 +186,7 @@ TextureImporter:
         width: 98
         height: 155
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -173,7 +199,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_3
+      name: 2nd
       rect:
         serializedVersion: 2
         x: 376
@@ -181,7 +207,7 @@ TextureImporter:
         width: 98
         height: 156
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -194,7 +220,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_4
+      name: 3rd
       rect:
         serializedVersion: 2
         x: 494
@@ -202,7 +228,7 @@ TextureImporter:
         width: 97
         height: 156
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -223,7 +249,7 @@ TextureImporter:
         width: 98
         height: 155
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -236,7 +262,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_6
+      name: 4th_front
       rect:
         serializedVersion: 2
         x: 140
@@ -244,7 +270,7 @@ TextureImporter:
         width: 98
         height: 155
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -257,7 +283,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_7
+      name: 1st_front
       rect:
         serializedVersion: 2
         x: 258
@@ -265,7 +291,7 @@ TextureImporter:
         width: 98
         height: 155
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -278,7 +304,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_8
+      name: 2n_front
       rect:
         serializedVersion: 2
         x: 376
@@ -286,7 +312,7 @@ TextureImporter:
         width: 98
         height: 155
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -299,7 +325,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_9
+      name: 3rd_front
       rect:
         serializedVersion: 2
         x: 494
@@ -307,7 +333,7 @@ TextureImporter:
         width: 98
         height: 156
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -330,16 +356,16 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_0: -1704169568
-      360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_1: -1044616832
-      360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_2: 1335559744
-      360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_3: 169471802
-      360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_4: 250448176
-      360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_5: -635781484
-      360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_6: 2041184168
-      360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_7: 1969821058
-      360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_8: -663864071
-      360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_9: -669580813
+      1st: 1335559744
+      1st_front: 1969821058
+      2n_front: -663864071
+      2nd: 169471802
+      360_F_476515533_XoVgo8FU9zaGH2hKEmdClD8sP7RQifar-removebg-preview (1)_5: -645901498
+      3rd: 250448176
+      3rd_front: -669580813
+      4th_: -1044616832
+      4th_front: 2041184168
+      Card_Back: -1704169568
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

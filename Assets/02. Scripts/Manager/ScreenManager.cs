@@ -17,6 +17,17 @@ public class ScreenManager : Singleton<ScreenManager>
     public bool IsIdleModeActive { get { return isIdleModeActive; } }
     
     private const string TimerId = "IdleModeTimer";  // 타이머 ID
+
+    protected override void Awake()
+    {
+        base.Awake(); // Singleton의 Awake 메서드 호출
+        
+        // 만약 에디터에서 절전모드 캔버스 비활성화여도
+        if (idleModeCanvas != null && !idleModeCanvas.gameObject.activeSelf) 
+        {
+            idleModeCanvas.gameObject.SetActive(true); // 켜주는 장치 
+        }
+    }
     
     private void Start()
     {
