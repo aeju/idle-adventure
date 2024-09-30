@@ -25,19 +25,19 @@ public partial class EnemyFSM : MonoBehaviour
     {
         Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, 0);
         GameObject droppedItem = Instantiate(dropItem, dropPosition, Quaternion.identity);
-
-        StartCoroutine(MoveItemToPlayer(droppedItem));
-    }
-    
-    IEnumerator MoveItemToPlayer(GameObject item)
-    {
-        float duration = 1.0f; // 이동 
-        Vector3 playerPosition = target.transform.position; 
         
-        Tween moveTween = item.transform.DOMove(playerPosition, duration).SetEase(Ease.InOutQuad);
-        yield return moveTween.WaitForCompletion();
-        Destroy(item);
-        EarnRewards(); // 경험치, 코인 반영 
+        DropItem dropItemScript = droppedItem.GetComponent<DropItem>();
+        if (dropItemScript != null)
+        {
+           //dropItemScript.MoveToPlayer();
+           dropItemScript.OnItemCollected += EarnRewards;  // 이벤트 구독
+           // StartCoroutine(dropItemScript.MoveToPlayer());
+           StartCoroutine(dropItemScript.DropItemMove());
+        }
+        else
+        {
+            Debug.LogError("DropItem script is not attached to the dropItem prefab");
+        }
     }
 
     void EarnRewards()

@@ -20,6 +20,9 @@ public class ResourceBar : EnforceObserver
     [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private TextMeshProUGUI combatPowerText;
 
+    [SerializeField] private float duration = 0.5f; // 골드 카운트 애니메이션 걸리는 시간
+    private bool isInitialized = false; // 게임 시작 - 골드 애니메이션 x 위한 플래그    
+    
     void Start()
     {
         playerEnforce = (PlayerEnforce)FindObjectOfType(typeof(PlayerEnforce));
@@ -34,12 +37,12 @@ public class ResourceBar : EnforceObserver
         if (player == null)
         {
             Debug.LogError("Player Controller null");
-            player = FindObjectOfType<PlayerController>();
             return;
         }
         
         ResourceManager.Instance.OnResourcesUpdated += UpdateUI; // 리소스 매니저 이벤트 직접 구독
         UpdateUI();
+        isInitialized = true; // 게임 시작 처음 ! 
     }
 
     void OnDestroy()
@@ -62,10 +65,20 @@ public class ResourceBar : EnforceObserver
         if (ResourceManager.Instance != null)
         {
             ruby = ResourceManager.Instance.current_Ruby;
-            coin = ResourceManager.Instance.current_Coin;
+            int newCoin = ResourceManager.Instance.current_Coin;
             
             rubyText.text = ruby.ToString();
-            coinText.text = Utilities.FormatNumberUnit(coin);
+            
+            if (isInitialized && newCoin != coin) // 코인 값이 변경되었을 때, 코인 카운트 애니메이션 
+            {
+                StartCoroutine(CountAnimation(newCoin, coin));
+            }
+            else // 게임 시작 : 애니메이션 없이 바로 설정
+            {
+                coinText.text = Utilities.FormatNumberUnit(newCoin);
+            }
+        
+            coin = newCoin; // 최종 값 업데이트
         }
     }
 
@@ -90,5 +103,18 @@ public class ResourceBar : EnforceObserver
 
         if (playerEnforce)
             UpdateUI();
+    }
+
+    // 숫자 카운팅 애니메이션
+    IEnumerator CountAnimation(float target, float current)
+    {
+        float offset = (target - current) / duration; // 시간 간격마다 증가해야 할 값 계산
+    
+        while (current < target) // 골드가 증가하는 경우
+        {
+            current += offset * Time.deltaTime; // 현재 값을 프레임마다 조금씩 증가 
+            coinText.text = Utilities.FormatNumberUnit((int)current);
+            yield return null;
+        }
     }
 }
