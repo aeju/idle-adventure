@@ -22,7 +22,8 @@ public partial class EnemyFSM : MonoBehaviour
 
     [SerializeField] private GameObject dropItemPrefab;
     
-    // 지면으로 띄우기 
+    // 1. 아이템 생성 
+    // 2. 지면으로 띄우기 
     void ItemDrop()
     {
         // "1. MainCanvas"인 캔버스 찾아서, 컴포넌트 가져오기 
@@ -62,13 +63,19 @@ public partial class EnemyFSM : MonoBehaviour
         droppedItem.transform.localPosition = canvasPosition;
         Debug.Log($"Dropped item position set to: {droppedItem.transform.localPosition}");
 
-        
+        ItemDrops dropItemScript = droppedItem.GetComponent<ItemDrops>();
+        if (dropItemScript != null)
+        {
+            // dropItemScript.OnItemCollected += EarnRewards;  // 이벤트 구독
+            StartCoroutine(dropItemScript.DropItemMove());
+        }
+
         /*
         Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, 0);
         GameObject droppedItem = Instantiate(dropItem, dropPosition, Quaternion.identity);
-        
+
         DropItem dropItemScript = droppedItem.GetComponent<DropItem>();
-        if (dropItemScript != null)
+
         {
            //dropItemScript.MoveToPlayer();
            dropItemScript.OnItemCollected += EarnRewards;  // 이벤트 구독
@@ -81,7 +88,7 @@ public partial class EnemyFSM : MonoBehaviour
         }
         */
     }
-
+    
     void EarnRewards()
     {
         if (userInfo != null) // 경험치
