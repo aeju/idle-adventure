@@ -13,7 +13,7 @@ public static class Utilities
         if (hpSlider != null)
         {
             hpSlider.value = (float)currentHP / maxHP;
-            Debug.Log($"HP Updated: {currentHP} / {maxHP}");
+            // Debug.Log($"HP Updated: {currentHP} / {maxHP}");
         }
 
         else
