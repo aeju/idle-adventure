@@ -66,27 +66,9 @@ public partial class EnemyFSM : MonoBehaviour
         ItemDrops dropItemScript = droppedItem.GetComponent<ItemDrops>();
         if (dropItemScript != null)
         {
-            // dropItemScript.OnItemCollected += EarnRewards;  // 이벤트 구독
+            dropItemScript.OnItemCollected += EarnRewards;  // 이벤트 구독
             StartCoroutine(dropItemScript.DropItemMove());
         }
-
-        /*
-        Vector3 dropPosition = transform.position + new Vector3(0, 1.0f, 0);
-        GameObject droppedItem = Instantiate(dropItem, dropPosition, Quaternion.identity);
-
-        DropItem dropItemScript = droppedItem.GetComponent<DropItem>();
-
-        {
-           //dropItemScript.MoveToPlayer();
-           dropItemScript.OnItemCollected += EarnRewards;  // 이벤트 구독
-           // StartCoroutine(dropItemScript.MoveToPlayer());
-           StartCoroutine(dropItemScript.DropItemMove());
-        }
-        else
-        {
-            Debug.LogError("DropItem script is not attached to the dropItem prefab");
-        }
-        */
     }
     
     void EarnRewards()
