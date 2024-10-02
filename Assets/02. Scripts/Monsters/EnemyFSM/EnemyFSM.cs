@@ -68,12 +68,14 @@ public partial class EnemyFSM : MonoBehaviour
     private Vector3 wanderDestination; // 다음 이동 목적지
 
     [SerializeField] Slider hpSlider;
+    
+    // 드랍 아이템
+    [SerializeField] private GameObject dropItemPrefab;
+    private Canvas uiCanvas;
 
     // 애니메이션 
     private Animator anim;
     private SkeletonMecanim skeletonMecanim;
-
-    [SerializeField] GameObject dropItem;
 
     void Awake()
     {
