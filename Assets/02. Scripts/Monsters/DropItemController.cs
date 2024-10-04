@@ -26,7 +26,7 @@ public class DropItemController : MonoBehaviour
     private Vector2 playerScreenPosition;
     private Vector2 playerCanvasPosition;
 
-    private int activeItemCount = 0;
+    private int activeItemCount = 0; // 현재 이동 중인 아이템의 수 추적 (이동 시작 - 증가 / 이동 완료 - 감소)
     [SerializeField] private float duration = 0.6f;
 
     private void Awake()
@@ -122,17 +122,9 @@ public class DropItemController : MonoBehaviour
         {
             OnAllItemsMoved();
         }
-        
-        /*
-        yield return new WaitForSeconds(duration);
-        
-        // 아이템 획득 완료 이벤트 발생
-        OnItemCollected?.Invoke();
-        
-        Destroy(gameObject);
-        */
     }
     
+    // 아이템 이동 완료될 때 호출
     private void OnItemMoved()
     {
         activeItemCount--;
@@ -142,6 +134,7 @@ public class DropItemController : MonoBehaviour
         }
     }
     
+    // 모든 아이템이 이동 완료됐을 때 호출
     private void OnAllItemsMoved()
     {
         // 아이템 획득 완료 이벤트 발생
@@ -162,12 +155,12 @@ public class DropItemController : MonoBehaviour
             .SetEase(Ease.InOutQuad)
             .OnComplete(() => 
             {
-                Destroy(coinPrefab.gameObject);
-                OnItemMoved();
+                Destroy(coinPrefab.gameObject); // 아이템 제거
+                OnItemMoved(); // 아이템 카운트 감소 
             });
-            //.OnComplete(() => Destroy(coinPrefab.gameObject)); // 아이템 제거
     }
     
+    // 2. 경험치 : 경험치 바 UI로 이동
     private void MoveExpToUI()
     {
         experiencePrefab.transform.SetParent(expUIPosition, true);
@@ -186,7 +179,6 @@ public class DropItemController : MonoBehaviour
                     Destroy(experiencePrefab.gameObject);
                     OnItemMoved();
                 });
-                //.OnComplete(() => Destroy(experiencePrefab.gameObject));
     }
     
     // 3. 포션 : 플레이어로 이동
@@ -197,7 +189,7 @@ public class DropItemController : MonoBehaviour
         potionWorldStartPos = mainCamera.ScreenToWorldPoint(new Vector3(potionWorldStartPos.x, potionWorldStartPos.y, mainCamera.nearClipPlane));
         
         // 목표 위치 : 플레이어의 월드 위치 (y축 + 0.5f)
-        Vector3 playerWorldPos = playerTransform.position + new Vector3(0, 0.5f, 0);
+        Vector3 playerWorldPos = playerTransform.position + new Vector3(0, 0.8f, 0);
         
         DOTween.To(() => potionWorldStartPos,
                 pos => 
@@ -206,11 +198,11 @@ public class DropItemController : MonoBehaviour
                     potionPrefab.rectTransform.position = screenPos;
                 },
                 playerWorldPos, duration)
+            .SetEase(Ease.InExpo)
             .OnComplete(() => 
             {
                 Destroy(potionPrefab.gameObject);
                 OnItemMoved();
             });
-            //.OnComplete(() => Destroy(potionPrefab.gameObject)); 
     }
 }
