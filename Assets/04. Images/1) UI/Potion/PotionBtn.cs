@@ -69,10 +69,19 @@ public class PotionBtn : MonoBehaviour
             int maxHP = playerController.playerStats.maxHP;
             int newHP = Mathf.Min(currentHP + healAmount, maxHP); // 현재 HP + 회복량 vs MaxHP 중 작은값 선택
             
-            // playerController.playerStats.CurrentHP += healAmount;
             playerController.playerStats.CurrentHP = newHP;
             potionManager.UsePotion(1);
             UpdatePotionDisplay();
+            
+            // healEffectParticle 재생
+            if (playerController.healEffectParticle != null)
+            {
+                playerController.healEffectParticle.Play();
+            }
+            else
+            {
+                Debug.LogWarning("Heal effect particle is not assigned in PlayerController");
+            }
         }
     }
 }
