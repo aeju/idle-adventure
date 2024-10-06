@@ -12,6 +12,7 @@ public class PotionBtn : MonoBehaviour
     [SerializeField] private GameObject potionImage;
     [SerializeField] private Button potionBtn;
     [SerializeField] private int healAmount = 50;
+    [SerializeField] private float potionCooldown = 3f; // 포션 사용 쿨타임
     private PlayerController playerController;
     
     private PotionManager potionManager;
@@ -32,7 +33,9 @@ public class PotionBtn : MonoBehaviour
         potionManager.OnResourcesUpdated += UpdatePotionDisplay;
         playerController = FindObjectOfType<PlayerController>();
         
-        potionBtn.OnClickAsObservable().Subscribe(_ =>
+        //potionBtn.OnClickAsObservable().Subscribe(_ =>
+        //potionBtn.OnClickAsObservable().ThrottleFirst(TimeSpan.FromSeconds(3)).Subscribe(_ =>
+        potionBtn.OnClickAsObservable().ThrottleFirst(TimeSpan.FromSeconds(potionCooldown)).Subscribe(_ =>
         {
             UsePotion();
         }).AddTo(this);
