@@ -64,7 +64,13 @@ public class PotionBtn : MonoBehaviour
     {
         if (potionManager.GetCurrentPotions() > 0)
         {
-            playerController.playerStats.CurrentHP += healAmount;
+            // 최대 HP 넘지 않도록
+            int currentHP = playerController.playerStats.CurrentHP;
+            int maxHP = playerController.playerStats.maxHP;
+            int newHP = Mathf.Min(currentHP + healAmount, maxHP); // 현재 HP + 회복량 vs MaxHP 중 작은값 선택
+            
+            // playerController.playerStats.CurrentHP += healAmount;
+            playerController.playerStats.CurrentHP = newHP;
             potionManager.UsePotion(1);
             UpdatePotionDisplay();
         }
