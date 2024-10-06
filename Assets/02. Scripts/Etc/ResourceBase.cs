@@ -11,14 +11,14 @@ public abstract class ResourceBase<T> : Singleton<T> where T : MonoBehaviour
     protected int currentResource = 0;
 
     // 리소스 추가 
-    public virtual void AddResource(int amount)
+    protected virtual void AddResource(int amount)
     {
         currentResource += amount;
         OnResourcesUpdated?.Invoke(); // 리소스 추가 이벤트 발생 
     }
 
     // 리소스 사용 
-    public virtual void UseResource(int amount)
+    protected virtual void UseResource(int amount)
     {
         if (currentResource >= amount)
         {

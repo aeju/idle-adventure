@@ -4,11 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UniRx;
 
 public class PotionBtn : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI potionText;
     [SerializeField] private GameObject potionImage;
+    [SerializeField] private Button potionBtn;
+    [SerializeField] private int healAmount = 50;
+    private PlayerController playerController;
     
     private PotionManager potionManager;
     
@@ -25,8 +29,13 @@ public class PotionBtn : MonoBehaviour
         UpdatePotionDisplay();
 
         // PotionManager의 이벤트 구독
-        //potionManager.OnPotionUpdated += UpdatePotionDisplay;
         potionManager.OnResourcesUpdated += UpdatePotionDisplay;
+        playerController = FindObjectOfType<PlayerController>();
+        
+        potionBtn.OnClickAsObservable().Subscribe(_ =>
+        {
+            UsePotion();
+        }).AddTo(this);
     }
     
     private void OnDestroy()
@@ -34,16 +43,13 @@ public class PotionBtn : MonoBehaviour
         // 이벤트 구독 해제
         if (potionManager != null)
         {
-            //potionManager.OnPotionUpdated -= UpdatePotionDisplay;
             potionManager.OnResourcesUpdated -= UpdatePotionDisplay;
         }
     }
 
     private void UpdatePotionDisplay()
     {
-        //int potionCount = potionManager.current_Potion;
-        //int potionCount = potionManager.currentResource;
-        int potionCount = potionManager.GetCurrentResource();
+        int potionCount = potionManager.GetCurrentPotions();
         
         // 포션 개수가 1 이상일 때만 텍스트, 이미지 활성화
         bool isActive = potionCount > 0;
@@ -52,5 +58,15 @@ public class PotionBtn : MonoBehaviour
 
         // 포션 개수 텍스트 업데이트
         potionText.text = potionCount.ToString();
+    }
+    
+    private void UsePotion()
+    {
+        if (potionManager.GetCurrentPotions() > 0)
+        {
+            playerController.playerStats.CurrentHP += healAmount;
+            potionManager.UsePotion(1);
+            UpdatePotionDisplay();
+        }
     }
 }
