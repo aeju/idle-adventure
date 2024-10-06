@@ -9,6 +9,9 @@ public partial class PlayerController : MonoBehaviour
     [SerializeField] private GameObject skillEffect;
     [SerializeField] private float effectDuration = 1.5f; // 이펙트 비활성화 시간
     
+    [Header("# 포션 이펙트")]
+    public ParticleSystem healEffectParticle;
+    
     /// <summary>
     /// 제일 처음, 공격 이펙트를 꺼주고 시작
     /// </summary>
@@ -51,5 +54,19 @@ public partial class PlayerController : MonoBehaviour
     private void CreateSkillEffect()
     {
         ActivateEffect(skillEffect, effectDuration); 
+    }
+    
+    // 포션 사용 (HP 회복) 이펙트
+    public void PlayHealEffect()
+    {
+        if (healEffectParticle != null)
+        {
+            healEffectParticle.Play();
+            SoundManager.Instance.PlaySFX("Heal");
+        }
+        else
+        {
+            Debug.LogWarning("Heal effect particle is not assigned in PlayerController");
+        }
     }
 }

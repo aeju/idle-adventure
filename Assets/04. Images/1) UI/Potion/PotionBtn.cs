@@ -33,8 +33,6 @@ public class PotionBtn : MonoBehaviour
         potionManager.OnResourcesUpdated += UpdatePotionDisplay;
         playerController = FindObjectOfType<PlayerController>();
         
-        //potionBtn.OnClickAsObservable().Subscribe(_ =>
-        //potionBtn.OnClickAsObservable().ThrottleFirst(TimeSpan.FromSeconds(3)).Subscribe(_ =>
         potionBtn.OnClickAsObservable().ThrottleFirst(TimeSpan.FromSeconds(potionCooldown)).Subscribe(_ =>
         {
             UsePotion();
@@ -77,6 +75,8 @@ public class PotionBtn : MonoBehaviour
             UpdatePotionDisplay();
             
             // healEffectParticle 재생
+            playerController.PlayHealEffect();
+            /*
             if (playerController.healEffectParticle != null)
             {
                 playerController.healEffectParticle.Play();
@@ -85,6 +85,7 @@ public class PotionBtn : MonoBehaviour
             {
                 Debug.LogWarning("Heal effect particle is not assigned in PlayerController");
             }
+            */
         }
     }
 }
