@@ -1,10 +1,22 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class PotionManager : Singleton<PotionManager>
+// public class PotionManager : Singleton<PotionManager>
+public class PotionManager : ResourceBase<PotionManager>
 {
+    public void AddPotion(int amount)
+    {
+        AddResource(amount);
+    }
+
+    public void UsePotion(int amount)
+    {
+        UseResource(amount);
+    }
+    
+    public int GetCurrentPotions()
+    {
+        return GetCurrentResource();
+    }
+    
+    /*
     public int current_Potion = 0;
     
     public event Action OnPotionUpdated;
@@ -24,4 +36,5 @@ public class PotionManager : Singleton<PotionManager>
             OnPotionUpdated?.Invoke(); // 포션 변화에 대한 이벤트 트리거
         }
     }
+    */
 }
