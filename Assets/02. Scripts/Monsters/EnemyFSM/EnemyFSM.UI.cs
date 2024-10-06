@@ -84,6 +84,8 @@ public partial class EnemyFSM : MonoBehaviour
     
     void EarnRewards()
     {
+        SoundManager.Instance.PlaySFX("Earn");
+        
         if (userInfo != null) // 경험치
         {
             userInfo.AddExperience(monsterStats.Exp);
