@@ -93,5 +93,12 @@ public partial class EnemyFSM : MonoBehaviour
         {
             resourceInfo.AddCoin(monsterStats.Coin);
         }
+
+        if (potionInfo != null)
+        {
+            // 랜덤 : 이상 ~ 미만 
+            int randomPotionAmount = UnityEngine.Random.Range(monsterStats.MinPotionDrop, monsterStats.MaxPotionDrop + 1);
+            potionInfo.AddPotion(randomPotionAmount);
+        }
     }
 }

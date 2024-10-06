@@ -13,6 +13,7 @@ public partial class EnemyFSM : MonoBehaviour
 
     [SerializeField] private UserInfoManager userInfo;
     [SerializeField] private ResourceManager resourceInfo;
+    [SerializeField] private PotionManager potionInfo;
 
     [SerializeField] private GameObject hudDamageText;
     
@@ -88,6 +89,7 @@ public partial class EnemyFSM : MonoBehaviour
 
         userInfo = UserInfoManager.Instance;
         resourceInfo = ResourceManager.Instance;
+        potionInfo = PotionManager.Instance;
 
         monsterStats.CurrentHP = monsterStats.MaxHP; // HP 최대치로 초기화
     }
