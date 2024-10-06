@@ -33,6 +33,9 @@ public class MonsterStats : MonoBehaviour
     public string MonsterName { get; private set; }
     public int Exp { get; private set; }
     
+    public int MinPotionDrop { get; private set; } // 최소 포션 드롭 개수
+    public int MaxPotionDrop { get; private set; } // 최대 포션 드롭 개수
+    
     public event Action<int, int> OnEnemyHPChanged;
 
     public void Awake()
@@ -61,5 +64,8 @@ public class MonsterStats : MonoBehaviour
         Coin = monsterStats.Coin;
         Exp = monsterStats.Exp;
         MonsterName = monsterStats.Name;
+        
+        MinPotionDrop = monsterStats.MinPotionDrop;
+        MaxPotionDrop = monsterStats.MaxPotionDrop;
     }
 }

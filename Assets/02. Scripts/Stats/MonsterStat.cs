@@ -7,4 +7,8 @@ public class MonsterStat : StatBase
 {
     public int Coin;
     public int Exp;
+    
+    [Header("Potion Drop")]
+    public int MinPotionDrop = 1;
+    public int MaxPotionDrop = 5; 
 }
