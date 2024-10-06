@@ -66,7 +66,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         
         InitializeStates(); // State 패턴 초기 설정
         PlayerInit();
-        healEffectParticle.Stop(); // ParticleSystem 초기화
     }
 
     void PlayerInit()
@@ -77,10 +76,27 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         DeactivateEffects();
         monsterLayerMask = LayerMask.GetMask("Enemy");
         playerStats.OnPlayerHPChanged += HandlePlayerHpChange; // 체력에 대한 이벤트 구독
+        playerStats.OnPlayerHPChanged += CheckAutoPotion;
         
         isSkillOnCooldown = false;
         lastSkillTime = -skillCooldown;
         lastHitTime = -hitCooldown;
+        
+        healEffectParticle.Stop(); // ParticleSystem 초기화
+        
+        potionManager = PotionManager.Instance;
+        if (potionManager == null)
+        {
+            Debug.LogError("PotionManager instance not found!");
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (autoPotionCoroutine != null)
+        {
+            StopCoroutine(autoPotionCoroutine);
+        }
     }
     
     // 상태 객체와 상태 관리자 인스턴스를 초기화

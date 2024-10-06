@@ -3557,6 +3557,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e894f9ee921e4cfcb60739b62545288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healAmount: 30
+  autoPotionThreshold: 0.9
+  autoPotionCheckInterval: 1
 --- !u!1 &92347014
 GameObject:
   m_ObjectHideFlags: 0
@@ -21758,7 +21761,6 @@ MonoBehaviour:
   potionText: {fileID: 987455580}
   potionImage: {fileID: 42355479}
   potionBtn: {fileID: 721562613}
-  healAmount: 50
   potionCooldown: 3
 --- !u!114 &721562613
 MonoBehaviour:
@@ -22069,6 +22071,8 @@ MonoBehaviour:
   soundEffects:
   - name: Earn
     clip: {fileID: 8300000, guid: abdbbfd33a46f4549987385f85c536b5, type: 3}
+  - name: Heal
+    clip: {fileID: 8300000, guid: cfce0cea076109f478783201b2a9f57f, type: 3}
 --- !u!4 &724650487
 Transform:
   m_ObjectHideFlags: 0

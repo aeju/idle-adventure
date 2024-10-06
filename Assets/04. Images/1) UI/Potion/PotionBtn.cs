@@ -11,7 +11,7 @@ public class PotionBtn : MonoBehaviour
     [SerializeField] private TextMeshProUGUI potionText;
     [SerializeField] private GameObject potionImage;
     [SerializeField] private Button potionBtn;
-    [SerializeField] private int healAmount = 50;
+    //[SerializeField] private int healAmount = 50;
     [SerializeField] private float potionCooldown = 3f; // 포션 사용 쿨타임
     private PlayerController playerController;
     
@@ -20,6 +20,8 @@ public class PotionBtn : MonoBehaviour
     private void Start()
     {
         potionManager = PotionManager.Instance;
+        playerController = FindObjectOfType<PlayerController>();
+        
         if (potionManager == null)
         {
             Debug.LogError("PotionManager instance not found!");
@@ -31,11 +33,10 @@ public class PotionBtn : MonoBehaviour
 
         // PotionManager의 이벤트 구독
         potionManager.OnResourcesUpdated += UpdatePotionDisplay;
-        playerController = FindObjectOfType<PlayerController>();
         
         potionBtn.OnClickAsObservable().ThrottleFirst(TimeSpan.FromSeconds(potionCooldown)).Subscribe(_ =>
         {
-            UsePotion();
+            playerController.UsePotion();
         }).AddTo(this);
     }
     
@@ -59,33 +60,5 @@ public class PotionBtn : MonoBehaviour
 
         // 포션 개수 텍스트 업데이트
         potionText.text = potionCount.ToString();
-    }
-    
-    private void UsePotion()
-    {
-        if (potionManager.GetCurrentPotions() > 0)
-        {
-            // 최대 HP 넘지 않도록
-            int currentHP = playerController.playerStats.CurrentHP;
-            int maxHP = playerController.playerStats.maxHP;
-            int newHP = Mathf.Min(currentHP + healAmount, maxHP); // 현재 HP + 회복량 vs MaxHP 중 작은값 선택
-            
-            playerController.playerStats.CurrentHP = newHP;
-            potionManager.UsePotion(1);
-            UpdatePotionDisplay();
-            
-            // healEffectParticle 재생
-            playerController.PlayHealEffect();
-            /*
-            if (playerController.healEffectParticle != null)
-            {
-                playerController.healEffectParticle.Play();
-            }
-            else
-            {
-                Debug.LogWarning("Heal effect particle is not assigned in PlayerController");
-            }
-            */
-        }
     }
 }
