@@ -3927,7 +3927,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &100458180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45738,7 +45738,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95064443076124f3d89d8122c9306cdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idleTime: 0.1
+  idleTime: 20
   idleFPS: 10
   idleModeCanvas: {fileID: 1291628645}
   deathCanvas: {fileID: 100458182}
@@ -64052,6 +64052,34 @@ PrefabInstance:
     - target: {fileID: 3235828774245957855, guid: a7de6329dd2bc4b8e95b18bdcd7123fa, type: 3}
       propertyPath: m_Name
       value: PlayerDeathPopupUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112806618498181203, guid: a7de6329dd2bc4b8e95b18bdcd7123fa, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112806618498181203, guid: a7de6329dd2bc4b8e95b18bdcd7123fa, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112806618498181203, guid: a7de6329dd2bc4b8e95b18bdcd7123fa, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1534929848}
+    - target: {fileID: 5112806618498181203, guid: a7de6329dd2bc4b8e95b18bdcd7123fa, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112806618498181203, guid: a7de6329dd2bc4b8e95b18bdcd7123fa, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HideDeathScreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112806618498181203, guid: a7de6329dd2bc4b8e95b18bdcd7123fa, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ScreenManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112806618498181203, guid: a7de6329dd2bc4b8e95b18bdcd7123fa, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

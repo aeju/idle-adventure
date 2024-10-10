@@ -10,9 +10,11 @@ public class ScreenManager : Singleton<ScreenManager>
     [SerializeField] private int idleFPS = 10; // 절전모드 FPS : 10 
     
     [SerializeField] private Canvas idleModeCanvas; // idle Mode 표시 Canvas
+    [SerializeField] private Canvas deathCanvas; // death 표시 Canvas
     [SerializeField] private IdleModeCountTime _idleModeCountTime;
     
     [SerializeField] private bool isIdleModeActive = false;
+    [SerializeField] private bool isDeathScreenActive = false;
     
     public bool IsIdleModeActive { get { return isIdleModeActive; } }
     
@@ -27,16 +29,24 @@ public class ScreenManager : Singleton<ScreenManager>
         {
             idleModeCanvas.gameObject.SetActive(true); // 켜주는 장치 
         }
+        
+        // 만약 에디터에서 죽음 캔버스 비활성화여도
+        if (deathCanvas != null && !deathCanvas.gameObject.activeSelf)
+        {
+            deathCanvas.gameObject.SetActive(true);
+        }
     }
     
     private void Start()
     {
         idleModeCanvas.enabled = false;
+        deathCanvas.enabled = false;
     }
 
     private void Update()
     {
-        if (!isIdleModeActive)
+        //if (!isIdleModeActive)
+        if (!isIdleModeActive && !isDeathScreenActive)
         {
             // 입력값이 있으면, 절전모드 타이머 초기화
             if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1))
@@ -110,5 +120,24 @@ public class ScreenManager : Singleton<ScreenManager>
         int originFPS = OptionManager.Instance.GetInt(OptionManager.FrameRateKey, defaultFrameRate);
         // 불러온 FPS 값으로 설정
         Application.targetFrameRate = originFPS;
+    }
+    
+    public void ShowDeathScreen()
+    {
+        if (!isDeathScreenActive)
+        {
+            deathCanvas.enabled = true;
+            isDeathScreenActive = true;
+            DeactivateIdleModeCanvas();
+        }
+    }
+
+    public void HideDeathScreen()
+    {
+        if (isDeathScreenActive)
+        {
+            deathCanvas.enabled = false;
+            isDeathScreenActive = false;
+        }
     }
 }
