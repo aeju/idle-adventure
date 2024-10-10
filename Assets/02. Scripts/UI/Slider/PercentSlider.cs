@@ -52,6 +52,12 @@ public class PercentSlider : MonoBehaviour
         slider.value = value;
         UpdatePercentageText(value);
     }
+    
+    // 현재 슬라이더 값을 반환
+    public float GetSliderValue()
+    {
+        return slider.value;
+    }
 
     private void OnDestroy()
     {
