@@ -7,6 +7,9 @@ public class OptionManager : Singleton<OptionManager>
     public const string FrameRateKey = "FrameRate";
     public const string StatusBarActiveKey = "StatusBarActive";
     public const string MenuOpenedKey = "MenuOpend";
+    public const string AutoPotionPercentKey = "AutoPotionPercent";
+    
+    // public const string AutoPotionActiveKey = "AutoPotionActive";
 
     // 설정 값 불러오기
     public int GetInt(string key, int defaultValue)
