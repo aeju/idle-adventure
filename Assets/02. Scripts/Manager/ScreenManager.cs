@@ -42,13 +42,19 @@ public class ScreenManager : Singleton<ScreenManager>
             if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1))
             {
                 DeactivateIdleModeCanvas();
+                Debug.Log("Input detected, resetting idle timer.");
             }
 
             else 
             {
-                // 입력이 없을 경우 타이머 증가 + 지정된 방치 시간이 초과되면 검은 화면을 활성화
-                if (TimeManager.Instance.GetTime(TimerId) >= idleTime && !idleModeCanvas.enabled)
+                TimeManager.Instance.UpdateTimer(TimerId, Time.deltaTime);
+                float currentIdleTime = TimeManager.Instance.GetTime(TimerId);
+                Debug.Log($"Current idle time: {currentIdleTime}");
+
+                // 입력이 없을 경우 타이머 증가 + 지정된 방치 시간이 초과되면 Idle Canvas 활성화
+                if (currentIdleTime >= idleTime && !idleModeCanvas.enabled)
                 {
+                    Debug.Log("Idle time exceeded, activating idle mode screen.");
                     ActivateIdleModeScreen();
                 }
             }
@@ -56,6 +62,7 @@ public class ScreenManager : Singleton<ScreenManager>
         else // 절전모드 활성화 (타이머 시작)
         {
             TimeManager.Instance.UpdateTimer(TimerId, Time.deltaTime);
+            Debug.Log($"Idle mode active. Current time: {TimeManager.Instance.GetTime(TimerId)}");
         }
     }
     
