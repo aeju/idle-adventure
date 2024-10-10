@@ -49,6 +49,8 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     public bool isArrived = false;
     public bool autoModeActive = false; // 자동 이동
     
+    private Vector3 originPos; // 재소환 위치
+    
     // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
     void Start()
     {
@@ -66,6 +68,8 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         
         InitializeStates(); // State 패턴 초기 설정
         PlayerInit();
+
+        originPos = transform.position; // 첫 위치 저장
     }
 
     void PlayerInit()
@@ -193,7 +197,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         }
     }
     
-    
     // FlipX 기준으로 스프라이트 방향 전환
     public void FlipPlayer(float horizontalInput)
     {
@@ -206,5 +209,19 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             isFlipX = !isFlipX; // flipX 상태 업데이트
             
         }
+    }
+
+    public void Respawn()
+    { 
+        // 플레이어 위치를 원점으로 재설정
+        transform.position = originPos;
+
+        // HP를 최대로 회복
+        playerStats.CurrentHP = playerStats.maxHP;
+
+        // 죽음 화면 UI 숨기기
+        ScreenManager.Instance.HideDeathScreen();
+        
+        PlayerInit();
     }
 }
