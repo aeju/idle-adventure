@@ -25,7 +25,7 @@ public class PlayerInstantiatorEditor : EditorWindow
     private Vector3 position = new Vector3(0, 0.75f, 0);
     private Vector3 scale = new Vector3(2, 2, -1);
 
-    [MenuItem("Tools/Prefab Instantiator")]
+    [MenuItem("Tools/2. Player Prefab Instantiator")]
     public static void ShowWindow()
     {
         var window = GetWindow<PlayerInstantiatorEditor>("Player Instantiator");

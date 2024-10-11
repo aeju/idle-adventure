@@ -10,9 +10,11 @@ public class ScreenManager : Singleton<ScreenManager>
     [SerializeField] private int idleFPS = 10; // 절전모드 FPS : 10 
     
     [SerializeField] private Canvas idleModeCanvas; // idle Mode 표시 Canvas
+    [SerializeField] private Canvas deathCanvas; // death 표시 Canvas
     [SerializeField] private IdleModeCountTime _idleModeCountTime;
     
     [SerializeField] private bool isIdleModeActive = false;
+    [SerializeField] private bool isDeathScreenActive = false;
     
     public bool IsIdleModeActive { get { return isIdleModeActive; } }
     
@@ -27,28 +29,41 @@ public class ScreenManager : Singleton<ScreenManager>
         {
             idleModeCanvas.gameObject.SetActive(true); // 켜주는 장치 
         }
+        
+        // 만약 에디터에서 죽음 캔버스 비활성화여도
+        if (deathCanvas != null && !deathCanvas.gameObject.activeSelf)
+        {
+            deathCanvas.gameObject.SetActive(true);
+        }
     }
     
     private void Start()
     {
         idleModeCanvas.enabled = false;
+        deathCanvas.enabled = false;
     }
 
     private void Update()
     {
-        if (!isIdleModeActive)
+        //if (!isIdleModeActive)
+        if (!isIdleModeActive && !isDeathScreenActive)
         {
             // 입력값이 있으면, 절전모드 타이머 초기화
             if (Input.anyKey || Input.GetMouseButton(0) || Input.GetMouseButton(1))
             {
                 DeactivateIdleModeCanvas();
+                Debug.Log("Input detected, resetting idle timer.");
             }
 
             else 
             {
-                // 입력이 없을 경우 타이머 증가 + 지정된 방치 시간이 초과되면 검은 화면을 활성화
-                if (TimeManager.Instance.GetTime(TimerId) >= idleTime && !idleModeCanvas.enabled)
+                TimeManager.Instance.UpdateTimer(TimerId, Time.deltaTime);
+                float currentIdleTime = TimeManager.Instance.GetTime(TimerId);
+
+                // 입력이 없을 경우 타이머 증가 + 지정된 방치 시간이 초과되면 Idle Canvas 활성화
+                if (currentIdleTime >= idleTime && !idleModeCanvas.enabled)
                 {
+                    Debug.Log("Idle time exceeded, activating idle mode screen.");
                     ActivateIdleModeScreen();
                 }
             }
@@ -78,10 +93,16 @@ public class ScreenManager : Singleton<ScreenManager>
             idleModeCanvas.enabled = false;
             isIdleModeActive = false;
             Screen.sleepTimeout = SleepTimeout.SystemSetting; // 화면 꺼짐 방지 해제 (기기 설정 따르도록)
-            TimeManager.Instance.ResetTimer(TimerId); // 타이머 리셋
             MonsterKillCounterManager.Instance.ResetIdleMonsterCounter(); // 몬스터 카운터 초기화
             ResetFPS(); // FPS 되돌리기
         }
+        ResetIdleTimer(); // 타이머 리셋 : 항상 수행 <- 게임 재시작
+    }
+    
+    public void ResetIdleTimer()
+    {
+        TimeManager.Instance.ResetTimer(TimerId);
+        Debug.Log("Idle timer has been reset.");
     }
 
     // 절전 모드 O : FPS 낮추기
@@ -103,5 +124,24 @@ public class ScreenManager : Singleton<ScreenManager>
         int originFPS = OptionManager.Instance.GetInt(OptionManager.FrameRateKey, defaultFrameRate);
         // 불러온 FPS 값으로 설정
         Application.targetFrameRate = originFPS;
+    }
+    
+    public void ShowDeathScreen()
+    {
+        if (!isDeathScreenActive)
+        {
+            deathCanvas.enabled = true;
+            isDeathScreenActive = true;
+            DeactivateIdleModeCanvas();
+        }
+    }
+
+    public void HideDeathScreen()
+    {
+        if (isDeathScreenActive)
+        {
+            deathCanvas.enabled = false;
+            isDeathScreenActive = false;
+        }
     }
 }

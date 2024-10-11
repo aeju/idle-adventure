@@ -48,6 +48,10 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     public bool isMonsterDetected = false;
     public bool isArrived = false;
     public bool autoModeActive = false; // 자동 이동
+    public bool isRespawnRequested = false;
+    
+    private Vector3 originPos; // 재소환 위치
+    private Vector3 originScale; // 재소환 방향
     
     // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
     void Start()
@@ -66,6 +70,9 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         
         InitializeStates(); // State 패턴 초기 설정
         PlayerInit();
+
+        originPos = transform.position; // 첫 위치 저장
+        originScale = ponpo.transform.localScale; // 첫 방향 저장
     }
 
     void PlayerInit()
@@ -81,8 +88,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         isSkillOnCooldown = false;
         lastSkillTime = -skillCooldown;
         lastHitTime = -hitCooldown;
-        
-        healEffectParticle.Stop(); // ParticleSystem 초기화
         
         potionManager = PotionManager.Instance;
         if (potionManager == null)
@@ -193,7 +198,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         }
     }
     
-    
     // FlipX 기준으로 스프라이트 방향 전환
     public void FlipPlayer(float horizontalInput)
     {
@@ -204,7 +208,30 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             ponpo.localScale = theScale;
             
             isFlipX = !isFlipX; // flipX 상태 업데이트
-            
         }
+    }
+
+    public void Respawn()
+    { 
+        // 플레이어 위치, 방향 - 원점으로 재설정
+        transform.position = originPos;
+        // 보고있는 방향 되돌리기 
+        isFlipX = false;
+        ponpo.localScale = originScale;
+
+        // HP를 최대로 회복
+        playerStats.CurrentHP = playerStats.maxHP;
+        
+        // 살아있는 상태
+        isAlive = true;
+        isRespawnRequested = false;
+        
+        DeactivateEffects();
+        
+        isSkillOnCooldown = false;
+        lastSkillTime = -skillCooldown;
+        lastHitTime = -hitCooldown;
+        //IdlePlayer();
+        anim.Rebind(); // 애니메이터 리셋
     }
 }

@@ -21,7 +21,7 @@ public class SpriteMapEditor : EditorWindow
     
     private Vector2 scrollPosition; // 스크롤 위치
     
-    [MenuItem("Tools/Sprite Map Editor")]
+    [MenuItem("Tools/3. Sprite Map Editor")]
     public static void ShowWindow()
     {
         GetWindow<SpriteMapEditor>("Sprite Map Editor");

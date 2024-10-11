@@ -13,12 +13,13 @@ public partial class PlayerController : MonoBehaviour
     public ParticleSystem healEffectParticle;
     
     /// <summary>
-    /// 제일 처음, 공격 이펙트를 꺼주고 시작
+    /// 제일 처음, 공격 이펙트를 꺼주고 시작 (모든 이펙트 비활성화)
     /// </summary>
     private void DeactivateEffects()
     {
         attackEffect.SetActive(false);
         skillEffect.SetActive(false);
+        healEffectParticle.Stop();
     }
     
     // 이펙트 종류, 코루틴을 파라미터로 받는 공통 함수 (일정 시간 후 비활성화)

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class PlayerPrefsDelete : EditorWindow
+public class PlayerPrefsResetEditor : EditorWindow
 {
-    [MenuItem("Tools/Reset PlayerPrefs")]
+    [MenuItem("Tools/1. PlayerPrefs Resetter")]
     private static void ShowWindow()
     {
-        GetWindow<PlayerPrefsDelete>("Reset PlayerPrefs");
+        GetWindow<PlayerPrefsResetEditor>("Reset PlayerPrefs");
     }
     
     private void OnGUI()
