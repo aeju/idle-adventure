@@ -35,7 +35,8 @@ public class GameManager : Singleton<GameManager>
     {
         if (playerController != null)
         {
-            playerController.Respawn();
+            playerController.Respawn(); // 플레이어 리스폰
+            ScreenManager.Instance.DeactivateIdleModeCanvas();  // ScreenManager - idleTimer 초기화
         }
         else
         {

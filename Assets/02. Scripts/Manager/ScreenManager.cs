@@ -95,10 +95,17 @@ public class ScreenManager : Singleton<ScreenManager>
             idleModeCanvas.enabled = false;
             isIdleModeActive = false;
             Screen.sleepTimeout = SleepTimeout.SystemSetting; // 화면 꺼짐 방지 해제 (기기 설정 따르도록)
-            TimeManager.Instance.ResetTimer(TimerId); // 타이머 리셋
+            //TimeManager.Instance.ResetTimer(TimerId); // 타이머 리셋
             MonsterKillCounterManager.Instance.ResetIdleMonsterCounter(); // 몬스터 카운터 초기화
             ResetFPS(); // FPS 되돌리기
         }
+        ResetIdleTimer(); // 타이머 리셋 : 항상 수행 <- 게임 재시작
+    }
+    
+    public void ResetIdleTimer()
+    {
+        TimeManager.Instance.ResetTimer(TimerId);
+        Debug.Log("Idle timer has been reset.");
     }
 
     // 절전 모드 O : FPS 낮추기
