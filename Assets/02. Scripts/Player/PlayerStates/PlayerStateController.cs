@@ -39,6 +39,11 @@ public class PlayerStateController : MonoBehaviour
                  JudgeMovement(); // idle, move 판단 (이동 입력 유무)
             }
         }
+        else if (!_playerController.isAlive && _playerController.isRespawnRequested)
+        {
+            _playerController.Respawn();
+            _playerController.IdlePlayer();
+        }
     }
 
     void JudgeMovement()
