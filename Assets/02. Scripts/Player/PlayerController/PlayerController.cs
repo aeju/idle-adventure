@@ -48,6 +48,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     public bool isMonsterDetected = false;
     public bool isArrived = false;
     public bool autoModeActive = false; // 자동 이동
+    public bool isRespawnRequested = false;
     
     private Vector3 originPos; // 재소환 위치
     private Vector3 originScale; // 재소환 방향
@@ -212,19 +213,18 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
 
     public void Respawn()
     { 
-        // 플레이어 위치를 원점으로 재설정
+        // 플레이어 위치, 방향 - 원점으로 재설정
         transform.position = originPos;
+        // 보고있는 방향 되돌리기 
+        isFlipX = false;
+        ponpo.localScale = originScale;
 
         // HP를 최대로 회복
         playerStats.CurrentHP = playerStats.maxHP;
         
         // 살아있는 상태
         isAlive = true;
-        
-        // 보고있는 방향 되돌리기 
-        isFlipX = false;
-        //ponpo.localScale = new Vector3(2, 2, -1);
-        ponpo.localScale = originScale;
+        isRespawnRequested = false;
         
         DeactivateEffects();
         
@@ -232,11 +232,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         lastSkillTime = -skillCooldown;
         lastHitTime = -hitCooldown;
         IdlePlayer();
-        anim.SetBool("isIdle", true);
-        
-        /*
-        IdlePlayer();
-        anim.SetBool("isIdle", true);
-        */
+        anim.Rebind(); // 애니메이터 리셋
     }
 }
