@@ -59,7 +59,6 @@ public class ScreenManager : Singleton<ScreenManager>
             {
                 TimeManager.Instance.UpdateTimer(TimerId, Time.deltaTime);
                 float currentIdleTime = TimeManager.Instance.GetTime(TimerId);
-                Debug.Log($"Current idle time: {currentIdleTime}");
 
                 // 입력이 없을 경우 타이머 증가 + 지정된 방치 시간이 초과되면 Idle Canvas 활성화
                 if (currentIdleTime >= idleTime && !idleModeCanvas.enabled)
@@ -72,7 +71,6 @@ public class ScreenManager : Singleton<ScreenManager>
         else // 절전모드 활성화 (타이머 시작)
         {
             TimeManager.Instance.UpdateTimer(TimerId, Time.deltaTime);
-            Debug.Log($"Idle mode active. Current time: {TimeManager.Instance.GetTime(TimerId)}");
         }
     }
     
@@ -95,7 +93,6 @@ public class ScreenManager : Singleton<ScreenManager>
             idleModeCanvas.enabled = false;
             isIdleModeActive = false;
             Screen.sleepTimeout = SleepTimeout.SystemSetting; // 화면 꺼짐 방지 해제 (기기 설정 따르도록)
-            //TimeManager.Instance.ResetTimer(TimerId); // 타이머 리셋
             MonsterKillCounterManager.Instance.ResetIdleMonsterCounter(); // 몬스터 카운터 초기화
             ResetFPS(); // FPS 되돌리기
         }
