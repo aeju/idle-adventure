@@ -36,7 +36,10 @@ public class GameManager : Singleton<GameManager>
         if (playerController != null)
         {
             playerController.Respawn(); // 플레이어 리스폰
+            ScreenManager.Instance.HideDeathScreen();
             ScreenManager.Instance.DeactivateIdleModeCanvas();  // ScreenManager - idleTimer 초기화
+            
+            //EnemyManager.Instance.ResetAndRespawnAllEnemies(); // 모든 적 재생성
         }
         else
         {

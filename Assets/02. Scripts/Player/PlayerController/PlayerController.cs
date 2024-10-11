@@ -50,6 +50,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     public bool autoModeActive = false; // 자동 이동
     
     private Vector3 originPos; // 재소환 위치
+    private Vector3 originScale; // 재소환 방향
     
     // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
     void Start()
@@ -70,6 +71,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         PlayerInit();
 
         originPos = transform.position; // 첫 위치 저장
+        originScale = ponpo.transform.localScale; // 첫 방향 저장
     }
 
     void PlayerInit()
@@ -85,8 +87,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         isSkillOnCooldown = false;
         lastSkillTime = -skillCooldown;
         lastHitTime = -hitCooldown;
-        
-        healEffectParticle.Stop(); // ParticleSystem 초기화
         
         potionManager = PotionManager.Instance;
         if (potionManager == null)
@@ -207,7 +207,6 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             ponpo.localScale = theScale;
             
             isFlipX = !isFlipX; // flipX 상태 업데이트
-            
         }
     }
 
@@ -218,10 +217,26 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
 
         // HP를 최대로 회복
         playerStats.CurrentHP = playerStats.maxHP;
-
-        // 죽음 화면 UI 숨기기
-        ScreenManager.Instance.HideDeathScreen();
         
-        PlayerInit();
+        // 살아있는 상태
+        isAlive = true;
+        
+        // 보고있는 방향 되돌리기 
+        isFlipX = false;
+        //ponpo.localScale = new Vector3(2, 2, -1);
+        ponpo.localScale = originScale;
+        
+        DeactivateEffects();
+        
+        isSkillOnCooldown = false;
+        lastSkillTime = -skillCooldown;
+        lastHitTime = -hitCooldown;
+        IdlePlayer();
+        anim.SetBool("isIdle", true);
+        
+        /*
+        IdlePlayer();
+        anim.SetBool("isIdle", true);
+        */
     }
 }
