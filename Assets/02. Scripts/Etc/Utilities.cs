@@ -140,4 +140,12 @@ public static class Utilities
             damageTextInstance.InitializeDamageText(isFlipX);
         }
     }
+    
+    public static void EnsureActive(GameObject gameObject)
+    {
+        if (gameObject != null && !gameObject.activeSelf)
+        {
+            gameObject.SetActive(true);
+        }
+    }
 }

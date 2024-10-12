@@ -28,10 +28,7 @@ public class MenuBtn : MonoBehaviour
     void Awake()
     {
         // 만약 에디터에서 세팅 패널 비활성화여도
-        if (settingPanel != null && !settingPanel.gameObject.activeSelf) 
-        {
-            settingPanel.gameObject.SetActive(true); // 켜주는 장치 
-        }
+        Utilities.EnsureActive(settingPanel);
     }
     
     void Start()

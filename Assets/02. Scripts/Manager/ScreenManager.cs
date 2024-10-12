@@ -24,17 +24,9 @@ public class ScreenManager : Singleton<ScreenManager>
     {
         base.Awake(); // Singleton의 Awake 메서드 호출
         
-        // 만약 에디터에서 절전모드 캔버스 비활성화여도
-        if (idleModeCanvas != null && !idleModeCanvas.gameObject.activeSelf) 
-        {
-            idleModeCanvas.gameObject.SetActive(true); // 켜주는 장치 
-        }
-        
-        // 만약 에디터에서 죽음 캔버스 비활성화여도
-        if (deathCanvas != null && !deathCanvas.gameObject.activeSelf)
-        {
-            deathCanvas.gameObject.SetActive(true);
-        }
+        // 만약 에디터에서 절전모드/죽음 캔버스 비활성화여도
+        Utilities.EnsureActive(idleModeCanvas.gameObject);
+        Utilities.EnsureActive(deathCanvas.gameObject);
     }
     
     private void Start()
