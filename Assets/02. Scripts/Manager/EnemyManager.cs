@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 
 [System.Serializable]
@@ -10,7 +11,7 @@ public class ClusterInfo
     public Transform clusterCenter; // 클러스터 중심 위치
     public float clusterRadius; // 클러스터 반경
     public GameObject monsterPrefab; // 이 클러스터에서 사용할 몬스터 프리팹
-    public int basicMonsters; // 기본 몬스터 수 (실제 생성 : 기본 몬스터 수 - 10% ~ 기본 몬스터 수 + 10%)
+    public int basicMonsters; // 기본 몬스터 수 (고정)
     
     [HideInInspector] public int actualMonstersCount; // 생성된 몬스터 수 
 }
@@ -50,21 +51,25 @@ public class EnemyManager : Singleton<EnemyManager>
         }
     }
     
+    // 몬스터 생성
     void CreateMonsterPoolByCluster()
     {
         foreach (ClusterInfo cluster in clusters)
         {
-            // 몬스터 수 지정값 안에서 랜덤
-            int minMonsters = Mathf.RoundToInt(cluster.basicMonsters - (cluster.basicMonsters * 0.1f));
-            int maxMonsters = Mathf.RoundToInt(cluster.basicMonsters + (cluster.basicMonsters * 0.1f));
-            int randomMonsters = Random.Range(minMonsters, maxMonsters + 1);
 
-            cluster.actualMonstersCount = randomMonsters; // 실제 생성된 몬스터 수 저장
+            cluster.actualMonstersCount = cluster.basicMonsters; // basicMonsters 수로 실제 생성된 몬스터 수 저장
 
-            // 클러스터별 부모 오브젝트 생성
-            GameObject clusterParent = new GameObject($"Cluster_{cluster.clusterName}");
-
-            for (int i = 0; i < randomMonsters; i++)
+            // 클러스터별 부모 오브젝트 생성 
+            GameObject clusterParent = GameObject.Find($"Cluster_{cluster.clusterName}");
+            if (clusterParent == null) // 없는 경우에만
+            {
+                clusterParent = new GameObject($"Cluster_{cluster.clusterName}");
+            }
+            
+            // 이미 존재하는 해당 클러스터의 몬스터 수 계산
+            int existingCount = enemyObjectPool.Count(e => e.name.StartsWith(cluster.monsterPrefab.name));
+            // 부족한 만큼만 새로운 몬스터 생성
+            for (int i = existingCount; i < cluster.actualMonstersCount; i++)
             {
                 GameObject enemy = Instantiate(cluster.monsterPrefab);
                 enemy.SetActive(false); // 초기 상태 : 비활성화
@@ -155,6 +160,23 @@ public class EnemyManager : Singleton<EnemyManager>
             {
                 QuadtreeManager.Instance.RemoveEnemy(enemy.name);
                 Debug.Log("Removing enemy from Quadtree...");
+            }
+        }
+    }
+    
+    // 모든 몬스터, 오브젝트 풀로 반환 (재시작)
+    public void ResetAllMonsters()
+    {
+        foreach (GameObject enemy in enemyObjectPool)
+        {
+            if (enemy.activeSelf)
+            {
+                enemy.SetActive(false); // 몬스터 비활성화
+                
+                if (QuadtreeManager.Instance != null) // Quadtree에서 제거
+                {
+                    QuadtreeManager.Instance.RemoveEnemy(enemy.name);
+                }
             }
         }
     }

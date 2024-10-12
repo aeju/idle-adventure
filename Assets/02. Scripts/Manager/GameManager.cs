@@ -39,7 +39,7 @@ public class GameManager : Singleton<GameManager>
             ScreenManager.Instance.HideDeathScreen();
             ScreenManager.Instance.DeactivateIdleModeCanvas();  // ScreenManager - idleTimer 초기화
             
-            //EnemyManager.Instance.ResetAndRespawnAllEnemies(); // 모든 적 재생성
+            EnemyManager.Instance.ResetAllMonsters(); // 모든 몬스터, 오브젝트풀 반환
         }
         else
         {

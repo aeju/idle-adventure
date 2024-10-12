@@ -5,8 +5,6 @@ using UnityEngine;
 // 쿼드트리 관리
 public class QuadtreeManager : Singleton<QuadtreeManager>
 {
-    Texture2D tex;
-    public Renderer targetRenderer;
     private Quadtree quadTree = null;
 
     public int capacity = 0;
@@ -16,9 +14,6 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
     public float boundaryCenterZ = 0f;
     public float boundaryWidth = 100f;
     public float boundaryLength = 100f;
-    
-    Color32[] resetColorArray;
-    Color32 resetColor = new Color32(0, 0, 0, 255);
 
     public int maxDepth = 4; // 최대 깊이 설정
     
@@ -28,15 +23,6 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
     
     void Start()
     {
-        tex = new Texture2D((int)boundaryWidth, (int)boundaryLength, TextureFormat.RGB24, false);
-        tex.filterMode = FilterMode.Point;
-
-        // texture 초기화
-        resetColorArray = tex.GetPixels32();
-        ClearTexture(tex);
-        tex.Apply(false);
-        
-        // Rectangle 객체 = 쿼드트리 경계
         Rectangle boundary = new Rectangle(boundaryCenterX, boundaryCenterZ, boundaryWidth, boundaryLength);
 
         // 쿼드 트리가 없다면, 새로 만듦
@@ -44,42 +30,6 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
         {
             quadTree = new Quadtree(boundary, capacity, maxDepth);
         }
-        
-        // 시각화를 위해 텍스처를 targetRenderer에 할당
-        targetRenderer.material.mainTexture = tex;
-    }
-
-    void Update()
-    {
-        /*
-        // 마우스 클릭 위치에 점 추가
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                var x = hit.textureCoord.x * tex.width;
-                var y = hit.textureCoord.y * tex.height;
-
-                var p = new Point(x, y);
-                quadTree.Insert(p);
-
-                quadTree.Show(tex);
-                tex.Apply(false);
-            }
-        }
-        */
-    }
-
-
-    void ClearTexture(Texture2D tex)
-    {
-        for (int i = 0, len = resetColorArray.Length; i < len; i++)
-        {
-            resetColorArray[i] = resetColor;
-        }
-        tex.SetPixels32(resetColorArray);
     }
     
     // 몬스터 위치 정보 : Point 객체로 변환하여 쿼드트리에 삽입
@@ -97,14 +47,12 @@ public class QuadtreeManager : Singleton<QuadtreeManager>
     }
 
     // 몬스터 위치 삭제 : 쿼드트리에서 제거 
-    //public void RemoveEnemy(string monsterName)
     public bool RemoveEnemy(string monsterName)
     {
         Debug.Log($"Trying to remove enemy name: {monsterName}");
         bool removed = quadTree.Remove(monsterName);
         
         // 쿼드트리에서 포인트 삭제 시도
-        //if (!quadTree.Remove(monsterName))
         if (!removed)
         {
             Debug.LogError($"Failed to remove enemy with ID: {monsterName}");
