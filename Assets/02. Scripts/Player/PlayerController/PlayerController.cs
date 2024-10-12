@@ -231,7 +231,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         isSkillOnCooldown = false;
         lastSkillTime = -skillCooldown;
         lastHitTime = -hitCooldown;
-        //IdlePlayer();
         anim.Rebind(); // 애니메이터 리셋
+        RespawnEffect();
     }
 }
