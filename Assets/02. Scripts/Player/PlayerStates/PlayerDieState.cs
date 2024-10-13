@@ -16,6 +16,7 @@ public class PlayerDieState : IPlayerState
         
         // 죽음 화면 UI 표시
         ScreenManager.Instance.ShowDeathScreen();
+        SoundManager.Instance.PlaySFX("Defeat");
     }
     
     public void Handle(PlayerController playerController)
