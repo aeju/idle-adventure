@@ -114,6 +114,7 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
         
         ResetPlayerState(); // 플레이어 상태 초기화
         RespawnEffect(); // 리스폰 이펙트 실행
+        SoundManager.Instance.PlaySFX("Respawn");  // 리스폰 효과음 재생
     }
     
     // 플레이어 상태 초기화 (Init, Respawn 공통 로직)

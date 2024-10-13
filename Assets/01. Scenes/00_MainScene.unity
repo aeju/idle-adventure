@@ -12497,6 +12497,18 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1194413539683870193, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1194413539683870193, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1194413539683870193, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3341853853491011724, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
       propertyPath: m_Name
       value: 'New Ponpo '
@@ -12552,6 +12564,18 @@ PrefabInstance:
     - target: {fileID: 7220959865329062004, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619398739618448729, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619398739618448729, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8619398739618448729, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8736290802151869401, guid: d78e00788980640e88a14c655cdb00e1, type: 3}
       propertyPath: joystick
@@ -23292,6 +23316,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: cfce0cea076109f478783201b2a9f57f, type: 3}
   - name: Defeat
     clip: {fileID: 8300000, guid: 1ed8fb76fc64e4e46847348138782234, type: 3}
+  - name: Respawn
+    clip: {fileID: 8300000, guid: eaae8fe8d600e1f459f34aa5757fa3b8, type: 3}
 --- !u!4 &724650487
 Transform:
   m_ObjectHideFlags: 0
