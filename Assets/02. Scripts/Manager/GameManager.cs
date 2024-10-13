@@ -40,6 +40,9 @@ public class GameManager : Singleton<GameManager>
             ScreenManager.Instance.DeactivateIdleModeCanvas();  // ScreenManager - idleTimer 초기화
             
             EnemyManager.Instance.ResetAllMonsters(); // 모든 몬스터, 오브젝트풀 반환
+            
+            MonsterKillCounterManager.Instance.ResetTimeAndCount(); // 인게임 몬스터 카운트 초기화
+            MonsterKillCounterManager.Instance.ResetIdleMonsterCounter(); // 절전모드 몬스터 카운트 초기화
         }
         else
         {
