@@ -19,7 +19,7 @@ public class MonsterKillCounterManager : Singleton<MonsterKillCounterManager>
 
     [SerializeField] private GameObject monsterCountPanel;
     
-    private const string TimerId = "GamePlayTimer";
+    private const Definitions.TimeId TimerId = Definitions.TimeId.GamePlayTimer;
     
     // 몬스터 처치 수
     public int TotalMonsterCounter { get; private set; } // 게임 진행

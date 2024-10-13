@@ -7,8 +7,8 @@ public class IdleModeCountTime : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI idleModeTime_text;
     
-    private const string TimerId = "IdleModeTimer"; 
-
+    private const Definitions.TimeId TimerId = Definitions.TimeId.IdleModeTimer;
+    
     void Start()
     {
         UpdateTimeDisplay();

@@ -18,8 +18,8 @@ public class ScreenManager : Singleton<ScreenManager>
     
     public bool IsIdleModeActive { get { return isIdleModeActive; } }
     
-    private const string TimerId = "IdleModeTimer";  // 타이머 ID
-
+    private const Definitions.TimeId TimerId = Definitions.TimeId.IdleModeTimer; // 타이머 ID
+    
     protected override void Awake()
     {
         base.Awake(); // Singleton의 Awake 메서드 호출

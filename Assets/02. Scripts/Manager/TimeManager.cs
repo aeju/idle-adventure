@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 public class TimeManager : Singleton<TimeManager>
 {
-    private Dictionary<string, float> timers = new Dictionary<string, float>();
+    private Dictionary<Definitions.TimeId, float> timers = new Dictionary<Definitions.TimeId, float>();
     
-    public void UpdateTimer(string timerId, float deltaTime)
+    public void UpdateTimer(Definitions.TimeId timerId, float deltaTime)
     {
         if (!timers.ContainsKey(timerId))
         {
@@ -12,13 +12,13 @@ public class TimeManager : Singleton<TimeManager>
         }
         timers[timerId] += deltaTime;
     }
-
-    public float GetTime(string timerId)
+    
+    public float GetTime(Definitions.TimeId timerId)
     {
         return timers.ContainsKey(timerId) ? timers[timerId] : 0;
     }
-
-    public void ResetTimer(string timerId)
+    
+    public void ResetTimer(Definitions.TimeId timerId)
     {
         if (timers.ContainsKey(timerId))
         {

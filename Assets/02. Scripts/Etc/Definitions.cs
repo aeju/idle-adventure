@@ -11,4 +11,11 @@ public class Definitions : MonoBehaviour
         Unique,
         Legend
     }
+
+    // 타이머 ID (TimeManager)
+    public enum TimeId
+    {
+        GamePlayTimer,
+        IdleModeTimer,
+    }
 }
