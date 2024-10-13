@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -52,48 +53,96 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
     
     private Vector3 originPos; // 재소환 위치
     private Vector3 originScale; // 재소환 방향
-    
-    // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
-    void Start()
+
+    private void Awake()
     {
+        // 컴포넌트 참조 초기화
         ponpo = transform.GetChild(0);
         anim = ponpo.GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
         
         detectionCollider = GetComponent<SphereCollider>();
         detectionCollider.isTrigger = true;
-
-        if (!joystick)
-        {
-            Debug.LogError("No joystick");
-        }
-        
-        InitializeStates(); // State 패턴 초기 설정
-        PlayerInit();
-
-        originPos = transform.position; // 첫 위치 저장
-        originScale = ponpo.transform.localScale; // 첫 방향 저장
     }
 
+    // 상태: 필요에 따라 인스턴스화, 상태 컨텍스트(PlayerController)를 통해 관리
+    void Start()
+    {
+        InitializeStates(); // State 패턴 초기 설정
+        PlayerInit();
+    }
+
+    // 초기 1회 필요 
     void PlayerInit()
     {
-        // 초기 1회 필요 
-        isAlive = true;
-        isFlipX = false;
-        DeactivateEffects();
+        ResetPlayerState(); // 플레이어 상태 초기화
+        
+        // 초기 위치, 스케일(방향) 저장
+        originPos = transform.position; 
+        originScale = ponpo.transform.localScale; 
+        
+        // 몬스터 레이어 마스크 설정
         monsterLayerMask = LayerMask.GetMask("Enemy");
-        playerStats.OnPlayerHPChanged += HandlePlayerHpChange; // 체력에 대한 이벤트 구독
+        
+        // 체력에 대한 이벤트 구독 
+        playerStats.OnPlayerHPChanged += HandlePlayerHpChange; 
         playerStats.OnPlayerHPChanged += CheckAutoPotion;
         
-        isSkillOnCooldown = false;
-        lastSkillTime = -skillCooldown;
-        lastHitTime = -hitCooldown;
-        
+        // 포션매니저, 조이스틱 참조 설정
         potionManager = PotionManager.Instance;
         if (potionManager == null)
         {
             Debug.LogError("PotionManager instance not found!");
         }
+        
+        if (!joystick)
+        {
+            Debug.LogError("No joystick");
+        }
+    }
+    
+    // 리스폰 (재시작 버튼에서)
+    public void Respawn()
+    { 
+        // 위치, 스케일 초기화
+        transform.position = originPos;
+        ponpo.localScale = originScale; 
+        
+        isRespawnRequested = false;
+        
+        anim.Rebind(); // 애니메이터 리셋
+        
+        ResetPlayerState(); // 플레이어 상태 초기화
+        RespawnEffect(); // 리스폰 이펙트 실행
+    }
+    
+    // 플레이어 상태 초기화 (Init, Respawn 공통 로직)
+    private void ResetPlayerState()
+    {
+        isAlive = true; // 살아있는 상태
+        isFlipX = false;
+        isMoving = false;
+        isFighting = false;
+        isMonsterDetected = false;
+        isArrived = false;
+        autoModeActive = false;
+        
+        // HP 초기화
+        playerStats.CurrentHP = playerStats.maxHP; 
+        
+        // 이펙트 비활성화 
+        DeactivateEffects(); 
+        
+        // 스킬 쿨다운 초기화
+        ResetSkillCooldowns();
+    }
+    
+    // 스킬 쿨다운 초기화
+    private void ResetSkillCooldowns()
+    {
+        isSkillOnCooldown = false;
+        lastSkillTime = -skillCooldown;
+        lastHitTime = -hitCooldown;
     }
 
     private void OnDisable()
@@ -209,29 +258,5 @@ public partial class PlayerController : MonoBehaviour, IPlayerController
             
             isFlipX = !isFlipX; // flipX 상태 업데이트
         }
-    }
-
-    public void Respawn()
-    { 
-        // 플레이어 위치, 방향 - 원점으로 재설정
-        transform.position = originPos;
-        // 보고있는 방향 되돌리기 
-        isFlipX = false;
-        ponpo.localScale = originScale;
-
-        // HP를 최대로 회복
-        playerStats.CurrentHP = playerStats.maxHP;
-        
-        // 살아있는 상태
-        isAlive = true;
-        isRespawnRequested = false;
-        
-        DeactivateEffects();
-        
-        isSkillOnCooldown = false;
-        lastSkillTime = -skillCooldown;
-        lastHitTime = -hitCooldown;
-        anim.Rebind(); // 애니메이터 리셋
-        RespawnEffect();
     }
 }
