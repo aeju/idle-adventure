@@ -28,11 +28,15 @@ public class MonsterKillCounterManager : Singleton<MonsterKillCounterManager>
     void Awake()
     {
         base.Awake();
-        monsterCountPanel.SetActive(false);
+        
+        // 만약 에디터에서 몬스터 카운트 패널이 비활성화여도
+        Utilities.EnsureActive(monsterCountPanel);
     }
     
     void Start()
     {
+        monsterCountPanel.SetActive(false);
+        
         EnemyFSM.OnEnemyDeath += IncreaseTotalMonsterCounter; // 죽음 이벤트 구독
         
         TotalMonsterCounter = 0; // 몬스터 카운터 초기화
@@ -97,13 +101,16 @@ public class MonsterKillCounterManager : Singleton<MonsterKillCounterManager>
         timeCountText.text = Utilities.FormatTimeHHMMSS(TimeManager.Instance.GetTime(TimerId));
     }
     
-    void ResetTimeAndCount()
+    // 리셋 버튼, 게임 재시작 버튼
+    // 인게임
+    public void ResetTimeAndCount()
     {
         TotalMonsterCounter = 0; // 몬스터 카운터를 0으로 초기화
         TimeManager.Instance.ResetTimer(TimerId);
         UpdateDefaultMonsterCounterUI(); 
     }
 
+    // 절전모드 
     public void ResetIdleMonsterCounter()
     {
         IdleModeMonsterCounter = 0;
