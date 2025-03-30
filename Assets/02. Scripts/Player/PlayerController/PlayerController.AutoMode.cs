@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-// 고친 것 
 public partial class PlayerController : MonoBehaviour
 {
     [SerializeField] private float autoAttackRange = 2f; // 자동 공격 범위
@@ -16,19 +15,23 @@ public partial class PlayerController : MonoBehaviour
         
     }
     
+    // 1. 주기적으로, 몬스터 감지 + 자동 이동
     public IEnumerator AutoModeDetectMonstersPeriodically()
     { 
         AutoMoveTowardsNearestEnemy();
         yield return new WaitForSeconds(1f);
     }
     
+    // 2. 가장 가까운 적으로 이동 
     public void AutoMoveTowardsNearestEnemy()
     {
         isMoving = true;
         List<Point> nearbyEnemies = QuadtreeManager.Instance.QueryNearbyEnemies(transform.position, terrainRadius);
 
+        // 주변에 몬스터가 있으면, 뒤집기 x 
         if (nearbyEnemies.Count > 0)
         {
+            isArrived = true; // 도착했음 
             Point targetMonster = nearbyEnemies
                 .OrderBy(enemy => Vector3.Distance(transform.position, new Vector3(enemy.x, 0, enemy.z)))
                 .FirstOrDefault();
@@ -36,24 +39,45 @@ public partial class PlayerController : MonoBehaviour
             // 몬스터 위치 업데이트
             Debug.Log("[AutoMove]2. 타겟몬스터 위치" + targetMonster.x + targetMonster.z);
 
+            isArrived = false;  
+            
+            // 타겟 몬스터가 없으면 (재실행하고, targetMonster가 주변에 있는지 없는지에 따라 뒤집기 변경)
             if (targetMonster != null)
             {
+                // 주변에 몬스터가 있는지 확인
                 Debug.Log("[AutoMove]업데이트 + 2. 타겟몬스터 위치" + targetMonster.x + targetMonster.z);
                 UpdateNearestMonsterPosition(targetMonster);
-                
                 Vector3 targetPosition = new Vector3(targetMonster.x, transform.position.y, targetMonster.z);
-                FlipTowardsNearestMonster(targetPosition.x);
+                // FlipTowardsNearestMonster(targetPosition.x);
                 MoveToTarget(targetPosition); // 가까워진 몬스터 있으면, 이동 중단 
             }
         }
-        else
+        else // 주변에 몬스터가 없음 
         {
             anim.SetBool("isMove", false);
         }
     }
     
+    // 3. 가장 가까운 몬스터의 위치를 업데이트하고 그 몬스터를 향해 이동
+    public void UpdateNearestMonsterPosition(Point nearestMonsterPoint) 
+    {
+        GameObject nearestMonster = GameObject.Find(nearestMonsterPoint.monsterName);
+        
+        if (nearestMonster != null) 
+        {
+            Vector3 currentMonsterPosition = nearestMonster.transform.position;
+            QuadtreeManager.Instance.UpdateMonsterPosition(nearestMonsterPoint.monsterName, currentMonsterPosition);
+            MoveTowardsTarget(currentMonsterPosition); // 다시 이동
+        }
+        else
+        {
+            
+        }
+    }
+    
     public float flipCooldown = 0.5f; // 뒤집기 쿨다운 시간 (0.5초)
     public float lastFlipTime = 0; // 마지막 뒤집기 시간
+    // 가장 가까운 몬스터를 향해 플레이어를 뒤집음 
     private void FlipTowardsNearestMonster(float targetX)
     {
         // 현재 시간이 마지막 뒤집기 시간 + 쿨다운보다 크거나 같은지 확인
@@ -67,6 +91,7 @@ public partial class PlayerController : MonoBehaviour
         }
     }
     
+    // 4. 목표 위치(가장 가까운 몬스터)로 이동
     private void MoveToTarget(Vector3 initialTargetPosition)
     {
         GameObject nearestMonster = GetNearestMonsterInTriggerRange();
@@ -77,6 +102,8 @@ public partial class PlayerController : MonoBehaviour
         // 공격 범위보다 멀 때 
         if (distanceToTarget > autoAttackRange) // 자동 공격 범위보다 멀 때
         {
+            // FlipTowardsNearestMonster(targetPosition.x);
+            FlipTowardsNearestMonster(targetPosition.x);
             Vector3 moveDirection = (targetPosition - transform.position).normalized * playerStats.movement_Speed;
             Vector3 newPosition = transform.position + moveDirection * Time.deltaTime; // 이동
             rigid.MovePosition(newPosition);
@@ -92,7 +119,7 @@ public partial class PlayerController : MonoBehaviour
         }
     }
     
-    // 트리거 범위 내의 가장 가까운 몬스터를 찾음
+    // 5. 트리거 범위 내의 가장 가까운 몬스터를 찾음
     // 하고 싶은 것 : 트리거 범위 내에 몬스터가 없으면, 초기 목표 위치로 계속 이동 
     private GameObject GetNearestMonsterInTriggerRange()
     {
@@ -122,6 +149,7 @@ public partial class PlayerController : MonoBehaviour
         }
     }
 
+    // 몬스터가 트리거 범위를 벗어날 때
     void OnTriggerExit(Collider other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Monster")) 
@@ -130,6 +158,7 @@ public partial class PlayerController : MonoBehaviour
         }
     }
 
+    // 자동 공격 가능 여부를 확인
     void AutoAttackCheck()
     {
         foreach (GameObject monster in monstersInRange)
@@ -140,18 +169,6 @@ public partial class PlayerController : MonoBehaviour
                 AutoAttack(); // 자동 공격 실행
                 break; // 가장 가까운 몬스터에 대해 공격을 실행한 후 중단
             }
-        }
-    }
-    
-    public void UpdateNearestMonsterPosition(Point nearestMonsterPoint) 
-    {
-        GameObject nearestMonster = GameObject.Find(nearestMonsterPoint.monsterName);
-        
-        if (nearestMonster != null) 
-        {
-            Vector3 currentMonsterPosition = nearestMonster.transform.position;
-            QuadtreeManager.Instance.UpdateMonsterPosition(nearestMonsterPoint.monsterName, currentMonsterPosition);
-            MoveTowardsTarget(currentMonsterPosition); // 다시 이동
         }
     }
 }

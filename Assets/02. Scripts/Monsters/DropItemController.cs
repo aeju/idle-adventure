@@ -139,7 +139,8 @@ public class DropItemController : MonoBehaviour
     {
         // 아이템 획득 완료 이벤트 발생
         OnItemCollected?.Invoke();
-        Destroy(gameObject);
+        // Destroy(gameObject);
+        ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
     
     // 1. 코인 : 코인 이미지 UI로 이동
